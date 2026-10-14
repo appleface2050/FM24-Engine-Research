@@ -1,0 +1,154 @@
+{
+  "evidence_type": "ordinary-tool-static-observation-not-REA",
+  "source": "fm.exe",
+  "input_identity_from_REA": "e1059eee82fa7832188831521a3fa633ec3260dd98d03da48b16661147e3ab48",
+  "refresh_entry": "0x1443b04f0",
+  "scheduled_caller": "0x141b3cb50",
+  "sampling_helper": "0x141b50600",
+  "normal_branch": "floor(B * U32 / 2^32), for nonnegative B",
+  "special_record_gate": "floor(100 * U32 / 2^32) < signed_byte(record+0x1b)",
+  "special_result": "B+1",
+  "name_basis": "FM24 name-to-ID parser at 0x144380020; IDs in call arguments; not editor-derived offsets",
+  "field_links": [
+    {
+      "attribute_id": "0x31",
+      "name_candidate": "Acceleration",
+      "source_field": "0x260",
+      "bound_offset": 0,
+      "cache_field": "0x1668"
+    },
+    {
+      "attribute_id": "0x3d",
+      "name_candidate": "Agility",
+      "source_field": "0x254",
+      "bound_offset": 0,
+      "cache_field": "0x1680"
+    },
+    {
+      "attribute_id": "0x39",
+      "name_candidate": "Balance",
+      "source_field": "0x25c",
+      "bound_offset": 2,
+      "cache_field": "0x167c"
+    },
+    {
+      "attribute_id": "0x3a",
+      "name_candidate": "Bravery",
+      "source_field": "0x15b8",
+      "bound_offset": 2,
+      "cache_field": "0x169c"
+    },
+    {
+      "attribute_id": "0x1c",
+      "name_candidate": "Command Of Area",
+      "source_field": "0x15e8",
+      "bound_offset": 0,
+      "cache_field": "0x1690"
+    },
+    {
+      "attribute_id": "0x2e",
+      "name_candidate": "GK Eccentricity",
+      "source_field": "0x15f8",
+      "bound_offset": 0,
+      "cache_field": "0x1698"
+    },
+    {
+      "attribute_id": "0x12",
+      "name_candidate": "Heading",
+      "source_field": "0x15ac",
+      "bound_offset": 2,
+      "cache_field": "0x166c"
+    },
+    {
+      "attribute_id": "0x14",
+      "name_candidate": "Marking",
+      "source_field": "0x1558",
+      "bound_offset": 2,
+      "cache_field": "0x164c"
+    },
+    {
+      "attribute_id": "0x15",
+      "name_candidate": "Movement",
+      "source_field": "0x1550",
+      "bound_offset": 2,
+      "cache_field": "0x1644"
+    },
+    {
+      "attribute_id": "0x22",
+      "name_candidate": "One On Ones",
+      "source_field": "0x15c0",
+      "bound_offset": 2,
+      "cache_field": "0x16a4"
+    },
+    {
+      "attribute_id": "0x24",
+      "name_candidate": "Reflexes",
+      "source_field": "0x15a8",
+      "bound_offset": 2,
+      "cache_field": "0x168c"
+    },
+    {
+      "attribute_id": "0x33",
+      "name_candidate": "Strength",
+      "source_field": "0x1574",
+      "bound_offset": 2,
+      "cache_field": "0x1684"
+    },
+    {
+      "attribute_id": "0x18",
+      "name_candidate": "Tackling",
+      "source_field": "0x15a0",
+      "bound_offset": 2,
+      "cache_field": "0x16a8"
+    },
+    {
+      "attribute_id": "0x2b",
+      "name_candidate": "unresolved",
+      "source_field": "0x15bc",
+      "bound_offset": 2,
+      "cache_field": "0x1628"
+    }
+  ],
+  "reflex_reroll": "under an unresolved condition or zero cache, re-draw and keep max(old,new)",
+  "reflex_reader": "0x1443b5100",
+  "reflex_local_expressions": [
+    "2*T*(0.5-R/200)",
+    "2*T*(1.5-R/100)",
+    "2*T*(2-R/200)",
+    "trunc((C+2*R)/3), under conditional branches"
+  ],
+  "constants": [
+    {
+      "va": "0x145a1d4a4",
+      "float32": 0.5
+    },
+    {
+      "va": "0x145a1d4c4",
+      "float32": 1.5
+    },
+    {
+      "va": "0x145a1d4d4",
+      "float32": 2.0
+    },
+    {
+      "va": "0x145a1d54c",
+      "float32": 50.0
+    },
+    {
+      "va": "0x145a1d570",
+      "float32": 100.0
+    },
+    {
+      "va": "0x145a1d57c",
+      "float32": 200.0
+    }
+  ],
+  "limits": [
+    "Input A is an internal integer, not yet proven equal to the visible attribute.",
+    "Some source labels rely on reused native IDs; source normalization and record population remain unresolved.",
+    "R is a sampled cache, not the displayed Reflexes value.",
+    "T = match float field +0xe5f8 has unresolved initialization/units.",
+    "Expressions are local stages before geometry, state adjustments and clamping; not save-probability formulas.",
+    "No gameplay runtime, memory read or editor input is used."
+  ]
+}
