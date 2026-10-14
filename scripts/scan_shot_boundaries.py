@@ -74,7 +74,9 @@ def scan(path: Path) -> dict:
 
     targets = (0x144528BB0, 0x141ABCA90, 0x141ABD270, 0x141A9C400,
                0x141AADD50, 0x1443B5100,
-               0x1443F0420, 0x144482710, 0x1444829F0)
+               0x1443F0420, 0x144482710, 0x1444829F0,
+               0x1443ECC70, 0x1443F2EF0, 0x144513020, 0x14450A690,
+               0x144475C40)
     calls = {hex(target): [] for target in targets}
     for match in re.finditer(rb"\xe8[\s\S]{4}", code):
         address = image_base + rva + match.start()
@@ -101,7 +103,9 @@ def scan(path: Path) -> dict:
     ]
     constants = []
     for address in (0x145A1D404, 0x145A1D408, 0x145A1D410,
-                    0x1456B08C4, 0x1455A9800):
+                    0x1456B08C4, 0x1455A9800, 0x145A1D550, 0x145A1D51C,
+                    0x145A1D534, 0x1458704A0, 0x145A1D45C, 0x145A1D4A4,
+                    0x145A1D4D4, 0x145A1D4C8):
         position = offset(address - image_base)
         constants.append({"address": hex(address), "bytes": data[position:position + 4].hex(),
                           "float32": struct.unpack_from("<f", data, position)[0]})
