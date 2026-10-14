@@ -6,6 +6,7 @@
 
 当前研究方向：仅使用 FM24 自身程序和随附资源做静态分析，扩展到全场动作与比赛结果。停止游戏内对照实验，第三方编辑器内容不作为后续证据。下列历史运行内存观察仅保留已有来源记录，本轮未新增此类观察。
 
+- [射门结果与门线判定](20261014_射门结果与门线判定.md)：球场区域到进球处理/统计的连接、两组编号的区别、边界交点计算及 xG 的 0.15/0.30 固定阈值消费者；完整扑救与有效进球公式仍未知。
 - [整体静态分析](20261014_FM2024整体静态分析.md)：原生属性编号、权重消费者、运动缩放、QME 关联及后续从结果回溯的研究路线。
 - [FM26 参考与 FM24 复核](20261014_FM26参考与FM24复核.md)：跨版本资源编码、本机 3454 条 QME 分布记录及已恢复的局部随机数算术。
 - [属性抽样与时间计算](20261014_属性抽样与时间计算.md)：属性对应的整数抽样、缓存刷新及反应缓存进入时间字段的局部路径；尚未闭合实际进球/扑救公式。
@@ -50,3 +51,24 @@ python3 inspect_simatch.py \
 仓库从原个人研究项目独立提取，首次发布包含当前文件快照，不导入原仓库历史。此前的社区实验和只读运行观察保留为历史材料；后续研究仅采用 FM24 自身程序及随附资源的静态证据，不使用第三方编辑器内容。
 
 日常更新直接在本仓库提交、推送；父仓库只更新 `packages/fm24-match-mechanisms` 的 submodule 指针。原游戏版本、函数地址、输入文件标识及证据局限保留在各研究记录中。
+
+## 射门路径静态复核
+
+`scripts/scan_shot_boundaries.py` 只需要 Python 标准库，读取本次 FM24 PE 布局，输出原始指令模式候选、名称/分派表和常量。候选需与指令边界及消费者核对，不能直接当完整调用图。
+
+```bash
+python3 scripts/scan_shot_boundaries.py '/path/to/Football Manager 2024/fm.exe' /tmp/fm24-shot-boundaries.json
+```
+
+`scripts/ExportShotCandidates.java` 用已有 Ghidra 导出指定入口的局部伪代码和指令。已使用 Ghidra 12.1.4、JDK 21；参数为输出文件及 `入口:范围结束（不含）`。代码范围见射门证据文件，异常目录范围不等于已恢复全部控制流。复核示例（自行填写工具与游戏路径，先创建临时项目目录）：
+
+```bash
+mkdir -p /tmp/fm24-ghidra
+"$GHIDRA_HOME/support/analyzeHeadless" /tmp/fm24-ghidra shot_boundaries \
+  -import '/path/to/Football Manager 2024/fm.exe' -noanalysis \
+  -scriptPath ./scripts -postScript ExportShotCandidates.java \
+  /tmp/fm24-shot-local.txt 1443f0420:1443f0d01 1443f0d10:1443f0f58 \
+  -deleteProject
+```
+
+它会启动静态分析工具并写入临时项目，不运行游戏；单函数反编译超时为 60 秒，保留失败与警告。首次导入大型 PE 可能超过一分钟。该输出属于普通工具静态证据，不是已完成的 REA 原生函数 dossier。
