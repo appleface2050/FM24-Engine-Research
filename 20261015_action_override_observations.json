@@ -392,7 +392,7 @@
       "call 1443cac20 and set BL=1",
       "call 1443cad20 and relay low-byte result"
     ],
-    "writer_1443cac20": "writes action 0x8e or 0x90, then 141b5ff30 can modify action via P+e40 pointer; optional candidate block restore",
+    "writer_1443cac20": "writes initial action 0x8e or 0x90; 141b5ff30 body reads action and returns integer score; caller may restore supplied action block if its score is strictly greater than current+100; see 20261015_action_evaluation_observations.json",
     "writer_1443cad20": "conditional action 0x90, then 141b5ff30; not a final contact bit",
     "memcpy_import": "14557e720 binding to VCRUNTIME140.dll!memcpy established in 20261015_keeper_ball_state_observations.json"
   },
