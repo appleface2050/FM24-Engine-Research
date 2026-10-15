@@ -1,0 +1,347 @@
+{
+  "date": "2026-10-15",
+  "target": {
+    "file": "fm.exe",
+    "build": "24.4.2+2081827",
+    "image_base": "0x140000000"
+  },
+  "method": "Ghidra 12.1.4 CLI, JDK 21, existing Program, noanalysis/readOnly; original PE byte comparison; no game execution or runtime memory access",
+  "functions": [
+    {
+      "entry": "0x1453017d0",
+      "reported_body_start": "0x1453017d0",
+      "reported_body_end_inclusive": "0x145302e23",
+      "export": "ball-physics-step.txt"
+    },
+    {
+      "entry": "0x141aa4820",
+      "reported_body_start": "0x141aa4820",
+      "reported_body_end_inclusive": "0x141aa48cc",
+      "export": "goal-update-gates.txt"
+    },
+    {
+      "entry": "0x1444a3410",
+      "reported_body_start": "0x1444a3410",
+      "reported_body_end_inclusive": "0x1444a41b2",
+      "export": "goal-update-gates.txt"
+    },
+    {
+      "entry": "0x1445191c0",
+      "reported_body_start": "0x1445191c0",
+      "reported_body_end_inclusive": "0x144519a4e",
+      "export": "goal-update-gates.txt"
+    },
+    {
+      "entry": "0x145300fc0",
+      "reported_body_start": "0x145300fc0",
+      "reported_body_end_inclusive": "0x1453017ca",
+      "export": "goal-update-gates.txt"
+    },
+    {
+      "entry": "0x151af7570",
+      "reported_body_start": "0x151af7570",
+      "reported_body_end_inclusive": "0x151af7872",
+      "export": "physics-and-goal-special.txt"
+    },
+    {
+      "entry": "0x151afdba0",
+      "reported_body_start": "0x151afdba0",
+      "reported_body_end_inclusive": "0x151afdd91",
+      "export": "physics-and-goal-special.txt"
+    },
+    {
+      "entry": "0x145305970",
+      "reported_body_start": "0x145305970",
+      "reported_body_end_inclusive": "0x145305a47",
+      "export": "physics-and-goal-special.txt"
+    },
+    {
+      "entry": "0x1453056e0",
+      "reported_body_start": "0x1453056e0",
+      "reported_body_end_inclusive": "0x145305968",
+      "export": "physics-and-goal-special.txt"
+    },
+    {
+      "entry": "0x145305a50",
+      "reported_body_start": "0x145305a50",
+      "reported_body_end_inclusive": "0x145305ea3",
+      "export": "ball-contact-response.txt"
+    }
+  ],
+  "evidence": "20261015_ball_physics_goal_static.txt",
+  "anchors": {
+    "force_calls": [
+      "0x14530208e",
+      "0x14530209b"
+    ],
+    "half_acceleration_position": "0x14530210f",
+    "contact_time_and_response": [
+      "0x14530249b",
+      "0x145302530"
+    ],
+    "ordinary_goal_call_existing_evidence": "0x141aadecd",
+    "alternate_goal_call": [
+      "0x1444a41aa",
+      "0x141a9c120",
+      "0x151af75dc"
+    ]
+  },
+  "observations": [
+    {
+      "claim": "Substep prediction uses p+v*h+0.5*a*h*h and v+a*h; later constraints/contact can change outputs",
+      "functions": [
+        "0x1453017d0"
+      ],
+      "status": "partial static formula"
+    },
+    {
+      "claim": "145305970 adds a velocity-opposing term for positive scalar coefficient, with cubic smooth interpolation of the coefficient",
+      "status": "arithmetic observed; physical naming inferred"
+    },
+    {
+      "claim": "Contact response starts with v-(1+e)*dot(v,n)*n and then modifies velocity/spin further",
+      "status": "partial static formula"
+    },
+    {
+      "claim": "Ordinary and alternate paths call shared goal-related handler with mode 0 and 1; skipping ordinary dispatch is insufficient evidence for goal cancellation",
+      "status": "static call connections; mode semantics unresolved"
+    }
+  ],
+  "limits": [
+    "No complete REA native dossier; prior full analysis timed out",
+    "Bounded export and instruction traversal do not cover every indirect call or external tail",
+    "Physics timestep and global acceleration initial values/units unresolved; BSS addresses are not raw-file constants",
+    "Contact geometry and material names/values not fully mapped",
+    "Goalkeeper final action outcomes, valid-goal rules, final scoring mutations and match-level attribute ranking unresolved"
+  ],
+  "windows": [
+    {
+      "va": "0x1453017d0",
+      "file_offset": 87035344,
+      "length": 96,
+      "hex": "4157415641554154565755534881ecb8020000440f29bc24a0020000440f29b42490020000440f29ac2480020000440f29a42470020000440f299c2460020000440f29942450020000440f298c2440020000440f298424300200000f29bc2420",
+      "matches_original": true
+    },
+    {
+      "va": "0x14530208e",
+      "file_offset": 87037582,
+      "length": 96,
+      "hex": "e8dd3800004889f989da4989e8e840360000f30f10465cf30f108c24c8000000f30f5ec8f3440f10a424c0000000f30f109424c4000000f30f5ed0f3440f5ee0440f14e2440f16e1440f5825d2831301440f286e200f284630410f28fbf3410f",
+      "matches_original": true
+    },
+    {
+      "va": "0x1453020aa",
+      "file_offset": 87037610,
+      "length": 96,
+      "hex": "c8000000f30f5ec8f3440f10a424c0000000f30f109424c4000000f30f5ed0f3440f5ee0440f14e2440f16e1440f5825d2831301440f286e200f284630410f28fbf3410f59fbf3410f7ecb410f28f30fc6f1800f28ce0f59c8f30f7ed70fc6fa",
+      "matches_original": true
+    },
+    {
+      "va": "0x14530210f",
+      "file_offset": 87037711,
+      "length": 96,
+      "hex": "0f593dcad1a2000f58f9410f58fd410f59f40f58f0488b06488b4e08eb070f1f004883c0404839c874770f28c7410f5cc50f28c8660f15c8f30f594818f30f16d0f30f595014f30f594010f30f58c2f30f58c1440f2ef076c8410f57c70f57c9",
+      "matches_original": true
+    },
+    {
+      "va": "0x14530249b",
+      "file_offset": 87038619,
+      "length": 96,
+      "hex": "f3410f59f30f28c6f30f59c6f30f7ece0f28d60fc6d1800f284e300f28d90f59daf30f7ee00fc6c480410f59c40f590511cea2000f58c30f584620f3440f5cde0f294620410f59d40f58d10f295630418b5518895708498b5510488917488b56",
+      "matches_original": true
+    },
+    {
+      "va": "0x145302530",
+      "file_offset": 87038768,
+      "length": 96,
+      "hex": "e81b350000f3440f58c60f28058f2606010f29442430488d5424400f29020f28057b2606010f2942100f2805702606010f2942208b4708894218488b0748894210418b4608894228498b0648894220488b8c24b80000008b410889442438488b",
+      "matches_original": true
+    },
+    {
+      "va": "0x145305970",
+      "file_offset": 87052144,
+      "length": 96,
+      "hex": "4883ec180f2934240f2841100f28c80f59c8f30f16d1f30f58d10f12c9f30f58caf30f51c9f30f1051440f2ed1734cf30f1059480f2ecb7349f30f5cda0f28e1f30f5ce2f30f5ee30f28d4f30f58d4f30f101de1e13500f30f5cdaf30f59e4f3",
+      "matches_original": true
+    },
+    {
+      "va": "0x1453059b4",
+      "file_offset": 87052212,
+      "length": 96,
+      "hex": "f30f5ee30f28d4f30f58d4f30f101de1e13500f30f5cdaf30f59e4f30f59e3f30f10514cf30f105950f30f5cd3f30f59d4f30f58d3eb0cf30f105150eb05f30f10514cf30f16d80f28e0660f15e0660f6eea0f283593ee37000f57e60f57de0f",
+      "matches_original": true
+    },
+    {
+      "va": "0x145305a06",
+      "file_offset": 87052294,
+      "length": 96,
+      "hex": "0f283593ee37000f57e60f57de0f57c60f14c30f16c4f30f596934f30f59eaf30f59e90f57c9f30f10cd0fc6e9400f59e8410f5828410f29280f2834244883c418c3cccccccccccccccc4881ecb8000000440f29bc24a0000000440f29b42490",
+      "matches_original": true
+    },
+    {
+      "va": "0x1453056e0",
+      "file_offset": 87051488,
+      "length": 96,
+      "hex": "5657534883ec60440f294c2450440f294424400f297c24300f297424204c89c689d34889cff30f107110f30f1005bef405010f2ef075267a24f30f104f140f2e0daff4050175167a14f30f104f180f2e0da3f4050175060f8ba6010000f30f10",
+      "matches_original": true
+    },
+    {
+      "va": "0x14530591a",
+      "file_offset": 87052058,
+      "length": 96,
+      "hex": "c705046b13018fc2f53d488d0d016b1301e80c331e00e9b5feffff488d0df86a1301e863321e00833dec6a1301ff0f85cbfeffffc705d86a1301b81e453f488d0dd56a1301e8d8321e00e9b0feffffcccccccccccccc4883ec180f2934240f28",
+      "matches_original": true
+    },
+    {
+      "va": "0x14530594e",
+      "file_offset": 87052110,
+      "length": 96,
+      "hex": "c705d86a1301b81e453f488d0dd56a1301e8d8321e00e9b0feffffcccccccccccccc4883ec180f2934240f2841100f28c80f59c8f30f16d1f30f58d10f12c9f30f58caf30f51c9f30f1051440f2ed1734cf30f1059480f2ecb7349f30f5cda0f",
+      "matches_original": true
+    },
+    {
+      "va": "0x145305a50",
+      "file_offset": 87052368,
+      "length": 96,
+      "hex": "4881ecb8000000440f29bc24a0000000440f29b42490000000440f29ac2480000000440f29642470440f295c2460440f29542450440f294c2440440f294424300f297c24200f29742410f3410f1008f30f104218f30f105918f30f59d8f30f10",
+      "matches_original": true
+    },
+    {
+      "va": "0x1444051d1",
+      "file_offset": 71321553,
+      "length": 96,
+      "hex": "e84ab2feff89c50fb644242c84c07816488b8b100d0000488b84c1f8cd0000488983680d000040886c242f488b86b8d200000f284424300f2980000d00004889f1e839ee69fd4889f189eae87f6869fd4889f1e8973f110084c074294889f144",
+      "matches_original": true
+    },
+    {
+      "va": "0x144405224",
+      "file_offset": 71321636,
+      "length": 96,
+      "hex": "e8973f110084c074294889f14489f24531c0e845d46afdff86840a0000ff86e8090000b30189d84883c4405b5d5f5e415ec38b86e80900008b8e6c0a000039c87e3fc644242c00c644242e00c644242d00488d44242d4889442420488d54242c",
+      "matches_original": true
+    },
+    {
+      "va": "0x144405291",
+      "file_offset": 71321745,
+      "length": 96,
+      "hex": "e87ae10900b30184c07422e96301000031dbeba475864889f1e8c1d969fdc644242c01c644242e00c644242d004889f1e84af269fd8b86e80900008b8e500a000083c10439c87d203b8614e2000074188b8e280a0000ffc139c8740c8b8e3c0a",
+      "matches_original": true
+    },
+    {
+      "va": "0x144405312",
+      "file_offset": 71321874,
+      "length": 96,
+      "hex": "e809f569fdb30184c00f85e3000000488b8ef8cd0000e8d3b476fd488b8e00ce0000e8c7b476fd807c242e00740a4889f1e888f569fdeb18807c242c000f84ce0000000fb654242d4889f1e8de426afdf6463040741180bef0e1000011740848",
+      "matches_original": true
+    },
+    {
+      "va": "0x144405432",
+      "file_offset": 71322162,
+      "length": 96,
+      "hex": "e829706afd0fb644242f04fb3c020f831cffffffebbce8f3586bfd84c00f840dffffff4889f1e863596bfde900ffffffcccccccccccccccccccccccccccce97b8cc615880e0f8cc74f240393ab81398ff7bbe9ee613b0308e2afa22bc10f870b",
+      "matches_original": true
+    },
+    {
+      "va": "0x141aa4820",
+      "file_offset": 27934240,
+      "length": 96,
+      "hex": "56574883ec2831c080b940d80000000f85910000004889ce83b98ce20000000f8581000000488bbeb8d200000f1f40008b8f940d000083f9ff752180bf630d000000741880bf620d000000750f4889f9ba01000000e876609402ebd48b96e809",
+      "matches_original": true
+    },
+    {
+      "va": "0x1444a3410",
+      "file_offset": 71969296,
+      "length": 96,
+      "hex": "4157415641554154565755534881ecf80000004d89cf4c89c74889d34889ce41c60000410fb601fec83c0677138b86e809000089867c0a0000c686a5d4000000488b8670ce0000c6803003000000410fb6174889f1e8b6885ffd84c00f850b04",
+      "matches_original": true
+    },
+    {
+      "va": "0x1444a41aa",
+      "file_offset": 71972778,
+      "length": 96,
+      "hex": "e8717f5ffdb001eb8ccccccccccccccccccccccccccc415741564154565755534881ec900000004885d20f845a0200004989cf0fb68190e20000ffc883f80c0f8745020000488d0d52020000486304814801c8ffe066c782f017000001ffc682",
+      "matches_original": true
+    },
+    {
+      "va": "0x141a9c120",
+      "file_offset": 27899680,
+      "length": 96,
+      "hex": "e94bb40510be79cce9b7710e00e9e43b9f0168e933f14a00be7bed5cb6fcb6134c3ac649076155d4b634eae9eb43a6008d15e9e2737c01a4e9f36e6400dbe92e4baf00cc33cccccc0f822fd3920052c5a55cf3cc0ae953376a000f854a0aa901",
+      "matches_original": true
+    },
+    {
+      "va": "0x151af7570",
+      "file_offset": 293117808,
+      "length": 96,
+      "hex": "41574156565755534881ecc80000004889ce488b8170ce00008b89e80900003988d40200000f9ed33988dc0200004889d7400f9dd54020dd488b8ef8cd0000e84c9207f0488b8e00ce0000e8409207f04889be48e300008b86e8090000898664",
+      "matches_original": true
+    },
+    {
+      "va": "0x151af75dc",
+      "file_offset": 293117916,
+      "length": 96,
+      "hex": "e81f4efaef488b8e48e30000e8731108f0488b8648e30000488b88280100008b159b84760381c2f050d3db4531c04531c9e87e0308f04084ed0f85c50000004c8bbe48e30000498bbf600500004c8bb7700700004d85f60f84a7000000488b8e",
+      "matches_original": true
+    },
+    {
+      "va": "0x145300fc0",
+      "file_offset": 87033280,
+      "length": 96,
+      "hex": "56574881ec7001000048c78424200100000000000048c784242701000000000000488b05e83b0601488984242f010000488b35e13b06014889b42437010000488984243f0100004889b42447010000488b05c23b06014889842457010000488b",
+      "matches_original": true
+    },
+    {
+      "va": "0x145d2f2e0",
+      "file_offset": 97707744,
+      "length": 96,
+      "hex": "0000003f0000003f0000003f000000000020fd446e6578745f706f696e745f6d7573745f736c6f775f646f776e5f746f5f73746f705f6e6f77002e2e5c2e2e5c67656e657269635c656e67696e655c70617468696e675c70617468696e675f69",
+      "matches_original": true
+    },
+    {
+      "va": "0x145582410",
+      "file_offset": 89659408,
+      "length": 96,
+      "hex": "0000803f0000000000000000000000000000803f0000003f0000000000000000000000000000803f0000000000000000000000003333333f00000000000000000000000000000000000000000000803f0000803f0000803f0000803f0000803f",
+      "matches_original": true
+    },
+    {
+      "va": "0x145663ba8",
+      "file_offset": 90582952,
+      "length": 96,
+      "hex": "00004040000000007040664501000000508b3d400100000030b206400100000040b206400100000050b2064001000000d0b2094101000000701a3d400100000000c31f410100000040521f410100000060b206400100000060bb094101000000",
+      "matches_original": true
+    },
+    {
+      "va": "0x1456848a0",
+      "file_offset": 90717344,
+      "length": 96,
+      "hex": "00000080000000800000008000000080295c0fbf00000000000000000000000001000100010100010001010001000101804b684501000000108946400100000030b206400100000040b206400100000050b2064001000000d0b2094101000000",
+      "matches_original": true
+    }
+  ],
+  "constants_float32": {
+    "0x145d2f2e0": 0.5,
+    "0x145d2f2e4": 0.5,
+    "0x145d2f2e8": 0.5,
+    "0x145582410": 1.0,
+    "0x145663ba8": 3.0
+  },
+  "sign_mask_xyz": "0x80000000",
+  "worked_examples": {
+    "position": [
+      1.0,
+      0.0,
+      1.25
+    ],
+    "velocity": [
+      4.0,
+      0.0,
+      0.0
+    ],
+    "normal_response_stage": [
+      0.0,
+      5.0,
+      0.0
+    ]
+  }
+}
