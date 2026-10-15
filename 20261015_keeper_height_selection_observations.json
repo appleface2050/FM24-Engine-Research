@@ -1,0 +1,317 @@
+{
+  "target": {
+    "file": "fm.exe",
+    "build": "24.4.2+2081827",
+    "image_base": "0x140000000",
+    "file_size": 491339776
+  },
+  "method": "Static original PE plus existing Ghidra Program; no runtime reads or game execution.",
+  "field_sources": {
+    "P+15e4": {
+      "attribute_id": "0x1b",
+      "name": "Aerial Reach",
+      "producer": "0x1443b00a3 CALL 1443b3fc0; 1443b00a8 store",
+      "display_scale_confirmed": false
+    },
+    "P+15a4": {
+      "attribute_id": "0x1a",
+      "name": "Handling",
+      "producer": "0x1443b0051 CALL 1443b3fc0; 1443b0056 store"
+    },
+    "P+1640": {
+      "name": "Decisions sampled cache",
+      "source": "Existing attribute-action report; can be modified after sampling"
+    },
+    "P+16b0": {
+      "name": "cached random integer",
+      "expression": "floor(U32*100000/2^32)",
+      "range": [
+        0,
+        99999
+      ],
+      "producer": "1443b0523..1443b056a"
+    },
+    "P+6c": {
+      "type": "float32",
+      "business_name": "unknown"
+    }
+  },
+  "base_threshold": {
+    "expression": "0.5*(max(0.75+Q-1.8,A/40+0.75)+1.8-0.5*D-0.5+Q)",
+    "source": "144476172..1444761f7",
+    "overrides": "144476203..1444763e9",
+    "output_branch": "finite values; mode&1==0 and fourth_flag==0 and sample_relative_z>=threshold sets byte to 1 at 144476d78",
+    "not_save_success_probability": true
+  },
+  "height_sample": {
+    "function": "0x145300de0",
+    "range_end_exclusive": "0x145300fbc",
+    "call": "0x144475f6c",
+    "relative_z": "output[2] - *(trajectory+0x58), at 144475f79..144475f9d",
+    "trajectory_reference_field_name": "unknown"
+  },
+  "handling_selection": {
+    "calls": [
+      "0x14447903e",
+      "0x14447906c"
+    ],
+    "ordinary_draw": "floor((HandlingInternal+2)*U32/2^32)",
+    "special_record_return": "HandlingInternal+3",
+    "commit_mode_condition": "first draw+3 < attempt_count",
+    "second_commit_condition": "second draw==0 and HandlingInternal<=cached_random_J%50",
+    "other_conditions": "angle progression, geometry selection and earlier candidate acceptance; see full existing function"
+  },
+  "constants": [
+    {
+      "va": "0x145a1d4a4",
+      "float32": 0.5,
+      "bytes": "0000003f"
+    },
+    {
+      "va": "0x145a1d4a8",
+      "float32": 0.75,
+      "bytes": "0000403f"
+    },
+    {
+      "va": "0x145a1d400",
+      "float32": 1.7999999523162842,
+      "bytes": "6666e63f"
+    },
+    {
+      "va": "0x145a1d544",
+      "float32": 40.0,
+      "bytes": "00002042"
+    },
+    {
+      "va": "0x145a1d45c",
+      "float32": 0.0,
+      "bytes": "00000000"
+    },
+    {
+      "va": "0x145a1d468",
+      "float32": 0.20000000298023224,
+      "bytes": "cdcc4c3e"
+    },
+    {
+      "va": "0x145a1d460",
+      "float32": 0.10000000149011612,
+      "bytes": "cdcccc3d"
+    },
+    {
+      "va": "0x145a1d410",
+      "float32": 2.440000057220459,
+      "bytes": "f6281c40"
+    },
+    {
+      "va": "0x145a1d4d4",
+      "float32": 2.0,
+      "bytes": "00000040"
+    }
+  ],
+  "direct_calls": [
+    {
+      "va": "0x1443b0051",
+      "target": "0x1443b3fc0",
+      "bytes": "e86a3f0000"
+    },
+    {
+      "va": "0x1443b00a3",
+      "target": "0x1443b3fc0",
+      "bytes": "e8183f0000"
+    },
+    {
+      "va": "0x144475f6c",
+      "target": "0x145300de0",
+      "bytes": "e86faee800"
+    },
+    {
+      "va": "0x14447903e",
+      "target": "0x141b50600",
+      "bytes": "e8bd756dfd"
+    },
+    {
+      "va": "0x14447906c",
+      "target": "0x141b50600",
+      "bytes": "e88f756dfd"
+    }
+  ],
+  "ghidra_vs_original_windows": [
+    {
+      "va": "0x144475e10",
+      "length": 96,
+      "bytes": "4889942430020000c60200c784248000000000000000f3440f100575765a0166c784249e00000000008b9e3c0e0000488b86c80100008ba8e8090000660f6ef3488d9424b00000004889f14189e8e8ad0df8ff448d4501488d94242001000048",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144475f42",
+      "length": 96,
+      "bytes": "488d84249e0000004889442428488d8424800000004889442420488d9424b00000004c8d8c2420010000e86faee800488b8424b0000000f30f108424b8000000488b8d38100000f30f5c41588b8c24bc00000048898424a0000000f30f118424",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144476172",
+      "length": 96,
+      "bytes": "f30f102d2e735a01488b4c2470f30f10716c0f28ddf30f58def3440f10256c725a010f57c9f30f2a89e4150000f3410f5cdcf30f5e0d98735a01f30f58cdf30f5fd9f30f100da0725a01410f2ecb75117a0ff3440f58e3f30f100dd3725a01eb",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1444761d3",
+      "length": 96,
+      "bytes": "f30f100dc9725a01410f28e3f30f59e1f3440f58e3f3440f5ce4f3440f5ce1f3440f58e6f3440f59e1488b88b8d20000f30f1099080d0000f30f10a424a80000000f2ee37675f680a60a000001750e488b54247080baec01000001eb15488b54",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1444762d8",
+      "length": 96,
+      "bytes": "f30f101530715a010f28eaf30f5cecf680a60a000001753f4180bdec01000001eb4580fb010f94c320da80fa01750980b8a30600000773c8f30f1015f8705a010f28eaf30f5cec0f542dbaf32501f680a60a00000174c14c39a830d200000f94",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14447633f",
+      "length": 96,
+      "bytes": "0f94c2488ba868ce000084d2bab0010000bb10020000480f45daf30f10741d04f30f5cf00f543576f325010f2eee760cf30f58155d715a01440f28e249c1ee200f2edc7665f680a60a000001750a4180bdec01000001eb104c39a830d200000f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14447637b",
+      "length": 96,
+      "bytes": "49c1ee200f2edc7665f680a60a000001750a4180bdec01000001eb104c39a830d200000f94c23890e0e100000f94c2488ba868ce000084d2bab0010000bb10020000480f45daf30f10541d04f30f5cd00f54150ef325010f2ed17612f3440f10",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1444769ef",
+      "length": 96,
+      "bytes": "f30f108c2480000000f30f1005a86a5a01f30f59c1807c247800f3440f11a424a80100007417488b06488b80d0cd00008b4848660f7ec2660f6ec9eb10f30f590d706a5a01660f7ec9660f7ec20f2ec189d00f47c10f2ec80f47d1660f6ec044",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144476c1a",
+      "length": 96,
+      "bytes": "89d980e101895c245c884c24600f85e3000000807c2467000f85d8000000f3440f109424a8000000f30f108424a8010000410f2ec20f861b010000410fbfc4488b16488baad0e300004889eb48c1eb2d4889e948c1e91b31cb4889e948c1e93b",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144476d70",
+      "length": 96,
+      "bytes": "488b842430020000c60001f3440f109c2480000000f30f10351b675a01f3410f59f34c8b06498b88d0cd0000f3440f5c5948410fb7cc89cac1ea0f01ca0fbfd2d1fa89d1f7d90fbff9498b98d0e300004889de48c1ee2d4889d948c1e91b31ce",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144479029",
+      "length": 96,
+      "bytes": "f6c3017525458b85a41500004183c0024c89e9b21ae8bd756dfd83c00339f80fb6dbb8010000000f4cd8f6c3010f85e00c0000458b85a41500004183c0024c89e9b21ae88f756dfd85c00f8577daffff496385b01600004869c81f85eb514889",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144479053",
+      "length": 96,
+      "bytes": "f6c3010f85e00c0000458b85a41500004183c0024c89e9b21ae88f756dfd85c00f8577daffff496385b01600004869c81f85eb514889ca48c1ea3f48c1f92401d16bc93229c8413985a41500000f8f4adaffffe9910c0000f30f1015fd435a01",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1443b0044",
+      "length": 96,
+      "bytes": "000041b8000120004889f1b21ae86a3f00008986a415000041b8400020004889f1b222e8543f00008986c015000041b8000120004889f1b23de83e3f00008986e01500004889f1b22f4531c0e82b3f00008986dc1500004889f1b21b4531c0e8",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1443b009e",
+      "length": 96,
+      "bytes": "b21b4531c0e8183f00008986e41500004889f1b21c4531c0e8053f00008986e81500004889f1b21d4531c0e8f23e00008986ec15000041b8401020004889f1b21ee8dc3e00008986f015000041b8000124004889f1b21fe8c63e00008986f415",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1443b0523",
+      "length": 96,
+      "bytes": "488b90d0e300004889d548c1ed2d4889d148c1e91b31cd4889d148c1e93bd3cd49bd2d7f954c2df45158490fafd5480390d8e30000488990d0e300004869c5a086010048c1e820418986b0160000b8102700004103864002000048984869c0ad",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145300e80",
+      "length": 96,
+      "bytes": "0f284e30420f285407e00f5cca0f57dbf30f10d80fc6c3400f59c10f58c20f2902e90f010000488d4e100fb63e4885ff7435488d04bf48c1e0044c8d4c061048c1e704488d34bf660f1f840000000000f30f1049400f2ec8770d4883c1504883",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145a1d400",
+      "length": 96,
+      "bytes": "6666e63f713d6a40713dea4000000040f6281c408fc2753d0ad7a33cd3bce33d68912f4108ac834135ef20429eefa0419790af40d34d924166661241f2d21541000030419a99a93f00002040cdcc2c41000080bf00007ac40ad7233c00000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145a1d460",
+      "length": 96,
+      "bytes": "cdcccc3d9a99193ecdcc4c3e9a99993e3333b33ecdcccc3e6666e63ecdcc0c3f9a99193f3333333f0000403fcdcc4c3f6666663f3333733fabaaaa3eabaa2a3f0000803e0000003f0000403fcdcccc3e0000803fcdcc8c3f9a99993f0000a03f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145a1d530",
+      "length": 96,
+      "bytes": "0000c0410000c8410000d8410000f04100000c420000204200003442000048420000704200008c42000096420000a0420000aa420000b4420000be420000c4420000c84200001643000034430000484300007a43000096430000fa4300007a44",
+      "matches_original_pe": true
+    }
+  ],
+  "worked_examples": [
+    {
+      "AerialReachInternal": 10,
+      "Q_unnamed_float": 1.8,
+      "horizontal_distance": 1,
+      "sample_relative_z": 1.899999976158142,
+      "base_threshold_float32": 1.7999999523162842,
+      "other_overrides": false,
+      "mode_bit": 0,
+      "fourth_flag": 0,
+      "sets_output_to_one_this_pass": true
+    },
+    {
+      "AerialReachInternal": 20,
+      "Q_unnamed_float": 1.8,
+      "horizontal_distance": 1,
+      "sample_relative_z": 1.899999976158142,
+      "base_threshold_float32": 1.9249999523162842,
+      "other_overrides": false,
+      "mode_bit": 0,
+      "fourth_flag": 0,
+      "sets_output_to_one_this_pass": false
+    },
+    {
+      "U32": "0x80000000",
+      "cached_random_J": 50000,
+      "J_mod_3": 2,
+      "J_mod_50": 0
+    }
+  ],
+  "limits": [
+    "Unknown P+6c name and attribute display scaling.",
+    "Finite local formula before geometric/status overrides.",
+    "Output byte is contextual and can persist across retry passes; not a universal success flag.",
+    "No complete no-contact path or end-to-end save probability recovered.",
+    "Shared cached J residues do not establish independent uniform draws."
+  ],
+  "handling_worked_examples": [
+    {
+      "H": 12,
+      "k": 4,
+      "D1": 0,
+      "D2": null,
+      "J": 33333,
+      "expected": "commit_mode"
+    },
+    {
+      "H": 12,
+      "k": 4,
+      "D1": 7,
+      "D2": 0,
+      "J": 33333,
+      "expected": "commit_second_condition"
+    },
+    {
+      "H": 12,
+      "k": 4,
+      "D1": 7,
+      "D2": 1,
+      "J": 33333,
+      "expected": "other_conditions_required"
+    }
+  ]
+}
