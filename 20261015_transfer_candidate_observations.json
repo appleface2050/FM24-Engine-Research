@@ -1,0 +1,312 @@
+{
+  "target": "fm.exe",
+  "version": "24.4.2+2081827",
+  "analysis": "offline static analysis; ordinary Ghidra CLI and original PE; no game execution",
+  "sort": {
+    "entry": "0x14373a830",
+    "key": "signed int32 at record+4",
+    "order": "descending",
+    "record_size": 8,
+    "id_offset": 0,
+    "score_offset": 4,
+    "tie_policy": "not recovered; stable sort not assumed"
+  },
+  "rating": {
+    "entry": "0x1426e29f0",
+    "pool_arguments": [
+      "player",
+      "position_mask",
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "mode_jump_table_va": "0x1426e2f10",
+    "mode_targets": [
+      "0x1426e2bec",
+      "0x1426e2d6f",
+      "0x1426e2cf8",
+      "0x1426e2ddc"
+    ],
+    "pool_mode": 2,
+    "base_vtable_slot": "0x08",
+    "base_semantics": "unresolved: not labelled CA or PA",
+    "factor_expression": "220 if p>=20; 215 if p>=18; 11*p+22 if p>=12; 11*p otherwise",
+    "conditional_adjustment": "global flag and vcall+0x6c0 gate manager vcall+0xc8 mutation of product; param6=0 does not disable this",
+    "position_mask_to_vector_begin": {
+      "0x1": "0xb8",
+      "0x4": "0xd0",
+      "0x8": "0xe8",
+      "0x10": "0x100",
+      "0x20": "0x118",
+      "0x40": "0x130",
+      "0x80": "0x148",
+      "0x100": "0x160",
+      "0x200": "0x178",
+      "0x400": "0x190",
+      "0x800": "0x1a8",
+      "0x1000": "0x1c0",
+      "0x2000": "0x1d8",
+      "0x4000": "0x1f0"
+    }
+  },
+  "task": {
+    "creator": "0x1436ff3a0",
+    "vtable": "0x145aff418",
+    "execution_slot": "0x10",
+    "job_result_offset": "0x50",
+    "job_context_offset": "0x58",
+    "job_mode_offset": "0x60",
+    "entry_calls": [
+      "0x14480dc30",
+      "0x14480fd30"
+    ],
+    "jumps": [
+      {
+        "va": "0x143739830",
+        "target": "0x157e678f0",
+        "instruction_bytes": "e9bbe07214"
+      },
+      {
+        "va": "0x14480fd30",
+        "target": "0x15ac14bd0",
+        "instruction_bytes": "e99b4e4016"
+      }
+    ]
+  },
+  "range_sources": [
+    {
+      "start": "0x14373a830",
+      "end_exclusive": "0x14373af0e",
+      "source": "PE exception table"
+    },
+    {
+      "start": "0x1436ff3a0",
+      "end_exclusive": "0x1436ffa51",
+      "source": "PE exception table"
+    },
+    {
+      "start": "0x1447f57d0",
+      "end_exclusive": "0x1447f59a4",
+      "source": "PE exception table"
+    },
+    {
+      "start": "0x1426e29f0",
+      "end_exclusive": "0x1426e2f20",
+      "source": "PE exception table, includes mode jump table"
+    },
+    {
+      "start": "0x14480dc30",
+      "end_exclusive": "0x14480fc48",
+      "source": "PE exception table"
+    },
+    {
+      "start": "0x1419c9590",
+      "end_exclusive": "0x1419c980f",
+      "source": "instruction-flow recovery; no exception-table record"
+    },
+    {
+      "start": "0x1419c9b60",
+      "end_exclusive": "0x1419c9c58",
+      "source": "instruction-flow recovery including jump table; no exception-table record"
+    },
+    {
+      "start": "0x157e678f0",
+      "end_exclusive": "0x157e67a3a",
+      "source": "instruction-flow recovery; thunk target"
+    }
+  ],
+  "worked_examples": [
+    {
+      "candidate": "A",
+      "base_unknown_semantics": 120,
+      "p": 20,
+      "factor": 220,
+      "score_before_conditional_adjustment": 26400
+    },
+    {
+      "candidate": "B",
+      "base_unknown_semantics": 135,
+      "p": 15,
+      "factor": 187,
+      "score_before_conditional_adjustment": 25245
+    }
+  ],
+  "factor_boundary_examples": [
+    {
+      "p": 11,
+      "factor": 121
+    },
+    {
+      "p": 12,
+      "factor": 154
+    },
+    {
+      "p": 17,
+      "factor": 209
+    },
+    {
+      "p": 18,
+      "factor": 215
+    },
+    {
+      "p": 19,
+      "factor": 215
+    },
+    {
+      "p": 20,
+      "factor": 220
+    }
+  ],
+  "program_vs_original_windows": [
+    {
+      "va": "0x14373a830",
+      "length": 96,
+      "file_offset": 57908784,
+      "program_bytes": "41574156415541545657534883ec204989d74989cc4889d04829c8483d080100000f8d7e0000004d89e54d39fd0f849b0600004d8d75084d39fe0f848e0600004c89f3eb2f662e0f1f840000000000904989d84d29e04c89f14c89eae89f3ee4",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14373a890",
+      "length": 96,
+      "file_offset": 57908880,
+      "program_bytes": "014c89e84889384883c3084c39fb0f845a060000488b3b498b45008b57043950047ccd488b4bf84889d83951047dd590488908488b48f08b51044883c0f83b57047cedebbf4d89c64d89f8eb2c0f1f004c89e94c89fa4d89f0e842ffffff4989",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1426e29f0",
+      "length": 96,
+      "file_offset": 40771568,
+      "program_bytes": "4157415641554154565755534883ec584589cf4d89c689d54889cf488b01ff90200300004885c00f84820000004c8ba424d800000041bddc00000085ed0f8495000000488b074889f9ff90200300004889c34889c189eae8446b2eff4889d989",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1426e2a40",
+      "length": 96,
+      "file_offset": 40771648,
+      "program_bytes": "89c34889c189eae8446b2eff4889d989c241b001e807712eff89c30fbef04d85e47421c7442448010000008974244cc744245000000000488d5424484c89e1e8fceeffff4d85f6741d4080fe0c8d04b68d044641bddc000000440f4ce8eb2931",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1426e2bcd",
+      "length": 96,
+      "file_offset": 40772045,
+      "program_bytes": "410fb6c7ffc883f8030f8784010000488d0d2d030000486304814801c8ffe0488b074889f9ff5018e97e010000488b460848634004488d4c06084c89642438885c2430896c2428c644244001c6442420004889fa41b0024d89f1e8e427fdff0f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1426e2d6f",
+      "length": 96,
+      "file_offset": 40772463,
+      "program_bytes": "488b074889f9ff50080fbfd84d85e40f84be000000c744244803000000895c244cc744245000000000488d5424484c89e1e8dbebffff410fafdd895c2454c74424480e000000895c244cc744245000000000488d5424484c89e1e8b2ebffff80",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1426e2e42",
+      "length": 96,
+      "file_offset": 40772674,
+      "program_bytes": "410fafdd895c2454803d3c24d50300747f488b470848634004488d4c0708488b440708ff90c00600004885c0746280bc24c80000000075584180ff017452410fb6c783f8047449488b0d60a7d403488b014c8d4424544889fa4989f1ff90c800",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1426e2f10",
+      "length": 96,
+      "file_offset": 40772880,
+      "program_bytes": "dcfcffff5ffeffffe8fdffffccfeffff56574883ec284885c974244885d274234889ce488b024889d1ff502889c7488b064889f1ff50286639c70f9cc0eb0631c0eb02b0014883c4285f5ec3cccccccc56574883ec284885c974244885d27423",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1419c9590",
+      "length": 96,
+      "file_offset": 27036560,
+      "program_bytes": "31c0f6c201750a41b0fff6c2047519eb34440fb6094584c9410f9ec0410f4fc141f6d8f6c204741d440fb649044138c1450fb6d041b804000000450f4ec20fb6c0410f4fc1f6c2080f859e000000f6c2100f85bb000000f6c2200f85d8000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1419c9b60",
+      "length": 96,
+      "file_offset": 27038048,
+      "program_bytes": "80fa0e77180fb6c2488d15ad000000486304824801d0ffe00fb64103c331c0c30fb601c30fb64102c30fb64104c30fb64105c30fb641064584c0745e0fb64909eb2a0fb6510780fa14b8130000000f4dc2807905140f45c24584c00f44c2c30f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1419c9c1c",
+      "length": 96,
+      "file_offset": 27038236,
+      "program_bytes": "64ffffff5cffffff68ffffff5cffffff6dffffff72ffffff77ffffff86ffffffa3ffffffc1ffffffcbffffffd0ffffffdaffffffdfffffffe9ffffffcccccccccccccccc31c0eb1f0fb6d28d1492f7da80c2fe900fb6d28d14928854010f48ff",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1436f118d",
+      "length": 96,
+      "file_offset": 57608077,
+      "program_bytes": "48c744243800000000c644243000c64424280048c7442420000000004889f9ba010000004531c041b102e83418fffe89c38b050c6fd4028b0df6dcc90265488b142558000000488b0cca3b81380000000f8ffb570000ba08000000488d0d916e",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1436ff3a0",
+      "length": 96,
+      "file_offset": 57665952,
+      "program_bytes": "4157415641554154565755534883ec48488bb2080100004885f60f841006000080be18020000000f85030600004489c34889d74989cc4889f1e8826f140184c00f84ea050000803d995ed30200747f4180bc24f403000000747480a6ea010000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1436ff480",
+      "length": 96,
+      "file_offset": 57666176,
+      "program_bytes": "0537e1c1028906e944050000e8cf0615ffc6442420004889f14889fa4d89f04531c9e809650f014c89f14889fa4531c0e82b790f01b968000000e88d95de014989c7c7400800000000488d0528b03002498907498d4f10ff15bb05650249c747",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145aff418",
+      "length": 96,
+      "file_offset": 95414296,
+      "program_bytes": "e097734301000000501e3744010000003098734301000000d01d37440100000000000000000000000100000000000000000000007040340658f4af0540f4af0500000000000000000400000070f4af05000000000000000090f4af05302a8005",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x143739830",
+      "length": 96,
+      "file_offset": 57904688,
+      "program_bytes": "e9bbe07214dc3ff69dfbbeb15eacc44899d8a102e944d910029bc5e9d997670212f093cc71e97577b800b3e9d63f35012771e96d601403c031f3320f88f831ec010461000f89e07f3803603e70355b1018fef3ff5aa80f886bfc77026a690f89",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x157e678f0",
+      "length": 96,
+      "file_offset": 397386480,
+      "program_bytes": "5541565657534883ec50488d6c245048c745f8feffffff4889ce488b7950488b59588b05a87552ee65488b0c2558000000488b04c1488b881804000048894de0488d0db9c04eee48894de8488988180400004c8d75d84c89f1ff152982eeed48",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x157e67940",
+      "length": 96,
+      "file_offset": 397386560,
+      "program_bytes": "00004c8d75d84c89f1ff152982eeed4889f94889da4531c04531c9e8d0629aec4889f94889dae8c5839aec4c89f1e80dcb4becb86d24109d2b05c23195ef8746404881054e56280490900fa2488b053dd84fee48c7c1fffffffff0480fc188b0",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14480dc30",
+      "length": 96,
+      "file_offset": 75551280,
+      "program_bytes": "5541574156415541545657534881ecc8010000488dac2480000000440f29bd3001000066440f29b520010000440f29ad10010000440f29a50001000066440f299df0000000440f2995e0000000440f298dd000000066440f2985c0000000660f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14480fd30",
+      "length": 96,
+      "file_offset": 75559728,
+      "program_bytes": "e99b4e4016c218e950982b03f45fa69dde028ae93396e3013509ecda6fd0fabf3f39c1fa056ce9b69d3b03a81f0f85bdf0f20219e8e1adbec98f62cde997d090030f8ad6d95c0427e3cca5e9abe6b50322e359e909bae800780c931e25e2060f",
+      "matches_original_pe": true
+    }
+  ],
+  "limits": [
+    "Only listed windows compared, not whole analysis database.",
+    "Scores are pool intermediate values, not final transfer priority or bid.",
+    "Base field CA/PA identity remains unresolved.",
+    "Conditional adjustment not recovered.",
+    "Final shortlist-consumer path and 0x15ac14bd0 body remain unresolved."
+  ]
+}
