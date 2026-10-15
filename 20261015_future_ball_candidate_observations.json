@@ -1,0 +1,351 @@
+{
+  "target": {
+    "file": "fm.exe",
+    "build": "24.4.2+2081827",
+    "image_base": "0x140000000",
+    "file_size": 491339776
+  },
+  "method": "Original PE and existing Ghidra static Program; no game execution/runtime reads.",
+  "new_export": {
+    "entry": "0x14456cd50",
+    "end_exclusive": "0x14456cf28",
+    "exception_directory_entry": false,
+    "role": "Movement request/metadata record initialization; not a complete motion solver."
+  },
+  "candidate_score": {
+    "function": "0x144511110",
+    "h": "(candidateClock-currentClock+fraction-P11c0)/4",
+    "q": "planarDistance/h",
+    "estimate": "P1a0+(P260/25+2)*h-P1a0*angle/180",
+    "adjustment": "if estimate<q: score=score*estimate/q",
+    "selection": "1445123da compares score against best; <= keeps previous, > updates selected candidate",
+    "speed_gates": "Conditional q<=3*V and q<=config14+V checks, with distance/geometry bypasses; not universal inequalities."
+  },
+  "future_action_fields": {
+    "P+e4c": "selected candidate integer time",
+    "P+e38": "selected candidate fraction",
+    "P+e3c": "copy of P+11c0 in this future branch",
+    "P+e40": "0xa3 if B+e00 in 0x42..0x46, otherwise 0xa2",
+    "P+dc0..dcc": "candidate target vector; handler can adjust it"
+  },
+  "movement_request_mapping": [
+    {
+      "request_offset": "0x24",
+      "source": "-1",
+      "record_offset": "0x64",
+      "meaning": "uses current clock fallback if -1"
+    },
+    {
+      "request_offset": "0x28",
+      "source": "P+e3c",
+      "record_offset": "0x68",
+      "meaning": "source sample fraction"
+    },
+    {
+      "request_offset": "0x2c",
+      "source": "P+e4c",
+      "record_offset": "0x6c",
+      "meaning": "target candidate time"
+    },
+    {
+      "request_offset": "0x30",
+      "source": "P+e38",
+      "record_offset": "0x70",
+      "meaning": "target candidate fraction"
+    }
+  ],
+  "return_consumers": {
+    "function": "0x144511110",
+    "meaningful_boolean": "AL",
+    "full_EAX_strict_zero_one": false,
+    "positive_byte_writes": [
+      "1445115c2",
+      "1445129c9",
+      "144512bb2"
+    ],
+    "zero_exit": "144512a45 XOR EDI,EDI",
+    "common_return": "144512a47 MOV EAX,EDI",
+    "call_144506042": "ignores EAX and tests P+e40!=0",
+    "call_144506067": "copies EAX to R13D, outer consumers test AL",
+    "no_candidate_does_not_imply_no_action": true
+  },
+  "dispatch": [
+    {
+      "action": "0xa2",
+      "table_entry": "0x144455988",
+      "branch": "0x144454235",
+      "call": "0x144454238",
+      "target": "0x144461740"
+    },
+    {
+      "action": "0xa3",
+      "table_entry": "0x14445598c",
+      "branch": "0x144454235",
+      "call": "0x144454238",
+      "target": "0x144461740"
+    }
+  ],
+  "direct_transfers": [
+    {
+      "va": "0x14450585b",
+      "opcode": "0xe9",
+      "target": "0x144511110",
+      "bytes": "e9b0b80000"
+    },
+    {
+      "va": "0x144506042",
+      "opcode": "0xe8",
+      "target": "0x144511110",
+      "bytes": "e8c9b00000"
+    },
+    {
+      "va": "0x144506067",
+      "opcode": "0xe8",
+      "target": "0x144511110",
+      "bytes": "e8a4b00000"
+    },
+    {
+      "va": "0x144461a01",
+      "opcode": "0xe8",
+      "target": "0x14440a000",
+      "bytes": "e8fa85faff"
+    },
+    {
+      "va": "0x14440a1b6",
+      "opcode": "0xe8",
+      "target": "0x14456cd50",
+      "bytes": "e8952b1600"
+    },
+    {
+      "va": "0x14440a1ca",
+      "opcode": "0xe8",
+      "target": "0x144407a40",
+      "bytes": "e871d8ffff"
+    },
+    {
+      "va": "0x144504c26",
+      "opcode": "0xe8",
+      "target": "0x144505250",
+      "bytes": "e825060000"
+    },
+    {
+      "va": "0x14440641e",
+      "opcode": "0xe8",
+      "target": "0x144503b00",
+      "bytes": "e8ddd60f00"
+    },
+    {
+      "va": "0x14451256f",
+      "opcode": "0xe8",
+      "target": "0x1443c5fb0",
+      "bytes": "e83c3aebff"
+    }
+  ],
+  "constants": [
+    {
+      "va": "0x145a1d3f0",
+      "float32": 4.0,
+      "bytes": "00008040"
+    },
+    {
+      "va": "0x145a1d534",
+      "float32": 25.0,
+      "bytes": "0000c841"
+    },
+    {
+      "va": "0x145a1d578",
+      "float32": 180.0,
+      "bytes": "00003443"
+    },
+    {
+      "va": "0x145a1d4d4",
+      "float32": 2.0,
+      "bytes": "00000040"
+    }
+  ],
+  "ghidra_vs_original_windows": [
+    {
+      "va": "0x144511f76",
+      "length": 96,
+      "bytes": "f3440f2ac9f3450f58caf3440f5c8c248c000000f3440f5e0d5db45001450f28d8f3450f5ed9f30f100538b5500181fbbed401007f79440f2ec076734889f14c89e2e84372eefff30f100517b55001f30f104c2440f30f59c8440f2ed9765048",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144511fbd",
+      "length": 96,
+      "bytes": "f30f100517b55001f30f104c2440f30f59c8440f2ed97650488b86c8010000488b8068ce000031c980beec010000010f95c1488d0c4948c1e1050f288ec00d00000f5c8c08b00100000f59c9f30f16d1f30f58d10f57c9f30f51ca0f2e0dd1b4",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144512331",
+      "length": 96,
+      "bytes": "f30f2a9e60020000f30f5e1df3b15001f30f10158bb15001f30f58da0fbf96aa01000029d189caf7da0f48d1b96801000029d16639d10f4dca0fbfc90f57edf30f2ae9f30f10b6a0010000f30f59eef30f5e2df0b15001f3440f59cbf3440f58",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144512397",
+      "length": 96,
+      "bytes": "450f2ed9440f28f10f28cf760af3410f59e1f3410f5ee3488b6c2458f3440f10ac2488000000f3440f10bc2484000000f30f1074246cf3440f10442468f30f107c24640f2e64243c0f86dbf9fffff3440f11542454488b88d0cd0000f30f1059",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1445123da",
+      "length": 96,
+      "bytes": "0f2e64243c0f86dbf9fffff3440f11542454488b88d0cd0000f30f105920410f2edb0f86a7f9ffff81fbbed401007f340f2e44247c0f8794f9ffff0f28c4f3410f5cc30f2ec17727e982f9fffff30f1086c80d0000f30f16d50f28dd0f28e5e9",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144512681",
+      "length": 96,
+      "bytes": "4489ae4c0e00004489b6380e00008b8ec0110000898e3c0e0000488b98b8d200008b9b000e000083c3be31ff83fb05400f92c781cfa200000089be400e0000660f6eca660f6ec5660f62c80f289680010000f30f1086840100000f28d80f16da",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1445129a9",
+      "length": 96,
+      "bytes": "c786400e000088000000448b05865df101488b96d80100004889f1e82738eaff40b70184c075778b868401000089c181e1ffffff7f660f6ec1f30f5c05c6aa50018b8ec40d000089ca81e2ffffff7f660f6eca0f2ec17646660f6ec0660f6ec9",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144512a45",
+      "length": 96,
+      "bytes": "31ff89f80f28b424e00000000f28bc24f0000000440f28842400010000440f288c2410010000440f28942420010000440f289c2430010000440f28a42440010000440f28ac2450010000440f28b42460010000440f28bc24700100004881c488",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144506042",
+      "length": 96,
+      "bytes": "e8c9b000004183be400e000000410f95c5e9b62100004584ff0f85aa2100004c89f14c89e2e8a4b000004189c5e99a2100004c89f14c89e2e8718200004189c5e987210000488b06488b8078e300004885c07445488b88d0010000493b8ed801",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144506067",
+      "length": 96,
+      "bytes": "e8a4b000004189c5e99a2100004c89f14c89e2e8718200004189c5e987210000488b06488b8078e300004885c07445488b88d0010000493b8ed801000075358b88100f000083c1be83f90572278b80400e000083c0be83f80477194181be100f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144461971",
+      "length": 96,
+      "bytes": "8b8e340e0000894c24504c894424586689442460c7442464ffffffff8b863c0e0000894424688b864c0e00008944246c8b86380e000089442470c64424740148c744242000000000c74424280000000048c744243000000000c7442438ffffff",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1444619ef",
+      "length": 96,
+      "bytes": "488d8e80000000488d5424404989d84989f1e8fa85faff488d8e900e000041b8d00000004889fae805cd11018b8e4c0e000031c085c90f4fc14863968c1400004885d2741b488b9ec8010000488bbb480700000fb61c1784db7405fecb881c17",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14456ce82",
+      "length": 96,
+      "bytes": "418b411089414c418b412483f8ff0f45d0895164c74154ffffffff418b4128894168c74158ffffffff418b412c89416c48b8fffffffff0d8ffff4889415c418b4130894170490fbae237720f410fb741206689417866b8ffffeb0b66c74178ff",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14456ceab",
+      "length": 96,
+      "bytes": "418b412c89416c48b8fffffffff0d8ffff4889415c418b4130894170490fbae237720f410fb741206689417866b8ffffeb0b66c74178ffff410fb741206689417a0f2805dd7cdf010f2941200f2805d27cdf010f29411066c7410c0000c74108",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14456cd50",
+      "length": 96,
+      "bytes": "410f2800410f2848100f2989900000000f2981800000004d8b41184d89c24983ca014c891180b99f0000000074264489c02500100000751cf30f108194000000410f2e4110760d4981c8810000004c89014d89c2488b82c801000048399070ce",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144504c26",
+      "length": 96,
+      "bytes": "e82506000084c00f85f5000000807c2427000f85ea0000008b0518885101418985380e0000488d5424304c89e9e84841000084c00f85c8000000498b85c80100004c39a870e30000752dc780800a0000ffffffff48c78070e300000000000049",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144406412",
+      "length": 96,
+      "bytes": "3981700100000f8fa6010000e8ddd60f00488b8630d20000488b88c8010000480fbe80ee010000ba010000004829c2488b8cd1d8d10000e96f01000089c183e15083f940752b40b72d80bea8d40000010f8477faffff0fb6c380fb2fb92e0000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145a1d3f0",
+      "length": 96,
+      "bytes": "000080400000803e000000400000003f6666e63f713d6a40713dea4000000040f6281c408fc2753d0ad7a33cd3bce33d68912f4108ac834135ef20429eefa0419790af40d34d924166661241f2d21541000030419a99a93f00002040cdcc2c41",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145a1d530",
+      "length": 96,
+      "bytes": "0000c0410000c8410000d8410000f04100000c420000204200003442000048420000704200008c42000096420000a0420000aa420000b4420000be420000c4420000c84200001643000034430000484300007a43000096430000fa4300007a44",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145a1d578",
+      "length": 96,
+      "bytes": "000034430000484300007a43000096430000fa4300007a44f0237449f02374495a64bb3d48e12e41713d6a3f6de78b3fbf0e9c3e0000c0400000a0c0000000c0000000000000000010d6a14501000000d092c941010000001094c94101000000",
+      "matches_original_pe": true
+    }
+  ],
+  "worked_examples": [
+    {
+      "current_clock": 100,
+      "candidate_clock": 101,
+      "fraction": 0,
+      "current_fraction": 0.2,
+      "distance": 1.2,
+      "h": 0.2,
+      "current_v": 4,
+      "acceleration_internal": 50,
+      "angle": 0,
+      "required_q": 5.999999999999999,
+      "estimate": 4.8,
+      "base_score": 10,
+      "adjusted_score": 8.000000000000002,
+      "other_best_score": 8.1,
+      "strictly_replaces_other_best": false,
+      "other_conditions_assumed_satisfied": true
+    },
+    {
+      "current_clock": 100,
+      "candidate_clock": 101,
+      "fraction": 0,
+      "current_fraction": 0.2,
+      "distance": 1.2,
+      "h": 0.2,
+      "current_v": 4,
+      "acceleration_internal": 75,
+      "angle": 0,
+      "required_q": 5.999999999999999,
+      "estimate": 5.0,
+      "base_score": 10,
+      "adjusted_score": 8.333333333333334,
+      "other_best_score": 8.1,
+      "strictly_replaces_other_best": true,
+      "other_conditions_assumed_satisfied": true
+    },
+    {
+      "current_clock": 100,
+      "candidate_clock": 101,
+      "fraction": 0,
+      "current_fraction": 0.2,
+      "distance": 1.2,
+      "h": 0.2,
+      "current_v": 4,
+      "acceleration_internal": 50,
+      "angle": 90,
+      "required_q": 5.999999999999999,
+      "estimate": 2.8,
+      "base_score": 10,
+      "adjusted_score": 4.666666666666667,
+      "other_best_score": 8.1,
+      "strictly_replaces_other_best": false,
+      "other_conditions_assumed_satisfied": true
+    }
+  ],
+  "limits": [
+    "No guaranteed actual arrival or successful contact inferred from the selected target time.",
+    "No global attribute or win-probability ranking.",
+    "Acceleration adjustment is conditional; other score terms and gates remain.",
+    "P170/P11ac scheduler times differ from candidate target time P+e4c.",
+    "Fallback action and final geometry may produce output fields despite AL=0."
+  ]
+}

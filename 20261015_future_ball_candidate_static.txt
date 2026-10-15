@@ -1,0 +1,208 @@
+FM24 24.4.2+2081827. Ordinary Ghidra CLI readOnly/noanalysis.
+Leaf body bound by original RET at 14456cf27; not a full motion solver.
+Trailing whitespace normalized; inferred types retained.
+
+FUNCTION 14456cd50
+BODY [[14456cd50, 14456cf27]]
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_14456cd50(ulonglong *param_1,longlong param_2,ulonglong *param_3,ulonglong *param_4,
+                  int param_5)
+
+{
+  longlong lVar1;
+  ulonglong uVar2;
+  undefined4 uVar3;
+  undefined2 uVar4;
+  ulonglong uVar5;
+  ulonglong uVar6;
+
+  uVar5 = *param_3;
+  uVar6 = param_3[1];
+  uVar2 = param_3[3];
+  param_1[0x12] = param_3[2];
+  param_1[0x13] = uVar2;
+  param_1[0x10] = uVar5;
+  param_1[0x11] = uVar6;
+  uVar5 = param_4[3];
+  uVar6 = uVar5 | 1;
+  *param_1 = uVar6;
+  if (((*(char *)((longlong)param_1 + 0x9f) != '\0') && ((uVar5 & 0x1000) == 0)) &&
+     (*(float *)(param_4 + 2) <= *(float *)((longlong)param_1 + 0x94) &&
+      *(float *)((longlong)param_1 + 0x94) != *(float *)(param_4 + 2))) {
+    uVar6 = uVar5 | 0x81;
+    *param_1 = uVar6;
+  }
+  if ((*(longlong *)(*(longlong *)(param_2 + 0x1c8) + 0xce70) == param_2) &&
+     ((uVar6 & 0x400000000) == 0)) {
+    uVar6 = uVar6 | 0x40000000000000;
+    *param_1 = uVar6;
+  }
+  if ((uVar6 & 0xb00) == 0) {
+    if ((*(char *)(param_2 + 0x1ed) != '\x04') ||
+       (uVar5 = 0x100, *(char *)(param_2 + 0xab0) == '\x01')) {
+      lVar1 = *(longlong *)(param_2 + 0x1c8);
+      uVar5 = 0x100;
+      if ((*(longlong *)(lVar1 + 0xd048) != param_2) &&
+         ((((*(longlong *)(lVar1 + 0xd050) != param_2 && (*(longlong *)(lVar1 + 0xd058) != param_2))
+           && (*(longlong *)(lVar1 + 0xd060) != param_2)) &&
+          ((uVar5 = 0x200, (uVar6 & 0x4000) == 0 &&
+           (uVar5 = 0x800, *(int *)((longlong)param_4 + 0x24) < *(int *)((longlong)param_4 + 0x2c)))
+          )))) {
+        uVar5 = 0x200;
+      }
+    }
+    uVar6 = uVar6 | uVar5;
+    *param_1 = uVar6;
+  }
+  if ((uVar6 & 0x4000) == 0) {
+    uVar6 = uVar6 | 0x2000;
+    *param_1 = uVar6;
+  }
+  uVar5 = param_4[1];
+  param_1[6] = *param_4;
+  param_1[7] = uVar5;
+  uVar3 = _DAT_146428740;
+  *(undefined4 *)(param_1 + 7) = _DAT_146428740;
+  *(undefined4 *)(param_1 + 9) = uVar3;
+  *(undefined4 *)((longlong)param_1 + 0x44) = uVar3;
+  *(undefined4 *)(param_1 + 8) = uVar3;
+  *(int *)((longlong)param_1 + 0x4c) = (int)param_4[2];
+  if (*(int *)((longlong)param_4 + 0x24) != -1) {
+    param_5 = *(int *)((longlong)param_4 + 0x24);
+  }
+  *(int *)((longlong)param_1 + 100) = param_5;
+  *(undefined4 *)((longlong)param_1 + 0x54) = 0xffffffff;
+  *(int *)(param_1 + 0xd) = (int)param_4[5];
+  *(undefined4 *)(param_1 + 0xb) = 0xffffffff;
+  *(undefined4 *)((longlong)param_1 + 0x6c) = *(undefined4 *)((longlong)param_4 + 0x2c);
+  *(undefined8 *)((longlong)param_1 + 0x5c) = 0xffffd8f0ffffffff;
+  *(int *)(param_1 + 0xe) = (int)param_4[6];
+  if ((uVar6 >> 0x37 & 1) == 0) {
+    *(short *)(param_1 + 0xf) = (short)param_4[4];
+    uVar4 = 0xffff;
+  }
+  else {
+    *(undefined2 *)(param_1 + 0xf) = 0xffff;
+    uVar4 = (undefined2)param_4[4];
+  }
+  *(undefined2 *)((longlong)param_1 + 0x7a) = uVar4;
+  uVar5 = uRam0000000146364bd8;
+  param_1[4] = _DAT_146364bd0;
+  param_1[5] = uVar5;
+  uVar5 = uRam0000000146364bd8;
+  param_1[2] = _DAT_146364bd0;
+  param_1[3] = uVar5;
+  *(undefined2 *)((longlong)param_1 + 0xc) = 0;
+  *(undefined4 *)(param_1 + 1) = 0;
+  *(undefined4 *)((longlong)param_1 + 0x74) = 0xffffffff;
+  *(bool *)((longlong)param_1 + 0xe) = _DAT_145a1d4c4 < *(float *)(param_4 + 1);
+  return;
+}
+
+
+LISTING INSTRUCTIONS (bounded recursive disassembly)
+14456cd50 MOVAPS XMM0,xmmword ptr [R8]
+14456cd54 MOVAPS XMM1,xmmword ptr [R8 + 0x10]
+14456cd59 MOVAPS xmmword ptr [RCX + 0x90],XMM1
+14456cd60 MOVAPS xmmword ptr [RCX + 0x80],XMM0
+14456cd67 MOV R8,qword ptr [R9 + 0x18]
+14456cd6b MOV R10,R8
+14456cd6e OR R10,0x1
+14456cd72 MOV qword ptr [RCX],R10
+14456cd75 CMP byte ptr [RCX + 0x9f],0x0
+14456cd7c JZ 0x14456cda4
+14456cd7e MOV EAX,R8D
+14456cd81 AND EAX,0x1000
+14456cd86 JNZ 0x14456cda4
+14456cd88 MOVSS XMM0,dword ptr [RCX + 0x94]
+14456cd90 UCOMISS XMM0,dword ptr [R9 + 0x10]
+14456cd95 JBE 0x14456cda4
+14456cd97 OR R8,0x81
+14456cd9e MOV qword ptr [RCX],R8
+14456cda1 MOV R10,R8
+14456cda4 MOV RAX,qword ptr [RDX + 0x1c8]
+14456cdab CMP qword ptr [RAX + 0xce70],RDX
+14456cdb2 JNZ 0x14456cdd3
+14456cdb4 MOV RAX,0x400000000
+14456cdbe AND RAX,R10
+14456cdc1 JNZ 0x14456cdd3
+14456cdc3 MOV RAX,0x40000000000000
+14456cdcd OR R10,RAX
+14456cdd0 MOV qword ptr [RCX],R10
+14456cdd3 TEST R10D,0xb00
+14456cdda JNZ 0x14456ce51
+14456cddc CMP byte ptr [RDX + 0x1ed],0x4
+14456cde3 JNZ 0x14456cdf4
+14456cde5 MOV R8D,0x100
+14456cdeb CMP byte ptr [RDX + 0xab0],0x1
+14456cdf2 JNZ 0x14456ce4b
+14456cdf4 MOV RAX,qword ptr [RDX + 0x1c8]
+14456cdfb MOV R8D,0x100
+14456ce01 CMP qword ptr [RAX + 0xd048],RDX
+14456ce08 JZ 0x14456ce4b
+14456ce0a CMP qword ptr [RAX + 0xd050],RDX
+14456ce11 JZ 0x14456ce4b
+14456ce13 CMP qword ptr [RAX + 0xd058],RDX
+14456ce1a JZ 0x14456ce4b
+14456ce1c CMP qword ptr [RAX + 0xd060],RDX
+14456ce23 JZ 0x14456ce4b
+14456ce25 MOV R8D,0x200
+14456ce2b TEST R10D,0x4000
+14456ce32 JNZ 0x14456ce4b
+14456ce34 MOV EAX,dword ptr [R9 + 0x2c]
+14456ce38 CMP EAX,dword ptr [R9 + 0x24]
+14456ce3c MOV EAX,0x200
+14456ce41 MOV R8D,0x800
+14456ce47 CMOVG R8,RAX
+14456ce4b OR R10,R8
+14456ce4e MOV qword ptr [RCX],R10
+14456ce51 MOV EDX,dword ptr [RSP + 0x28]
+14456ce55 TEST R10D,0x4000
+14456ce5c JNZ 0x14456ce68
+14456ce5e OR R10,0x2000
+14456ce65 MOV qword ptr [RCX],R10
+14456ce68 MOVAPS XMM0,xmmword ptr [R9]
+14456ce6c MOVAPS xmmword ptr [RCX + 0x30],XMM0
+14456ce70 MOV EAX,dword ptr [0x146428740]
+14456ce76 MOV dword ptr [RCX + 0x38],EAX
+14456ce79 MOV dword ptr [RCX + 0x48],EAX
+14456ce7c MOV dword ptr [RCX + 0x44],EAX
+14456ce7f MOV dword ptr [RCX + 0x40],EAX
+14456ce82 MOV EAX,dword ptr [R9 + 0x10]
+14456ce86 MOV dword ptr [RCX + 0x4c],EAX
+14456ce89 MOV EAX,dword ptr [R9 + 0x24]
+14456ce8d CMP EAX,-0x1
+14456ce90 CMOVNZ EDX,EAX
+14456ce93 MOV dword ptr [RCX + 0x64],EDX
+14456ce96 MOV dword ptr [RCX + 0x54],0xffffffff
+14456ce9d MOV EAX,dword ptr [R9 + 0x28]
+14456cea1 MOV dword ptr [RCX + 0x68],EAX
+14456cea4 MOV dword ptr [RCX + 0x58],0xffffffff
+14456ceab MOV EAX,dword ptr [R9 + 0x2c]
+14456ceaf MOV dword ptr [RCX + 0x6c],EAX
+14456ceb2 MOV RAX,-0x270f00000001
+14456cebc MOV qword ptr [RCX + 0x5c],RAX
+14456cec0 MOV EAX,dword ptr [R9 + 0x30]
+14456cec4 MOV dword ptr [RCX + 0x70],EAX
+14456cec7 BT R10,0x37
+14456cecc JC 0x14456cedd
+14456cece MOVZX EAX,word ptr [R9 + 0x20]
+14456ced3 MOV word ptr [RCX + 0x78],AX
+14456ced7 MOV AX,0xffff
+14456cedb JMP 0x14456cee8
+14456cedd MOV word ptr [RCX + 0x78],0xffff
+14456cee3 MOVZX EAX,word ptr [R9 + 0x20]
+14456cee8 MOV word ptr [RCX + 0x7a],AX
+14456ceec MOVAPS XMM0,xmmword ptr [0x146364bd0]
+14456cef3 MOVAPS xmmword ptr [RCX + 0x20],XMM0
+14456cef7 MOVAPS XMM0,xmmword ptr [0x146364bd0]
+14456cefe MOVAPS xmmword ptr [RCX + 0x10],XMM0
+14456cf02 MOV word ptr [RCX + 0xc],0x0
+14456cf08 MOV dword ptr [RCX + 0x8],0x0
+14456cf0f MOV dword ptr [RCX + 0x74],0xffffffff
+14456cf16 MOVSS XMM0,dword ptr [R9 + 0x8]
+14456cf1c UCOMISS XMM0,dword ptr [0x145a1d4c4]
+14456cf23 SETA byte ptr [RCX + 0xe]
+14456cf27 RET
