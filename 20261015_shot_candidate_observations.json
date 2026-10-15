@@ -1,0 +1,79 @@
+{
+  "date": "20261015",
+  "input": "fm.exe",
+  "build": "24.4.2+2081827",
+  "file_size": 491339776,
+  "method": "fresh PE import; Ghidra 12.1.4 noanalysis; GNU objdump original-file cross-check",
+  "execution": false,
+  "functions": [
+    {
+      "start": "0x144447130",
+      "end_exclusive": "0x144447e46"
+    },
+    {
+      "start": "0x1444462f0",
+      "end_exclusive": "0x144446c87"
+    },
+    {
+      "start": "0x144446c90",
+      "end_exclusive": "0x144447124"
+    },
+    {
+      "start": "0x1444505b0",
+      "end_exclusive": "0x144450801"
+    }
+  ],
+  "cache_names_reused_from": "20261014_action_contact_observations.json",
+  "original_file_windows": [
+    {
+      "va": "0x1444479e5",
+      "file_offset": 71593957,
+      "bytes": "418b8c242c160000418b842434160000418b94245016000039d00f4cd039ca0f4dd183fa270f8fc6000000"
+    },
+    {
+      "va": "0x144446cf6",
+      "file_offset": 71590646,
+      "bytes": "f30f598648050000f3440f2cf08b8334160000ba0a0000004429f28b8b5816000039d07d103993501600007d0839d10f8ce400000083f8027f0983f9030f8cd6000000"
+    },
+    {
+      "va": "0x144446bc9",
+      "file_offset": 71590345,
+      "bytes": "6b83501600006405c409000080bb9c11000001b90200000083d90080bb9b11000000bd030000000f44e999f7fd8b0e39c10f4fc18906"
+    },
+    {
+      "va": "0x144446c3b",
+      "file_offset": 71590459,
+      "bytes": "8b8b181600003b8b141600000f9fc2b1013897fb0500000f8564f9ffff0faf831c16000048984869c0676666664889c248c1ea3f48c1f82301d083f802ba010000000f4dd08916"
+    }
+  ],
+  "constant": {
+    "va": "0x145a1d504",
+    "bytes": "00002041",
+    "float32": 10.0
+  },
+  "findings": [
+    {
+      "scope": "conditional shot admission",
+      "anchor": "0x1444479e5",
+      "expression": "min(TechniqueCache,VisionCache,FlairCache) <= 39 enables further conditional checks",
+      "not": "global shot acceptance or scoring probability"
+    },
+    {
+      "scope": "action 0x39 candidate conditional admission",
+      "anchor": "0x144446cf6",
+      "expression": "require max(VisionCache,FlairCache,ComposureCache)>=10-trunc(10*h), and max(VisionCache,ComposureCache)>=3",
+      "h": "context+0x548, exact semantic unknown"
+    },
+    {
+      "scope": "action 0x47 candidate intermediate score",
+      "anchor": "0x144446bc9",
+      "expression": "max(old_score,trunc((100*FlairCache+2500)/d)); d depends on two flags; further conditional modifications follow"
+    }
+  ],
+  "limits": [
+    "unresolved signatures and global initializers",
+    "no full candidate selection to action-block trace",
+    "Finishing consumer and final shot accuracy unknown",
+    "raw E8+MOV EDX,0x11 negative search only for 0x1443b3fc0 and 0x141b50600 within 80 preceding bytes; not exhaustive"
+  ]
+}
