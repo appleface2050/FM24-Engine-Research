@@ -1,0 +1,143 @@
+{
+  "date": "20261015",
+  "input": "fm.exe",
+  "build": "24.4.2+2081827",
+  "input_size": 491339776,
+  "method": "Ghidra 12.1.4 readOnly noanalysis; bounded PE instruction-pattern candidates; original-file window comparison",
+  "game_executed": false,
+  "sources_reused": [
+    "20261015_finishing_trajectory_static.asm.txt",
+    "20261014_action_contact_pseudocode.c.txt",
+    "20261014_action_contact_observations.json"
+  ],
+  "functions": [
+    {
+      "entry": "0x1443f9200",
+      "end_exclusive": "0x1443f9320"
+    },
+    {
+      "entry": "0x1443f8640",
+      "end_exclusive": "0x1443f8ff7"
+    },
+    {
+      "entry": "0x14440a000",
+      "end_exclusive": "0x14440a1e1"
+    },
+    {
+      "entry": "0x144511110",
+      "end_exclusive": "0x144512bba"
+    }
+  ],
+  "attribute_inputs": {
+    "Pace": "P+0x258, id0x35 via1443afc40",
+    "Acceleration": "P+0x260, id0x31 via1443afc40"
+  },
+  "formulas": {
+    "pace_explicit_term": "int32(P+0x258)/20; other inputs, lower bound and cache remain",
+    "acceleration_constraint": "v+(A/25+2)*h-v*theta/180",
+    "constraint_time": "h=(candidate_tick-match_tick+fraction-float(P+0x11c0))/4",
+    "consumer": "144511110: conditional q<=3*pace_baseline; conditional candidate-score scaling by V_candidate/q",
+    "metadata": "1443f8640 copies Agility/Balance/Acceleration bytes at1c/1d/1e; 1443f8530 forwards to14440a000(P+80,...)"
+  },
+  "constants": [
+    {
+      "va": "0x145a1d524",
+      "bytes": "0000a041",
+      "float32": 20.0
+    },
+    {
+      "va": "0x145a1d534",
+      "bytes": "0000c841",
+      "float32": 25.0
+    },
+    {
+      "va": "0x145a1d578",
+      "bytes": "00003443",
+      "float32": 180.0
+    },
+    {
+      "va": "0x145a1d4d4",
+      "bytes": "00000040",
+      "float32": 2.0
+    },
+    {
+      "va": "0x145a1d3f0",
+      "bytes": "00008040",
+      "float32": 4.0
+    },
+    {
+      "va": "0x145a1d4dc",
+      "bytes": "00004040",
+      "float32": 3.0
+    }
+  ],
+  "static_program_windows": [
+    {
+      "va": "0x1443afd08",
+      "file_offset": 70972168,
+      "bytes": "865c02000041b8000120004889f1b235e8a342000089865802000041b8000120004889f1b231e88d420000898660020000488b86c801000080b816070000000fb68814070000744284c90f859e00000080b88a0600000374358b8e2415000001",
+      "matches_original": true
+    },
+    {
+      "va": "0x1443f926f",
+      "file_offset": 71272559,
+      "bytes": "f30f2a8758020000f30f100da5426201f30f5ec14c8b97c8010000498b8ad0cd0000f30f584138f30f5cc6f30f584424280fb68fed01000080f904753b83bf301600000075324c6387b01600004969d0e9a28b2e4989d149c1e93f48c1fa2144",
+      "matches_original": true
+    },
+    {
+      "va": "0x1443f92a0",
+      "file_offset": 71272608,
+      "bytes": "0fb68fed01000080f904753b83bf301600000075324c6387b01600004969d0e9a28b2e4989d149c1e93f48c1fa214401ca8d04928d04424129c0f3410f2ad0f30f5ed1f30f5cc280f9040f94874f020000498b82d0cd00008b402c660f6ec80f",
+      "matches_original": true
+    },
+    {
+      "va": "0x1443f8739",
+      "file_offset": 71269689,
+      "bytes": "40886e1f0fb6876002000088461e0fb6875402000088461c0fb6875c02000088461d0fb787c40100006689461880bf4e02000000740c0fb7874c020000e9f4000000488b87c8010000f680a60a000001750980bfec01000001eb104839b830d2",
+      "matches_original": true
+    },
+    {
+      "va": "0x1443f89a7",
+      "file_offset": 71270311,
+      "bytes": "f30f2a8758020000f30f100d6d4b6201f30f5ec1488b87c8010000488b88d0cd0000f30f584138f30f5cc6f30f584424280fb68fed01000080f904753a83bf30160000007531486397b01600004869eae9a28b2e4889eb48c1eb3f48c1fd2101",
+      "matches_original": true
+    },
+    {
+      "va": "0x14440a000",
+      "file_offset": 71341568,
+      "bytes": "4157415641545657534881ecd80000004d89ce4d89c44889d74889ce48b9004000000000000248234a18488d5a184c8d7a248b42244885c9743983f8ff7534488b4e08488b01488d542430ff5028f30f104424300f2e47287616488b4e08488b",
+      "matches_original": true
+    },
+    {
+      "va": "0x144511fb8",
+      "file_offset": 72422840,
+      "bytes": "e84372eefff30f100517b55001f30f104c2440f30f59c8440f2ed97650488b86c8010000488b8068ce000031c980beec010000010f95c1488d0c4948c1e1050f288ec00d00000f5c8c08b00100000f59c9f30f16d1f30f58d10f57c9f30f51ca",
+      "matches_original": true
+    },
+    {
+      "va": "0x144512331",
+      "file_offset": 72423729,
+      "bytes": "f30f2a9e60020000f30f5e1df3b15001f30f10158bb15001f30f58da0fbf96aa01000029d189caf7da0f48d1b96801000029d16639d10f4dca0fbfc90f57edf30f2ae9f30f10b6a0010000f30f59eef30f5e2df0b15001f3440f59cbf3440f58",
+      "matches_original": true
+    },
+    {
+      "va": "0x144512397",
+      "file_offset": 72423831,
+      "bytes": "450f2ed9440f28f10f28cf760af3410f59e1f3410f5ee3488b6c2458f3440f10ac2488000000f3440f10bc2484000000f30f1074246cf3440f10442468f30f107c24640f2e64243c0f86dbf9fffff3440f11542454488b88d0cd0000f30f1059",
+      "matches_original": true
+    }
+  ],
+  "excluded_candidates": {
+    "0x141b19ea0": "comparator; not direct match-result weight",
+    "0x141b1a340": "comparator; not direct match-result weight",
+    "0x1443fe2a0": "object copy",
+    "other_offset_hits": "some +258 reads are team object pointers, not Pace"
+  },
+  "limits": [
+    "global importance unknown",
+    "UI +1 conversion not recovered",
+    "no all-player applicability claim for144511110",
+    "unknown virtual output and state/global initializers",
+    "not final physics update or match outcome probability"
+  ]
+}
