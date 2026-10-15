@@ -1,0 +1,362 @@
+{
+  "target": {
+    "file": "fm.exe",
+    "build": "24.4.2+2081827",
+    "base": "0x140000000",
+    "file_size": 491339776
+  },
+  "method": "Original PE and Ghidra 12.1.4 readOnly/noanalysis, no game execution/runtime reads.",
+  "dispatch": {
+    "table_base": "0x144455704",
+    "index": "action-1",
+    "records": [
+      {
+        "action": "0x7f",
+        "table_entry": "0x1444558fc",
+        "relative_offset": -5757,
+        "branch": "0x144454087"
+      },
+      {
+        "action": "0x87",
+        "table_entry": "0x14445591c",
+        "relative_offset": -5757,
+        "branch": "0x144454087"
+      },
+      {
+        "action": "0x88",
+        "table_entry": "0x144455920",
+        "relative_offset": -5757,
+        "branch": "0x144454087"
+      },
+      {
+        "action": "0x89",
+        "table_entry": "0x144455924",
+        "relative_offset": -411,
+        "branch": "0x144455569"
+      }
+    ]
+  },
+  "direct_transfers": [
+    {
+      "va": "0x14445408a",
+      "opcode": "0xe8",
+      "target": "0x1444575a0",
+      "bytes": "e811350000"
+    },
+    {
+      "va": "0x14445556c",
+      "opcode": "0xe8",
+      "target": "0x144457d00",
+      "bytes": "e88f270000"
+    },
+    {
+      "va": "0x144457d00",
+      "opcode": "0xe9",
+      "target": "0x15a0d1c70",
+      "bytes": "e96b9fc715"
+    },
+    {
+      "va": "0x144457957",
+      "opcode": "0xe8",
+      "target": "0x14446e420",
+      "bytes": "e8c46a0100"
+    },
+    {
+      "va": "0x144457975",
+      "opcode": "0xe8",
+      "target": "0x141b3e640",
+      "bytes": "e8c66c6efd"
+    },
+    {
+      "va": "0x15a0d1d30",
+      "opcode": "0xe8",
+      "target": "0x141b3cb50",
+      "bytes": "e81baea6e7"
+    },
+    {
+      "va": "0x15a0d1ed3",
+      "opcode": "0xe8",
+      "target": "0x141b3e640",
+      "bytes": "e868c7a6e7"
+    }
+  ],
+  "constants": [
+    {
+      "va": "0x145a1d4a0",
+      "value": 0.25,
+      "bytes": "0000803e"
+    },
+    {
+      "va": "0x145a1d4a4",
+      "value": 0.5,
+      "bytes": "0000003f"
+    }
+  ],
+  "new_functions": [
+    {
+      "entry": "0x1444575a0",
+      "source": "Existing cache keeper-control-actions.txt, selected block only"
+    },
+    {
+      "entry": "0x15a0d1c70",
+      "end_exclusive": "0x15a0d1efc",
+      "entry_thunk": "0x144457d00"
+    },
+    {
+      "entry": "0x141b3e640",
+      "end_exclusive": "0x141b3ec55"
+    },
+    {
+      "entry": "0x14446e420",
+      "end_exclusive": "0x144470c19"
+    }
+  ],
+  "geometry_7f": {
+    "local_step": "max(distance-0.25,0.5*distance)",
+    "scope": "When existing movement samples are unavailable; followed by angle/distance lookup quantization and field-boundary clamp."
+  },
+  "normal_interval_return": {
+    "function": "0x14446e420",
+    "normal_return": "0x144470b75..144470b86",
+    "expression": "clamp(candidate,0,20)",
+    "exception_path": "Missing required configuration can enter assertion/trap."
+  },
+  "agility_adjustment": {
+    "sum": "int32(P+1680)+int32(P+254)",
+    "sites": [
+      "0x14446fb56..14446fb80",
+      "0x14446fc25..14446fc52"
+    ],
+    "expression": "A<32: n+1; A>=70 and n>k+1: n-1; otherwise n",
+    "downstream_overrides": true
+  },
+  "scheduler": {
+    "function": "0x141b3e640",
+    "expression": "proposed=currentClock+max(2,d); if proposed<=P170 return; else P170=proposed and later P11ac=currentClock+max(2,d)",
+    "special_argument": "third argument low16=0xfd30 skips motion helper 144409810 but still reaches deadline store if extension is needed",
+    "time_unit": "Game clock units; not established as seconds or a complete re-decision interval"
+  },
+  "action_89_interval": {
+    "before_clamp": "In one branch nA=trunc(cached_Pdd8*first_Pe30)+4, nB=trunc(cached_Pdd8*second_Pe30)+12; draw in [min(nA,nB), max(nA,nB)) when unequal",
+    "main_clamp": [
+      8,
+      32
+    ],
+    "other_prediction_branch_clamp": [
+      2,
+      4
+    ],
+    "early_return": "B+d63==0 exits before the interval submission",
+    "opaque_global_expressions": "Native entry includes encoded copy-length and sentinel globals; not replaced with assumed runtime constants."
+  },
+  "ghidra_vs_original_windows": [
+    {
+      "va": "0x1444533e1",
+      "size": 96,
+      "bytes": "418b86400e0000ffc83dbe0000000f8799220000498d9ec00d0000488d0d01230000486304814801c8ffe04c89f1e8cc4f0000e97522000085c00f8421feffff4963868c1400004885c07423498b0c24488b89480700000fb6140184d27405fe",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1444558fc",
+      "size": 96,
+      "bytes": "83e9ffff0aebffff3efeffff8affffff8affffff4bfeffff58feffff0aebffff83e9ffff83e9ffff65feffff8affffff8affffff8affffff8affffff72feffff9efeffffb3feffffc0feffffcdfeffff8affffff90e9ffff90e9ffff3eebffff",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144454087",
+      "size": 96,
+      "bytes": "4c89f1e811350000e9fa150000488d9424d00000004c89f1e81c510100e9e515000041b107b20131ed84d20f8546f2ffffe958fbffff8b90a40a0000f7c2000100000f858b010000f7c200020000755e80b8b7e3000000755580b8b9e3000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144455569",
+      "size": 96,
+      "bytes": "4c89f1e88f270000e9180100004c89f1ba01000000e8bdc0f6ff4c89f1e8b51cfcff4c89f1e8dda070fd4c89f131d2e8e3b5ffffe9ec000000488d9424d00000004c89f1e87e060100e9d70000004c89f1e821160100e9ca0000004c89f1e844",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144457d00",
+      "size": 96,
+      "bytes": "e96b9fc7150f8ad1ac3f0238d0f20f8a3e4c05034835af160f825f2f3e037f6277e3c1e2cbc2aa0f80f7a8c802ad80e91f560604c5e925f20900e93a6ecaffffe9b4433403cece21187b5a1e4f6cb9ac2005ee8f1138e0e94770fefe9527d44c",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x15a0d1c70",
+      "size": 96,
+      "bytes": "41565657534883ec680f297424504989ce488b81c80100000fb688a006000080f917773d0fb690a1060000750580fa07772f80f11780f20708ca0f94d10fb690a2060000750580fa02771680fa020f94d220d180f901751980b8a30600000272",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x15a0d1d70",
+      "size": 96,
+      "bytes": "f3410f10b6d80d0000f3410f1086300e0000f30f59c6f30f2cd88b8f940d00008b154a95efec81f2b776e3db39d1754780bf620d000000753e0f1f80000000004889f9ba01000000e8338b31ea2a15271e1efe8b8f940d000083f9ff751280bf",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x15a0d1de7",
+      "size": 96,
+      "bytes": "83c3043b88e80900007c4b488bb8b8d200000f1f8000000000488b87680d00004885c0752180bf630d000000741880bf620d000000750f4889f9ba01000000e8c58a31eaebd34885c00f84b1000000498b86c8010000f3410f59b6300e0000f3",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x15a0d1e3d",
+      "size": 96,
+      "bytes": "f3410f59b6300e0000f30f2cce83c10c89df29cf4189c8440f4cc3f7df29cb0f4edf488bb0d0e300004889f74889f14889f248c1ea2d48c1ef1b31fa48c1e93bd3ca48b92d7f954c2df45158480fafce480388d8e30000488988d0e30000480f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x15a0d1ea6",
+      "size": 96,
+      "bytes": "83fb09b8080000000f4dc383f820ba200000000f4cd08b059ab594eb894424204c89f16641b8ffff6641b9ffffe868c7a6e70f287424504883c4685b5f5e415ec383fb03b8020000000f4dc383f804ba04000000ebbdcc6bb009bed7de65a9ff",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14445776e",
+      "size": 96,
+      "bytes": "f30f5c352a5d5c01480fbf9c4190010000f30f103d1d5d5c01f30f59cff30f5ff1f30f59c60f57c90f2ec1730ff30f580595d42201e808721201eb0df30f58054ab21201e869721201f30f2cc8488b057628fe01488b00488b04d883f9637f14",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144457957",
+      "size": 96,
+      "bytes": "e8c46a01008b8e3c0e0000894c24204889f189c26641b830fd6641b9ffffe8c66c6efd488b86c8010000488b8860e300004885c97415f30f1081e80100000f2e05605b5c010f8740010000488b98b8d20000488b8b680d00004885c9754d80bb",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14446fb51",
+      "size": 96,
+      "bytes": "438d7c2402418b8e8016000041038e5402000083f9467c0f41ffc431c04439e70f9fc0f7d8eb0831c083f9200f9cc001f8498b8ec8010000498b96d00100008b89e80900008d2c018b9a580400004189dd4129cd39dd440f4de8898a54040000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14446fc25",
+      "size": 96,
+      "bytes": "418b8e8016000041038e5402000083f9467c10ffc74531ed39f8410f9fc541f7ddeb0a4531ed83f920410f9cc54101c54531e4488b06f680a60a0000017442488b98b8d200000f1f440000488b83680d00004885c0752180bb630d0000007418",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14446fe86",
+      "size": 96,
+      "bytes": "f3410f59be300e0000f3440f2cef4183c50ce9c5000000498d96c000000041808ec000000004488b4c244041b8ffffffff4531c9e8817bf9ff418bbe68010000498b86c80100008b0d89d55a01488b80d0cd00008b40140f2974245089442460",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144470b75",
+      "size": 96,
+      "bytes": "31c94585ed410f4fcd83f914b8140000000f4cc10f28b424b00000000f28bc24c0000000440f288424d0000000440f288c24e00000004881c4f80000005b5d5f5e415c415d415e415fc3488b06488b88b8d20000e89213f8ff488b0e8b91e809",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b3e699",
+      "size": 96,
+      "bytes": "4889ce83fa03bf020000000f4dfa488b81c80100008b88e809000001f93b8e700100000f8e39050000898e70010000488b8ed00100004839b1880400000f84040500004489c3410fb7c881f930fd00000f84f104000080beb00a0000040f84e4",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b3ebe0",
+      "size": 96,
+      "bytes": "488b86c801000003b8e809000089beac1100004889f1e8250588020f28b424900000000f28bc24a0000000440f288424b0000000440f288c24c0000000440f289424d0000000440f289c24e0000000440f28a424f0000000440f28ac24000100",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144457cbd",
+      "size": 96,
+      "bytes": "48c78050e3000000000000c780a0e30000ffffffff488b86c80100004839b080e300007599c780ace30000ffffffff48c78080e3000000000000eb82cccccccccccccce96b9fc7150f8ad1ac3f0238d0f20f8a3e4c05034835af160f825f2f3e",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144457c8e",
+      "size": 96,
+      "bytes": "e88d6a12010f28b424100100000f28bc2420010000440f288424300100004881c4480100005b5f5e415c415e415fc348c78050e3000000000000c780a0e30000ffffffff488b86c80100004839b080e300007599c780ace30000ffffffff48c7",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145a1d490",
+      "size": 96,
+      "bytes": "6666663f3333733fabaaaa3eabaa2a3f0000803e0000003f0000403fcdcccc3e0000803fcdcc8c3f9a99993f0000a03fabaaaa3f0000c03fcdcccc3dcdcc4c3ecdcc4c3d0000004000002040000040400000604000008040000090400000a040",
+      "matches_original_pe": true
+    }
+  ],
+  "worked_examples": {
+    "geometry": [
+      {
+        "d": 1,
+        "unquantized_step": 0.75
+      },
+      {
+        "d": 0.2,
+        "unquantized_step": 0.1
+      }
+    ],
+    "agility_step": [
+      {
+        "combined_agility_internal": 31,
+        "illustrative_k": 4,
+        "base_n": 10,
+        "adjusted_n": 11,
+        "final_return_without_overrides": 11
+      },
+      {
+        "combined_agility_internal": 32,
+        "illustrative_k": 4,
+        "base_n": 10,
+        "adjusted_n": 10,
+        "final_return_without_overrides": 10
+      },
+      {
+        "combined_agility_internal": 69,
+        "illustrative_k": 4,
+        "base_n": 10,
+        "adjusted_n": 10,
+        "final_return_without_overrides": 10
+      },
+      {
+        "combined_agility_internal": 70,
+        "illustrative_k": 4,
+        "base_n": 10,
+        "adjusted_n": 9,
+        "final_return_without_overrides": 9
+      }
+    ],
+    "action_89": {
+      "stable_product_trunc_q": 3,
+      "U32": "0x80000000",
+      "unclamped": 11,
+      "main_clamped": 11,
+      "other_branch_clamped": 4
+    },
+    "scheduler": [
+      {
+        "clock": 100,
+        "old_P170": 101,
+        "requested_interval": 11,
+        "proposed": 111,
+        "new_P170": 111,
+        "updates_P11ac": true
+      },
+      {
+        "clock": 100,
+        "old_P170": 120,
+        "requested_interval": 11,
+        "proposed": 111,
+        "new_P170": 120,
+        "updates_P11ac": false
+      },
+      {
+        "clock": 100,
+        "old_P170": 100,
+        "requested_interval": 0,
+        "proposed": 102,
+        "new_P170": 102,
+        "updates_P11ac": true
+      }
+    ]
+  },
+  "limits": [
+    "No complete final no-contact/save failure predicate recovered.",
+    "Direct absence of known save producers does not rule out indirect contacts.",
+    "Agility thresholds use internal input plus sampled cache, not displayed attribute thresholds.",
+    "Candidate clearing and prediction pointers are not final save-result flags.",
+    "P170/P11ac write semantics do not establish the entire next-action scheduling lifecycle."
+  ]
+}
