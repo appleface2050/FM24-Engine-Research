@@ -1,0 +1,316 @@
+{
+  "target": {
+    "file": "fm.exe",
+    "build": "24.4.2+2081827",
+    "image_base": "0x140000000",
+    "file_size": 491339776
+  },
+  "method": "Original PE + Ghidra 12.1.4 readOnly/noanalysis; no game/runtime execution.",
+  "new_exports": [
+    {
+      "entry": "0x1443bf120",
+      "end_exclusive": "0x1443bfc25"
+    },
+    {
+      "entry": "0x141b3cb50",
+      "end_exclusive": "0x141b3d08f"
+    }
+  ],
+  "scheduler_consumer": {
+    "function": "0x144405cf0",
+    "A": "*(M+d230)",
+    "Q": "*(M+d1d8 + 8*(1-A.team))",
+    "A_gate": "1444063cf/3d5 compare A+11ac with current clock; future takes alternate path",
+    "Q_gate": "144406412/418 compare Q+170 with current clock; future returns before 144503b00(Q)",
+    "limits": "Additional ball predicate and context branches; these fields belong to different selected player objects."
+  },
+  "state_predicate": {
+    "function": "0x141b41670",
+    "input_time_field": "P+170",
+    "does_not_directly_read": "P+11ac",
+    "ball_mode_mask": "0x38b70000000000",
+    "special_modes": [
+      "0x28",
+      "0x29",
+      "0x2a",
+      "0x2c",
+      "0x2d",
+      "0x2f",
+      "0x33",
+      "0x34",
+      "0x35"
+    ],
+    "special_time_gate": "reject when P170-currentClock >3",
+    "other_time_gate": "reject when P170>currentClock",
+    "prior_reference_gate": "Alternative reference path can already reject any future P170",
+    "later_state_checks": true,
+    "writes_match_state_cache": [
+      "M+cde0",
+      "M+cde6"
+    ],
+    "not_pure_predicate": true
+  },
+  "post_submission_helper": {
+    "function": "0x1443bf120",
+    "positive_remaining": "P170-currentClock",
+    "local_threshold": "max(1.5,3.0-0.1*remaining)",
+    "effect": "If local geometric quantity exceeds this threshold, a branch writes *(P+1d0)+480=P",
+    "direct_clock_reset_found": false,
+    "indirect_side_effects_not_exhausted": true
+  },
+  "refresh_clock": {
+    "function": "0x141b3cb50",
+    "entry_guard": "P11dc==currentClock returns immediately",
+    "exit_stamp": "P11dc=currentClock",
+    "conditional_direct_attribute_refresh": "If higher priority branches absent: P11c8<clock-60, or thirdArg==0 and clock%60==P54%60",
+    "other_periodic_branch": "clock%240==P54%240 selects another update helper first",
+    "attribute_refresh_writer": "1443b04f0 stamps P11c8 with current clock, confirmed in existing export",
+    "time_units": "Native clock units, no seconds conversion inferred."
+  },
+  "ghidra_vs_original_windows": [
+    {
+      "va": "0x1444063c2",
+      "size": 96,
+      "bytes": "488b8e30d200008b86e80900003981ac1100007f21488b8eb8d20000e87d3afeff84c00f84c3000000488b8e30d200008b86e8090000488b91c8010000480fbe89ee0100004829cf488b8cfad8d100003981700100000f8fa6010000e8ddd60f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1444063f8",
+      "size": 96,
+      "bytes": "488b91c8010000480fbe89ee0100004829cf488b8cfad8d100003981700100000f8fa6010000e8ddd60f00488b8630d20000488b88c8010000480fbe80ee010000ba010000004829c2488b8cd1d8d10000e96f01000089c183e15083f940752b",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1444064ae",
+      "size": 96,
+      "bytes": "488b8e78e30000488b8630d200004839c10f8492000000483b8678e200000f8400010000488b88c8010000480fbe80ee010000bf01000000ba010000004829c2488b8cd1d8d10000e805d60f00e99c0000000fb686a8d4000083ff30752640b7",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144406579",
+      "size": 96,
+      "bytes": "ba010000004829c2488b8cd1d8d10000e872d50f00488b8e30d2000031d2e8e4a50400488b8630d20000488b88c8010000480fbe80ee0100004829c7488b8cf9d8d1000031d2e8bca50400904881c4a80000005b5f5e415ec3488b8670ce0000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b416cf",
+      "size": 96,
+      "bytes": "418b80000e000049b80000000000b738004883f8357722490fa3c0731c448b8fe80900008b81700100004429c87e1a83f8037e1531c05f5ec3448b8fe8090000443989700100007feb440fb697dee100004584d27415448b9fa40a000041f7c3",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b41708",
+      "size": 96,
+      "bytes": "448b8fe8090000443989700100007feb440fb697dee100004584d27415448b9fa40a000041f7c3000100007431e9b200000044398fe0cd0000751380bfe6cd0000000f95c084c07476e996000000448b9fa40a000041f7c300010000757541f7",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b417ec",
+      "size": 96,
+      "bytes": "448b89100f0000b0014983f93577244d0fa3c80f8200ffffff4983f9117514488bb9c801000048398f50e300000f84e6feffff84d20f85dcfeffff488b91c801000048398a50e300000f85c8feffff8bbaa0e300003bbae80900000f85b6feff",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1443c5ff0",
+      "size": 96,
+      "bytes": "004889f131d2e875b677fd84c074288b86100f00008d48b783f906721a83c0b883f8080f871e030000b9810100000fa3c10f8310030000488b86c8010000488b8878e300004885c97414488b91d0010000483b96d00100000f84390e00000fb6",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1443c6510",
+      "size": 96,
+      "bytes": "744f4889f131d2e854b177fd84c00f84bf0000004889f1e8142cffff84c00f85af0000008b86100f00008d48b783f906721283c0b883f8087717b9810100000fa3c1730df686f20e0000800f8582000000488b8ec80100000f57c0f30f2a81e8",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1443bf756",
+      "size": 96,
+      "bytes": "488b86c80100008bbe700100002bb8e80900007e300f57c0f30f2ac7f30f59054edd6501f30f100d5add6501f30f5cc8f30f100536dd6501f30f5fc10f2ef00f87c6fcffff0f2e359add65010f87b9fcffff80be9a11000000750d0f2e356cdd",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1443bf461",
+      "size": 96,
+      "bytes": "488b86d00100004889b080040000e93ffeffffa81c745a488b8ed00100008b89f0030000894c2424e942010000f6c27c0f841cfeffff4885c90f84f2fefffff681f8160000100f8506feffffe9e0feffffa8e0743c488b8ed0010000f30f1081",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b3cb64",
+      "size": 96,
+      "bytes": "8b89dc110000488b86c80100003b88e80900000f842603000080b8d8e10000000f840603000080b8d6e10000000f84f902000080b8dde10000000f84ec0200004589c789d780beae010000000f840102000083bef812000000790ac786f81200",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b3cd72",
+      "size": 96,
+      "bytes": "81e80900008da820feffff39ea7c0c3b91600a00000f8d2a0200004889f1e88bbe0000e97f000000f686f81600000174694839b130d2000074600fb681e0e100003401eb5cf605c6c38e04010f84f2fdffff833db5c38e04010f8fe5fdffff48",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b3cfdf",
+      "size": 96,
+      "bytes": "8d48c4398ec81100007d0d4889f1e8fe348702e922feffff4584ff0f8519feffff48634e544869d18988888848c1ea2001ca89d5c1ed1fc1fa0701ea69d2f000000089cd29d54863d04869d28988888848c1ea208d1c0289dfc1ef1fc1fb0701",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b3d052",
+      "size": 96,
+      "bytes": "4863e94869ed8988888848c1ed2001cd89ebc1eb1fc1fd0501dd6bed3c29e901c289d5c1ed1fc1fa0501ea6bd23c29d039c80f858ffdffffe95bffffffcc4157415641554154565755534881ece8010000440f299424d001000066440f7f8c24",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x141b3ce90",
+      "size": 96,
+      "bytes": "488b86c80100008b80e80900008986dc1100000f287424404883c4585b5d5f5e415e415fc3b970080000e8711fdbff4989c6c744242801000000c744242000000000488d15f2d1ed034c8d0d6ad2ed034889c141b87c190000e86221dbff498b",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145a1d4c0",
+      "size": 96,
+      "bytes": "abaaaa3f0000c03fcdcccc3dcdcc4c3ecdcc4c3d0000004000002040000040400000604000008040000090400000a0400000c0400000e0400000f040000000410000104100002041000030410000404100006041000070410000804100009041",
+      "matches_original_pe": true
+    }
+  ],
+  "direct_calls": [
+    {
+      "va": "0x1444063bd",
+      "target": "0x141b3cb50",
+      "bytes": "e88e6773fd"
+    },
+    {
+      "va": "0x14440641e",
+      "target": "0x144503b00",
+      "bytes": "e8ddd60f00"
+    },
+    {
+      "va": "0x1444064f6",
+      "target": "0x144503b00",
+      "bytes": "e805d60f00"
+    },
+    {
+      "va": "0x141b3cfed",
+      "target": "0x1443b04f0",
+      "bytes": "e8fe348702"
+    },
+    {
+      "va": "0x1443c5ff6",
+      "target": "0x141b41670",
+      "bytes": "e875b677fd"
+    },
+    {
+      "va": "0x1443c6517",
+      "target": "0x141b41670",
+      "bytes": "e854b177fd"
+    },
+    {
+      "va": "0x1443c6664",
+      "target": "0x144513020",
+      "bytes": "e8b7c91400"
+    }
+  ],
+  "constants": [
+    {
+      "va": "0x145a1d4dc",
+      "float32": 3.0,
+      "bytes": "00004040"
+    },
+    {
+      "va": "0x145a1d4c4",
+      "float32": 1.5,
+      "bytes": "0000c03f"
+    },
+    {
+      "va": "0x145a1d4c8",
+      "float32": 0.10000000149011612,
+      "bytes": "cdcccc3d"
+    }
+  ],
+  "worked_examples": {
+    "predicate_time_gate": [
+      {
+        "ball_mode": "0x28",
+        "clock": 100,
+        "P170": 103,
+        "time_gate_allows": true,
+        "reference_and_other_conditions_assumed_satisfied": true
+      },
+      {
+        "ball_mode": "0x28",
+        "clock": 100,
+        "P170": 104,
+        "time_gate_allows": false,
+        "reference_and_other_conditions_assumed_satisfied": true
+      },
+      {
+        "ball_mode": "0x28",
+        "clock": 100,
+        "P170": 90,
+        "time_gate_allows": true,
+        "reference_and_other_conditions_assumed_satisfied": true
+      },
+      {
+        "ball_mode": "0x0",
+        "clock": 100,
+        "P170": 103,
+        "time_gate_allows": false,
+        "reference_and_other_conditions_assumed_satisfied": true
+      },
+      {
+        "ball_mode": "0x0",
+        "clock": 100,
+        "P170": 100,
+        "time_gate_allows": true,
+        "reference_and_other_conditions_assumed_satisfied": true
+      }
+    ],
+    "remaining_geometry_threshold": [
+      {
+        "positive_remaining": 1,
+        "geometric_threshold": 2.9,
+        "illustrative_cost": 2.2,
+        "this_condition_sets_team480": false
+      },
+      {
+        "positive_remaining": 10,
+        "geometric_threshold": 2.0,
+        "illustrative_cost": 2.2,
+        "this_condition_sets_team480": true
+      },
+      {
+        "positive_remaining": 20,
+        "geometric_threshold": 1.5,
+        "illustrative_cost": 2.2,
+        "this_condition_sets_team480": true
+      }
+    ],
+    "refresh_guard": [
+      {
+        "clock": 120,
+        "K": 0,
+        "last_call": 119,
+        "last_attribute_refresh": 100,
+        "expected_direct_attribute_refresh": true
+      },
+      {
+        "clock": 120,
+        "K": 0,
+        "last_call": 120,
+        "last_attribute_refresh": 120,
+        "expected_direct_attribute_refresh": false
+      },
+      {
+        "clock": 121,
+        "K": 0,
+        "last_call": 120,
+        "last_attribute_refresh": 120,
+        "expected_direct_attribute_refresh": false
+      }
+    ]
+  },
+  "limits": [
+    "No final save/miss probability or attribute ranking recovered.",
+    "State predicate true can cause a caller to return action ID zero; it is not permission to save.",
+    "Refresh examples assume mode/action/higher-priority conditions allow the shown branch.",
+    "Clock gates do not prove all actors and all decisions are frozen until those times."
+  ]
+}
