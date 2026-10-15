@@ -1,0 +1,284 @@
+{
+  "target": "fm.exe",
+  "version": "24.4.2+2081827",
+  "image_base": "0x140000000",
+  "analysis": "offline ordinary-tool static analysis; no target execution; not a completed REA dossier",
+  "anchors": [
+    {
+      "name": "INITIALISE_SHORTLIST_PLAYERS",
+      "string_va": "0x145afe6ed",
+      "descriptor_va": "0x146343b28",
+      "name_pointer_va": "0x146343b50",
+      "owner_entry_va": "0x1436ee780"
+    },
+    {
+      "name": "UPDATE_SHORTLISTS",
+      "string_va": "0x145afe92e",
+      "descriptor_va": "0x146343c28",
+      "name_pointer_va": "0x146343c50",
+      "owner_entry_va": "0x1437070e0"
+    },
+    {
+      "name": "UPDATE_PLAYER_VALUES",
+      "string_va": "0x145afe8fd",
+      "descriptor_va": "0x146343ba8",
+      "name_pointer_va": "0x146343bd0",
+      "owner_entry_va": "0x143700780"
+    },
+    {
+      "name": "POST_PROCESS_SHORTLIST_JOBS",
+      "string_va": "0x145afe912",
+      "descriptor_va": "0x146343be8",
+      "name_pointer_va": "0x146343c10",
+      "owner_entry_va": "0x1437005f0"
+    },
+    {
+      "name": "ADD_TRANSFER_OFFER_HOT_PLAYER_CHECK",
+      "string_va": "0x145b088c8",
+      "descriptor_va": "0x146346168",
+      "name_pointer_va": "0x146346190",
+      "owner_entry_va": "0x14394d590"
+    },
+    {
+      "name": "PROCESSING_TRANSFER_DECISION_DATES",
+      "string_va": "0x145b0dcb0",
+      "descriptor_va": "0x146346dc8",
+      "name_pointer_va": "0x146346df0",
+      "owner_entry_va": "0x143a4dc20"
+    }
+  ],
+  "constants": [
+    {
+      "va": "0x145643728",
+      "float32": 0.8999999761581421
+    },
+    {
+      "va": "0x14564372c",
+      "float32": 1.100000023841858
+    }
+  ],
+  "local_rule_examples": [
+    {
+      "d": 300,
+      "reference": 1000000,
+      "proposed": 1050000,
+      "result": 1100000
+    },
+    {
+      "d": 300,
+      "reference": 1000000,
+      "proposed": 950000,
+      "result": 900000
+    },
+    {
+      "d": 300,
+      "reference": 1000000,
+      "proposed": 1000000,
+      "result": 1000000
+    }
+  ],
+  "program_vs_original_windows": [
+    {
+      "va": "0x1436ee780",
+      "length": 96,
+      "file_offset": 57597312,
+      "program_bytes": "4157415641554154565755534881ecf80000004989cd488b054367d40248898424980000008894248f00000084d27479488bb42498000000488b064889f1ff90c8010000803db86ad40200410f94c1488b056205d402488b80800000004c8b40",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1437070e0",
+      "length": 96,
+      "file_offset": 57698016,
+      "program_bytes": "5541574156415541545657534881ecc8090000488dac248000000066440f7fbd3009000066440f7fb52009000066440f7fad1009000066440f7fa50009000066440f7f9df008000066440f7f95e008000066440f7f8dd008000066440f7f85c0",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x143700780",
+      "length": 96,
+      "file_offset": 57671040,
+      "program_bytes": "4157415641554154565755534881ecb801000066440f7fbc24a001000066440f7fb4249001000066440f7fac248001000066440f7fa4247001000066440f7f9c246001000066440f7f94245001000066440f7f8c244001000066440f7f842430",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1437005f0",
+      "length": 96,
+      "file_offset": 57670640,
+      "program_bytes": "4157415641545657534883ec384989ce8b05bae8c80265488b0c2558000000488b04c1488b881804000048894c2428488d0dc235c40248894c243048898818040000488d4c2420ff153bf564024d8ba6980000004d8bbea00000004d39fc753b",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14394d590",
+      "length": 96,
+      "file_offset": 60083088,
+      "program_bytes": "4157415641554154565755534881ecf80000004989cd488b0a4885c90f84100900004d89ce4589c44889d6488b41384889442478488b01ff50703c097519498b8dc00700004889f24589e0e820adf0ff89c5e9e0080000488b3e4c8b7f30bdff",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x143a4dc20",
+      "length": 96,
+      "file_offset": 61133344,
+      "program_bytes": "5541574156415541545657534881ec480a0000488dac2480000000660f7fb5b009000048c785a8090000feffffff4c89c74989cd488b7210488b0641b8020000004889f14889faff5028837e10000f85a4b800004889bde808000066833f004c",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1447fb5e0",
+      "length": 96,
+      "file_offset": 75475936,
+      "program_bytes": "5541574156415541545657534881ec88010000488dac248000000048c78500010000feffffff4489c64989d64989cc488bb9e8010000488b4218483b42200f849b040000488b084885c90f848f04000080792800740fe8650607fe4885c07515",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1448181f0",
+      "length": 96,
+      "file_offset": 75593712,
+      "program_bytes": "4157415641545657534883ec584989d64989cf488b8160010000483b81580100000f8460020000488b40f8807818000f8552020000448b080fb71d8d53b00189dac1ea0980fa500f82970000004531c080fa7fbedb060000410f45f089f2c1ea",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1421953e0",
+      "length": 96,
+      "file_offset": 35211744,
+      "program_bytes": "4157415641554154565755534881ec280100000f29b424100100004489cd4489c34989d44989cd4c8bbc2490010000e83c72020085c0783d89c64d85ff0f840c010000c78424880000000200000089b4248c000000c784249000000000000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x142197620",
+      "length": 96,
+      "file_offset": 35220512,
+      "program_bytes": "4157415641554154565755534883ec484589ce4c89c74189d44889ce803d4ddc2904007423803d37dc290400741a4889f131d24883c4485b5d5f5e415c415d415e415fe9d82f0100488b460848634004488d5c0608488b4406084889d9ff90d8",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14371bbd0",
+      "length": 96,
+      "file_offset": 57782736,
+      "program_bytes": "4157415641554154565755534883ec784589cf4989d64c8b62404d85e475114d8b66384d8966404d85e40f844901000031c041807c242f000f853d0100004d8b6c24304d85ed0f842f01000048894c2460498b40084c6358044b8d4c18084d8b",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145643728",
+      "length": 96,
+      "file_offset": 90450728,
+      "program_bytes": "6666663fcdcc8c3f3333333f6666a63f0000000000000000a037644501000000609233400100000080923340010000009092334001000000a092334001000000b092334001000000c092334001000000d092334001000000e092334001000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145afe6ed",
+      "length": 96,
+      "file_offset": 95410925,
+      "program_bytes": "494e495449414c4953455f53484f52544c4953545f504c4159455253005441524745545f44415441000000000000000000000000f5af450100000050697343010000002077124401000000007f124401000000a09d644201000000b09d644201",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145afe92e",
+      "length": 96,
+      "file_offset": 95411502,
+      "program_bytes": "5550444154455f53484f52544c49535453005355424d495454494e475f4a4f4253004144445f4c494e4b45445f504552534f4e00000000000000000000000000000000ebaf45010000002074734301000000809d644201000000d0f0e8430100",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145afe8fd",
+      "length": 96,
+      "file_offset": 95411453,
+      "program_bytes": "5550444154455f504c415945525f56414c55455300504f53545f50524f434553535f53484f52544c4953545f4a4f4253005550444154455f53484f52544c49535453005355424d495454494e475f4a4f4253004144445f4c494e4b45445f5045",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145b088c8",
+      "length": 96,
+      "file_offset": 95452360,
+      "program_bytes": "4144445f5452414e534645525f4f464645525f484f545f504c415945525f434845434b005452414e53464552530000000000000000000000b08ab04501000000a0a6a64301000000f085144401000000909d644201000000a09d644201000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145b0dcb0",
+      "length": 96,
+      "file_offset": 95473840,
+      "program_bytes": "50524f43455353494e475f5452414e534645525f4445434953494f4e5f4441544553000000000000000000000000000090deb0450100000050f2a64301000000809d644201000000909d644201000000a09d644201000000b09d644201000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x146343b28",
+      "length": 96,
+      "file_offset": 104081192,
+      "program_bytes": "00000000000000001000000000000000000000000000000098403446010000000000000000000000ede6af4501000000482e584501000000482e5845010000000000000000000000100000000000000000000000000000009840344601000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x146343c28",
+      "length": 96,
+      "file_offset": 104081448,
+      "program_bytes": "000000000000000010000000000000000000000000000000984034460100000000000000000000002ee9af4501000000482e584501000000482e5845010000000000000000000000100000000000000000000000000000009840344601000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x146343ba8",
+      "length": 96,
+      "file_offset": 104081320,
+      "program_bytes": "00000000000000001000000000000000000000000000000098403446010000000000000000000000fde8af4501000000482e584501000000482e5845010000000000000000000000100000000000000000000000000000009840344601000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x146346168",
+      "length": 96,
+      "file_offset": 104090984,
+      "program_bytes": "00000000000000001000000000000000000000000000000028613446010000000000000000000000c888b04501000000482e584501000000482e5845010000000000000000000000a0ff83450100000000000000000000002e3f4156424f4152",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x146346dc8",
+      "length": 96,
+      "file_offset": 104094152,
+      "program_bytes": "00000000000000001000000000000000000000000000000028613446010000000000000000000000b0dcb04501000000482e584501000000482e5845010000000000000000000000a0ff83450100000000000000000000002e3f4156434c4155",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x143701156",
+      "length": 96,
+      "file_offset": 57673558,
+      "program_bytes": "81fffa0000000f8797000000803d2741d302004c8bbc24980000000f84c2020000803d0541d302000f84b502000066440f6fc94c89f1ba010000004531c041b901006c07e88164a9fe89c6e9e00400004989ef4489d1c1e9100fb72d08c4c102",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1437011f9",
+      "length": 96,
+      "file_offset": 57673721,
+      "program_bytes": "66440f6fc948c74424280000000048c7442420000000004c89f131d241b8ffffffff6641b92000e8bb41a9fe89c681fff40100000f87290200000fb60d5640d3020fb6054240d30284c94c8bbc24980000008b7c24780f84a406000084c00f84",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x143701a89",
+      "length": 96,
+      "file_offset": 57675913,
+      "program_bytes": "84c9742e84c0742a4c89f1899424c4000000ba010000004531c041b901006c07e8725ba9fe8b9424c400000039d67f17eb334983be30010000007423418b86d001000039d67e1e0f57c0f30f2ac0f30f59054d1cf401f30f2cf0e9a2fbffff31",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x143701d74",
+      "length": 96,
+      "file_offset": 57676660,
+      "program_bytes": "31c00f57c0f30f2ac0f30f5905a319f401f30f2cf0e9fcf8ffff8b05c862d3028d480131d283f8060f4cd18915b762d302488d8c24f8000000e8ce26c2000f28b424100100000f28bc2420010000440f28842430010000440f288c2440010000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14370168a",
+      "length": 96,
+      "file_offset": 57674890,
+      "program_bytes": "4189b6d00100004883bc2488000000000f8495000000803de63bd302000f84c70000004084ff0f84bc040000498b460848634004498d4c0608498b440608488d157da93402ff9098010000488b942488000000488b4a38488b5240eb0d660f1f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x146343be8",
+      "length": 96,
+      "file_offset": 104081384,
+      "program_bytes": "0000000000000000100000000000000000000000000000009840344601000000000000000000000012e9af4501000000482e584501000000482e5845010000000000000000000000100000000000000000000000000000009840344601000000",
+      "matches_original_pe": true
+    }
+  ],
+  "coverage_limits": [
+    "Only the listed 96-byte windows were compared, not the whole Ghidra database.",
+    "Exception envelopes and decompiler output are not proven complete functions.",
+    "No runtime execution or transfer-outcome observation.",
+    "Reference getter semantics, currency and final bid/acceptance rules remain unresolved."
+  ]
+}
