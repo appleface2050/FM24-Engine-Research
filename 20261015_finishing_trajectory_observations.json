@@ -1,0 +1,185 @@
+{
+  "date": "20261015",
+  "input": "fm.exe",
+  "build": "24.4.2+2081827",
+  "file_size": 491339776,
+  "method": "Ghidra 12.1.4 focused readOnly export; original PE bytes and GNU objdump",
+  "game_executed": false,
+  "functions": [
+    {
+      "entry": "0x144417950",
+      "end_exclusive": "0x14441a3a7"
+    },
+    {
+      "entry": "0x144427400",
+      "end_exclusive": "0x144427cd8"
+    },
+    {
+      "entry": "0x1444290e0",
+      "end_exclusive": "0x144430724"
+    },
+    {
+      "entry": "0x14444b7b0",
+      "end_exclusive": "0x14444c121"
+    },
+    {
+      "entry": "0x14444c130",
+      "end_exclusive": "0x14444c531"
+    },
+    {
+      "entry": "0x14444c540",
+      "end_exclusive": "0x14444ce29"
+    },
+    {
+      "entry": "0x14444ce30",
+      "end_exclusive": "0x14444e7cd"
+    },
+    {
+      "entry": "0x1443afc40",
+      "end_exclusive": "0x1443b04ec"
+    },
+    {
+      "entry": "0x141b4fe90",
+      "end_exclusive": "0x141b505fe"
+    }
+  ],
+  "cache_sources": {
+    "Finishing": {
+      "id": "0x11",
+      "field": "player+0x1580",
+      "reader_flags": "0x200100"
+    },
+    "Long Shots": {
+      "id": "0x13",
+      "field": "player+0x15d0",
+      "reader_flags": "0x200100"
+    }
+  },
+  "ordinary_ability": {
+    "low": 16.458999633789062,
+    "high": 20.117000579833984,
+    "input": "player+0xe30 planar context-to-target distance on verified action 0x36 branch",
+    "adjustments": "119b: subtract 6; else 119c: subtract 3",
+    "middle": "trunc_float32(F*(1-t)+LS*t), t=(x-low)/(high-low)",
+    "record_id_at_high": "0x11",
+    "record_id_above_high": "0x13"
+  },
+  "no_special_record_modes": {
+    "0": "A-Cp",
+    "2_Cp_positive": "floor(A*U32/2^32)-Cp",
+    "2_Cp_nonpositive": "floor((A-Cp)*U32/2^32)"
+  },
+  "consumer_chain": [
+    "0x144417950: selected candidate to context+0x470",
+    "0x1444290e0: context+0x470 to player+0xdc0",
+    "0x14444c130 -> 0x141b4fe90: mode0 to context+0x590, mode2 to +0x5a8",
+    "0x14444ce30 mode0: context+0x5a8 to local J to velocity perturbation",
+    "0x1444290e0: action block to match+0x8e00",
+    "previous evidence 0x144450b80 -> 0x1443ecc70: submitted nonzero motion vector to ball"
+  ],
+  "constants": [
+    {
+      "va": "0x145a1d424",
+      "bytes": "08ac8341",
+      "float32": 16.458999633789062
+    },
+    {
+      "va": "0x145a1d42c",
+      "bytes": "9eefa041",
+      "float32": 20.117000579833984
+    },
+    {
+      "va": "0x145a1d4f0",
+      "bytes": "0000c040",
+      "float32": 6.0
+    },
+    {
+      "va": "0x145a1d4dc",
+      "bytes": "00004040",
+      "float32": 3.0
+    },
+    {
+      "va": "0x145a1d54c",
+      "bytes": "00004842",
+      "float32": 50.0
+    },
+    {
+      "va": "0x145a1d524",
+      "bytes": "0000a041",
+      "float32": 20.0
+    },
+    {
+      "va": "0x145a1d4a0",
+      "bytes": "0000803e",
+      "float32": 0.25
+    },
+    {
+      "va": "0x145a1d570",
+      "bytes": "0000c842",
+      "float32": 100.0
+    }
+  ],
+  "program_windows": [
+    {
+      "va": "0x1443afefc",
+      "file_offset": 70972668,
+      "bytes": "41b8000120004889f1b211e8b440000089868015000041b8000120004889f1b213e89e4000008986d015000041b8000120004889f1b232e8884000008986d415000041b8000120004889f1b212e8724000008986b015000041b8000120004889",
+      "ghidra_matches_original": true
+    },
+    {
+      "va": "0x141b50514",
+      "file_offset": 28637972,
+      "bytes": "80bf9c11000000740b488d05b8cfec03f30f5c00f30f1015f4ceec030f2ed073130f2ec8731c448bbfd0150000b013e906fbffff448bbf80150000b011e9f8fafffff30f5ccaf30f5cc2f30f5ec1f30f100d46cfec03f30f5cc80f57d2f30f2a",
+      "ghidra_matches_original": true
+    },
+    {
+      "va": "0x141b50556",
+      "file_offset": 28638038,
+      "bytes": "f30f5ccaf30f5cc2f30f5ec1f30f100d46cfec03f30f5cc80f57d2f30f2a9780150000f30f59d10f57c9f30f2a8fd0150000f30f59c8f30f58caf3440f2cf9b011e9b2faffff488bb1d01d0000488b99d81d00004839de0f849bfaffff4889f2",
+      "ghidra_matches_original": true
+    },
+    {
+      "va": "0x141b5004e",
+      "file_offset": 28636750,
+      "bytes": "4585f67e1f41f6c0020f85eb00000041f6c0010f85460200004529f74489fde9ff02000041f6c0020f857b0100004489fd4429f541f6c0010f84e5020000884424274883bfd8030000007448488b8fd0030000488b7108807e19004889ca752a",
+      "ghidra_matches_original": true
+    },
+    {
+      "va": "0x14444c46c",
+      "file_offset": 71613036,
+      "bytes": "448b87400e0000418d40ca83f81177688b97300e00004889f94531c04189d9e8003a70fd41898690050000418bb6a80500008b97300e00004889f941b0024189d9e8de3970fd418986a805000039f00f4df083bf400e0000470f45f04189b6a8",
+      "ghidra_matches_original": true
+    },
+    {
+      "va": "0x14442de67",
+      "file_offset": 71488615,
+      "bytes": "e88450fcff8b8424e80000008983f80d0000488b8424e0000000488983f00d00000fb68424000100008883800e00000f28442470410f29060f2883f00d00000f59c0f30f16c8f30f58c80f12c0f30f58c1f30f51c0f30f5883340e0000f30f59",
+      "ghidra_matches_original": true
+    },
+    {
+      "va": "0x14444cfbf",
+      "file_offset": 71615935,
+      "bytes": "418bbda80500004189ff4584e47407458bbd98050000f30f10bd680900000f57c00f2ef87313f30f10054b7c2301f30f58c7e8ba191301eb11f30f1005fc591301f30f58c7e8171a1301f30f2cc0410faf858405000085c00f8eb70100000f28",
+      "ghidra_matches_original": true
+    },
+    {
+      "va": "0x14444d71c",
+      "file_offset": 71617820,
+      "bytes": "f30f11542464f30f5ec28b0544fe5c018b0d2afd5c0166440f6ed9660f6ef0410f2ef389c20f47d1f3440f103d63fd5c01410f28d7440f2edef30f5cd00f47c1f30f59d1660f6ec20f2ed0660f7ed10f47d1660f6ec2660f6ec80f2ec80f46d0",
+      "ghidra_matches_original": true
+    },
+    {
+      "va": "0x14444e670",
+      "file_offset": 71621744,
+      "bytes": "c9f3410f51cc0f2ec87607808e2f0e000002440f138ef00d0000450f12c9f3440f118ef80d0000888e800e00008b8c2488000000894808488b8c24800000004889080f28b424800100000f28bc2490010000440f288424a0010000440f288c24",
+      "ghidra_matches_original": true
+    }
+  ],
+  "limitations": [
+    "nine 96-byte windows only; not full database validation",
+    "C decompilation may follow tail jumps outside supplied body; instruction listing can omit computed targets",
+    "internal fields are not proven equal to UI attributes",
+    "conditional scalar error factor is not final shot accuracy",
+    "no final goal probability or global attribute ranking"
+  ]
+}
