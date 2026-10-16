@@ -1,0 +1,344 @@
+{
+  "target": "fm.exe",
+  "version": "24.4.2+2081827",
+  "analysis": "offline ordinary Ghidra CLI and original PE; no target execution; new local noanalysis project after prior temporary project unavailable",
+  "source_functions": {
+    "copy": "0x144828830",
+    "getter": "0x14210b640",
+    "strategy_source": "0x144803c60",
+    "cutoff_consumer": "0x144838c40",
+    "rank_consumer": "0x144841420"
+  },
+  "preference_storage": {
+    "pointer_field": "source+0xa8",
+    "record_size": 2,
+    "fields": [
+      "id byte",
+      "value byte"
+    ],
+    "unmatched_default": "10 if contextual default disabled; otherwise ID/context-dependent",
+    "enum_identity": "independent from prior player/staff attribute name parser; exact display names unresolved"
+  },
+  "field_mapping": [
+    {
+      "work_field": "0x1f0",
+      "preference_id": 1,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1f1",
+      "preference_id": 2,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1f2",
+      "preference_id": 3,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1f3",
+      "preference_id": 4,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1f4",
+      "preference_id": 93,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1f5",
+      "preference_id": 5,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1f6",
+      "preference_id": 6,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1f7",
+      "preference_id": 24,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1f9",
+      "preference_id": 25,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1fa",
+      "preference_id": 59,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1fd",
+      "preference_id": 19,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1fe",
+      "preference_id": 92,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1fb",
+      "preference_id": 66,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    },
+    {
+      "work_field": "0x1fc",
+      "preference_id": 67,
+      "source_note": "may use alternate object for ids66/67; field1f0 conditionally skipped; copier can early-return"
+    }
+  ],
+  "copier_call_sites": [
+    "0x144803d37",
+    "0x144804671"
+  ],
+  "getter_range": {
+    "code_end_exclusive": "0x14210b90a",
+    "jump_table_start": "0x14210b90c",
+    "jump_table_end_exclusive": "0x14210b994",
+    "jump_table_entries": 34,
+    "range_source": "instruction flow; no PE exception entry"
+  },
+  "precedence": "explicit source may copy subject to copier guard; otherwise strategy record can bypass ordinary copy; no unconditional precedence claim",
+  "constants": [
+    {
+      "va": "0x1456535e0",
+      "raw_bytes": "0000a040",
+      "float32": 5.0
+    },
+    {
+      "va": "0x145663ba8",
+      "raw_bytes": "00004040",
+      "float32": 3.0
+    }
+  ],
+  "worked_examples": {
+    "getter": [
+      {
+        "stored_pairs": [
+          [
+            4,
+            18
+          ]
+        ],
+        "requested_id": 4,
+        "expected": 18
+      },
+      {
+        "stored_pairs": [],
+        "requested_id": 4,
+        "context": null,
+        "allow_default": 1,
+        "expected": 15
+      },
+      {
+        "stored_pairs": [],
+        "requested_id": 4,
+        "context": null,
+        "allow_default": 0,
+        "expected": 10
+      }
+    ],
+    "cutoff": {
+      "T": 20000,
+      "X": 32,
+      "Y_non_null": true,
+      "field_1f4": 10,
+      "field_1f3_before": 10,
+      "field_1f3_after": 18,
+      "K_before": 20000,
+      "K_after": 20640,
+      "candidate_score": 20300,
+      "passes_before": true,
+      "passes_after": false,
+      "scope": "normal positive integer path, no other modifiers; comparison is S>K"
+    },
+    "rank": [
+      {
+        "input_score": 8000,
+        "multiplier": 5,
+        "rank_key": 40000
+      },
+      {
+        "input_score": 8000,
+        "multiplier": 3,
+        "rank_key": 24000
+      }
+    ],
+    "strategy": {
+      "category": "0x2b",
+      "strength": 8,
+      "scope": "entered guarded branch only, before any subsequent copying/modification",
+      "field_1f3": 18,
+      "field_1f4": 18,
+      "field_1fa": 3,
+      "field_1f9": 3
+    }
+  },
+  "program_vs_original_windows": [
+    {
+      "va": "0x14210b640",
+      "file_offset": 34647104,
+      "length": 96,
+      "program_bytes": "488b89a80000004885c97425488b01488b49084839c874190f1f84000000000038100f84e60000004883c0024839c875efb00a4584c90f84eb01000080fa180f84ce0000000fb6ca83f9040f845001000083f9010f85990100004d85c00f8461",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14210b671",
+      "file_offset": 34647153,
+      "length": 96,
+      "program_bytes": "b00a4584c90f84eb01000080fa180f84ce0000000fb6ca83f9040f845001000083f9010f85990100004d85c00f8461020000b0124181780ce00300000f84b4010000498b80500100004885c0740c80783c01b00a0f849c0100004d8b88d80000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14210b74e",
+      "file_offset": 34647374,
+      "length": 96,
+      "program_bytes": "0fb64001c34d85c00f84a8010000498b50184d8b48204c39ca741b488b0a4885c974130fbf89a800000081f93f1f00000f8fe30000004d8b80d80000004d85c00f8470010000418b480c81f91e0300000f84c400000081f9fd020000752a4c39",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14210b90c",
+      "file_offset": 34647820,
+      "length": 96,
+      "program_bytes": "00feffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9fffffff8ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffffd9ffffff",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144828830",
+      "file_offset": 75660848,
+      "length": 96,
+      "program_bytes": "5657534883ec204885d20f849c0100004c89c74889d34889ce488b81a00100004885c0740d488b4808483b080f857a010000488b87500100004885c0742980783c017523488b4718483b47207419488b084885c9741131d24531c041b101e81d",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1448288e4",
+      "file_offset": 75661028,
+      "length": 96,
+      "program_bytes": "e8572d8efd8886f30100004889d9b25d4989f841b101e8412d8efd8886f40100004889d9b2054989f841b101e82b2d8efd8886f50100004889d9b2064989f841b101e8152d8efd8886f60100004889d9b2184989f841b101e8ff2c8efd8886f7",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144828910",
+      "file_offset": 75661072,
+      "length": 96,
+      "program_bytes": "e82b2d8efd8886f50100004889d9b2064989f841b101e8152d8efd8886f60100004889d9b2184989f841b101e8ff2c8efd8886f70100004889d9b2194989f841b101e8e92c8efd8886f90100004889d9b23b4989f841b101e8d32c8efd8886fa",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14482893c",
+      "file_offset": 75661116,
+      "length": 96,
+      "program_bytes": "e8ff2c8efd8886f70100004889d9b2194989f841b101e8e92c8efd8886f90100004889d9b23b4989f841b101e8d32c8efd8886fa0100004889d9b2134989f841b101e8bd2c8efd8886fd0100004889d9b25c4989f841b101e8a72c8efd8886fe",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144828968",
+      "file_offset": 75661160,
+      "length": 96,
+      "program_bytes": "e8d32c8efd8886fa0100004889d9b2134989f841b101e8bd2c8efd8886fd0100004889d9b25c4989f841b101e8a72c8efd8886fe0100004889f931d2e827149ffd4885c0480f45d84889d9b2424989f841b101e8802c8efd8886fb0100004889",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144803c60",
+      "file_offset": 75510368,
+      "length": 96,
+      "program_bytes": "5541574156415541545657534881ec78020000488dac24800000000f29b5e001000048c785d8010000feffffff4885d20f841e1000004989d6488b4218483b42200f840d100000488b004885c00f840110000048837830000f84f60f0000488b",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144803d37",
+      "file_offset": 75510583,
+      "length": 96,
+      "program_bytes": "e8f44a02004889f94889da4d89f0e8a64c02004889d9b2224d89f041b101e8e67890fd8887000200004889d9b21b4d89f041b101e8d07890fd8887010200004889d9b21f4d89f041b101e8ba7890fd8887030200004889d9b2214d89f041b101",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1448044d9",
+      "file_offset": 75512537,
+      "length": 96,
+      "program_bytes": "888ff3010000888ff4010000888ffe01000080bdd7010000000f8fb1000000e9b2000000410fb64d2db00b28c880c10a66c787f10100001414888ff3010000888ff4010000888ffe01000080bdd7010000007e068887f50100008887fa010000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14480452d",
+      "file_offset": 75512621,
+      "length": 96,
+      "program_bytes": "8887f50100008887fa0100008887f9010000808fe801000004e97afdffff410fb64d2db00b28c880c10a66c787f10100001414888ff3010000888ff401000080bdd7010000007e068887f50100008887fa0100008887f9010000808feb010000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144804671",
+      "file_offset": 75512945,
+      "length": 96,
+      "program_bytes": "e8ba410200498b4618493b462074054c8b00eb034531c0c6442420014c89f1b28a41b101e866330cfe4885c00f846e050000488b104889c1ff92980600004889c34885c00f858ff6ffffe951050000498b4618493b46200f8401060000488b10",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144838cb0",
+      "file_offset": 75727536,
+      "length": 96,
+      "program_bytes": "01000089c5498b470848634004498d4c0708498b440708ff90a002000031c94885c00f94c18d4c491e0fbe87f301000083f814ba17000000eb69f30f2ac6f30f590532aae000f30f2cf0e95b010000498b470848634004498d4c0708498b4407",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144838d53",
+      "file_offset": 75727699,
+      "length": 96,
+      "program_bytes": "0f45d1400fbecd39ca7d4829d183f90aba0a0000000f4cd14863ce4869c91f85eb514889cd48c1ed3f48c1f92501e90fafca01c94863c94869c9676666664889ca48c1ea3f48c1f92201d183c0f60fafc101c6498b4618493b46200f84a60000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144841490",
+      "file_offset": 75762320,
+      "length": 96,
+      "program_bytes": "b901006c07e8866195fd89450c0f28b424900000004881c4a80000005b5d5f5e415c415d415e415fc3450fb67424564584f674bb49837c24200074744180fe07756e804d100848c744243800000000c644243000c64424280048c74424200000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14484151d",
+      "file_offset": 75762461,
+      "length": 96,
+      "program_bytes": "ff90980100000fbec0b91e00000029c183f904b8030000000f4dc10fafc6e95affffff488b0d11c9be01488b014889fa4989d8ff50384138c67704804d1104488d4424504889442468488d84241001000048894424704c896c2478488d842420",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1448415d8",
+      "file_offset": 75762648,
+      "length": 96,
+      "program_bytes": "450fb64424544584c0743c4889d94889fae882ae98fd84c0742df30f2ac6f30f5905e21fe100f30f2cc08944244c488b8c242001000089410c410fb6442454884119e97efeffff4c8bb424180100004d85f6740d41807e2f0075104d8b7e30eb",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144841663",
+      "file_offset": 75762787,
+      "length": 96,
+      "program_bytes": "80781804752080481004f30f2ac6f30f59052f25e200f30f2cc8894c244c89480ce914feffff4c89f1e8dfb205fe84c07440488b4c245031d2e86f780afe84c0743041807e2f007529498b4e304885c97420e846b39dfd483b4424507514f30f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1456535e0",
+      "file_offset": 90515936,
+      "length": 96,
+      "program_bytes": "0000a0400000c040000000410000104169636f6e732f313670782f547261696e696e67206c6f61642076657279206c696768740069636f6e732f313670782f547261696e696e67206c6f6164206c696768740069636f6e732f313670782f5472",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145663ba8",
+      "file_offset": 90582952,
+      "length": 96,
+      "program_bytes": "00004040000000007040664501000000508b3d400100000030b206400100000040b206400100000050b2064001000000d0b2094101000000701a3d400100000000c31f410100000040521f410100000060b206400100000060bb094101000000",
+      "matches_original_pe": true
+    }
+  ],
+  "limits": [
+    "Only listed windows compared, not whole database or decompilation.",
+    "Preference names and exact source actor roles unresolved.",
+    "3x and 5x predicate business meanings unresolved.",
+    "X virtual slot+0x198 not independently labelled age.",
+    "No full transfer bid/acceptance formula and no runtime observations."
+  ]
+}

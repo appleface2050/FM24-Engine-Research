@@ -1,0 +1,388 @@
+{
+  "target": "fm.exe",
+  "version": "24.4.2+2081827",
+  "analysis": "offline ordinary Ghidra CLI and original PE bytes; no target execution; not a completed REA dossier",
+  "profile_anchors": [
+    {
+      "descriptor": "0x146353a30",
+      "name_pointer_va": "0x146353a58",
+      "string_va": "0x145c77d00",
+      "name": "FINDING_PLAYER_TARGETS"
+    },
+    {
+      "descriptor": "0x146353a70",
+      "name_pointer_va": "0x146353a98",
+      "string_va": "0x145c77d17",
+      "name": "FINDING_NON_PLAYER_TARGETS"
+    }
+  ],
+  "record_boundaries": {
+    "input_pool": {
+      "size": 8,
+      "key_offset": "0x04"
+    },
+    "requirement": {
+      "research_name": "R; not original class name",
+      "list": "W+0x98..W+0xa0",
+      "position_mask": "0x40",
+      "target_quantity": "0x44",
+      "category": "0x56",
+      "result_pointer_array": "R+0x00..R+0x08"
+    },
+    "candidate_result": {
+      "size": 28,
+      "entity_id_offset": "0x00",
+      "input_score_offset": "0x04",
+      "rank_key_offset": "0x0c",
+      "top_k": 10,
+      "scope": "each processed result collection, not global club transfer limit"
+    }
+  },
+  "functions": {
+    "requirement_selector": "0x1448308d0",
+    "need_predicate": "0x142931920",
+    "pool_selector": "0x143710280",
+    "scan_window": "0x1448380e0",
+    "search_paths": [
+      "0x1448134f0",
+      "0x1448144e0"
+    ],
+    "cutoff": "0x144838c40",
+    "candidate_registration": "0x14483ac30",
+    "rank_producer": "0x144841420"
+  },
+  "range_note": "0x143710280:0x14371068c recovered by instruction flow including two jump tables, not exception record; other exported ranges use exception table envelopes",
+  "constants": [
+    {
+      "va": "0x145643734",
+      "type": "float32",
+      "raw_bytes": "6666a63f",
+      "value": 1.2999999523162842
+    },
+    {
+      "va": "0x1455907b8",
+      "type": "float32",
+      "raw_bytes": "0000c03f",
+      "value": 1.5
+    },
+    {
+      "va": "0x1455a9f00",
+      "type": "float32",
+      "raw_bytes": "0000403f",
+      "value": 0.75
+    },
+    {
+      "va": "0x145643728",
+      "type": "float32",
+      "raw_bytes": "6666663f",
+      "value": 0.8999999761581421
+    },
+    {
+      "va": "0x14565294c",
+      "type": "float32",
+      "raw_bytes": "3333733f",
+      "value": 0.949999988079071
+    },
+    {
+      "va": "0x1458c2858",
+      "type": "float64",
+      "raw_bytes": "666666666666e63f",
+      "value": 0.7
+    },
+    {
+      "va": "0x14558f2e8",
+      "type": "float64",
+      "raw_bytes": "000000000000e03f",
+      "value": 0.5
+    },
+    {
+      "va": "0x14558f2e0",
+      "type": "float64",
+      "raw_bytes": "000000000000e83f",
+      "value": 0.75
+    }
+  ],
+  "worked_examples": {
+    "scan_window": {
+      "T": 20000,
+      "scope": "R+0x55<=1, k=1.3 branch, T<=29999",
+      "low": 15000.0,
+      "high": 26000.0,
+      "sequence": [
+        {
+          "score": 32000,
+          "action": "skip"
+        },
+        {
+          "score": 25000,
+          "action": "evaluate_further"
+        },
+        {
+          "score": 14000,
+          "action": "stop"
+        },
+        {
+          "score": 13000,
+          "action": "not_visited"
+        }
+      ]
+    },
+    "strict_cutoff": {
+      "T": 20000,
+      "requirement_flag": "R+0x1c & 0x20",
+      "K": 18000,
+      "score_equal_passes": false,
+      "score_18001_passes_cutoff_only": true
+    },
+    "need_predicate": {
+      "T": 30000,
+      "m": 0.95,
+      "threshold": 28500,
+      "score_28000": true,
+      "score_29000": false,
+      "scope": "normal branch, associated pointers and special flags absent; valid non -1 bound entity"
+    },
+    "top_k": {
+      "synthetic_input": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "expected_rank_keys": [
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3
+      ],
+      "scope": "illustration only, not observed game player scores"
+    }
+  },
+  "program_vs_original_windows": [
+    {
+      "va": "0x143710280",
+      "file_offset": 57735296,
+      "length": 96,
+      "program_bytes": "81e2ffffcfff4d85c9742749634108488b8970030000488b0cc14885c974284180c0fd4180f80177214881c158010000eb114180c0fd4180f801773e4881c1080200004889c8c331c0c331c081faff0100007f5983fa3f0f8f20010000ffca83",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1437102fa",
+      "file_offset": 57735418,
+      "length": 96,
+      "program_bytes": "31c081faff0100007f6183fa3f0f8f1d010000ffca83fa1f77b24c8d05f1020000496314904c01c2ffe24881c1b8000000eb9681faff1f00007f6881faff0700000f8f1601000081fa000200000f84e001000081fa000400000f856dffffff48",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14371060c",
+      "file_offset": 57736204,
+      "length": 96,
+      "program_bytes": "18fdffffbafcffffbafcfffff1feffffbafcffffbafcffffbafcfffffdfeffffbafcffffbafcffffbafcffffbafcffffbafcffffbafcffffbafcffff09ffffffbafcffffbafcffffbafcffffbafcffffbafcffffbafcffffbafcffffbafcffff",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1448139f5",
+      "file_offset": 75575285,
+      "length": 96,
+      "program_bytes": "e8e6460200443b75687c034189f54585f6440f48ee3c0275a2ffc34189dceb9e488b304c8b68084c89e94829f148c1e903488b150bb3c101488b9280000000488b5a08482b1a31ffeb064531e44989d54139cc410f4cfc4863cf488d3cce4c39",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144813af7",
+      "file_offset": 75575543,
+      "length": 96,
+      "program_bytes": "e8e44502003c0274c00fb6c083f8010f84a30400008b0685c078ae488b0d1fb2c1014885c974a2803d23b7c101007520488b51604889de488b59684829d348c1fb034839c34889f37606488d04c2eb2a488b9180000000488b0a488b52084829",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144813dde",
+      "file_offset": 75576286,
+      "length": 96,
+      "program_bytes": "e80dececfd4189c5458b46444c896424204c89f94c89f24989f1e8434e02004439e80f8da7fcffff89c1c6457f04c74550ffffffffc7455400000000488b45704889442460488d45544889442450894d14894c2448488d45504889442440488d",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144813fc7",
+      "file_offset": 75576775,
+      "length": 96,
+      "program_bytes": "4883fa5141bf0a00000048894d684c0f42f94d85ff0f84310300004e8d2cf84a8d0cfd0000000048894d704983ff020f8c6d0100004c8b457049c1e80448b9ffffffffffffff1f4d89fb4921cb4d8d53ff4c89d748d1ef41f6c7017416e9ba00",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144814123",
+      "file_offset": 75577123,
+      "length": 96,
+      "program_bytes": "8b760c3b730c7dd5488d741201ebd34c39de7c9b660f1f840000000000488d56ff48d1fa488b1cd0418b4a0c3b4b0c0f8d7affffff48891cf04889d64c39da7ddce96cffffff4d39e50f839a010000488b4d704989ca49c1fa034d8d5aff4d89",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144814325",
+      "file_offset": 75577637,
+      "length": 96,
+      "program_bytes": "498b364c8d7e504c8b65684a8d1ce500000000bf50000000eb0e904883c7084839fb0f84e0000000488b0c3e4885c974eae8c5e304feebe331ff4c890cf84983fb087eaa4d8b4df8488b10498955f84983c5f84d89eb4929c34d89da49c1fa03",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144814a44",
+      "file_offset": 75579460,
+      "length": 96,
+      "program_bytes": "e8973602003c0274c30fb6c083f8010f84270300008b0685c078b1488b0dd2a2c1014885c974a5803dd6a7c10100751e488b5160488b59684829d348c1fb034839c3488b5d387606488d04c2eb2a488b9180000000488b0a488b52084829ca0f",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144814c60",
+      "file_offset": 75580000,
+      "length": 96,
+      "program_bytes": "e8db3f02008b4d0839c80f8d9afdffff8945f44c89642440894c24304c8974242848895c2420c64424580048c74424500000000066c7442448000048c7442438000000004c89f94889f24c8b45e84c8b4d00e8b979020084c00f844bfdffff48",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1448380e0",
+      "file_offset": 75724512,
+      "length": 96,
+      "program_bytes": "5657534883ec50440f294424400f297c24300f297424204489c389d60fb6515580fa010f8690000000488b39488b49084889c84829f84883f811721cf20f2ac3f20f2acef20f590d2ca70801b001660f2ec80f87760100004839f974220f57c0",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144838199",
+      "file_offset": 75724697,
+      "length": 96,
+      "program_bytes": "f30f2ac30f57f6f30f2af6f30f100d541dd700f30f59ceb0010f2ec80f87f3000000f3440f1005f485d50081fe401f00000f8cab00000080bc2490000000000f859d000000f30f103d4eb5e0004d85c90f8490000000498b4118493b41200f84",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14483827f",
+      "file_offset": 75724927,
+      "length": 96,
+      "program_bytes": "81fbe8800000b8e88000000f4cc30f57c0f30f2ac0f30f59fe0f2ec70f97c000c031c981fe307500000fb6c00f4dc10f287424200f287c2430440f284424404883c4505b5f5ec381fe214e00007c0e01f6b00239de0f8db8feffffebd281fe11",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144838c40",
+      "file_offset": 75727424,
+      "length": 96,
+      "program_bytes": "41574156565755534883ec284489c6f6421c200f85910000004d89cf4889d34889cf4c8bb4248000000080b9f40100000b7c0a837b40010f858200000080bff30100000b0f8c1c010000837b40010f8412010000498b470848634004498d4c07",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144838cf6",
+      "file_offset": 75727606,
+      "length": 96,
+      "program_bytes": "f30f2cf0e95b010000498b470848634004498d4c0708498b440708488d1534332101ff909801000089c5498b470848634004498d4c0708498b440708ff90a002000031c94885c00f94c18d4c491e0fbe87f401000083f814ba150000000f45d1",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x142931920",
+      "file_offset": 43192096,
+      "length": 96,
+      "program_bytes": "4157415641554154565755534883ec480f297424304883792000488b79187408c1ef1b83e701eb0af7c700000024741a31ff89f80f287424304883c4485b5d5f5e415c415d415e415fc34489cb4489c50f28f14889ce4c8b71284584c90f8541",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x142931bf5",
+      "file_offset": 43192821,
+      "length": 96,
+      "program_bytes": "44397e340f8c53fdffff0fb67e184080e70840c0ef03e942fdffff4885d274424c8b01488b41084c29c07436448b4a0848c1f8034883f802ba01000000480f43d031c9eb0e660f1f44000048ffc14839ca740f498b04c84885c074ef443b0875",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1448308d0",
+      "file_offset": 75693776,
+      "length": 96,
+      "program_bytes": "4157415641554154565755534883ec28488ba998000000488b99a00000004839dd0f84c60100004589ce4d89c44989cf488bbc24a0000000440fb6ac24900000004584c974270fb68c24980000004584ed0f84e20000004189cde98e00000090",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x144841420",
+      "file_offset": 75762208,
+      "length": 96,
+      "program_bytes": "4157415641554154565755534881eca80000000f29b424900000004c89cf4d89c489d64989cd488bac2420010000488b9c24100100004c894c24508954244c83bc2430010000007e04804d110841f685e901000002750d41f644241806743a89",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1448418a1",
+      "file_offset": 75763361,
+      "length": 96,
+      "program_bytes": "89410ce9f4fbffff4531c0488b0d05bdbe01488b014c8d4c245b4c89f2ff50303d1f4b00007c676bf834498b06f3410f2ab5b80100004c89f1ff90600400008d0c808d0c8901c181f9c1c62d00b8c0c62d000f4dc1f30f2ac7f30f59358ef9f1",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x14483ac30",
+      "file_offset": 75735600,
+      "length": 96,
+      "program_bytes": "4157415641554154565755534883ec484489cd4489c74889d64989cc4c8bbc24b8000000448bb424b0000000448bac24d0000000b91c000000e8e26402fe4889c3c700ffffffff66c74018040048c740040000000048c7400c00000000c74014",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x146353a30",
+      "file_offset": 104146480,
+      "length": 96,
+      "program_bytes": "00000000000000001000000000000000000000000000000098403446010000000000000000000000007dc74501000000482e584501000000482e5845010000000000000000000000100000000000000000000000000000009840344601000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x146353a70",
+      "file_offset": 104146544,
+      "length": 96,
+      "program_bytes": "00000000000000001000000000000000000000000000000098403446010000000000000000000000177dc74501000000482e584501000000482e5845010000000000000000000000100000000000000000000000000000004045354601000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145c77d00",
+      "file_offset": 96956672,
+      "length": 96,
+      "program_bytes": "46494e44494e475f504c415945525f544152474554530046494e44494e475f4e4f4e5f504c415945525f54415247455453000000cdcccc3e9a99993ecdcc4c3ecdcccc3d01000000000000000400000010002000100000001000100008000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x145643734",
+      "file_offset": 90450740,
+      "length": 96,
+      "program_bytes": "6666a63f0000000000000000a037644501000000609233400100000080923340010000009092334001000000a092334001000000b092334001000000c092334001000000d092334001000000e092334001000000f092334001000000a0a63340",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1455907b8",
+      "file_offset": 89717688,
+      "length": 96,
+      "program_bytes": "0000c03f73657474696e67732f7369646562617220636f6c6f7572730073657474696e67732f616363656e7420636f6c6f7572730073657474696e67732f6461726b20616363656e7420636f6c6f757273000000000000005009594501000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x1455a9f00",
+      "file_offset": 89821952,
+      "length": 96,
+      "program_bytes": "0000403f000080b30000000000000000d0a05a4501000000e0da15400100000010db15400100000020db15400100000050db154001000000c0cc15400100000030ca1540010000000000000000000000a0a15a450100000060db154001000000",
+      "matches_original_pe": true
+    },
+    {
+      "va": "0x15ac14bd0",
+      "file_offset": 445281744,
+      "length": 96,
+      "program_bytes": "415741565657534881ec90000000440f298424800000000f297c24700f297424604989d64989cf8b05c3a277eb65488b0c2558000000488b04c1488b881804000048894c2450488d0d53ee73eb48894c245848898818040000488d4c2448ff15",
+      "matches_original_pe": true
+    }
+  ],
+  "limits": [
+    "Only listed windows compared, not whole Ghidra database.",
+    "Non-player target retry branch is not treated as player transfer evidence.",
+    "Need/category codes and manager preference fields not fully mapped.",
+    "Final rank modifications only partially explained.",
+    "No complete path from retained candidates to submitted bid and acceptance.",
+    "C may follow external shared tails; bounded listing does not cover all indirect branches."
+  ]
+}
