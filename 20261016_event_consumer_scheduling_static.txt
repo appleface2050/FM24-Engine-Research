@@ -1,0 +1,1143 @@
+FM24 24.4.2+2081827; static-only. Original PE byte slices, objdump and existing Ghidra read-only export.
+No native execution; decompiler signatures are provisional. Unresolved indirect callees are not expanded.
+
+
+FUNCTION 144404f40
+BODY [[144404f40, 144405461]]
+
+ulonglong FUN_144404f40(longlong param_1,undefined4 param_2)
+
+{
+  uint uVar1;
+  longlong lVar2;
+  char cVar3;
+  undefined1 uVar4;
+  int iVar5;
+  undefined4 uVar6;
+  ulonglong uVar7;
+  int iVar8;
+  undefined8 uVar9;
+  ulonglong unaff_RBX;
+  undefined7 uVar10;
+  int iVar11;
+  byte bStack_3c;
+  undefined1 uStack_3b;
+  char cStack_3a;
+  char cStack_39;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  undefined4 uStack_30;
+  undefined4 uStack_2c;
+
+  FUN_141a98ea0();
+  FUN_141a98050(param_1);
+  if ((*(int *)(param_1 + 0x9e8) * -0x11111111 + 0x8888880U >> 4 |
+      *(int *)(param_1 + 0x9e8) * -0x10000000) < 0x1111111) {
+    lVar2 = *(longlong *)(*(longlong *)(param_1 + 0xcdf8) + 0x138);
+    if (lVar2 != 0) {
+      uVar7 = FUN_141aa3070(param_1,*(longlong *)(param_1 + 0xcdf8),0);
+      uVar9 = 0x80;
+      if ((uVar7 & 0x10) == 0) {
+        uVar9 = 1;
+      }
+      FUN_141b29ba0(lVar2,uVar9);
+    }
+    unaff_RBX = *(ulonglong *)(*(longlong *)(param_1 + 0xce00) + 0x138);
+    if (unaff_RBX != 0) {
+      FUN_141aa3070(param_1,*(longlong *)(param_1 + 0xce00),0);
+      FUN_141b29ba0(unaff_RBX);
+    }
+  }
+  if (*(char *)(param_1 + 0xce60) != '\0') {
+    if (*(char *)(param_1 + 0xce60) != '\x06') {
+      *(undefined1 *)(*(longlong *)(param_1 + 0xce00) + 0x4c0) = 0xff;
+      *(undefined1 *)(*(longlong *)(param_1 + 0xcdf8) + 0x4c0) = 0xff;
+      *(undefined1 *)(*(longlong *)(param_1 + 0xce00) + 0x4c1) = 0;
+      *(undefined1 *)(*(longlong *)(param_1 + 0xcdf8) + 0x4c1) = 0;
+    }
+    *(undefined1 *)(param_1 + 0xce60) = 0;
+  }
+  if (((byte)(*(char *)(param_1 + 0xd4a8) - 6U) < 4) &&
+     (cVar3 = FUN_141a9a950(param_1), cVar3 != '\0')) {
+    FUN_141a93aa0(param_1);
+    if ((*(ushort *)(param_1 + 0xaa6) & 0x110) != 0) {
+      *(undefined1 *)(param_1 + 0xce60) = 0;
+      FUN_141ab2680(param_1,param_2,0);
+    }
+    *(int *)(param_1 + 0x9e8) = *(int *)(param_1 + 0x9e8) + 1;
+    if ((ulonglong)(longlong)*(char *)(param_1 + 0xd4a8) < 10) {
+      unaff_RBX = (ulonglong)(byte)(&UNK_145c4ab8c)[*(char *)(param_1 + 0xd4a8)];
+    }
+    else {
+      unaff_RBX = 0;
+    }
+    goto LAB_144405249;
+  }
+  if ((*(byte *)(param_1 + 0x9e8) & 3) == 0) {
+    FUN_141aca480(param_1);
+    iVar5 = (5000 - *(int *)(param_1 + 0xd454)) /
+            (int)(0x9c4 / (longlong)-*(int *)(param_1 + 0xe5ac)) + *(int *)(param_1 + 0xe5ac) +
+            *(int *)(*(longlong *)(param_1 + 0xcdf8) + 0x428);
+    if (iVar5 < 1) {
+      iVar5 = 0;
+    }
+    if (9999 < iVar5) {
+      iVar5 = 10000;
+    }
+    *(int *)(*(longlong *)(param_1 + 0xcdf8) + 0x428) = iVar5;
+    uVar1 = *(uint *)(param_1 + 0xe5ac);
+    unaff_RBX = (ulonglong)uVar1;
+    iVar8 = *(int *)(param_1 + 0xd454) + -5000;
+    iVar11 = (int)(0x9c4 / (longlong)(int)-uVar1);
+    iVar5 = iVar8 / iVar11 + uVar1 + *(int *)(*(longlong *)(param_1 + 0xce00) + 0x428);
+    if (iVar5 < 1) {
+      iVar5 = 0;
+    }
+    if (9999 < iVar5) {
+      iVar5 = 10000;
+    }
+    *(int *)(*(longlong *)(param_1 + 0xce00) + 0x428) = iVar5;
+    FUN_1444983d0(param_1,(longlong)iVar8 % (longlong)iVar11 & 0xffffffff);
+  }
+  cVar3 = FUN_141a9b6b0(param_1);
+  if (cVar3 == '\0') {
+    if ((*(byte *)(param_1 + 0xaa4) & 1) != 0) {
+      FUN_141ad1dd0(param_1);
+    }
+    FUN_1444a1aa0(param_1);
+    FUN_1444a2d70(param_1);
+    unaff_RBX = *(ulonglong *)(param_1 + 0xd2b8);
+    uStack_38 = *(undefined4 *)(unaff_RBX + 0xd00);
+    uStack_34 = *(undefined4 *)(unaff_RBX + 0xd04);
+    uStack_30 = *(undefined4 *)(unaff_RBX + 0xd08);
+    uStack_2c = *(undefined4 *)(unaff_RBX + 0xd0c);
+    bStack_3c = 0xff;
+    uVar6 = FUN_1443f0420(unaff_RBX,*(undefined4 *)(param_1 + 0x9e8),&uStack_38,&bStack_3c);
+    if (-1 < (char)bStack_3c) {
+      *(undefined8 *)(unaff_RBX + 0xd68) =
+           *(undefined8 *)(*(longlong *)(unaff_RBX + 0xd10) + 0xcdf8 + (ulonglong)bStack_3c * 8);
+    }
+    cStack_39 = (char)uVar6;
+    lVar2 = *(longlong *)(param_1 + 0xd2b8);
+    *(undefined4 *)(lVar2 + 0xd00) = uStack_38;
+    *(undefined4 *)(lVar2 + 0xd04) = uStack_34;
+    *(undefined4 *)(lVar2 + 0xd08) = uStack_30;
+    *(undefined4 *)(lVar2 + 0xd0c) = uStack_2c;
+    FUN_141aa4050(param_1);
+    FUN_141a9baa0(param_1,uVar6);
+    cVar3 = FUN_1445191c0(param_1);
+    if (cVar3 == '\0') {
+      if (*(int *)(param_1 + 0xa6c) < *(int *)(param_1 + 0x9e8)) {
+        bStack_3c = 0;
+        cStack_3a = '\0';
+        uStack_3b = 0;
+        cVar3 = FUN_1444a3410(param_1,&bStack_3c,&cStack_3a,&cStack_39,&uStack_3b);
+        unaff_RBX = CONCAT71((int7)(unaff_RBX >> 8),1);
+        if (cVar3 == '\0') goto LAB_1444052be;
+      }
+      else {
+        if (*(int *)(param_1 + 0x9e8) != *(int *)(param_1 + 0xa6c)) goto LAB_14440522d;
+        FUN_141aa2c70(param_1);
+        bStack_3c = 1;
+        cStack_3a = '\0';
+        uStack_3b = 0;
+LAB_1444052be:
+        FUN_141aa4510(param_1);
+        iVar5 = *(int *)(param_1 + 0x9e8);
+        if ((((*(int *)(param_1 + 0xa50) + 4 <= iVar5) || (iVar5 == *(int *)(param_1 + 0xe214))) ||
+            (iVar5 == *(int *)(param_1 + 0xa28) + 1)) || (iVar5 == *(int *)(param_1 + 0xa3c) + 1)) {
+          FUN_1444ab460(param_1);
+        }
+        uVar4 = FUN_1444fa2f0(param_1);
+        *(undefined1 *)(param_1 + 0xd840) = uVar4;
+        cVar3 = FUN_141aa4820(param_1);
+        uVar10 = (undefined7)(unaff_RBX >> 8);
+        unaff_RBX = CONCAT71(uVar10,1);
+        if (cVar3 == '\0') {
+          FUN_141b70800(*(undefined8 *)(param_1 + 0xcdf8));
+          FUN_141b70800(*(undefined8 *)(param_1 + 0xce00));
+          if (cStack_3a == '\0') {
+            if (bStack_3c == 0) {
+              if ((byte)(cStack_39 - 1U) < 7) {
+                func_0x000141aac460();
+                if ((byte)(cStack_39 - 5U) < 2) goto LAB_144405404;
+              }
+              else {
+                cVar3 = FUN_141abad40(param_1);
+                if (cVar3 != '\0') {
+                  FUN_141abadc0(param_1);
+                }
+              }
+            }
+            else {
+              FUN_141aa9640(param_1,uStack_3b);
+            }
+          }
+          else {
+            func_0x000141aa48d0(param_1);
+          }
+          if (((*(byte *)(param_1 + 0x30) & 0x40) != 0) && (*(char *)(param_1 + 0xe1f0) != '\x11'))
+          {
+            FUN_14451e740(param_1);
+          }
+          unaff_RBX = CONCAT71(uVar10,1);
+          if (((*(uint *)(param_1 + 0xaa4) & 0x200) == 0) ||
+             (*(int *)(param_1 + 0xa1c) + 4 <= *(int *)(param_1 + 0x9e8))) {
+            if ((*(uint *)(param_1 + 0xaa4) & 0x100) == 0) {
+              FUN_141ab2270();
+            }
+            else {
+              FUN_141aaf5c0(param_1);
+              cVar3 = func_0x000141aaf4f0(param_1);
+              if (cVar3 != '\0') {
+                *(byte *)(param_1 + 0xaa6) = *(byte *)(param_1 + 0xaa6) | 0x40;
+                iVar5 = *(int *)(param_1 + 0x9e8);
+                *(int *)(param_1 + 0xe210) = iVar5 + 1;
+                if ((*(char *)(param_1 + 0xce61) != '\x02') ||
+                   (unaff_RBX = CONCAT71(uVar10,5), *(int *)(param_1 + 0xa2c) <= iVar5 + -0x28)) {
+                  *(undefined2 *)(param_1 + 0xce60) = 0x202;
+                  *(int *)(param_1 + 0xa2c) = iVar5;
+                  unaff_RBX = CONCAT71((int7)(unaff_RBX >> 8),5);
+                }
+              }
+            }
+          }
+          *(undefined4 *)(param_1 + 0xa24) = *(undefined4 *)(param_1 + 0x9e8);
+        }
+      }
+LAB_144405404:
+      FUN_141ab2680(param_1,param_2,0);
+      *(int *)(param_1 + 0xa84) = *(int *)(param_1 + 0xa84) + 1;
+      *(int *)(param_1 + 0x9e8) = *(int *)(param_1 + 0x9e8) + 1;
+      goto LAB_144405249;
+    }
+LAB_14440522d:
+    FUN_141ab2680(param_1,param_2,0);
+LAB_14440523b:
+    *(int *)(param_1 + 0xa84) = *(int *)(param_1 + 0xa84) + 1;
+  }
+  else {
+    FUN_141ab2680(param_1,param_2,0);
+    if ((*(byte *)(param_1 + 0xaa4) & 1) == 0) goto LAB_14440523b;
+  }
+  *(int *)(param_1 + 0x9e8) = *(int *)(param_1 + 0x9e8) + 1;
+  unaff_RBX = CONCAT71((int7)(unaff_RBX >> 8),1);
+LAB_144405249:
+  return unaff_RBX & 0xffffffff;
+}
+
+
+LISTING INSTRUCTIONS (bounded recursive disassembly)
+144404f40 PUSH R14
+144404f42 PUSH RSI
+144404f43 PUSH RDI
+144404f44 PUSH RBP
+144404f45 PUSH RBX
+144404f46 SUB RSP,0x40
+144404f4a MOV R14D,EDX
+144404f4d MOV RSI,RCX
+144404f50 XOR EDX,EDX
+144404f52 CALL 0x141a98ea0
+144404f57 MOV RCX,RSI
+144404f5a CALL 0x141a98050
+144404f5f IMUL EAX,dword ptr [RSI + 0x9e8],-0x11111111
+144404f69 ADD EAX,0x8888880
+144404f6e ROR EAX,0x4
+144404f71 CMP EAX,0x1111110
+144404f76 JA 0x144404fe2
+144404f78 MOV RDX,qword ptr [RSI + 0xcdf8]
+144404f7f MOV RBX,qword ptr [RDX + 0x138]
+144404f86 TEST RBX,RBX
+144404f89 JZ 0x144404fad
+144404f8b MOV RCX,RSI
+144404f8e XOR R8D,R8D
+144404f91 CALL 0x141aa3070
+144404f96 TEST AL,0x10
+144404f98 MOV EAX,0x1
+144404f9d MOV EDX,0x80
+144404fa2 CMOVZ EDX,EAX
+144404fa5 MOV RCX,RBX
+144404fa8 CALL 0x141b29ba0
+144404fad MOV RDX,qword ptr [RSI + 0xce00]
+144404fb4 MOV RBX,qword ptr [RDX + 0x138]
+144404fbb TEST RBX,RBX
+144404fbe JZ 0x144404fe2
+144404fc0 MOV RCX,RSI
+144404fc3 XOR R8D,R8D
+144404fc6 CALL 0x141aa3070
+144404fcb TEST AL,0x10
+144404fcd MOV EAX,0x1
+144404fd2 MOV EDX,0x80
+144404fd7 CMOVZ EDX,EAX
+144404fda MOV RCX,RBX
+144404fdd CALL 0x141b29ba0
+144404fe2 MOVZX EAX,byte ptr [RSI + 0xce60]
+144404fe9 TEST EAX,EAX
+144404feb JZ 0x144405031
+144404fed CMP EAX,0x6
+144404ff0 JZ 0x14440502a
+144404ff2 MOV RAX,qword ptr [RSI + 0xce00]
+144404ff9 MOV byte ptr [RAX + 0x4c0],0xff
+144405000 MOV RAX,qword ptr [RSI + 0xcdf8]
+144405007 MOV byte ptr [RAX + 0x4c0],0xff
+14440500e MOV RAX,qword ptr [RSI + 0xce00]
+144405015 MOV byte ptr [RAX + 0x4c1],0x0
+14440501c MOV RAX,qword ptr [RSI + 0xcdf8]
+144405023 MOV byte ptr [RAX + 0x4c1],0x0
+14440502a MOV byte ptr [RSI + 0xce60],0x0
+144405031 MOVZX EAX,byte ptr [RSI + 0xd4a8]
+144405038 ADD AL,0xfa
+14440503a CMP AL,0x3
+14440503c JA 0x14440509d
+14440503e MOV RCX,RSI
+144405041 CALL 0x141a9a950
+144405046 TEST AL,AL
+144405048 JZ 0x14440509d
+14440504a MOV RCX,RSI
+14440504d CALL 0x141a93aa0
+144405052 MOVZX EAX,word ptr [RSI + 0xaa6]
+144405059 TEST EAX,0x110
+14440505e JZ 0x144405075
+144405060 MOV byte ptr [RSI + 0xce60],0x0
+144405067 MOV RCX,RSI
+14440506a MOV EDX,R14D
+14440506d XOR R8D,R8D
+144405070 CALL 0x141ab2680
+144405075 INC dword ptr [RSI + 0x9e8]
+14440507b MOVSX RAX,byte ptr [RSI + 0xd4a8]
+144405083 CMP RAX,0xa
+144405087 JNC 0x1444052a1
+14440508d LEA RCX,[0x145c4ab8c]
+144405094 MOVZX EBX,byte ptr [RAX + RCX*0x1]
+144405098 JMP 0x144405249
+14440509d TEST byte ptr [RSI + 0x9e8],0x3
+1444050a4 JNZ 0x144405159
+1444050aa MOV RCX,RSI
+1444050ad CALL 0x141aca480
+1444050b2 MOV R8,qword ptr [RSI + 0xcdf8]
+1444050b9 MOV EBX,dword ptr [RSI + 0xe5ac]
+1444050bf MOV ECX,0x1388
+1444050c4 SUB ECX,dword ptr [RSI + 0xd454]
+1444050ca MOV EDI,EBX
+1444050cc NEG EDI
+1444050ce MOV EAX,0x9c4
+1444050d3 XOR EDX,EDX
+1444050d5 IDIV EDI
+1444050d7 MOV EBP,EAX
+1444050d9 MOV EAX,ECX
+1444050db CDQ
+1444050dc IDIV EBP
+1444050de ADD EAX,EBX
+1444050e0 ADD EAX,dword ptr [R8 + 0x428]
+1444050e7 XOR R9D,R9D
+1444050ea TEST EAX,EAX
+1444050ec CMOVLE EAX,R9D
+1444050f0 CMP EAX,0x2710
+1444050f5 MOV R10D,0x2710
+1444050fb CMOVGE EAX,R10D
+1444050ff MOV dword ptr [R8 + 0x428],EAX
+144405106 MOV R8,qword ptr [RSI + 0xce00]
+14440510d MOV EBX,dword ptr [RSI + 0xe5ac]
+144405113 MOV ECX,0xffffec78
+144405118 ADD ECX,dword ptr [RSI + 0xd454]
+14440511e MOV EDI,EBX
+144405120 NEG EDI
+144405122 MOV EAX,0x9c4
+144405127 XOR EDX,EDX
+144405129 IDIV EDI
+14440512b MOV EBP,EAX
+14440512d MOV EAX,ECX
+14440512f CDQ
+144405130 IDIV EBP
+144405132 ADD EAX,EBX
+144405134 ADD EAX,dword ptr [R8 + 0x428]
+14440513b TEST EAX,EAX
+14440513d CMOVLE EAX,R9D
+144405141 CMP EAX,0x2710
+144405146 CMOVGE EAX,R10D
+14440514a MOV dword ptr [R8 + 0x428],EAX
+144405151 MOV RCX,RSI
+144405154 CALL 0x1444983d0
+144405159 MOV RCX,RSI
+14440515c CALL 0x141a9b6b0
+144405161 TEST AL,AL
+144405163 JZ 0x144405185
+144405165 MOV RCX,RSI
+144405168 MOV EDX,R14D
+14440516b XOR R8D,R8D
+14440516e CALL 0x141ab2680
+144405173 TEST byte ptr [RSI + 0xaa4],0x1
+14440517a JZ 0x14440523b
+144405180 JMP 0x144405241
+144405185 TEST byte ptr [RSI + 0xaa4],0x1
+14440518c JZ 0x144405196
+14440518e MOV RCX,RSI
+144405191 CALL 0x141ad1dd0
+144405196 MOV RCX,RSI
+144405199 CALL 0x1444a1aa0
+14440519e MOV RCX,RSI
+1444051a1 CALL 0x1444a2d70
+1444051a6 MOV RBX,qword ptr [RSI + 0xd2b8]
+1444051ad MOVAPS XMM0,xmmword ptr [RBX + 0xd00]
+1444051b4 MOVAPS xmmword ptr [RSP + 0x30],XMM0
+1444051b9 MOV EDX,dword ptr [RSI + 0x9e8]
+1444051bf MOV byte ptr [RSP + 0x2c],0xff
+1444051c4 LEA R8,[RSP + 0x30]
+1444051c9 LEA R9,[RSP + 0x2c]
+1444051ce MOV RCX,RBX
+1444051d1 CALL 0x1443f0420
+1444051d6 MOV EBP,EAX
+1444051d8 MOVZX EAX,byte ptr [RSP + 0x2c]
+1444051dd TEST AL,AL
+1444051df JS 0x1444051f7
+1444051e1 MOV RCX,qword ptr [RBX + 0xd10]
+1444051e8 MOV RAX,qword ptr [RCX + RAX*0x8 + 0xcdf8]
+1444051f0 MOV qword ptr [RBX + 0xd68],RAX
+1444051f7 MOV byte ptr [RSP + 0x2f],BPL
+1444051fc MOV RAX,qword ptr [RSI + 0xd2b8]
+144405203 MOVAPS XMM0,xmmword ptr [RSP + 0x30]
+144405208 MOVAPS xmmword ptr [RAX + 0xd00],XMM0
+14440520f MOV RCX,RSI
+144405212 CALL 0x141aa4050
+144405217 MOV RCX,RSI
+14440521a MOV EDX,EBP
+14440521c CALL 0x141a9baa0
+144405221 MOV RCX,RSI
+144405224 CALL 0x1445191c0
+144405229 TEST AL,AL
+14440522b JZ 0x144405256
+14440522d MOV RCX,RSI
+144405230 MOV EDX,R14D
+144405233 XOR R8D,R8D
+144405236 CALL 0x141ab2680
+14440523b INC dword ptr [RSI + 0xa84]
+144405241 INC dword ptr [RSI + 0x9e8]
+144405247 MOV BL,0x1
+144405249 MOV EAX,EBX
+14440524b ADD RSP,0x40
+14440524f POP RBX
+144405250 POP RBP
+144405251 POP RDI
+144405252 POP RSI
+144405253 POP R14
+144405255 RET
+144405256 MOV EAX,dword ptr [RSI + 0x9e8]
+14440525c MOV ECX,dword ptr [RSI + 0xa6c]
+144405262 CMP EAX,ECX
+144405264 JLE 0x1444052a5
+144405266 MOV byte ptr [RSP + 0x2c],0x0
+14440526b MOV byte ptr [RSP + 0x2e],0x0
+144405270 MOV byte ptr [RSP + 0x2d],0x0
+144405275 LEA RAX,[RSP + 0x2d]
+14440527a MOV qword ptr [RSP + 0x20],RAX
+14440527f LEA RDX,[RSP + 0x2c]
+144405284 LEA R8,[RSP + 0x2e]
+144405289 LEA R9,[RSP + 0x2f]
+14440528e MOV RCX,RSI
+144405291 CALL 0x1444a3410
+144405296 MOV BL,0x1
+144405298 TEST AL,AL
+14440529a JZ 0x1444052be
+14440529c JMP 0x144405404
+1444052a1 XOR EBX,EBX
+1444052a3 JMP 0x144405249
+1444052a5 JNZ 0x14440522d
+1444052a7 MOV RCX,RSI
+1444052aa CALL 0x141aa2c70
+1444052af MOV byte ptr [RSP + 0x2c],0x1
+1444052b4 MOV byte ptr [RSP + 0x2e],0x0
+1444052b9 MOV byte ptr [RSP + 0x2d],0x0
+1444052be MOV RCX,RSI
+1444052c1 CALL 0x141aa4510
+1444052c6 MOV EAX,dword ptr [RSI + 0x9e8]
+1444052cc MOV ECX,dword ptr [RSI + 0xa50]
+1444052d2 ADD ECX,0x4
+1444052d5 CMP EAX,ECX
+1444052d7 JGE 0x1444052f9
+1444052d9 CMP EAX,dword ptr [RSI + 0xe214]
+1444052df JZ 0x1444052f9
+1444052e1 MOV ECX,dword ptr [RSI + 0xa28]
+1444052e7 INC ECX
+1444052e9 CMP EAX,ECX
+1444052eb JZ 0x1444052f9
+1444052ed MOV ECX,dword ptr [RSI + 0xa3c]
+1444052f3 INC ECX
+1444052f5 CMP EAX,ECX
+1444052f7 JNZ 0x144405301
+1444052f9 MOV RCX,RSI
+1444052fc CALL 0x1444ab460
+144405301 MOV RCX,RSI
+144405304 CALL 0x1444fa2f0
+144405309 MOV byte ptr [RSI + 0xd840],AL
+14440530f MOV RCX,RSI
+144405312 CALL 0x141aa4820
+144405317 MOV BL,0x1
+144405319 TEST AL,AL
+14440531b JNZ 0x144405404
+144405321 MOV RCX,qword ptr [RSI + 0xcdf8]
+144405328 CALL 0x141b70800
+14440532d MOV RCX,qword ptr [RSI + 0xce00]
+144405334 CALL 0x141b70800
+144405339 CMP byte ptr [RSP + 0x2e],0x0
+14440533e JZ 0x14440534a
+144405340 MOV RCX,RSI
+144405343 CALL 0x141aa48d0
+144405348 JMP 0x144405362
+14440534a CMP byte ptr [RSP + 0x2c],0x0
+14440534f JZ 0x144405423
+144405355 MOVZX EDX,byte ptr [RSP + 0x2d]
+14440535a MOV RCX,RSI
+14440535d CALL 0x141aa9640
+144405362 TEST byte ptr [RSI + 0x30],0x40
+144405366 JZ 0x144405379
+144405368 CMP byte ptr [RSI + 0xe1f0],0x11
+14440536f JZ 0x144405379
+144405371 MOV RCX,RSI
+144405374 CALL 0x14451e740
+144405379 MOV EAX,dword ptr [RSI + 0xaa4]
+14440537f MOV BL,0x1
+144405381 TEST EAX,0x200
+144405386 JZ 0x144405399
+144405388 MOV ECX,dword ptr [RSI + 0xa1c]
+14440538e ADD ECX,0x4
+144405391 CMP dword ptr [RSI + 0x9e8],ECX
+144405397 JL 0x1444053f8
+144405399 MOV RCX,RSI
+14440539c TEST EAX,0x100
+1444053a1 JNZ 0x1444053aa
+1444053a3 CALL 0x141ab2270
+1444053a8 JMP 0x1444053f8
+1444053aa CALL 0x141aaf5c0
+1444053af MOV RCX,RSI
+1444053b2 CALL 0x141aaf4f0
+1444053b7 TEST AL,AL
+1444053b9 JZ 0x1444053f8
+1444053bb OR byte ptr [RSI + 0xaa6],0x40
+1444053c2 MOV EAX,dword ptr [RSI + 0x9e8]
+1444053c8 LEA ECX,[RAX + 0x1]
+1444053cb MOV dword ptr [RSI + 0xe210],ECX
+1444053d1 CMP byte ptr [RSI + 0xce61],0x2
+1444053d8 JNZ 0x1444053e7
+1444053da LEA ECX,[RAX + -0x28]
+1444053dd MOV BL,0x5
+1444053df CMP dword ptr [RSI + 0xa2c],ECX
+1444053e5 JG 0x1444053f8
+1444053e7 MOV word ptr [RSI + 0xce60],0x202
+1444053f0 MOV dword ptr [RSI + 0xa2c],EAX
+1444053f6 MOV BL,0x5
+1444053f8 MOV EAX,dword ptr [RSI + 0x9e8]
+1444053fe MOV dword ptr [RSI + 0xa24],EAX
+144405404 MOV RCX,RSI
+144405407 MOV EDX,R14D
+14440540a XOR R8D,R8D
+14440540d CALL 0x141ab2680
+144405412 INC dword ptr [RSI + 0xa84]
+144405418 INC dword ptr [RSI + 0x9e8]
+14440541e JMP 0x144405249
+144405423 MOVZX EDX,byte ptr [RSP + 0x2f]
+144405428 LEA EAX,[RDX + -0x1]
+14440542b MOV RCX,RSI
+14440542e CMP AL,0x6
+144405430 JA 0x144405448
+144405432 CALL 0x141aac460
+144405437 MOVZX EAX,byte ptr [RSP + 0x2f]
+14440543c ADD AL,0xfb
+14440543e CMP AL,0x2
+144405440 JNC 0x144405362
+144405446 JMP 0x144405404
+144405448 CALL 0x141abad40
+14440544d TEST AL,AL
+14440544f JZ 0x144405362
+144405455 MOV RCX,RSI
+144405458 CALL 0x141abadc0
+14440545d JMP 0x144405362
+
+
+FUNCTION 141aa4820
+BODY [[141aa4820, 141aa48cc]]
+
+bool FUN_141aa4820(longlong param_1)
+
+{
+  int iVar1;
+  longlong lVar2;
+  bool bVar3;
+
+  bVar3 = false;
+  if ((*(char *)(param_1 + 0xd840) == '\0') && (*(int *)(param_1 + 0xe28c) == 0)) {
+    lVar2 = *(longlong *)(param_1 + 0xd2b8);
+    while (((*(int *)(lVar2 + 0xd94) == -1 && (*(char *)(lVar2 + 0xd63) != '\0')) &&
+           (*(char *)(lVar2 + 0xd62) == '\0'))) {
+      FUN_1443ea8f0(lVar2,1);
+    }
+    iVar1 = *(int *)(param_1 + 0x9e8);
+    bVar3 = false;
+    if (((*(int *)(lVar2 + 0xd94) != iVar1) && (bVar3 = false, iVar1 != *(int *)(param_1 + 0xa1c)))
+       && (iVar1 != *(int *)(param_1 + 0xa00))) {
+      if (iVar1 == *(int *)(*(longlong *)(param_1 + 0xce70) + 0x2dc)) {
+        bVar3 = false;
+      }
+      else {
+        bVar3 = false;
+        if ((iVar1 != *(int *)(param_1 + 0xa04)) && (iVar1 != *(int *)(param_1 + 0xa08))) {
+          bVar3 = iVar1 != *(int *)(param_1 + 0xa7c);
+        }
+      }
+    }
+  }
+  return bVar3;
+}
+
+
+LISTING INSTRUCTIONS (bounded recursive disassembly)
+141aa4820 PUSH RSI
+141aa4821 PUSH RDI
+141aa4822 SUB RSP,0x28
+141aa4826 XOR EAX,EAX
+141aa4828 CMP byte ptr [RCX + 0xd840],0x0
+141aa482f JNZ 0x141aa48c6
+141aa4835 MOV RSI,RCX
+141aa4838 CMP dword ptr [RCX + 0xe28c],0x0
+141aa483f JNZ 0x141aa48c6
+141aa4845 MOV RDI,qword ptr [RSI + 0xd2b8]
+141aa484c NOP dword ptr [RAX]
+141aa4850 MOV ECX,dword ptr [RDI + 0xd94]
+141aa4856 CMP ECX,-0x1
+141aa4859 JNZ 0x141aa487c
+141aa485b CMP byte ptr [RDI + 0xd63],0x0
+141aa4862 JZ 0x141aa487c
+141aa4864 CMP byte ptr [RDI + 0xd62],0x0
+141aa486b JNZ 0x141aa487c
+141aa486d MOV RCX,RDI
+141aa4870 MOV EDX,0x1
+141aa4875 CALL 0x1443ea8f0
+141aa487a JMP 0x141aa4850
+141aa487c MOV EDX,dword ptr [RSI + 0x9e8]
+141aa4882 XOR EAX,EAX
+141aa4884 CMP ECX,EDX
+141aa4886 JZ 0x141aa48c6
+141aa4888 CMP EDX,dword ptr [RSI + 0xa1c]
+141aa488e JZ 0x141aa48c6
+141aa4890 CMP EDX,dword ptr [RSI + 0xa00]
+141aa4896 JZ 0x141aa48c6
+141aa4898 MOV RAX,qword ptr [RSI + 0xce70]
+141aa489f CMP EDX,dword ptr [RAX + 0x2dc]
+141aa48a5 JNZ 0x141aa48ab
+141aa48a7 XOR EAX,EAX
+141aa48a9 JMP 0x141aa48c6
+141aa48ab XOR EAX,EAX
+141aa48ad CMP EDX,dword ptr [RSI + 0xa04]
+141aa48b3 JZ 0x141aa48c6
+141aa48b5 CMP EDX,dword ptr [RSI + 0xa08]
+141aa48bb JZ 0x141aa48c6
+141aa48bd CMP EDX,dword ptr [RSI + 0xa7c]
+141aa48c3 SETNZ AL
+141aa48c6 ADD RSP,0x28
+141aa48ca POP RDI
+141aa48cb POP RSI
+141aa48cc RET
+
+
+FUNCTION 151b4b210
+BODY [[151b4b210, 151b4b48c]]
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_151b4b210(longlong param_1,undefined8 param_2,undefined8 param_3,undefined4 param_4)
+
+{
+  char *pcVar1;
+  int iVar2;
+  longlong lVar3;
+  longlong lVar4;
+  undefined4 uVar5;
+  byte bVar6;
+  longlong lVar7;
+
+  lVar3 = *(longlong *)(param_1 + 0xce70);
+  iVar2 = *(int *)(lVar3 + 0x20c);
+  bVar6 = 0;
+  if ((*(int *)(lVar3 + 0x204) == 0x7d) && (iVar2 == 0)) {
+    bVar6 = -(_DAT_145a1d5b0 == *(float *)(lVar3 + 0x220)) & 1;
+  }
+  if (((bVar6 == 0) && (*(longlong *)(lVar3 + 0x1f0) != 0)) &&
+     ((iVar2 != *(int *)(lVar3 + 0x204) || (*(char *)(lVar3 + 0x229) != *(char *)(lVar3 + 0x228)))))
+  {
+    pcVar1 = (char *)(*(longlong *)(*(longlong *)(lVar3 + 0x1c8) + 0x930) + 0xa5);
+    *pcVar1 = *pcVar1 + '\x01';
+  }
+  uVar5 = _DAT_146428740;
+  *(undefined4 *)(lVar3 + 0x200) = 0xffffffff;
+  *(undefined4 *)(lVar3 + 0x204) = 0xffffffff;
+  *(undefined4 *)(lVar3 + 0x208) = 0xffffffff;
+  *(undefined4 *)(lVar3 + 0x20c) = 0xffffffff;
+  *(longlong *)(lVar3 + 0x1f0) = 0;
+  *(undefined8 *)(lVar3 + 0x1f8) = 0;
+  *(undefined8 *)(lVar3 + 0x210) = 0;
+  *(undefined8 *)(lVar3 + 0x218) = 0;
+  *(undefined4 *)(lVar3 + 0x220) = uVar5;
+  *(undefined4 *)(lVar3 + 0x224) = 0xbf800000;
+  *(undefined8 *)(lVar3 + 0x228) = 0;
+  lVar3 = *(longlong *)(param_1 + 0xd048);
+  *(undefined4 *)(lVar3 + 0x200) = 0xffffffff;
+  *(undefined4 *)(lVar3 + 0x204) = 0xffffffff;
+  *(undefined4 *)(lVar3 + 0x208) = 0xffffffff;
+  *(undefined4 *)(lVar3 + 0x20c) = 0xffffffff;
+  *(undefined8 *)(lVar3 + 0x1f0) = 0;
+  *(undefined8 *)(lVar3 + 0x1f8) = 0;
+  *(undefined8 *)(lVar3 + 0x210) = 0;
+  *(undefined8 *)(lVar3 + 0x218) = 0;
+  *(undefined4 *)(lVar3 + 0x220) = uVar5;
+  *(undefined4 *)(lVar3 + 0x224) = 0xbf800000;
+  *(undefined8 *)(lVar3 + 0x228) = 0;
+  lVar3 = *(longlong *)(param_1 + 0xd050);
+  *(undefined4 *)(lVar3 + 0x200) = 0xffffffff;
+  *(undefined4 *)(lVar3 + 0x204) = 0xffffffff;
+  *(undefined4 *)(lVar3 + 0x208) = 0xffffffff;
+  *(undefined4 *)(lVar3 + 0x20c) = 0xffffffff;
+  *(undefined8 *)(lVar3 + 0x1f0) = 0;
+  *(undefined8 *)(lVar3 + 0x1f8) = 0;
+  *(undefined8 *)(lVar3 + 0x210) = 0;
+  *(undefined8 *)(lVar3 + 0x218) = 0;
+  *(undefined4 *)(lVar3 + 0x220) = uVar5;
+  *(undefined4 *)(lVar3 + 0x224) = 0xbf800000;
+  *(undefined8 *)(lVar3 + 0x228) = 0;
+  lVar3 = *(longlong *)(param_1 + 0xcdf8);
+  (**(code **)(**(longlong **)(lVar3 + 0x138) + 0x58))
+            (*(longlong **)(lVar3 + 0x138),bVar6,iVar2,param_4,0,0,0xffffffff,0xffffffff);
+  uVar5 = _DAT_146428740;
+  if ('\0' < *(char *)(lVar3 + 0x3c1)) {
+    lVar7 = 0;
+    do {
+      lVar4 = *(longlong *)(lVar3 + 0x178 + lVar7 * 8);
+      *(undefined8 *)(lVar4 + 0x200) = 0xffffffffffffffff;
+      *(undefined8 *)(lVar4 + 0x208) = 0xffffffffffffffff;
+      *(undefined4 *)(lVar4 + 0x1f0) = 0;
+      *(undefined4 *)(lVar4 + 500) = 0;
+      *(undefined4 *)(lVar4 + 0x1f8) = 0;
+      *(undefined4 *)(lVar4 + 0x1fc) = 0;
+      *(undefined8 *)(lVar4 + 0x210) = 0;
+      *(undefined8 *)(lVar4 + 0x218) = 0;
+      *(undefined4 *)(lVar4 + 0x220) = uVar5;
+      *(undefined4 *)(lVar4 + 0x224) = 0xbf800000;
+      *(undefined8 *)(lVar4 + 0x228) = 0;
+      lVar7 = lVar7 + 1;
+    } while (lVar7 < *(char *)(lVar3 + 0x3c1));
+  }
+  lVar3 = *(longlong *)(param_1 + 0xce00);
+  (**(code **)(**(longlong **)(lVar3 + 0x138) + 0x58))();
+  uVar5 = _DAT_146428740;
+  if ('\0' < *(char *)(lVar3 + 0x3c1)) {
+    lVar7 = 0;
+    do {
+      lVar4 = *(longlong *)(lVar3 + 0x178 + lVar7 * 8);
+      *(undefined8 *)(lVar4 + 0x200) = 0xffffffffffffffff;
+      *(undefined8 *)(lVar4 + 0x208) = 0xffffffffffffffff;
+      *(undefined8 *)(lVar4 + 0x1f0) = 0;
+      *(undefined8 *)(lVar4 + 0x1f8) = 0;
+      *(undefined8 *)(lVar4 + 0x210) = 0;
+      *(undefined8 *)(lVar4 + 0x218) = 0;
+      *(undefined4 *)(lVar4 + 0x220) = uVar5;
+      *(undefined4 *)(lVar4 + 0x224) = 0xbf800000;
+      *(undefined8 *)(lVar4 + 0x228) = 0;
+      lVar7 = lVar7 + 1;
+    } while (lVar7 < *(char *)(lVar3 + 0x3c1));
+  }
+  return;
+}
+
+
+LISTING INSTRUCTIONS (bounded recursive disassembly)
+151b4b210 PUSH RSI
+151b4b211 PUSH RDI
+151b4b212 PUSH RBX
+151b4b213 SUB RSP,0x60
+151b4b217 MOVDQA xmmword ptr [RSP + 0x50],XMM7
+151b4b21d MOVAPS xmmword ptr [RSP + 0x40],XMM6
+151b4b222 MOV RBX,RCX
+151b4b225 MOV RAX,qword ptr [RCX + 0xce70]
+151b4b22c MOV ECX,dword ptr [RAX + 0x204]
+151b4b232 MOV R8D,dword ptr [RAX + 0x20c]
+151b4b239 XOR EDX,EDX
+151b4b23b CMP ECX,0x7d
+151b4b23e JNZ 0x151b4b25d
+151b4b240 TEST R8D,R8D
+151b4b243 JNZ 0x151b4b25d
+151b4b245 MOVSS XMM0,dword ptr [0x145a1d5b0]
+151b4b24d CMPEQSS XMM0,dword ptr [RAX + 0x220]
+151b4b256 MOVD EDX,XMM0
+151b4b25a AND EDX,0x1
+151b4b25d LEA RDI,[RAX + 0x1f0]
+151b4b264 TEST DL,DL
+151b4b266 JNZ 0x151b4b296
+151b4b268 CMP qword ptr [RDI],0x0
+151b4b26c JZ 0x151b4b296
+151b4b26e CMP R8D,ECX
+151b4b271 JNZ 0x151b4b282
+151b4b273 MOVZX ECX,byte ptr [RAX + 0x228]
+151b4b27a CMP byte ptr [RAX + 0x229],CL
+151b4b280 JZ 0x151b4b296
+151b4b282 MOV RCX,qword ptr [RAX + 0x1c8]
+151b4b289 MOV RCX,qword ptr [RCX + 0x930]
+151b4b290 INC byte ptr [RCX + 0xa5]
+151b4b296 XORPS XMM6,XMM6
+151b4b299 MOVAPS xmmword ptr [RSP + 0x20],XMM6
+151b4b29e PCMPEQD XMM7,XMM7
+151b4b2a2 MOVDQA xmmword ptr [RSP + 0x30],XMM7
+151b4b2a8 MOV ECX,dword ptr [0x146428740]
+151b4b2ae MOVDQA xmmword ptr [RDI + 0x10],XMM7
+151b4b2b3 MOVAPS xmmword ptr [RDI],XMM6
+151b4b2b6 MOVAPS xmmword ptr [RAX + 0x210],XMM6
+151b4b2bd MOV dword ptr [RAX + 0x220],ECX
+151b4b2c3 MOV dword ptr [RAX + 0x224],0xbf800000
+151b4b2cd MOV qword ptr [RAX + 0x228],0x0
+151b4b2d8 MOV RAX,qword ptr [RBX + 0xd048]
+151b4b2df MOVAPS xmmword ptr [RSP + 0x20],XMM6
+151b4b2e4 MOVDQA xmmword ptr [RSP + 0x30],XMM7
+151b4b2ea MOVDQA xmmword ptr [RAX + 0x200],XMM7
+151b4b2f2 MOVAPS xmmword ptr [RAX + 0x1f0],XMM6
+151b4b2f9 MOVAPS xmmword ptr [RAX + 0x210],XMM6
+151b4b300 MOV dword ptr [RAX + 0x220],ECX
+151b4b306 MOV dword ptr [RAX + 0x224],0xbf800000
+151b4b310 MOV qword ptr [RAX + 0x228],0x0
+151b4b31b MOV RAX,qword ptr [RBX + 0xd050]
+151b4b322 MOVAPS xmmword ptr [RSP + 0x20],XMM6
+151b4b327 MOVDQA xmmword ptr [RSP + 0x30],XMM7
+151b4b32d MOVDQA xmmword ptr [RAX + 0x200],XMM7
+151b4b335 MOVAPS xmmword ptr [RAX + 0x1f0],XMM6
+151b4b33c MOVAPS xmmword ptr [RAX + 0x210],XMM6
+151b4b343 MOV dword ptr [RAX + 0x220],ECX
+151b4b349 MOV dword ptr [RAX + 0x224],0xbf800000
+151b4b353 MOV qword ptr [RAX + 0x228],0x0
+151b4b35e MOV RDI,qword ptr [RBX + 0xcdf8]
+151b4b365 MOV RCX,qword ptr [RDI + 0x138]
+151b4b36c MOV RAX,qword ptr [RCX]
+151b4b36f CALL qword ptr [RAX + 0x58]
+151b4b372 CMP byte ptr [RDI + 0x3c1],0x0
+151b4b379 JLE 0x151b4b3ed
+151b4b37b MOV EAX,dword ptr [0x146428740]
+151b4b381 LEA RCX,[RSP + 0x30]
+151b4b386 XOR EDX,EDX
+151b4b388 NOP dword ptr [RAX + RAX*0x1]
+151b4b390 MOV RSI,qword ptr [RDI + RDX*0x8 + 0x178]
+151b4b398 MOVAPS xmmword ptr [RSP + 0x20],XMM6
+151b4b39d MOVDQA xmmword ptr [RCX],XMM7
+151b4b3a1 MOVAPS XMM0,xmmword ptr [RSP + 0x20]
+151b4b3a6 MOVDQA XMM1,xmmword ptr [RSP + 0x30]
+151b4b3ac MOVDQA xmmword ptr [RSI + 0x200],XMM1
+151b4b3b4 MOVAPS xmmword ptr [RSI + 0x1f0],XMM0
+151b4b3bb MOVAPS xmmword ptr [RSI + 0x210],XMM6
+151b4b3c2 MOV dword ptr [RSI + 0x220],EAX
+151b4b3c8 MOV dword ptr [RSI + 0x224],0xbf800000
+151b4b3d2 MOV qword ptr [RSI + 0x228],0x0
+151b4b3dd INC RDX
+151b4b3e0 MOVSX RSI,byte ptr [RDI + 0x3c1]
+151b4b3e8 CMP RDX,RSI
+151b4b3eb JL 0x151b4b390
+151b4b3ed MOV RSI,qword ptr [RBX + 0xce00]
+151b4b3f4 MOV RCX,qword ptr [RSI + 0x138]
+151b4b3fb MOV RAX,qword ptr [RCX]
+151b4b3fe CALL qword ptr [RAX + 0x58]
+151b4b401 CMP byte ptr [RSI + 0x3c1],0x0
+151b4b408 JLE 0x151b4b47b
+151b4b40a MOV EAX,dword ptr [0x146428740]
+151b4b410 LEA RCX,[RSP + 0x30]
+151b4b415 XOR EDX,EDX
+151b4b417 XORPS XMM0,XMM0
+151b4b41a PCMPEQD XMM1,XMM1
+151b4b41e NOP
+151b4b420 MOV RDI,qword ptr [RSI + RDX*0x8 + 0x178]
+151b4b428 MOVAPS xmmword ptr [RSP + 0x20],XMM0
+151b4b42d MOVDQA xmmword ptr [RCX],XMM1
+151b4b431 MOVAPS XMM2,xmmword ptr [RSP + 0x20]
+151b4b436 MOVAPS XMM3,xmmword ptr [RSP + 0x30]
+151b4b43b MOVAPS xmmword ptr [RDI + 0x200],XMM3
+151b4b442 MOVAPS xmmword ptr [RDI + 0x1f0],XMM2
+151b4b449 MOVAPS xmmword ptr [RDI + 0x210],XMM0
+151b4b450 MOV dword ptr [RDI + 0x220],EAX
+151b4b456 MOV dword ptr [RDI + 0x224],0xbf800000
+151b4b460 MOV qword ptr [RDI + 0x228],0x0
+151b4b46b INC RDX
+151b4b46e MOVSX RDI,byte ptr [RSI + 0x3c1]
+151b4b476 CMP RDX,RDI
+151b4b479 JL 0x151b4b420
+151b4b47b MOVAPS XMM6,xmmword ptr [RSP + 0x40]
+151b4b480 MOVAPS XMM7,xmmword ptr [RSP + 0x50]
+151b4b485 ADD RSP,0x60
+151b4b489 POP RBX
+151b4b48a POP RDI
+151b4b48b POP RSI
+151b4b48c RET
+
+
+ORIGINAL PE [141aab22d,141aab27e) file_offset=1aaa82d
+Disassembly of section .data:
+
+0000000141aab22d <.data>:
+   141aab22d:	4c 8b a6 70 ce 00 00 	mov    r12,QWORD PTR [rsi+0xce70]
+   141aab234:	49 8b bc 24 f0 01 00 	mov    rdi,QWORD PTR [r12+0x1f0]
+   141aab23b:	00
+   141aab23c:	c6 87 70 14 00 00 01 	mov    BYTE PTR [rdi+0x1470],0x1
+   141aab243:	8b 86 e8 09 00 00    	mov    eax,DWORD PTR [rsi+0x9e8]
+   141aab249:	89 87 74 14 00 00    	mov    DWORD PTR [rdi+0x1474],eax
+   141aab24f:	45 0f b6 b4 24 28 02 	movzx  r14d,BYTE PTR [r12+0x228]
+   141aab256:	00 00
+   141aab258:	41 fe ce             	dec    r14b
+   141aab25b:	41 80 fe 03          	cmp    r14b,0x3
+   141aab25f:	77 1d                	ja     0x141aab27e
+   141aab261:	48 8b 8f e0 01 00 00 	mov    rcx,QWORD PTR [rdi+0x1e0]
+   141aab268:	c6 44 24 20 00       	mov    BYTE PTR [rsp+0x20],0x0
+   141aab26d:	48 89 fa             	mov    rdx,rdi
+   141aab270:	41 b8 00 00 02 00    	mov    r8d,0x20000
+   141aab276:	41 b1 01             	mov    r9b,0x1
+   141aab279:	e8 b2 ef 07 00       	call   0x141b2a230
+
+
+ORIGINAL PE [141aab3b9,141aab424) file_offset=1aaa9b9
+Disassembly of section .data:
+
+0000000141aab3b9 <.data>:
+   141aab3b9:	41 80 fe 03          	cmp    r14b,0x3
+   141aab3bd:	76 1d                	jbe    0x141aab3dc
+   141aab3bf:	e9 40 01 00 00       	jmp    0x141aab504
+   141aab3c4:	48 8b 8e 70 ce 00 00 	mov    rcx,QWORD PTR [rsi+0xce70]
+   141aab3cb:	31 d2                	xor    edx,edx
+   141aab3cd:	e8 be 10 96 02       	call   0x14440c490
+   141aab3d2:	41 80 fe 03          	cmp    r14b,0x3
+   141aab3d6:	0f 87 28 01 00 00    	ja     0x141aab504
+   141aab3dc:	80 bf b0 0a 00 00 01 	cmp    BYTE PTR [rdi+0xab0],0x1
+   141aab3e3:	0f 85 1b 01 00 00    	jne    0x141aab504
+   141aab3e9:	80 be bd e3 00 00 00 	cmp    BYTE PTR [rsi+0xe3bd],0x0
+   141aab3f0:	48 8b 8e 70 ce 00 00 	mov    rcx,QWORD PTR [rsi+0xce70]
+   141aab3f7:	0f 95 c0             	setne  al
+   141aab3fa:	8b 96 a4 0a 00 00    	mov    edx,DWORD PTR [rsi+0xaa4]
+   141aab400:	c1 ea 10             	shr    edx,0x10
+   141aab403:	83 e2 01             	and    edx,0x1
+   141aab406:	08 c2                	or     dl,al
+   141aab408:	44 0f b6 c2          	movzx  r8d,dl
+   141aab40c:	41 c1 e0 04          	shl    r8d,0x4
+   141aab410:	48 8d 94 24 20 01 00 	lea    rdx,[rsp+0x120]
+   141aab417:	00
+   141aab418:	e8 93 65 96 02       	call   0x1444119b0
+   141aab41d:	48 8b 9e 70 ce 00 00 	mov    rbx,QWORD PTR [rsi+0xce70]
+
+
+ORIGINAL PE [141aab504,141aab584) file_offset=1aaab04
+Disassembly of section .data:
+
+0000000141aab504 <.data>:
+   141aab504:	48 8b 8e 70 ce 00 00 	mov    rcx,QWORD PTR [rsi+0xce70]
+   141aab50b:	48 83 e9 80          	sub    rcx,0xffffffffffffff80
+   141aab50f:	ba 0c 00 00 00       	mov    edx,0xc
+   141aab514:	e8 c7 fa 95 02       	call   0x14440afe0
+   141aab519:	48 8b be 70 ce 00 00 	mov    rdi,QWORD PTR [rsi+0xce70]
+   141aab520:	8b 87 68 01 00 00    	mov    eax,DWORD PTR [rdi+0x168]
+   141aab526:	83 f8 ff             	cmp    eax,0xffffffff
+   141aab529:	75 30                	jne    0x141aab55b
+   141aab52b:	48 8d 8f 80 00 00 00 	lea    rcx,[rdi+0x80]
+   141aab532:	48 8d 97 c0 00 00 00 	lea    rdx,[rdi+0xc0]
+   141aab539:	80 8f c0 00 00 00 04 	or     BYTE PTR [rdi+0xc0],0x4
+   141aab540:	41 b8 ff ff ff ff    	mov    r8d,0xffffffff
+   141aab546:	45 31 c9             	xor    r9d,r9d
+   141aab549:	e8 f2 c4 95 02       	call   0x144407a40
+   141aab54e:	8b 87 68 01 00 00    	mov    eax,DWORD PTR [rdi+0x168]
+   141aab554:	48 8b be 70 ce 00 00 	mov    rdi,QWORD PTR [rsi+0xce70]
+   141aab55b:	2b 86 e8 09 00 00    	sub    eax,DWORD PTR [rsi+0x9e8]
+   141aab561:	48 8b 8f c8 01 00 00 	mov    rcx,QWORD PTR [rdi+0x1c8]
+   141aab568:	03 81 e8 09 00 00    	add    eax,DWORD PTR [rcx+0x9e8]
+   141aab56e:	3b 87 70 01 00 00    	cmp    eax,DWORD PTR [rdi+0x170]
+   141aab574:	7e 06                	jle    0x141aab57c
+   141aab576:	89 87 70 01 00 00    	mov    DWORD PTR [rdi+0x170],eax
+   141aab57c:	48 89 f1             	mov    rcx,rsi
+   141aab57f:	e8 dc 8f 01 00       	call   0x141ac4560
+
+
+ORIGINAL PE [141aab913,141aab980) file_offset=1aaaf13
+Disassembly of section .data:
+
+0000000141aab913 <.data>:
+   141aab913:	45 39 ef             	cmp    r15d,r13d
+   141aab916:	44 89 e8             	mov    eax,r13d
+   141aab919:	41 0f 4f c7          	cmovg  eax,r15d
+   141aab91d:	48 8b 96 d0 e3 00 00 	mov    rdx,QWORD PTR [rsi+0xe3d0]
+   141aab924:	48 89 d3             	mov    rbx,rdx
+   141aab927:	48 89 d1             	mov    rcx,rdx
+   141aab92a:	48 bd 2d 7f 95 4c 2d 	movabs rbp,0x5851f42d4c957f2d
+   141aab931:	f4 51 58
+   141aab934:	48 0f af ea          	imul   rbp,rdx
+   141aab938:	48 c1 ea 2d          	shr    rdx,0x2d
+   141aab93c:	48 c1 eb 1b          	shr    rbx,0x1b
+   141aab940:	31 da                	xor    edx,ebx
+   141aab942:	48 c1 e9 3b          	shr    rcx,0x3b
+   141aab946:	d3 ca                	ror    edx,cl
+   141aab948:	48 03 ae d8 e3 00 00 	add    rbp,QWORD PTR [rsi+0xe3d8]
+   141aab94f:	48 89 ae d0 e3 00 00 	mov    QWORD PTR [rsi+0xe3d0],rbp
+   141aab956:	48 c1 e2 03          	shl    rdx,0x3
+   141aab95a:	48 8d 0c 92          	lea    rcx,[rdx+rdx*4]
+   141aab95e:	48 c1 e9 20          	shr    rcx,0x20
+   141aab962:	8d 4c 08 ec          	lea    ecx,[rax+rcx*1-0x14]
+   141aab966:	8b 96 e8 09 00 00    	mov    edx,DWORD PTR [rsi+0x9e8]
+   141aab96c:	83 c2 08             	add    edx,0x8
+   141aab96f:	39 d1                	cmp    ecx,edx
+   141aab971:	0f 4f d1             	cmovg  edx,ecx
+   141aab974:	89 96 00 0a 00 00    	mov    DWORD PTR [rsi+0xa00],edx
+   141aab97a:	89 87 c4 0a 00 00    	mov    DWORD PTR [rdi+0xac4],eax
+
+
+ORIGINAL PE [141aaf7c0,141aaf7f0) file_offset=1aaedc0
+Disassembly of section .data:
+
+0000000141aaf7c0 <.data>:
+   141aaf7c0:	48 8d 54 24 3f       	lea    rdx,[rsp+0x3f]
+   141aaf7c5:	48 89 f1             	mov    rcx,rsi
+   141aaf7c8:	e8 33 4f 9f 02       	call   0x1444a4700
+   141aaf7cd:	48 8d 54 24 3e       	lea    rdx,[rsp+0x3e]
+   141aaf7d2:	48 89 f1             	mov    rcx,rsi
+   141aaf7d5:	e8 66 59 9f 02       	call   0x1444a5140
+   141aaf7da:	44 0f b6 4c 24 3e    	movzx  r9d,BYTE PTR [rsp+0x3e]
+   141aaf7e0:	44 0f b6 44 24 3f    	movzx  r8d,BYTE PTR [rsp+0x3f]
+   141aaf7e6:	48 89 f1             	mov    rcx,rsi
+   141aaf7e9:	89 fa                	mov    edx,edi
+   141aaf7eb:	e8 20 94 9f 02       	call   0x1444a8c10
+
+
+ORIGINAL PE [1444a8c10,1444a8c77) file_offset=44a8210
+Disassembly of section .data:
+
+00000001444a8c10 <.data>:
+   1444a8c10:	41 57                	push   r15
+   1444a8c12:	41 56                	push   r14
+   1444a8c14:	41 55                	push   r13
+   1444a8c16:	41 54                	push   r12
+   1444a8c18:	56                   	push   rsi
+   1444a8c19:	57                   	push   rdi
+   1444a8c1a:	55                   	push   rbp
+   1444a8c1b:	53                   	push   rbx
+   1444a8c1c:	48 83 ec 78          	sub    rsp,0x78
+   1444a8c20:	89 d3                	mov    ebx,edx
+   1444a8c22:	48 89 ce             	mov    rsi,rcx
+   1444a8c25:	8b 81 00 0a 00 00    	mov    eax,DWORD PTR [rcx+0xa00]
+   1444a8c2b:	85 c0                	test   eax,eax
+   1444a8c2d:	78 48                	js     0x1444a8c77
+   1444a8c2f:	48 8b 8e 70 ce 00 00 	mov    rcx,QWORD PTR [rsi+0xce70]
+   1444a8c36:	48 83 b9 f0 01 00 00 	cmp    QWORD PTR [rcx+0x1f0],0x0
+   1444a8c3d:	00
+   1444a8c3e:	74 37                	je     0x1444a8c77
+   1444a8c40:	39 86 e8 09 00 00    	cmp    DWORD PTR [rsi+0x9e8],eax
+   1444a8c46:	7c 2f                	jl     0x1444a8c77
+   1444a8c48:	48 89 f1             	mov    rcx,rsi
+   1444a8c4b:	e8 10 b9 61 fd       	call   0x141ac4560
+   1444a8c50:	8b 86 f4 09 00 00    	mov    eax,DWORD PTR [rsi+0x9f4]
+   1444a8c56:	8b 8e 0c 0a 00 00    	mov    ecx,DWORD PTR [rsi+0xa0c]
+   1444a8c5c:	39 c8                	cmp    eax,ecx
+   1444a8c5e:	0f 4f c8             	cmovg  ecx,eax
+   1444a8c61:	8b 86 14 0a 00 00    	mov    eax,DWORD PTR [rsi+0xa14]
+   1444a8c67:	39 c1                	cmp    ecx,eax
+   1444a8c69:	0f 4e c8             	cmovle ecx,eax
+   1444a8c6c:	89 8e 14 0a 00 00    	mov    DWORD PTR [rsi+0xa14],ecx
+   1444a8c72:	e9 d5 00 00 00       	jmp    0x1444a8d4c
+
+
+ORIGINAL PE [141ac51fd,141ac526c) file_offset=1ac47fd
+Disassembly of section .data:
+
+0000000141ac51fd <.data>:
+   141ac51fd:	48 8b 8f d0 01 00 00 	mov    rcx,QWORD PTR [rdi+0x1d0]
+   141ac5204:	48 89 fa             	mov    rdx,rdi
+   141ac5207:	41 b0 01             	mov    r8b,0x1
+   141ac520a:	e8 81 f6 0b 00       	call   0x141b84890
+   141ac520f:	48 89 f1             	mov    rcx,rsi
+   141ac5212:	e8 29 01 00 00       	call   0x141ac5340
+   141ac5217:	83 be 5c d4 00 00 00 	cmp    DWORD PTR [rsi+0xd45c],0x0
+   141ac521e:	74 11                	je     0x141ac5231
+   141ac5220:	8b 86 e8 09 00 00    	mov    eax,DWORD PTR [rsi+0x9e8]
+   141ac5226:	83 c0 14             	add    eax,0x14
+   141ac5229:	89 86 08 0a 00 00    	mov    DWORD PTR [rsi+0xa08],eax
+   141ac522f:	eb 3b                	jmp    0x141ac526c
+   141ac5231:	c7 86 08 0a 00 00 ff 	mov    DWORD PTR [rsi+0xa08],0xffffffff
+   141ac5238:	ff ff ff
+   141ac523b:	8b 8e e8 09 00 00    	mov    ecx,DWORD PTR [rsi+0x9e8]
+   141ac5241:	8b 86 00 0a 00 00    	mov    eax,DWORD PTR [rsi+0xa00]
+   141ac5247:	39 c8                	cmp    eax,ecx
+   141ac5249:	75 09                	jne    0x141ac5254
+   141ac524b:	83 c0 14             	add    eax,0x14
+   141ac524e:	89 86 00 0a 00 00    	mov    DWORD PTR [rsi+0xa00],eax
+   141ac5254:	48 8b 96 70 ce 00 00 	mov    rdx,QWORD PTR [rsi+0xce70]
+   141ac525b:	39 8a d0 02 00 00    	cmp    DWORD PTR [rdx+0x2d0],ecx
+   141ac5261:	75 09                	jne    0x141ac526c
+   141ac5263:	83 c0 0c             	add    eax,0xc
+   141ac5266:	89 86 00 0a 00 00    	mov    DWORD PTR [rsi+0xa00],eax
+
+
+ORIGINAL PE [141ac5340,141ac5345) file_offset=1ac4940
+Disassembly of section .data:
+
+0000000141ac5340 <.data>:
+   141ac5340:	e9 cb 5e 08 10       	jmp    0x151b4b210
+
+
+ORIGINAL PE [141aab626,141aab67b) file_offset=1aaac26
+Disassembly of section .data:
+
+0000000141aab626 <.data>:
+   141aab626:	f3 44 0f 10 15 11 d1 	movss  xmm10,DWORD PTR [rip+0x497d111]        # 0x146428740
+   141aab62d:	97 04
+   141aab62f:	f2 44 0f 10 8f 80 01 	movsd  xmm9,QWORD PTR [rdi+0x180]
+   141aab636:	00 00
+   141aab638:	44 8b bb 6c 01 00 00 	mov    r15d,DWORD PTR [rbx+0x16c]
+   141aab63f:	41 83 ff ff          	cmp    r15d,0xffffffff
+   141aab643:	75 2a                	jne    0x141aab66f
+   141aab645:	48 8d 8b 80 00 00 00 	lea    rcx,[rbx+0x80]
+   141aab64c:	48 8d 93 c0 00 00 00 	lea    rdx,[rbx+0xc0]
+   141aab653:	80 8b c0 00 00 00 04 	or     BYTE PTR [rbx+0xc0],0x4
+   141aab65a:	41 b8 ff ff ff ff    	mov    r8d,0xffffffff
+   141aab660:	45 31 c9             	xor    r9d,r9d
+   141aab663:	e8 d8 c3 95 02       	call   0x144407a40
+   141aab668:	44 8b bb 6c 01 00 00 	mov    r15d,DWORD PTR [rbx+0x16c]
+   141aab66f:	45 89 fd             	mov    r13d,r15d
+   141aab672:	45 84 f6             	test   r14b,r14b
+   141aab675:	0f 85 98 02 00 00    	jne    0x141aab913
+
+
+ORIGINAL PE [141aab8d0,141aab913) file_offset=1aaaed0
+Disassembly of section .data:
+
+0000000141aab8d0 <.data>:
+   141aab8d0:	48 8d 94 24 30 01 00 	lea    rdx,[rsp+0x130]
+   141aab8d7:	00
+   141aab8d8:	48 89 f9             	mov    rcx,rdi
+   141aab8db:	e8 b0 bb 94 02       	call   0x1443f7490
+   141aab8e0:	44 8b af 6c 01 00 00 	mov    r13d,DWORD PTR [rdi+0x16c]
+   141aab8e7:	41 83 fd ff          	cmp    r13d,0xffffffff
+   141aab8eb:	75 26                	jne    0x141aab913
+   141aab8ed:	48 8d 97 c0 00 00 00 	lea    rdx,[rdi+0xc0]
+   141aab8f4:	80 8f c0 00 00 00 04 	or     BYTE PTR [rdi+0xc0],0x4
+   141aab8fb:	4c 89 f1             	mov    rcx,r14
+   141aab8fe:	41 b8 ff ff ff ff    	mov    r8d,0xffffffff
+   141aab904:	45 31 c9             	xor    r9d,r9d
+   141aab907:	e8 34 c1 95 02       	call   0x144407a40
+   141aab90c:	44 8b af 6c 01 00 00 	mov    r13d,DWORD PTR [rdi+0x16c]
+
+ORIGINAL PE [141aab4b0,141aab504) file_offset=1aaaab0
+Disassembly of section .data:
+
+0000000141aab4b0 <.data>:
+   141aab4b0:	81 c5 96 00 00 00    	add    ebp,0x96
+   141aab4b6:	48 63 cd             	movsxd rcx,ebp
+   141aab4b9:	48 69 c9 20 03 00 00 	imul   rcx,rcx,0x320
+   141aab4c0:	48 03 0d 69 eb 98 04 	add    rcx,QWORD PTR [rip+0x498eb69]        # 0x14643a030
+   141aab4c7:	48 98                	cdqe
+   141aab4c9:	48 0f bf ac 41 90 01 	movsx  rbp,WORD PTR [rcx+rax*2+0x190]
+   141aab4d0:	00 00
+   141aab4d2:	f3 0f 10 3d d6 1f f7 	movss  xmm7,DWORD PTR [rip+0x3f71fd6]        # 0x145a1d4b0
+   141aab4d9:	03
+   141aab4da:	44 0f b6 b7 b1 0a 00 	movzx  r14d,BYTE PTR [rdi+0xab1]
+   141aab4e1:	00
+   141aab4e2:	f3 0f 59 c7          	mulss  xmm0,xmm7
+   141aab4e6:	0f 57 c9             	xorps  xmm1,xmm1
+   141aab4e9:	0f 2e c1             	ucomiss xmm0,xmm1
+   141aab4ec:	0f 83 e8 00 00 00    	jae    0x141aab5da
+   141aab4f2:	f3 0f 58 05 3e 97 bd 	addss  xmm0,DWORD PTR [rip+0x3bd973e]        # 0x145684c38
+   141aab4f9:	03
+   141aab4fa:	e8 b1 34 ad 03       	call   0x14557e9b0
+   141aab4ff:	e9 e3 00 00 00       	jmp    0x141aab5e7
