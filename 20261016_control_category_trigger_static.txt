@@ -1,0 +1,229 @@
+FM24 24.4.2+2081827; static-only, no target execution.
+Original PE objdump and bounded Ghidra listing; partial registers significant.
+
+ORIGINAL PE [1444153bd,14441543e)
+   1444153bd:	49 8b 86 c8 01 00 00 	mov    rax,QWORD PTR [r14+0x1c8]
+   1444153c4:	48 8b 98 d0 e3 00 00 	mov    rbx,QWORD PTR [rax+0xe3d0]
+   1444153cb:	48 89 da             	mov    rdx,rbx
+   1444153ce:	48 c1 ea 2d          	shr    rdx,0x2d
+   1444153d2:	48 89 d9             	mov    rcx,rbx
+   1444153d5:	48 c1 e9 1b          	shr    rcx,0x1b
+   1444153d9:	31 ca                	xor    edx,ecx
+   1444153db:	48 89 d9             	mov    rcx,rbx
+   1444153de:	48 c1 e9 3b          	shr    rcx,0x3b
+   1444153e2:	d3 ca                	ror    edx,cl
+   1444153e4:	49 0f af db          	imul   rbx,r11
+   1444153e8:	48 03 98 d8 e3 00 00 	add    rbx,QWORD PTR [rax+0xe3d8]
+   1444153ef:	48 89 98 d0 e3 00 00 	mov    QWORD PTR [rax+0xe3d0],rbx
+   1444153f6:	48 0f af d6          	imul   rdx,rsi
+   1444153fa:	48 c1 ea 20          	shr    rdx,0x20
+   1444153fe:	44 01 e2             	add    edx,r12d
+   144415401:	39 d7                	cmp    edi,edx
+   144415403:	7e 39                	jle    0x14441543e
+   144415405:	41 80 b9 b0 0a 00 00 	cmp    BYTE PTR [r9+0xab0],0x1
+   14441540c:	01
+   14441540d:	48 8b ac 24 88 00 00 	mov    rbp,QWORD PTR [rsp+0x88]
+   144415414:	00
+   144415415:	0f 85 84 01 00 00    	jne    0x14441559f
+   14441541b:	83 fd 71             	cmp    ebp,0x71
+   14441541e:	40 0f 94 c6          	sete   sil
+   144415422:	b8 09 00 00 00       	mov    eax,0x9
+   144415427:	48 8b 8c 24 80 00 00 	mov    rcx,QWORD PTR [rsp+0x80]
+   14441542e:	00
+   14441542f:	0f 44 c8             	cmove  ecx,eax
+   144415432:	40 80 c6 03          	add    sil,0x3
+   144415436:	41 89 ca             	mov    r10d,ecx
+   144415439:	e9 ed 02 00 00       	jmp    0x14441572b
+
+ORIGINAL PE [144415725,1444157bf)
+   144415725:	40 b6 04             	mov    sil,0x4
+   144415728:	41 b2 09             	mov    r10b,0x9
+   14441572b:	48 8b 9c 24 60 01 00 	mov    rbx,QWORD PTR [rsp+0x160]
+   144415732:	00
+   144415733:	48 8b bc 24 58 01 00 	mov    rdi,QWORD PTR [rsp+0x158]
+   14441573a:	00
+   14441573b:	49 8b 81 e0 16 00 00 	mov    rax,QWORD PTR [r9+0x16e0]
+   144415742:	80 b8 97 00 00 00 02 	cmp    BYTE PTR [rax+0x97],0x2
+   144415749:	77 12                	ja     0x14441575d
+   14441574b:	41 80 fa 04          	cmp    r10b,0x4
+   14441574f:	41 0f b6 c2          	movzx  eax,r10b
+   144415753:	41 ba 07 00 00 00    	mov    r10d,0x7
+   144415759:	44 0f 45 d0          	cmovne r10d,eax
+   14441575d:	45 84 c0             	test   r8b,r8b
+   144415760:	74 1a                	je     0x14441577c
+   144415762:	8d 45 8e             	lea    eax,[rbp-0x72]
+   144415765:	83 f8 09             	cmp    eax,0x9
+   144415768:	0f 87 e4 01 00 00    	ja     0x144415952
+   14441576e:	b9 b5 03 00 00       	mov    ecx,0x3b5
+   144415773:	0f a3 c1             	bt     ecx,eax
+   144415776:	0f 83 d6 01 00 00    	jae    0x144415952
+   14441577c:	49 8b 86 c8 01 00 00 	mov    rax,QWORD PTR [r14+0x1c8]
+   144415783:	80 78 36 01          	cmp    BYTE PTR [rax+0x36],0x1
+   144415787:	75 30                	jne    0x1444157b9
+   144415789:	8d 46 fd             	lea    eax,[rsi-0x3]
+   14441578c:	3c 02                	cmp    al,0x2
+   14441578e:	40 0f b6 c6          	movzx  eax,sil
+   144415792:	b9 02 00 00 00       	mov    ecx,0x2
+   144415797:	0f 43 c8             	cmovae ecx,eax
+   14441579a:	49 8b 81 e0 16 00 00 	mov    rax,QWORD PTR [r9+0x16e0]
+   1444157a1:	0f b6 80 9a 00 00 00 	movzx  eax,BYTE PTR [rax+0x9a]
+   1444157a8:	34 01                	xor    al,0x1
+   1444157aa:	89 ca                	mov    edx,ecx
+   1444157ac:	80 f2 02             	xor    dl,0x2
+   1444157af:	08 c2                	or     dl,al
+   1444157b1:	be 01 00 00 00       	mov    esi,0x1
+   1444157b6:	0f 45 f1             	cmovne esi,ecx
+   1444157b9:	44 88 17             	mov    BYTE PTR [rdi],r10b
+   1444157bc:	40 88 33             	mov    BYTE PTR [rbx],sil
+
+ORIGINAL PE [144415952,144415980)
+   144415952:	80 bc 24 40 01 00 00 	cmp    BYTE PTR [rsp+0x140],0x1
+   144415959:	01
+   14441595a:	0f 85 1c fe ff ff    	jne    0x14441577c
+   144415960:	83 fd 71             	cmp    ebp,0x71
+   144415963:	75 79                	jne    0x1444159de
+   144415965:	41 83 b9 44 0e 00 00 	cmp    DWORD PTR [r9+0xe44],0x71
+   14441596c:	71
+   14441596d:	75 6f                	jne    0x1444159de
+   14441596f:	40 80 fe 04          	cmp    sil,0x4
+   144415973:	40 0f 94 c6          	sete   sil
+   144415977:	40 80 c6 03          	add    sil,0x3
+   14441597b:	e9 fc fd ff ff       	jmp    0x14441577c
+
+ORIGINAL PE [1444159de,1444159f4)
+   1444159de:	8d 46 fd             	lea    eax,[rsi-0x3]
+   1444159e1:	3c 02                	cmp    al,0x2
+   1444159e3:	40 0f b6 c6          	movzx  eax,sil
+   1444159e7:	be 02 00 00 00       	mov    esi,0x2
+   1444159ec:	0f 43 f0             	cmovae esi,eax
+   1444159ef:	e9 88 fd ff ff       	jmp    0x14441577c
+
+GHIDRA [144451096,1444510c3)
+144451096 MOV RAX,qword ptr [R14 + 0x1c8]
+14445109d MOV RCX,qword ptr [RAX + 0xce70]
+1444510a4 MOV R9D,dword ptr [R14 + 0xe40]
+1444510ab LEA RAX,[RSP + 0xd0]
+1444510b3 MOV qword ptr [RSP + 0x20],RAX
+1444510b8 MOV RDX,R14
+1444510bb XOR R8D,R8D
+1444510be CALL 0x144412490
+
+GHIDRA [1444124d4,1444124da)
+1444124d4 MOV R13,RDX
+1444124d7 MOV R12,RCX
+
+GHIDRA [1444145f6,144414615)
+1444145f6 MOV RCX,R12
+1444145f9 MOV RDX,R13
+1444145fc MOV R8,R15
+1444145ff CALL 0x144414800
+144414604 MOVZX EAX,byte ptr [RSP + 0x68]
+144414609 MOV byte ptr [RDI + 0x18],AL
+14441460c XOR EAX,EAX
+14441460e SUB AL,byte ptr [RSP + 0x60]
+144414612 MOV byte ptr [RDI + 0x1a],AL
+
+GHIDRA [144414e6b,144414ed1)
+144414e6b MOV RAX,qword ptr [R14 + 0x1c8]
+144414e72 XOR ECX,ECX
+144414e74 CMP byte ptr [RAX + 0x68a],0x3
+144414e7b SETZ CL
+144414e7e LEA R15D,[RCX + RCX*0x2]
+144414e82 ADD R15D,dword ptr [RAX + 0xe3e0]
+144414e89 MOV EDI,dword ptr [RAX + 0xe3e4]
+144414e8f MOVSXD RCX,dword ptr [RAX + 0xe3e8]
+144414e96 MOV qword ptr [RSP + 0x68],RCX
+144414e9b MOVZX ECX,byte ptr [R14 + 0x281]
+144414ea3 MOV ESI,ECX
+144414ea5 SAR SIL,0x7
+144414ea9 SHR SIL,0x6
+144414ead ADD SIL,CL
+144414eb0 SAR SIL,0x2
+144414eb4 MOVSX EBP,SIL
+144414eb8 SUB R15D,EBP
+144414ebb CMP byte ptr [RAX + 0x715],0x0
+144414ec2 MOV EAX,0x5
+144414ec7 MOV R12D,0x64
+144414ecd CMOVZ R12D,EAX
+
+GHIDRA [1444152d5,1444152f5)
+1444152d5 MOV RSI,qword ptr [RSP + 0x68]
+1444152da SUB RSI,RAX
+1444152dd CMP EBX,0xb
+1444152e0 JA 0x1444153bd
+1444152e6 LEA RAX,[0x144415c48]
+1444152ed MOVSXD RCX,dword ptr [RAX + RBX*0x4]
+1444152f1 ADD RCX,RAX
+1444152f4 JMP RCX
+
+GHIDRA [1419e4d55,1419e4d5f)
+1419e4d55 MOV ECX,0x38
+1419e4d5a CALL 0x1419e4920
+
+GHIDRA [1419e4dcc,1419e4de0)
+1419e4dcd MOVZX R12D,byte ptr [RSP + 0xc8]
+1419e4dd6 MOV byte ptr [RSI + 0x33],R12B
+1419e4dda MOV EAX,dword ptr [RSP + 0xe0]
+
+ANALYSIS NAME RECORDS [{"record_va": "145a186f8", "string_va": "145a182b0", "length_excluding_nul": 16, "id": 20, "name": "foul_yellow_card", "limit": "analysis event name, not small record+33 binding"}, {"record_va": "145a18710", "string_va": "145a182c1", "length_excluding_nul": 13, "id": 21, "name": "foul_red_card", "limit": "analysis event name, not small record+33 binding"}]
+
+Verified E8 [{"va": "1444510be", "target": "144412490", "hex": "e8cd13fcff"}, {"va": "1444135ef", "target": "144414800", "hex": "e80c120000"}, {"va": "1444145ff", "target": "144414800", "hex": "e8fc010000"}]
+
+GHIDRA ROUTE [14441483b,14441485e)
+14441483b MOV RAX,qword ptr [RSP + 0x160]
+144414843 MOV RCX,qword ptr [RSP + 0x158]
+14441484b MOV byte ptr [RCX],0x0
+14441484e MOV byte ptr [RAX],0x0
+144414851 LEA EAX,[R15 + -0x71]
+144414855 CMP EAX,0xd
+144414858 JA 0x1444157bf
+
+GHIDRA ROUTE [144414604,14441461a)
+144414604 MOVZX EAX,byte ptr [RSP + 0x68]
+144414609 MOV byte ptr [RDI + 0x18],AL
+14441460c XOR EAX,EAX
+14441460e SUB AL,byte ptr [RSP + 0x60]
+144414612 MOV byte ptr [RDI + 0x1a],AL
+144414615 MOV EBX,dword ptr [RDI + 0x10]
+144414618 MOV EAX,EBX
+
+GHIDRA ROUTE [144452c7c,144452c91)
+144452c7c CALL 0x144412490
+144452c81 MOV dword ptr [R14 + 0xe40],EAX
+144452c88 TEST R12B,R12B
+144452c8b JNZ 0x144452d8d
+
+GHIDRA ROUTE [144452d8d,144452e48)
+144452d8d MOV R12,qword ptr [RSP + 0xc8]
+144452d95 MOV EAX,dword ptr [RSP + 0xe4]
+144452d9c LEA ECX,[RAX + -0x71]
+144452d9f CMP ECX,0xd
+144452da2 JA 0x144452e50
+144452da8 MOV R9D,dword ptr [RSP + 0xe0]
+144452db0 LEA ECX,[R9 + -0x71]
+144452db4 CMP ECX,0xe
+144452db7 JC 0x144452e50
+144452dbd MOV RCX,qword ptr [R14 + 0x1c8]
+144452dc4 MOV RCX,qword ptr [RCX + 0xce70]
+144452dcb MOVZX R10D,byte ptr [RSP + 0xeb]
+144452dd4 MOV R15D,dword ptr [RSP + 0xf0]
+144452ddc MOVZX EBX,byte ptr [RSP + 0xea]
+144452de4 MOVZX EDX,byte ptr [RSP + 0xe9]
+144452dec MOVZX R11D,byte ptr [RSP + 0xe8]
+144452df5 MOV RSI,qword ptr [RSP + 0xd8]
+144452dfd LEA R8,[R14 + 0x180]
+144452e04 MOV EDI,dword ptr [0x145a1d594]
+144452e0a MOV EBP,dword ptr [0x145a1d450]
+144452e10 MOV R12,qword ptr [RCX]
+144452e13 MOV dword ptr [RSP + 0x60],EDI
+144452e17 MOV dword ptr [RSP + 0x58],EBP
+144452e1b MOV byte ptr [RSP + 0x50],R10B
+144452e20 MOV byte ptr [RSP + 0x48],BL
+144452e24 MOV byte ptr [RSP + 0x40],DL
+144452e28 MOV byte ptr [RSP + 0x38],R11B
+144452e2d MOV qword ptr [RSP + 0x30],RSI
+144452e32 MOV dword ptr [RSP + 0x28],R15D
+144452e37 MOV dword ptr [RSP + 0x20],EAX
+144452e3b MOV byte ptr [RSP + 0x68],0x0
+144452e40 MOV RDX,R14
+144452e43 CALL qword ptr [R12 + 0x50]
