@@ -1,0 +1,270 @@
+FM24 24.4.2+2081827. Static original PE / read-only Ghidra CLI. No native/game execution.
+One full Ghidra function plus bounded original-PE producer/dispatch snippets.
+
+
+FUNCTION 159f4f020
+BODY [[159f4f020, 159f4f189]]
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_159f4f020(longlong param_1)
+
+{
+  int iVar1;
+  undefined8 *puVar2;
+  int *piVar3;
+  longlong lVar4;
+  int *piVar5;
+  undefined8 *puVar6;
+  int iStack_3c;
+  int iStack_38;
+  int iStack_34;
+
+  FUN_1443d6590(param_1,param_1 + 0x140);
+  puVar6 = *(undefined8 **)(param_1 + 0x178);
+  puVar2 = *(undefined8 **)(param_1 + 0x180);
+  if (puVar6 != puVar2) {
+    do {
+      piVar3 = (int *)*puVar6;
+      if (piVar3 != (int *)0x0) {
+        LOCK();
+        *piVar3 = *piVar3 + -1;
+        UNLOCK();
+        if (*piVar3 == 0) {
+          lVar4 = *(longlong *)(piVar3 + 2);
+          iStack_3c = piVar3[1];
+          piVar5 = (int *)FUN_141a012c0(lVar4 + 0x18,&iStack_3c);
+          iVar1 = *piVar5;
+          *piVar5 = iVar1 + -1;
+          if (iVar1 < 2) {
+            FUN_141a00a10(lVar4,iStack_3c);
+          }
+          FUN_1419f25b0(piVar3);
+        }
+      }
+      puVar6 = puVar6 + 1;
+    } while (puVar6 != puVar2);
+    lRam0000000150ccbae9 = lRam0000000150ccbae9 + 0xc3a20f;
+    *(undefined8 *)(param_1 + 0x180) = *(undefined8 *)(param_1 + 0x178);
+  }
+  piVar3 = *(int **)(param_1 + 0x1a8);
+  if (piVar3 != (int *)0x0) {
+    LOCK();
+    *piVar3 = *piVar3 + -1;
+    UNLOCK();
+    if (*piVar3 == 0) {
+      lVar4 = *(longlong *)(piVar3 + 2);
+      iStack_38 = piVar3[1];
+      piVar5 = (int *)FUN_141a012c0(lVar4 + 0x18,&iStack_38);
+      iVar1 = *piVar5;
+      *piVar5 = iVar1 + -1;
+      if (iVar1 < 2) {
+        FUN_141a00a10(lVar4,iStack_38);
+      }
+      FUN_1419f25b0(piVar3);
+    }
+  }
+  *(ulonglong *)(param_1 + 0x1a8) = (ulonglong)(0x2c5 - _DAT_154d52cb8);
+  piVar3 = *(int **)(param_1 + 0x1b0);
+  if (piVar3 != (int *)0x0) {
+    LOCK();
+    *piVar3 = *piVar3 + -1;
+    UNLOCK();
+    if (*piVar3 == 0) {
+      lVar4 = *(longlong *)(piVar3 + 2);
+      iStack_34 = piVar3[1];
+      piVar5 = (int *)FUN_141a012c0(lVar4 + 0x18,&iStack_34);
+      iVar1 = *piVar5;
+      *piVar5 = iVar1 + -1;
+      if (iVar1 < 2) {
+        FUN_141a00a10(lVar4,iStack_34);
+      }
+      FUN_1419f25b0(piVar3);
+    }
+  }
+  *(undefined8 *)(param_1 + 0x1b0) = 0;
+  return;
+}
+
+
+LISTING INSTRUCTIONS (bounded recursive disassembly)
+159f4f020 PUSH R15
+159f4f022 PUSH R14
+159f4f024 PUSH R12
+159f4f026 PUSH RSI
+159f4f027 PUSH RDI
+159f4f028 PUSH RBX
+159f4f029 SUB RSP,0x38
+159f4f02d MOV R15,RCX
+159f4f030 LEA RDX,[RCX + 0x140]
+159f4f037 CALL 0x1443d6590
+159f4f03c MOV RSI,qword ptr [R15 + 0x178]
+159f4f043 MOV R12,qword ptr [R15 + 0x180]
+159f4f04a CMP RSI,R12
+159f4f04d JZ 0x159f4f0cb
+159f4f04f LEA R14,[RSP + 0x2c]
+159f4f054 JMP 0x159f4f071
+159f4f060 MOV RCX,RBX
+159f4f063 CALL 0x1419f25b0
+159f4f068 ADD RSI,0x8
+159f4f06c CMP RSI,R12
+159f4f06f JZ 0x159f4f0af
+159f4f071 MOV RBX,qword ptr [RSI]
+159f4f074 TEST RBX,RBX
+159f4f077 JZ 0x159f4f068
+159f4f079 DEC.LOCK dword ptr [RBX]
+159f4f07c JNZ 0x159f4f068
+159f4f07e MOV RDI,qword ptr [RBX + 0x8]
+159f4f082 MOV EAX,dword ptr [RBX + 0x4]
+159f4f085 MOV dword ptr [RSP + 0x2c],EAX
+159f4f089 LEA RCX,[RDI + 0x18]
+159f4f08d MOV RDX,R14
+159f4f090 CALL 0x141a012c0
+159f4f095 MOV ECX,dword ptr [RAX]
+159f4f097 LEA EDX,[RCX + -0x1]
+159f4f09a MOV dword ptr [RAX],EDX
+159f4f09c CMP ECX,0x1
+159f4f09f JG 0x159f4f060
+159f4f0a1 MOV EDX,dword ptr [RSP + 0x2c]
+159f4f0a5 MOV RCX,RDI
+159f4f0a8 CALL 0x141a00a10
+159f4f0ad JMP 0x159f4f060
+159f4f0af MOV RAX,qword ptr [R15 + 0x178]
+159f4f0b6 LEA RBX,[0x150ccbae9]
+159f4f0bd ADD qword ptr [RBX],0xc3a20f
+159f4f0c4 MOV qword ptr [R15 + 0x180],RAX
+159f4f0cb MOV RDI,qword ptr [R15 + 0x1a8]
+159f4f0d2 TEST RDI,RDI
+159f4f0d5 JZ 0x159f4f115
+159f4f0d7 DEC.LOCK dword ptr [RDI]
+159f4f0da JNZ 0x159f4f115
+159f4f0dc MOV RBX,qword ptr [RDI + 0x8]
+159f4f0e0 MOV EAX,dword ptr [RDI + 0x4]
+159f4f0e3 MOV dword ptr [RSP + 0x30],EAX
+159f4f0e7 LEA RCX,[RBX + 0x18]
+159f4f0eb LEA RDX,[RSP + 0x30]
+159f4f0f0 CALL 0x141a012c0
+159f4f0f5 MOV ECX,dword ptr [RAX]
+159f4f0f7 LEA EDX,[RCX + -0x1]
+159f4f0fa MOV dword ptr [RAX],EDX
+159f4f0fc CMP ECX,0x1
+159f4f0ff JG 0x159f4f10d
+159f4f101 MOV EDX,dword ptr [RSP + 0x30]
+159f4f105 MOV RCX,RBX
+159f4f108 CALL 0x141a00a10
+159f4f10d MOV RCX,RDI
+159f4f110 CALL 0x1419f25b0
+159f4f115 MOV EBX,0x2c5
+159f4f11a SUB EBX,dword ptr [0x154d52cb8]
+159f4f120 MOV qword ptr [R15 + 0x1a8],RBX
+159f4f127 MOV RDI,qword ptr [R15 + 0x1b0]
+159f4f12e TEST RDI,RDI
+159f4f131 JZ 0x159f4f171
+159f4f133 DEC.LOCK dword ptr [RDI]
+159f4f136 JNZ 0x159f4f171
+159f4f138 MOV RBX,qword ptr [RDI + 0x8]
+159f4f13c MOV EAX,dword ptr [RDI + 0x4]
+159f4f13f MOV dword ptr [RSP + 0x34],EAX
+159f4f143 LEA RCX,[RBX + 0x18]
+159f4f147 LEA RDX,[RSP + 0x34]
+159f4f14c CALL 0x141a012c0
+159f4f151 MOV ECX,dword ptr [RAX]
+159f4f153 LEA EDX,[RCX + -0x1]
+159f4f156 MOV dword ptr [RAX],EDX
+159f4f158 CMP ECX,0x1
+159f4f15b JG 0x159f4f169
+159f4f15d MOV EDX,dword ptr [RSP + 0x34]
+159f4f161 MOV RCX,RBX
+159f4f164 CALL 0x141a00a10
+159f4f169 MOV RCX,RDI
+159f4f16c CALL 0x1419f25b0
+159f4f171 MOV qword ptr [R15 + 0x1b0],0x0
+159f4f17c ADD RSP,0x38
+159f4f180 POP RBX
+159f4f181 POP RDI
+159f4f182 POP RSI
+159f4f183 POP R12
+159f4f185 POP R14
+159f4f187 POP R15
+159f4f189 RET
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141a93aa0 <.sdata+0x1a92aa0>:
+   141a93aa0:	56                   	push   rsi
+   141a93aa1:	48 83 ec 20          	sub    rsp,0x20
+   141a93aa5:	48 89 ce             	mov    rsi,rcx
+   141a93aa8:	8b 81 a4 0a 00 00    	mov    eax,DWORD PTR [rcx+0xaa4]
+   141a93aae:	f7 d0                	not    eax
+   141a93ab0:	a8 28                	test   al,0x28
+   141a93ab2:	75 0a                	jne    0x141a93abe
+   141a93ab4:	48 89 f1             	mov    rcx,rsi
+   141a93ab7:	e8 74 00 00 00       	call   0x141a93b30
+   141a93abc:	eb 28                	jmp    0x141a93ae6
+   141a93abe:	a8 48                	test   al,0x48
+   141a93ac0:	75 0a                	jne    0x141a93acc
+   141a93ac2:	48 89 f1             	mov    rcx,rsi
+   141a93ac5:	e8 a6 1b 00 00       	call   0x141a95670
+   141a93aca:	eb 1a                	jmp    0x141a93ae6
+   141a93acc:	a8 30                	test   al,0x30
+   141a93ace:	75 0a                	jne    0x141a93ada
+   141a93ad0:	48 89 f1             	mov    rcx,rsi
+   141a93ad3:	e8 58 2e 00 00       	call   0x141a96930
+   141a93ad8:	eb 0c                	jmp    0x141a93ae6
+   141a93ada:	a8 50                	test   al,0x50
+   141a93adc:	75 08                	jne    0x141a93ae6
+   141a93ade:	48 89 f1             	mov    rcx,rsi
+   141a93ae1:	e8 6a 3d 00 00       	call   0x141a97850
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141a944c7 <.sdata+0x1a934c7>:
+   141a944c7:	8b 83 e8 09 00 00    	mov    eax,DWORD PTR [rbx+0x9e8]
+   141a944cd:	89 83 90 0a 00 00    	mov    DWORD PTR [rbx+0xa90],eax
+   141a944d3:	48 8d 8b 78 07 00 00 	lea    rcx,[rbx+0x778]
+   141a944da:	89 83 c0 08 00 00    	mov    DWORD PTR [rbx+0x8c0],eax
+   141a944e0:	e8 4b 1f 94 02       	call   0x1443d6430
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141a9616f <.sdata+0x1a9516f>:
+   141a9616f:	f6 83 a4 0a 00 00 10 	test   BYTE PTR [rbx+0xaa4],0x10
+   141a96176:	0f 84 f8 05 00 00    	je     0x141a96774
+   141a9617c:	48 8d 8b 78 07 00 00 	lea    rcx,[rbx+0x778]
+   141a96183:	8b 83 90 0a 00 00    	mov    eax,DWORD PTR [rbx+0xa90]
+   141a96189:	89 83 c4 08 00 00    	mov    DWORD PTR [rbx+0x8c4],eax
+   141a9618f:	e8 9c 02 94 02       	call   0x1443d6430
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141a96aa1 <.sdata+0x1a95aa1>:
+   141a96aa1:	8b 83 e8 09 00 00    	mov    eax,DWORD PTR [rbx+0x9e8]
+   141a96aa7:	89 83 90 0a 00 00    	mov    DWORD PTR [rbx+0xa90],eax
+   141a96aad:	48 8d 8b 78 07 00 00 	lea    rcx,[rbx+0x778]
+   141a96ab4:	89 83 c8 08 00 00    	mov    DWORD PTR [rbx+0x8c8],eax
+   141a96aba:	e8 71 f9 93 02       	call   0x1443d6430
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443d6430 <.sdata+0x43d5430>:
+   1443d6430:	e9 eb 8b b7 15       	jmp    0x159f4f020
