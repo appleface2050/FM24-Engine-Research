@@ -1,0 +1,170 @@
+Minimal native evidence: fixture record query and scoreline display consumer.
+Only low return byte AL is claimed for 1419c0150, especially null-query path.
+141e44aa0 comparisons are signed bytes; status numbers are not football labels.
+
+FUNCTION 0x1419c0150 selected windows
+   1419c0150:	56                                              	push   rsi
+   1419c0151:	53                                              	push   rbx
+   1419c0152:	48 83 ec 28                                     	sub    rsp,0x28
+   1419c0156:	44 89 cb                                        	mov    ebx,r9d
+   1419c0159:	44 89 c6                                        	mov    esi,r8d
+   1419c015c:	48 8b 01                                        	mov    rax,QWORD PTR [rcx]
+   1419c015f:	ff 50 30                                        	call   QWORD PTR [rax+0x30]
+   1419c0162:	48 85 c0                                        	test   rax,rax
+   1419c0165:	74 20                                           	je     0x1419c0187
+   1419c0167:	84 db                                           	test   bl,bl
+   1419c0169:	74 09                                           	je     0x1419c0174
+   1419c016b:	0f b6 48 03                                     	movzx  ecx,BYTE PTR [rax+0x3]
+   1419c016f:	80 f9 ff                                        	cmp    cl,0xff
+   1419c0172:	75 15                                           	jne    0x1419c0189
+   1419c0174:	40 84 f6                                        	test   sil,sil
+   1419c0177:	74 09                                           	je     0x1419c0182
+   1419c0179:	0f b6 48 01                                     	movzx  ecx,BYTE PTR [rax+0x1]
+   1419c017d:	80 f9 ff                                        	cmp    cl,0xff
+   1419c0180:	75 07                                           	jne    0x1419c0189
+   1419c0182:	0f b6 08                                        	movzx  ecx,BYTE PTR [rax]
+   1419c0185:	eb 02                                           	jmp    0x1419c0189
+   1419c0187:	b1 ff                                           	mov    cl,0xff
+   1419c0189:	89 c8                                           	mov    eax,ecx
+   1419c018b:	48 83 c4 28                                     	add    rsp,0x28
+   1419c018f:	5b                                              	pop    rbx
+   1419c0190:	5e                                              	pop    rsi
+   1419c0191:	c3                                              	ret
+
+FUNCTION 0x141e44aa0 selected windows
+   141e44aa0:	66 c7 41 6c 0a 0a                               	mov    WORD PTR [rcx+0x6c],0xa0a
+   141e44aa6:	0f b6 41 6a                                     	movzx  eax,BYTE PTR [rcx+0x6a]
+   141e44aaa:	38 41 66                                        	cmp    BYTE PTR [rcx+0x66],al
+   141e44aad:	7e 05                                           	jle    0x141e44ab4
+   141e44aaf:	c6 41 6c 03                                     	mov    BYTE PTR [rcx+0x6c],0x3
+   141e44ab3:	c3                                              	ret
+   141e44ab4:	7d 05                                           	jge    0x141e44abb
+   141e44ab6:	c6 41 6d 03                                     	mov    BYTE PTR [rcx+0x6d],0x3
+   141e44aba:	c3                                              	ret
+   141e44abb:	0f b6 41 6b                                     	movzx  eax,BYTE PTR [rcx+0x6b]
+   141e44abf:	38 41 67                                        	cmp    BYTE PTR [rcx+0x67],al
+   141e44ac2:	7e 05                                           	jle    0x141e44ac9
+   141e44ac4:	c6 41 6c 07                                     	mov    BYTE PTR [rcx+0x6c],0x7
+   141e44ac8:	c3                                              	ret
+   141e44ac9:	7d 05                                           	jge    0x141e44ad0
+   141e44acb:	c6 41 6d 07                                     	mov    BYTE PTR [rcx+0x6d],0x7
+   141e44acf:	c3                                              	ret
+   141e44ad0:	0f b6 41 69                                     	movzx  eax,BYTE PTR [rcx+0x69]
+   141e44ad4:	38 41 65                                        	cmp    BYTE PTR [rcx+0x65],al
+   141e44ad7:	7e 05                                           	jle    0x141e44ade
+   141e44ad9:	c6 41 6c 02                                     	mov    BYTE PTR [rcx+0x6c],0x2
+   141e44add:	c3                                              	ret
+   141e44ade:	7d 05                                           	jge    0x141e44ae5
+   141e44ae0:	c6 41 6d 02                                     	mov    BYTE PTR [rcx+0x6d],0x2
+   141e44ae4:	c3                                              	ret
+   141e44ae5:	0f b6 41 68                                     	movzx  eax,BYTE PTR [rcx+0x68]
+   141e44ae9:	38 41 64                                        	cmp    BYTE PTR [rcx+0x64],al
+   141e44aec:	7e 05                                           	jle    0x141e44af3
+   141e44aee:	c6 41 6c 01                                     	mov    BYTE PTR [rcx+0x6c],0x1
+   141e44af2:	c3                                              	ret
+   141e44af3:	7d 05                                           	jge    0x141e44afa
+   141e44af5:	c6 41 6d 01                                     	mov    BYTE PTR [rcx+0x6d],0x1
+   141e44af9:	c3                                              	ret
+   141e44afa:	66 c7 41 6c 09 09                               	mov    WORD PTR [rcx+0x6c],0x909
+   141e44b00:	c3                                              	ret
+
+FUNCTION 0x140269610 selected windows
+   140269610:	48 83 fa 01                                     	cmp    rdx,0x1
+   140269614:	48 83 d9 00                                     	sbb    rcx,0x0
+   140269618:	0f b6 41 6d                                     	movzx  eax,BYTE PTR [rcx+0x6d]
+   14026961c:	c3                                              	ret
+
+FUNCTION 0x140dc3810 selected windows
+   140dc381e:	48 89 d3                                        	mov    rbx,rdx
+   140dc3821:	49 89 cf                                        	mov    r15,rcx
+   140dc3876:	48 89 d9                                        	mov    rcx,rbx
+   140dc3879:	31 d2                                           	xor    edx,edx
+   140dc387b:	45 31 c0                                        	xor    r8d,r8d
+   140dc387e:	45 31 c9                                        	xor    r9d,r9d
+   140dc3881:	e8 ca c8 bf 00                                  	call   0x1419c0150
+   140dc3886:	88 44 24 68                                     	mov    BYTE PTR [rsp+0x68],al
+   140dc388a:	ba 01 00 00 00                                  	mov    edx,0x1
+   140dc388f:	48 89 d9                                        	mov    rcx,rbx
+   140dc3892:	45 31 c0                                        	xor    r8d,r8d
+   140dc3895:	45 31 c9                                        	xor    r9d,r9d
+   140dc3898:	e8 b3 c8 bf 00                                  	call   0x1419c0150
+   140dc389d:	88 44 24 69                                     	mov    BYTE PTR [rsp+0x69],al
+   140dc38a1:	b9 60 00 00 00                                  	mov    ecx,0x60
+   140dc38a6:	e8 35 20 51 ff                                  	call   0x1402d58e0
+   140dc38ab:	c7 40 08 00 00 00 00                            	mov    DWORD PTR [rax+0x8],0x0
+   140dc38b2:	48 8d 0d 8f df 85 04                            	lea    rcx,[rip+0x485df8f]        # 0x145621848
+   140dc38b9:	48 89 08                                        	mov    QWORD PTR [rax],rcx
+   140dc38bc:	c7 40 18 00 00 00 00                            	mov    DWORD PTR [rax+0x18],0x0
+   140dc38c3:	48 8d 0d 2e e0 85 04                            	lea    rcx,[rip+0x485e02e]        # 0x1456218f8
+   140dc38ca:	48 89 48 10                                     	mov    QWORD PTR [rax+0x10],rcx
+   140dc38ce:	48 8b 4c 24 6e                                  	mov    rcx,QWORD PTR [rsp+0x6e]
+   140dc38d3:	48 89 48 3e                                     	mov    QWORD PTR [rax+0x3e],rcx
+   140dc38d7:	48 8b 4c 24 68                                  	mov    rcx,QWORD PTR [rsp+0x68]
+   140dc38dc:	48 89 48 38                                     	mov    QWORD PTR [rax+0x38],rcx
+
+FUNCTION 0x140dc2fb0 selected windows
+   140dc30c5:	48 8d ac 24 b0 00 00 00                         	lea    rbp,[rsp+0xb0]
+   140dc3117:	48 89 e9                                        	mov    rcx,rbp
+   140dc311a:	e8 91 f3 07 01                                  	call   0x141e424b0
+   140dc311f:	48 8d 05 52 4f 84 04                            	lea    rax,[rip+0x4844f52]        # 0x145608078
+   140dc3126:	48 89 84 24 b0 00 00 00                         	mov    QWORD PTR [rsp+0xb0],rax
+   140dc312e:	b8 ff ff ff ff                                  	mov    eax,0xffffffff
+   140dc3133:	48 89 84 24 08 01 00 00                         	mov    QWORD PTR [rsp+0x108],rax
+   140dc313b:	c7 84 24 10 01 00 00 00 00 00 00                	mov    DWORD PTR [rsp+0x110],0x0
+   140dc3146:	48 c7 84 24 14 01 00 00 ff ff ff ff             	mov    QWORD PTR [rsp+0x114],0xffffffffffffffff
+   140dc3152:	48 8d 84 24 1c 01 00 00                         	lea    rax,[rsp+0x11c]
+   140dc315a:	48 c7 00 00 00 00 00                            	mov    QWORD PTR [rax],0x0
+   140dc3161:	c7 40 08 00 00 00 00                            	mov    DWORD PTR [rax+0x8],0x0
+   140dc3180:	4c 89 ea                                        	mov    rdx,r13
+   140dc3183:	49 89 f0                                        	mov    r8,rsi
+   140dc3186:	e8 65 70 b6 00                                  	call   0x14192a1f0
+   140dc318b:	48 83 bc 24 50 01 00 00 00                      	cmp    QWORD PTR [rsp+0x150],0x0
+   140dc3194:	74 2a                                           	je     0x140dc31c0
+   140dc3196:	48 89 e9                                        	mov    rcx,rbp
+   140dc3199:	4c 89 ea                                        	mov    rdx,r13
+   140dc319c:	e8 cf 0c 08 01                                  	call   0x141e43e70
+   140dc31a1:	48 8b 8c 24 50 01 00 00                         	mov    rcx,QWORD PTR [rsp+0x150]
+   140dc31a9:	48 85 c9                                        	test   rcx,rcx
+   140dc31ac:	74 12                                           	je     0x140dc31c0
+   140dc31ae:	f0 ff 49 08                                     	lock dec DWORD PTR [rcx+0x8]
+   140dc31b2:	75 0c                                           	jne    0x140dc31c0
+   140dc31b4:	48 8b 01                                        	mov    rax,QWORD PTR [rcx]
+   140dc31b7:	ba 01 00 00 00                                  	mov    edx,0x1
+   140dc31bc:	ff 10                                           	call   QWORD PTR [rax]
+   140dc31be:	66 90                                           	xchg   ax,ax
+   140dc31c0:	48 89 e9                                        	mov    rcx,rbp
+   140dc31c3:	48 8b 54 24 30                                  	mov    rdx,QWORD PTR [rsp+0x30]
+   140dc3280:	48 89 d9                                        	mov    rcx,rbx
+   140dc3283:	48 89 ea                                        	mov    rdx,rbp
+   140dc3286:	e8 85 05 00 00                                  	call   0x140dc3810
+   140dc328b:	4c 89 e9                                        	mov    rcx,r13
+   140dc328e:	48 89 da                                        	mov    rdx,rbx
+   140dc3291:	e8 5a a2 bb 00                                  	call   0x14197d4f0
+   140dc3296:	4c 89 f1                                        	mov    rcx,r14
+   140dc3299:	ba 63 73 65 64                                  	mov    edx,0x64657363
+   140dc329e:	4d 89 e8                                        	mov    r8,r13
+   140dc32a1:	e8 8a 05 bb 00                                  	call   0x141973830
+
+DATA 0x145621840 db::SCORELINE RTTI locator pointer
+9018624501000000
+
+DATA 0x145621890 db::SCORELINE complete object locator
+01000000000000000000000060532a06a818620590186205
+
+DATA 0x1462a5370 db::SCORELINE native type name
+2e3f415653434f52454c494e45406462404000
+
+DATA 0x1456218f0 db::SCORELINE::BASIC_SCORELINE RTTI locator pointer
+4019624501000000
+
+DATA 0x145621940 db::SCORELINE::BASIC_SCORELINE complete object locator
+01000000000000000000000090532a065819620540196205
+
+DATA 0x1462a53a0 db::SCORELINE::BASIC_SCORELINE native type name
+2e3f415642415349435f53434f52454c494e454053434f52454c494e45406462404000
+
+DATA 0x1456080a8 FIXTURE_RESULT record query virtual +30
+8095264001000000
+
+DATA 0x145608108 FIXTURE_RESULT side status query virtual +90
+1096264001000000

@@ -84,6 +84,29 @@ def write_fixture_record_fragment(records, buffer, position):
     return bytes(result), position
 
 
+def query_fixture_byte(record, prefer_byte1=False, prefer_byte3=False):
+    """转写1419c0150的低8位返回值；None代表虚查询返回空，非整寄存器语义。"""
+    if record is None:
+        return 0xFF
+    if prefer_byte3 and record[3] != 0xFF:
+        return record[3]
+    if prefer_byte1 and record[1] != 0xFF:
+        return record[1]
+    return record[0]
+
+
+def fixture_comparison_status(first, second):
+    """转写141e44aa0：按signed byte比较，输出两侧6c/6d原始状态码。"""
+    for index, code in [(2, 3), (3, 7), (1, 2), (0, 1)]:
+        left = first[index] if first[index] < 128 else first[index] - 256
+        right = second[index] if second[index] < 128 else second[index] - 256
+        if left > right:
+            return code, 10
+        if left < right:
+            return 10, code
+    return 9, 9
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -137,6 +160,22 @@ def examples():
     check("stream-current-position-not-always-append",
           write_fixture_record_fragment([1, 2, 3, 4, 5, 6, 7, 8], bytes([9] * 10), 1),
           (bytes([9, 1, 2, 3, 4, 5, 6, 7, 8, 9]), 9))
+    check("query-base-only", query_fixture_byte([2, 3, 4, 5]), 2)
+    check("query-byte1", query_fixture_byte([2, 3, 4, 5], True), 3)
+    check("query-byte3-priority", query_fixture_byte([2, 3, 4, 5], True, True), 5)
+    check("query-byte3-fallback-byte1", query_fixture_byte([2, 3, 4, 255], True, True), 3)
+    check("query-both-sentinels", query_fixture_byte([2, 255, 4, 255], True, True), 2)
+    check("query-disabled-byte1", query_fixture_byte([2, 3, 4, 255], False, True), 2)
+    check("query-zero-is-present", query_fixture_byte([2, 3, 4, 0], True, True), 0)
+    check("query-empty-low-byte", query_fixture_byte(None), 255)
+    check("query-does-not-select-byte2", query_fixture_byte([255, 255, 4, 255], True, True), 255)
+    check("status-byte2-priority", fixture_comparison_status([9, 9, 0, 9], [0, 0, 1, 0]), (10, 3))
+    check("status-byte3-next", fixture_comparison_status([0, 0, 0, 1], [9, 9, 0, 0]), (7, 10))
+    check("status-byte1-next", fixture_comparison_status([9, 0, 0, 0], [0, 1, 0, 0]), (10, 2))
+    check("status-byte0-last", fixture_comparison_status([1, 0, 0, 0], [0, 0, 0, 0]), (1, 10))
+    check("status-all-equal", fixture_comparison_status([1, 2, 3, 4], [1, 2, 3, 4]), (9, 9))
+    check("status-ff-is-signed-negative", fixture_comparison_status([0, 0, 255, 0], [0, 0, 0, 0]), (10, 3))
+    check("status-ff-not-validity-check", fixture_comparison_status([255]*4, [255]*4), (9, 9))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -152,6 +191,7 @@ def verify_original(exe):
         "20261017_goal_lifecycle_observations.json",
         "20261017_fixture_result_binding_observations.json",
         "20261017_fixture_stream_direction_observations.json",
+        "20261017_fixture_scoreline_consumers_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

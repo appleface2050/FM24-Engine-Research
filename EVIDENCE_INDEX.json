@@ -199,15 +199,17 @@
     {
       "id": "score_consumer_boundary",
       "domain": "detailed_match",
-      "claim": "通过比赛构造、工厂注册、接口虚表，进球加减条件连接到两种原生fixture四字节记录，并确认具体调用把FIXTURE_RESULT记录写入内存输出流；最终比分语义与保留仍未闭合。",
+      "claim": "进球加减条件连接到两种fixture记录；已恢复字节查询优先级、状态比较和临时FIXTURE_RESULT到db::SCORELINE展示的类型路径。比赛内同一对象到终场正式结果仍未闭合。",
       "status": "partial_chain",
       "inputs": [
         "M+778容器构造、工厂注册表、T+b5及模式",
-        "同一I及其查询返回记录"
+        "同一I及其查询返回记录",
+        "临时展示对象F、side和两个查询开关"
       ],
       "outputs": [
         "FIXTURE的I+4c+4*side或FIXTURE_RESULT的I+64+4*side记录",
-        "记录字节条件增减；具体输出流按字段顺序写入缓冲区"
+        "记录字节条件增减；具体输出流按字段顺序写入缓冲区",
+        "查询低字节、两侧原始状态码，以及db::SCORELINE展示对象"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -224,7 +226,12 @@
         "0x1419253a0",
         "0x1419286d0",
         "0x141928220",
-        "0x14557e720"
+        "0x14557e720",
+        "0x1419c0150",
+        "0x141e44aa0",
+        "0x140269610",
+        "0x140dc3810",
+        "0x140dc3286"
       ],
       "evidence": {
         "reports": [
@@ -237,7 +244,9 @@
           "20261017_fixture_result_binding_static.txt",
           "20261017_fixture_result_binding_observations.json",
           "20261017_fixture_stream_direction_static.txt",
-          "20261017_fixture_stream_direction_observations.json"
+          "20261017_fixture_stream_direction_observations.json",
+          "20261017_fixture_scoreline_consumers_static.txt",
+          "20261017_fixture_scoreline_consumers_observations.json"
         ]
       },
       "upstream": [
@@ -247,9 +256,10 @@
       "downstream": [],
       "unproved": [
         "注册/构造/对象替换的完整运行生命周期",
-        "记录各字节的正式含义、初始有效值与最终消费者",
+        "记录各字节的足球含义、初始有效值与终场正式结果消费者",
         "T11b身份、248转存与比赛结束前保留/撤销",
-        "输出调用者的对象与比赛内同一I的连接、终场时序及落盘；反向入口实际输入流参数绑定"
+        "输出调用者的对象与比赛内同一I的连接、终场时序及落盘；反向入口实际输入流参数绑定",
+        "比赛内I与临时展示F的身份/复制关系；展示加载成功与终场保留条件"
       ]
     },
     {
