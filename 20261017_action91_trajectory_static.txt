@@ -1,0 +1,731 @@
+FM24 24.4.2+2081827; original PE slices, end exclusive. Static-only.
+Finite-input cutpoint examples are arithmetic models, not game runs.
+
+===== caller_number_mode_and_A 14446852a:144468553 =====
+PE file offset 4467b2a, length 41
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+000000014446852a <.data>:
+   14446852a:	c7 44 24 30 91 00 00 	mov    DWORD PTR [rsp+0x30],0x91
+   144468531:	00
+   144468532:	c7 44 24 28 00 00 00 	mov    DWORD PTR [rsp+0x28],0x0
+   144468539:	00
+   14446853a:	c7 44 24 20 00 00 00 	mov    DWORD PTR [rsp+0x20],0x0
+   144468541:	00
+   144468542:	48 89 ea             	mov    rdx,rbp
+   144468545:	41 89 f8             	mov    r8d,edi
+   144468548:	41 b9 02 00 00 00    	mov    r9d,0x2
+   14446854e:	e8 1d 47 f8 ff       	call   0x1443ecc70
+
+===== tau_route 1443ece70:1443ece8b =====
+PE file offset 43ec470, length 27
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443ece70 <.data>:
+   1443ece70:	4d 85 d2             	test   r10,r10
+   1443ece73:	41 89 fb             	mov    r11d,edi
+   1443ece76:	74 13                	je     0x1443ece8b
+   1443ece78:	f3 0f 10 05 7c 37 85 	movss  xmm0,DWORD PTR [rip+0x185377c]        # 0x145c405fc
+   1443ece7f:	01
+   1443ece80:	41 0f 2e 42 7c       	ucomiss xmm0,DWORD PTR [r10+0x7c]
+   1443ece85:	0f 86 f0 00 00 00    	jbe    0x1443ecf7b
+
+===== history_selection_equal_xy 1443ecf7b:1443ed02c =====
+PE file offset 43ec57b, length 177
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443ecf7b <.data>:
+   1443ecf7b:	48 8b 8e 38 10 00 00 	mov    rcx,QWORD PTR [rsi+0x1038]
+   1443ecf82:	8b 86 18 0d 00 00    	mov    eax,DWORD PTR [rsi+0xd18]
+   1443ecf88:	8b 96 2c 0d 00 00    	mov    edx,DWORD PTR [rsi+0xd2c]
+   1443ecf8e:	39 c5                	cmp    ebp,eax
+   1443ecf90:	41 89 c4             	mov    r12d,eax
+   1443ecf93:	44 0f 4f e5          	cmovg  r12d,ebp
+   1443ecf97:	44 39 e2             	cmp    edx,r12d
+   1443ecf9a:	44 0f 4c e2          	cmovl  r12d,edx
+   1443ecf9e:	41 29 c4             	sub    r12d,eax
+   1443ecfa1:	49 63 c4             	movsxd rax,r12d
+   1443ecfa4:	48 69 d0 40 03 00 00 	imul   rdx,rax,0x340
+   1443ecfab:	48 8d 04 11          	lea    rax,[rcx+rdx*1]
+   1443ecfaf:	0f b6 9c 11 a0 00 00 	movzx  ebx,BYTE PTR [rcx+rdx*1+0xa0]
+   1443ecfb6:	00
+   1443ecfb7:	48 8d 1c 9b          	lea    rbx,[rbx+rbx*4]
+   1443ecfbb:	48 c1 e3 04          	shl    rbx,0x4
+   1443ecfbf:	48 8b bc 03 80 00 00 	mov    rdi,QWORD PTR [rbx+rax*1+0x80]
+   1443ecfc6:	00
+   1443ecfc7:	f3 0f 10 8c 03 88 00 	movss  xmm1,DWORD PTR [rbx+rax*1+0x88]
+   1443ecfce:	00 00
+   1443ecfd0:	8b 9c 03 8c 00 00 00 	mov    ebx,DWORD PTR [rbx+rax*1+0x8c]
+   1443ecfd7:	f3 0f 5c 49 58       	subss  xmm1,DWORD PTR [rcx+0x58]
+   1443ecfdc:	48 89 be 40 0d 00 00 	mov    QWORD PTR [rsi+0xd40],rdi
+   1443ecfe3:	f3 0f 11 8e 48 0d 00 	movss  DWORD PTR [rsi+0xd48],xmm1
+   1443ecfea:	00
+   1443ecfeb:	89 9e 4c 0d 00 00    	mov    DWORD PTR [rsi+0xd4c],ebx
+   1443ecff1:	0f b6 8c 11 a0 00 00 	movzx  ecx,BYTE PTR [rcx+rdx*1+0xa0]
+   1443ecff8:	00
+   1443ecff9:	48 8d 0c 89          	lea    rcx,[rcx+rcx*4]
+   1443ecffd:	48 c1 e1 04          	shl    rcx,0x4
+   1443ed001:	f3 41 0f 10 0f       	movss  xmm1,DWORD PTR [r15]
+   1443ed006:	0f 2e 8c 01 80 00 00 	ucomiss xmm1,DWORD PTR [rcx+rax*1+0x80]
+   1443ed00d:	00
+   1443ed00e:	75 1c                	jne    0x1443ed02c
+   1443ed010:	7a 1a                	jp     0x1443ed02c
+   1443ed012:	48 8d 84 01 80 00 00 	lea    rax,[rcx+rax*1+0x80]
+   1443ed019:	00
+   1443ed01a:	f3 41 0f 10 4f 04    	movss  xmm1,DWORD PTR [r15+0x4]
+   1443ed020:	0f 2e 48 04          	ucomiss xmm1,DWORD PTR [rax+0x4]
+   1443ed024:	75 06                	jne    0x1443ed02c
+   1443ed026:	0f 8b 35 13 00 00    	jnp    0x1443ee361
+
+===== origin_selection 1443ed02c:1443ed080 =====
+PE file offset 43ec62c, length 84
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443ed02c <.data>:
+   1443ed02c:	48 8d 86 40 0d 00 00 	lea    rax,[rsi+0xd40]
+   1443ed033:	f3 41 0f 10 4a 7c    	movss  xmm1,DWORD PTR [r10+0x7c]
+   1443ed039:	49 8d 4a 10          	lea    rcx,[r10+0x10]
+   1443ed03d:	0f 2e c8             	ucomiss xmm1,xmm0
+   1443ed040:	48 0f 47 c1          	cmova  rax,rcx
+   1443ed044:	0f 28 00             	movaps xmm0,XMMWORD PTR [rax]
+   1443ed047:	0f 29 84 24 80 00 00 	movaps XMMWORD PTR [rsp+0x80],xmm0
+   1443ed04e:	00
+   1443ed04f:	89 ae 2c 0d 00 00    	mov    DWORD PTR [rsi+0xd2c],ebp
+   1443ed055:	41 8b 42 7c          	mov    eax,DWORD PTR [r10+0x7c]
+   1443ed059:	89 86 30 0d 00 00    	mov    DWORD PTR [rsi+0xd30],eax
+   1443ed05f:	f3 41 0f 10 47 08    	movss  xmm0,DWORD PTR [r15+0x8]
+   1443ed065:	0f 2e 84 24 88 00 00 	ucomiss xmm0,DWORD PTR [rsp+0x88]
+   1443ed06c:	00
+   1443ed06d:	b8 02 00 00 00       	mov    eax,0x2
+   1443ed072:	41 0f 46 c3          	cmovbe eax,r11d
+   1443ed076:	41 83 fb 01          	cmp    r11d,0x1
+   1443ed07a:	44 0f 44 d8          	cmove  r11d,eax
+   1443ed07e:	31 ff                	xor    edi,edi
+
+===== target_metadata_and_min_scalar 1443ed142:1443ed1b4 =====
+PE file offset 43ec742, length 114
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443ed142 <.data>:
+   1443ed142:	41 0f 28 0f          	movaps xmm1,XMMWORD PTR [r15]
+   1443ed146:	0f 29 8e e0 0d 00 00 	movaps XMMWORD PTR [rsi+0xde0],xmm1
+   1443ed14d:	41 0f 28 0f          	movaps xmm1,XMMWORD PTR [r15]
+   1443ed151:	0f 29 8e 50 0d 00 00 	movaps XMMWORD PTR [rsi+0xd50],xmm1
+   1443ed158:	66 41 0f 6e c9       	movd   xmm1,r9d
+   1443ed15d:	0f 28 d6             	movaps xmm2,xmm6
+   1443ed160:	f3 0f 10 d1          	movss  xmm2,xmm1
+   1443ed164:	41 0f 28 0f          	movaps xmm1,XMMWORD PTR [r15]
+   1443ed168:	f3 41 0f 10 5f 04    	movss  xmm3,DWORD PTR [r15+0x4]
+   1443ed16e:	0f 16 d9             	movlhps xmm3,xmm1
+   1443ed171:	0f c6 d9 e2          	shufps xmm3,xmm1,0xe2
+   1443ed175:	0f 5c d3             	subps  xmm2,xmm3
+   1443ed178:	0f 59 d2             	mulps  xmm2,xmm2
+   1443ed17b:	f3 0f 16 ca          	movshdup xmm1,xmm2
+   1443ed17f:	f3 0f 58 ca          	addss  xmm1,xmm2
+   1443ed183:	f3 0f 51 c9          	sqrtss xmm1,xmm1
+   1443ed187:	f3 0f 11 8e f0 0d 00 	movss  DWORD PTR [rsi+0xdf0],xmm1
+   1443ed18e:	00
+   1443ed18f:	44 89 ae f4 0d 00 00 	mov    DWORD PTR [rsi+0xdf4],r13d
+   1443ed196:	f3 0f 10 0d 06 03 63 	movss  xmm1,DWORD PTR [rip+0x1630306]        # 0x145a1d4a4
+   1443ed19d:	01
+   1443ed19e:	0f 2e c8             	ucomiss xmm1,xmm0
+   1443ed1a1:	66 0f 7e c8          	movd   eax,xmm1
+   1443ed1a5:	41 0f 46 c5          	cmovbe eax,r13d
+   1443ed1a9:	89 44 24 74          	mov    DWORD PTR [rsp+0x74],eax
+   1443ed1ad:	89 84 24 98 00 00 00 	mov    DWORD PTR [rsp+0x98],eax
+
+===== velocity_copy_or_solve 1443ed74c:1443ed833 =====
+PE file offset 43ecd4c, length 231
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443ed74c <.data>:
+   1443ed74c:	4d 85 d2             	test   r10,r10
+   1443ed74f:	74 31                	je     0x1443ed782
+   1443ed751:	41 0f 28 42 30       	movaps xmm0,XMMWORD PTR [r10+0x30]
+   1443ed756:	0f 59 c0             	mulps  xmm0,xmm0
+   1443ed759:	f3 0f 16 c8          	movshdup xmm1,xmm0
+   1443ed75d:	f3 0f 58 c8          	addss  xmm1,xmm0
+   1443ed761:	0f 12 c0             	movhlps xmm0,xmm0
+   1443ed764:	f3 0f 58 c1          	addss  xmm0,xmm1
+   1443ed768:	f3 0f 51 c0          	sqrtss xmm0,xmm0
+   1443ed76c:	0f 57 c9             	xorps  xmm1,xmm1
+   1443ed76f:	0f 2e c1             	ucomiss xmm0,xmm1
+   1443ed772:	0f 85 89 00 00 00    	jne    0x1443ed801
+   1443ed778:	0f 8a 83 00 00 00    	jp     0x1443ed801
+   1443ed77e:	41 8b 52 7c          	mov    edx,DWORD PTR [r10+0x7c]
+   1443ed782:	48 89 44 24 60       	mov    QWORD PTR [rsp+0x60],rax
+   1443ed787:	48 89 7c 24 58       	mov    QWORD PTR [rsp+0x58],rdi
+   1443ed78c:	89 4c 24 50          	mov    DWORD PTR [rsp+0x50],ecx
+   1443ed790:	89 5c 24 40          	mov    DWORD PTR [rsp+0x40],ebx
+   1443ed794:	44 89 44 24 38       	mov    DWORD PTR [rsp+0x38],r8d
+   1443ed799:	48 8d 84 24 98 00 00 	lea    rax,[rsp+0x98]
+   1443ed7a0:	00
+   1443ed7a1:	48 89 44 24 30       	mov    QWORD PTR [rsp+0x30],rax
+   1443ed7a6:	89 54 24 28          	mov    DWORD PTR [rsp+0x28],edx
+   1443ed7aa:	44 89 74 24 20       	mov    DWORD PTR [rsp+0x20],r14d
+   1443ed7af:	48 c7 44 24 48 00 00 	mov    QWORD PTR [rsp+0x48],0x0
+   1443ed7b6:	00 00
+   1443ed7b8:	48 8d 94 24 f0 00 00 	lea    rdx,[rsp+0xf0]
+   1443ed7bf:	00
+   1443ed7c0:	4c 8d 84 24 80 00 00 	lea    r8,[rsp+0x80]
+   1443ed7c7:	00
+   1443ed7c8:	48 89 f1             	mov    rcx,rsi
+   1443ed7cb:	4d 89 f9             	mov    r9,r15
+   1443ed7ce:	e8 1d 57 00 00       	call   0x1443f2ef0
+   1443ed7d3:	8b 84 24 f8 00 00 00 	mov    eax,DWORD PTR [rsp+0xf8]
+   1443ed7da:	41 89 45 08          	mov    DWORD PTR [r13+0x8],eax
+   1443ed7de:	48 8b 84 24 f0 00 00 	mov    rax,QWORD PTR [rsp+0xf0]
+   1443ed7e5:	00
+   1443ed7e6:	49 89 45 00          	mov    QWORD PTR [r13+0x0],rax
+   1443ed7ea:	4c 8b 4c 24 78       	mov    r9,QWORD PTR [rsp+0x78]
+   1443ed7ef:	44 8b b4 24 90 00 00 	mov    r14d,DWORD PTR [rsp+0x90]
+   1443ed7f6:	00
+   1443ed7f7:	4c 8b 94 24 28 08 00 	mov    r10,QWORD PTR [rsp+0x828]
+   1443ed7fe:	00
+   1443ed7ff:	eb 32                	jmp    0x1443ed833
+   1443ed801:	49 8d 4a 30          	lea    rcx,[r10+0x30]
+   1443ed805:	8b 51 08             	mov    edx,DWORD PTR [rcx+0x8]
+   1443ed808:	41 89 55 08          	mov    DWORD PTR [r13+0x8],edx
+   1443ed80c:	48 8b 09             	mov    rcx,QWORD PTR [rcx]
+   1443ed80f:	49 89 4d 00          	mov    QWORD PTR [r13+0x0],rcx
+   1443ed813:	41 8b 4a 48          	mov    ecx,DWORD PTR [r10+0x48]
+   1443ed817:	89 4f 08             	mov    DWORD PTR [rdi+0x8],ecx
+   1443ed81a:	49 8b 4a 40          	mov    rcx,QWORD PTR [r10+0x40]
+   1443ed81e:	48 89 0f             	mov    QWORD PTR [rdi],rcx
+   1443ed821:	41 0f b6 8a c0 00 00 	movzx  ecx,BYTE PTR [r10+0xc0]
+   1443ed828:	00
+   1443ed829:	88 08                	mov    BYTE PTR [rax],cl
+   1443ed82b:	44 8b b4 24 90 00 00 	mov    r14d,DWORD PTR [rsp+0x90]
+   1443ed832:	00
+
+===== trajectory_state_velocity 1443ee20c:1443ee253 =====
+PE file offset 43ed80c, length 71
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443ee20c <.data>:
+   1443ee20c:	48 8b 86 38 10 00 00 	mov    rax,QWORD PTR [rsi+0x1038]
+   1443ee213:	f3 44 0f 58 40 58    	addss  xmm8,DWORD PTR [rax+0x58]
+   1443ee219:	48 8b 08             	mov    rcx,QWORD PTR [rax]
+   1443ee21c:	48 3b 48 08          	cmp    rcx,QWORD PTR [rax+0x8]
+   1443ee220:	74 04                	je     0x1443ee226
+   1443ee222:	48 89 48 08          	mov    QWORD PTR [rax+0x8],rcx
+   1443ee226:	c6 80 85 00 00 00 00 	mov    BYTE PTR [rax+0x85],0x0
+   1443ee22d:	48 89 68 20          	mov    QWORD PTR [rax+0x20],rbp
+   1443ee231:	f3 44 0f 11 40 28    	movss  DWORD PTR [rax+0x28],xmm8
+   1443ee237:	48 8b 0f             	mov    rcx,QWORD PTR [rdi]
+   1443ee23a:	48 89 48 40          	mov    QWORD PTR [rax+0x40],rcx
+   1443ee23e:	8b 4f 08             	mov    ecx,DWORD PTR [rdi+0x8]
+   1443ee241:	89 48 48             	mov    DWORD PTR [rax+0x48],ecx
+   1443ee244:	49 8b 4d 00          	mov    rcx,QWORD PTR [r13+0x0]
+   1443ee248:	48 89 48 30          	mov    QWORD PTR [rax+0x30],rcx
+   1443ee24c:	41 8b 4d 08          	mov    ecx,DWORD PTR [r13+0x8]
+   1443ee250:	89 48 38             	mov    DWORD PTR [rax+0x38],ecx
+
+===== trajectory_advancement_call 1443ee2ac:1443ee2c8 =====
+PE file offset 43ed8ac, length 28
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443ee2ac <.data>:
+   1443ee2ac:	80 be e4 b4 01 00 00 	cmp    BYTE PTR [rsi+0x1b4e4],0x0
+   1443ee2b3:	b8 17 df fb ff       	mov    eax,0xfffbdf17
+   1443ee2b8:	ba 04 00 00 00       	mov    edx,0x4
+   1443ee2bd:	0f 44 d0             	cmove  edx,eax
+   1443ee2c0:	48 89 f1             	mov    rcx,rsi
+   1443ee2c3:	e8 28 c6 ff ff       	call   0x1443ea8f0
+
+===== solver_dispatch 1443f3a2a:1443f3a6c =====
+PE file offset 43f302a, length 66
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443f3a2a <.data>:
+   1443f3a2a:	8b 84 24 f0 01 00 00 	mov    eax,DWORD PTR [rsp+0x1f0]
+   1443f3a31:	83 c0 fb             	add    eax,0xfffffffb
+   1443f3a34:	3d 9b 00 00 00       	cmp    eax,0x9b
+   1443f3a39:	0f 87 20 07 00 00    	ja     0x1443f415f
+   1443f3a3f:	48 8d 15 aa 0e 00 00 	lea    rdx,[rip+0xeaa]        # 0x1443f48f0
+   1443f3a46:	48 63 04 82          	movsxd rax,DWORD PTR [rdx+rax*4]
+   1443f3a4a:	48 01 d0             	add    rax,rdx
+   1443f3a4d:	ff e0                	jmp    rax
+   1443f3a4f:	45 89 d4             	mov    r12d,r10d
+   1443f3a52:	4d 89 de             	mov    r14,r11
+   1443f3a55:	48 8d 54 24 50       	lea    rdx,[rsp+0x50]
+   1443f3a5a:	4c 8d 84 24 a0 00 00 	lea    r8,[rsp+0xa0]
+   1443f3a61:	00
+   1443f3a62:	48 8b 4c 24 78       	mov    rcx,QWORD PTR [rsp+0x78]
+   1443f3a67:	e8 14 12 00 00       	call   0x1443f4c80
+
+===== scale_helper 1443f4c80:1443f4ec8 =====
+PE file offset 43f4280, length 584
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443f4c80 <.data>:
+   1443f4c80:	56                   	push   rsi
+   1443f4c81:	57                   	push   rdi
+   1443f4c82:	53                   	push   rbx
+   1443f4c83:	48 83 ec 20          	sub    rsp,0x20
+   1443f4c87:	4c 89 c3             	mov    rbx,r8
+   1443f4c8a:	48 89 d6             	mov    rsi,rdx
+   1443f4c8d:	48 89 cf             	mov    rdi,rcx
+   1443f4c90:	41 8b 48 20          	mov    ecx,DWORD PTR [r8+0x20]
+   1443f4c94:	8d 81 76 ff ff ff    	lea    eax,[rcx-0x8a]
+   1443f4c9a:	83 f8 04             	cmp    eax,0x4
+   1443f4c9d:	72 18                	jb     0x1443f4cb7
+   1443f4c9f:	8d 41 8f             	lea    eax,[rcx-0x71]
+   1443f4ca2:	83 f8 0e             	cmp    eax,0xe
+   1443f4ca5:	72 10                	jb     0x1443f4cb7
+   1443f4ca7:	8d 81 6c ff ff ff    	lea    eax,[rcx-0x94]
+   1443f4cad:	83 f8 0c             	cmp    eax,0xc
+   1443f4cb0:	77 7f                	ja     0x1443f4d31
+   1443f4cb2:	83 f8 08             	cmp    eax,0x8
+   1443f4cb5:	74 7a                	je     0x1443f4d31
+   1443f4cb7:	f3 0f 10 43 24       	movss  xmm0,DWORD PTR [rbx+0x24]
+   1443f4cbc:	f3 0f 10 4b 38       	movss  xmm1,DWORD PTR [rbx+0x38]
+   1443f4cc1:	f3 0f 59 0d d7 87 62 	mulss  xmm1,DWORD PTR [rip+0x16287d7]        # 0x145a1d4a0
+   1443f4cc8:	01
+   1443f4cc9:	f3 0f 5f c1          	maxss  xmm0,xmm1
+   1443f4ccd:	66 0f 7e c0          	movd   eax,xmm0
+   1443f4cd1:	48 8b 8f 10 0d 00 00 	mov    rcx,QWORD PTR [rdi+0xd10]
+   1443f4cd8:	48 8b 89 d0 cd 00 00 	mov    rcx,QWORD PTR [rcx+0xcdd0]
+   1443f4cdf:	f3 0f 10 41 5c       	movss  xmm0,DWORD PTR [rcx+0x5c]
+   1443f4ce4:	f3 0f 59 05 cc 87 62 	mulss  xmm0,DWORD PTR [rip+0x16287cc]        # 0x145a1d4b8
+   1443f4ceb:	01
+   1443f4cec:	66 0f 7e c3          	movd   ebx,xmm0
+   1443f4cf0:	8b 15 3e 3a 03 02    	mov    edx,DWORD PTR [rip+0x2033a3e]        # 0x146428734
+   1443f4cf6:	66 0f 6e ca          	movd   xmm1,edx
+   1443f4cfa:	0f 2e c1             	ucomiss xmm0,xmm1
+   1443f4cfd:	89 d9                	mov    ecx,ebx
+   1443f4cff:	0f 47 ca             	cmova  ecx,edx
+   1443f4d02:	0f 2e c8             	ucomiss xmm1,xmm0
+   1443f4d05:	0f 47 da             	cmova  ebx,edx
+   1443f4d08:	66 0f 6e c0          	movd   xmm0,eax
+   1443f4d0c:	66 0f 6e c9          	movd   xmm1,ecx
+   1443f4d10:	0f 2e c1             	ucomiss xmm0,xmm1
+   1443f4d13:	0f 47 c8             	cmova  ecx,eax
+   1443f4d16:	66 0f 6e c1          	movd   xmm0,ecx
+   1443f4d1a:	66 0f 6e cb          	movd   xmm1,ebx
+   1443f4d1e:	0f 2e c8             	ucomiss xmm1,xmm0
+   1443f4d21:	0f 46 cb             	cmovbe ecx,ebx
+   1443f4d24:	89 0e                	mov    DWORD PTR [rsi],ecx
+   1443f4d26:	48 89 f0             	mov    rax,rsi
+   1443f4d29:	48 83 c4 20          	add    rsp,0x20
+   1443f4d2d:	5b                   	pop    rbx
+   1443f4d2e:	5f                   	pop    rdi
+   1443f4d2f:	5e                   	pop    rsi
+   1443f4d30:	c3                   	ret
+   1443f4d31:	8d 41 ca             	lea    eax,[rcx-0x36]
+   1443f4d34:	83 f8 11             	cmp    eax,0x11
+   1443f4d37:	77 41                	ja     0x1443f4d7a
+   1443f4d39:	8d 41 c4             	lea    eax,[rcx-0x3c]
+   1443f4d3c:	83 f8 04             	cmp    eax,0x4
+   1443f4d3f:	72 09                	jb     0x1443f4d4a
+   1443f4d41:	83 f9 41             	cmp    ecx,0x41
+   1443f4d44:	0f 85 8d 00 00 00    	jne    0x1443f4dd7
+   1443f4d4a:	f3 0f 10 43 38       	movss  xmm0,DWORD PTR [rbx+0x38]
+   1443f4d4f:	f3 0f 59 05 7d 87 62 	mulss  xmm0,DWORD PTR [rip+0x162877d]        # 0x145a1d4d4
+   1443f4d56:	01
+   1443f4d57:	f3 0f 10 0d 91 87 62 	movss  xmm1,DWORD PTR [rip+0x1628791]        # 0x145a1d4f0
+   1443f4d5e:	01
+   1443f4d5f:	f3 0f 5f c8          	maxss  xmm1,xmm0
+   1443f4d63:	f3 0f 59 0d ed 86 62 	mulss  xmm1,DWORD PTR [rip+0x16286ed]        # 0x145a1d458
+   1443f4d6a:	01
+   1443f4d6b:	f3 0f 58 0d 3d 87 62 	addss  xmm1,DWORD PTR [rip+0x162873d]        # 0x145a1d4b0
+   1443f4d72:	01
+   1443f4d73:	f3 0f 59 4b 24       	mulss  xmm1,DWORD PTR [rbx+0x24]
+   1443f4d78:	eb 43                	jmp    0x1443f4dbd
+   1443f4d7a:	8d 41 f7             	lea    eax,[rcx-0x9]
+   1443f4d7d:	83 f8 05             	cmp    eax,0x5
+   1443f4d80:	73 44                	jae    0x1443f4dc6
+   1443f4d82:	8b 43 24             	mov    eax,DWORD PTR [rbx+0x24]
+   1443f4d85:	83 f9 0d             	cmp    ecx,0xd
+   1443f4d88:	0f 85 43 ff ff ff    	jne    0x1443f4cd1
+   1443f4d8e:	83 7b 30 05          	cmp    DWORD PTR [rbx+0x30],0x5
+   1443f4d92:	0f 84 39 ff ff ff    	je     0x1443f4cd1
+   1443f4d98:	66 0f 6e c0          	movd   xmm0,eax
+   1443f4d9c:	f3 0f 10 4b 38       	movss  xmm1,DWORD PTR [rbx+0x38]
+   1443f4da1:	f3 0f 59 0d ff 86 62 	mulss  xmm1,DWORD PTR [rip+0x16286ff]        # 0x145a1d4a8
+   1443f4da8:	01
+   1443f4da9:	f3 0f 59 0d a7 86 62 	mulss  xmm1,DWORD PTR [rip+0x16286a7]        # 0x145a1d458
+   1443f4db0:	01
+   1443f4db1:	f3 0f 58 0d f7 86 62 	addss  xmm1,DWORD PTR [rip+0x16286f7]        # 0x145a1d4b0
+   1443f4db8:	01
+   1443f4db9:	f3 0f 59 c8          	mulss  xmm1,xmm0
+   1443f4dbd:	66 0f 7e c8          	movd   eax,xmm1
+   1443f4dc1:	e9 0b ff ff ff       	jmp    0x1443f4cd1
+   1443f4dc6:	83 f9 0f             	cmp    ecx,0xf
+   1443f4dc9:	74 b7                	je     0x1443f4d82
+   1443f4dcb:	83 f9 0e             	cmp    ecx,0xe
+   1443f4dce:	74 26                	je     0x1443f4df6
+   1443f4dd0:	83 f9 0d             	cmp    ecx,0xd
+   1443f4dd3:	74 ad                	je     0x1443f4d82
+   1443f4dd5:	eb 29                	jmp    0x1443f4e00
+   1443f4dd7:	f3 0f 10 43 38       	movss  xmm0,DWORD PTR [rbx+0x38]
+   1443f4ddc:	f3 0f 59 05 74 86 62 	mulss  xmm0,DWORD PTR [rip+0x1628674]        # 0x145a1d458
+   1443f4de3:	01
+   1443f4de4:	f3 0f 58 05 c4 86 62 	addss  xmm0,DWORD PTR [rip+0x16286c4]        # 0x145a1d4b0
+   1443f4deb:	01
+   1443f4dec:	f3 0f 59 43 24       	mulss  xmm0,DWORD PTR [rbx+0x24]
+   1443f4df1:	e9 d7 fe ff ff       	jmp    0x1443f4ccd
+   1443f4df6:	83 7b 30 00          	cmp    DWORD PTR [rbx+0x30],0x0
+   1443f4dfa:	0f 84 c0 00 00 00    	je     0x1443f4ec0
+   1443f4e00:	b9 a0 06 00 00       	mov    ecx,0x6a0
+   1443f4e05:	48 03 8f 10 0d 00 00 	add    rcx,QWORD PTR [rdi+0xd10]
+   1443f4e0c:	48 8d 15 62 41 85 01 	lea    rdx,[rip+0x1854162]        # 0x145c48f75
+   1443f4e13:	e8 28 23 4c fd       	call   0x1418b7140
+   1443f4e18:	f3 0f 10 53 24       	movss  xmm2,DWORD PTR [rbx+0x24]
+   1443f4e1d:	f3 0f 10 5b 38       	movss  xmm3,DWORD PTR [rbx+0x38]
+   1443f4e22:	48 8d 0d 93 86 62 01 	lea    rcx,[rip+0x1628693]        # 0x145a1d4bc
+   1443f4e29:	48 8d 15 90 86 62 01 	lea    rdx,[rip+0x1628690]        # 0x145a1d4c0
+   1443f4e30:	84 c0                	test   al,al
+   1443f4e32:	48 0f 45 d1          	cmovne rdx,rcx
+   1443f4e36:	f3 0f 10 02          	movss  xmm0,DWORD PTR [rdx]
+   1443f4e3a:	f3 0f 10 0d 62 86 62 	movss  xmm1,DWORD PTR [rip+0x1628662]        # 0x145a1d4a4
+   1443f4e41:	01
+   1443f4e42:	0f 28 e3             	movaps xmm4,xmm3
+   1443f4e45:	f3 0f 59 e1          	mulss  xmm4,xmm1
+   1443f4e49:	f3 0f 58 25 b3 86 62 	addss  xmm4,DWORD PTR [rip+0x16286b3]        # 0x145a1d504
+   1443f4e50:	01
+   1443f4e51:	f3 0f 59 c2          	mulss  xmm0,xmm2
+   1443f4e55:	f3 0f 59 db          	mulss  xmm3,xmm3
+   1443f4e59:	f3 0f 59 1d ff 85 62 	mulss  xmm3,DWORD PTR [rip+0x16285ff]        # 0x145a1d460
+   1443f4e60:	01
+   1443f4e61:	f3 0f 58 1d 83 86 62 	addss  xmm3,DWORD PTR [rip+0x1628683]        # 0x145a1d4ec
+   1443f4e68:	01
+   1443f4e69:	f3 0f 5d dc          	minss  xmm3,xmm4
+   1443f4e6d:	0f 28 e0             	movaps xmm4,xmm0
+   1443f4e70:	f3 0f 5c e3          	subss  xmm4,xmm3
+   1443f4e74:	f3 0f 59 e1          	mulss  xmm4,xmm1
+   1443f4e78:	f3 0f c2 d8 01       	cmpltss xmm3,xmm0
+   1443f4e7d:	0f 54 dc             	andps  xmm3,xmm4
+   1443f4e80:	f3 0f 5c c3          	subss  xmm0,xmm3
+   1443f4e84:	66 0f 7e c0          	movd   eax,xmm0
+   1443f4e88:	80 7b 46 00          	cmp    BYTE PTR [rbx+0x46],0x0
+   1443f4e8c:	0f 84 3f fe ff ff    	je     0x1443f4cd1
+   1443f4e92:	f3 0f 59 15 22 86 62 	mulss  xmm2,DWORD PTR [rip+0x1628622]        # 0x145a1d4bc
+   1443f4e99:	01
+   1443f4e9a:	f3 0f 10 1d 6a 86 62 	movss  xmm3,DWORD PTR [rip+0x162866a]        # 0x145a1d50c
+   1443f4ea1:	01
+   1443f4ea2:	f3 0f 5d da          	minss  xmm3,xmm2
+   1443f4ea6:	0f 2e d8             	ucomiss xmm3,xmm0
+   1443f4ea9:	0f 86 22 fe ff ff    	jbe    0x1443f4cd1
+   1443f4eaf:	f3 0f 5c d8          	subss  xmm3,xmm0
+   1443f4eb3:	f3 0f 59 cb          	mulss  xmm1,xmm3
+   1443f4eb7:	f3 0f 58 c8          	addss  xmm1,xmm0
+   1443f4ebb:	e9 fd fe ff ff       	jmp    0x1443f4dbd
+   1443f4ec0:	8b 43 24             	mov    eax,DWORD PTR [rbx+0x24]
+   1443f4ec3:	e9 09 fe ff ff       	jmp    0x1443f4cd1
+
+===== version_compare_thunk 1418b7140:1418b7145 =====
+PE file offset 18b6740, length 5
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001418b7140 <.data>:
+   1418b7140:	e9 ab b1 30 0f       	jmp    0x150bc22f0
+
+===== version_compare 150bc22f0:150bc2348 =====
+PE file offset 10854cf0, length 88
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+0000000150bc22f0 <.data>:
+   150bc22f0:	53                   	push   rbx
+   150bc22f1:	44 0f b6 1a          	movzx  r11d,BYTE PTR [rdx]
+   150bc22f5:	44 0f b6 11          	movzx  r10d,BYTE PTR [rcx]
+   150bc22f9:	b0 01                	mov    al,0x1
+   150bc22fb:	45 38 da             	cmp    r10b,r11b
+   150bc22fe:	77 46                	ja     0x150bc2346
+   150bc2300:	44 0f b6 42 03       	movzx  r8d,BYTE PTR [rdx+0x3]
+   150bc2305:	44 0f b6 4a 02       	movzx  r9d,BYTE PTR [rdx+0x2]
+   150bc230a:	0f b6 5a 01          	movzx  ebx,BYTE PTR [rdx+0x1]
+   150bc230e:	0f b6 51 01          	movzx  edx,BYTE PTR [rcx+0x1]
+   150bc2312:	75 04                	jne    0x150bc2318
+   150bc2314:	38 da                	cmp    dl,bl
+   150bc2316:	77 2e                	ja     0x150bc2346
+   150bc2318:	45 30 da             	xor    r10b,r11b
+   150bc231b:	30 da                	xor    dl,bl
+   150bc231d:	44 08 d2             	or     dl,r10b
+   150bc2320:	0f 94 d2             	sete   dl
+   150bc2323:	0f b6 59 02          	movzx  ebx,BYTE PTR [rcx+0x2]
+   150bc2327:	75 05                	jne    0x150bc232e
+   150bc2329:	44 38 cb             	cmp    bl,r9b
+   150bc232c:	77 18                	ja     0x150bc2346
+   150bc232e:	44 38 cb             	cmp    bl,r9b
+   150bc2331:	0f 94 d0             	sete   al
+   150bc2334:	20 c2                	and    dl,al
+   150bc2336:	80 fa 01             	cmp    dl,0x1
+   150bc2339:	75 09                	jne    0x150bc2344
+   150bc233b:	44 38 41 03          	cmp    BYTE PTR [rcx+0x3],r8b
+   150bc233f:	0f 93 d0             	setae  al
+   150bc2342:	eb 02                	jmp    0x150bc2346
+   150bc2344:	31 c0                	xor    eax,eax
+   150bc2346:	5b                   	pop    rbx
+   150bc2347:	c3                   	ret
+
+===== low_mode_normalization 1443f3a6c:1443f3b19 =====
+PE file offset 43f306c, length 173
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443f3a6c <.data>:
+   1443f3a6c:	44 0f 28 84 24 a0 00 	movaps xmm8,XMMWORD PTR [rsp+0xa0]
+   1443f3a73:	00 00
+   1443f3a75:	44 0f 28 8c 24 b0 00 	movaps xmm9,XMMWORD PTR [rsp+0xb0]
+   1443f3a7c:	00 00
+   1443f3a7e:	45 0f 28 e9          	movaps xmm13,xmm9
+   1443f3a82:	45 0f 5c e8          	subps  xmm13,xmm8
+   1443f3a86:	44 0f 28 15 42 65 62 	movaps xmm10,XMMWORD PTR [rip+0x1626542]        # 0x145a19fd0
+   1443f3a8d:	01
+   1443f3a8e:	45 0f 54 d5          	andps  xmm10,xmm13
+   1443f3a92:	41 83 ff 02          	cmp    r15d,0x2
+   1443f3a96:	0f 8f 8f 00 00 00    	jg     0x1443f3b2b
+   1443f3a9c:	41 0f 28 cd          	movaps xmm1,xmm13
+   1443f3aa0:	41 0f 59 cd          	mulps  xmm1,xmm13
+   1443f3aa4:	f3 0f 16 c1          	movshdup xmm0,xmm1
+   1443f3aa8:	f3 0f 58 c1          	addss  xmm0,xmm1
+   1443f3aac:	0f 12 c9             	movhlps xmm1,xmm1
+   1443f3aaf:	f3 0f 58 c8          	addss  xmm1,xmm0
+   1443f3ab3:	f3 44 0f 10 35 44 cb 	movss  xmm14,DWORD PTR [rip+0x184cb44]        # 0x145c40600
+   1443f3aba:	84 01
+   1443f3abc:	0f 28 c1             	movaps xmm0,xmm1
+   1443f3abf:	f3 41 0f 58 c6       	addss  xmm0,xmm14
+   1443f3ac4:	f3 0f 51 d0          	sqrtss xmm2,xmm0
+   1443f3ac8:	41 0f 28 e5          	movaps xmm4,xmm13
+   1443f3acc:	66 41 0f 15 e5       	unpckhpd xmm4,xmm13
+   1443f3ad1:	f3 41 0f 16 dd       	movshdup xmm3,xmm13
+   1443f3ad6:	f3 0f 5e da          	divss  xmm3,xmm2
+   1443f3ada:	41 0f 28 f5          	movaps xmm6,xmm13
+   1443f3ade:	f3 0f 5e f2          	divss  xmm6,xmm2
+   1443f3ae2:	45 85 ff             	test   r15d,r15d
+   1443f3ae5:	44 8b 94 24 f0 01 00 	mov    r10d,DWORD PTR [rsp+0x1f0]
+   1443f3aec:	00
+   1443f3aed:	0f 84 58 02 00 00    	je     0x1443f3d4b
+   1443f3af3:	41 83 ff 01          	cmp    r15d,0x1
+   1443f3af7:	4d 89 f0             	mov    r8,r14
+   1443f3afa:	45 89 e1             	mov    r9d,r12d
+   1443f3afd:	0f 84 55 02 00 00    	je     0x1443f3d58
+   1443f3b03:	31 c0                	xor    eax,eax
+   1443f3b05:	41 83 ff 02          	cmp    r15d,0x2
+   1443f3b09:	0f 85 4e 02 00 00    	jne    0x1443f3d5d
+   1443f3b0f:	b8 00 00 14 00       	mov    eax,0x140000
+   1443f3b14:	e9 44 02 00 00       	jmp    0x1443f3d5d
+
+===== horizontal_scale_multiply 1443f3e19:1443f3e51 =====
+PE file offset 43f3419, length 56
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443f3e19 <.data>:
+   1443f3e19:	0f 16 f4             	movlhps xmm6,xmm4
+   1443f3e1c:	41 0f 28 fb          	movaps xmm7,xmm11
+   1443f3e20:	41 0f c6 fb 00       	shufps xmm7,xmm11,0x0
+   1443f3e25:	0f 2e 1d a8 18 2e 01 	ucomiss xmm3,DWORD PTR [rip+0x12e18a8]        # 0x1456d56d4
+   1443f3e2c:	76 1b                	jbe    0x1443f3e49
+   1443f3e2e:	f3 0f 10 25 26 c8 43 	movss  xmm4,DWORD PTR [rip+0x143c826]        # 0x14583065c
+   1443f3e35:	01
+   1443f3e36:	f3 0f 10 05 96 18 2e 	movss  xmm0,DWORD PTR [rip+0x12e1896]        # 0x1456d56d4
+   1443f3e3d:	01
+   1443f3e3e:	66 90                	xchg   ax,ax
+   1443f3e40:	f3 0f 58 dc          	addss  xmm3,xmm4
+   1443f3e44:	0f 2e d8             	ucomiss xmm3,xmm0
+   1443f3e47:	77 f7                	ja     0x1443f3e40
+   1443f3e49:	0f 59 fe             	mulps  xmm7,xmm6
+   1443f3e4c:	f3 44 0f 10 20       	movss  xmm12,DWORD PTR [rax]
+
+===== vertical_addition 1443f3f29:1443f3f7b =====
+PE file offset 43f3529, length 82
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443f3f29 <.data>:
+   1443f3f29:	f3 0f 51 c9          	sqrtss xmm1,xmm1
+   1443f3f2d:	f3 0f 59 c8          	mulss  xmm1,xmm0
+   1443f3f31:	f3 41 0f 59 cc       	mulss  xmm1,xmm12
+   1443f3f36:	0f 57 c0             	xorps  xmm0,xmm0
+   1443f3f39:	0f 57 d2             	xorps  xmm2,xmm2
+   1443f3f3c:	0f 16 d1             	movlhps xmm2,xmm1
+   1443f3f3f:	41 0f 58 d1          	addps  xmm2,xmm9
+   1443f3f43:	41 0f 5c d0          	subps  xmm2,xmm8
+   1443f3f47:	0f 28 ca             	movaps xmm1,xmm2
+   1443f3f4a:	0f 59 ca             	mulps  xmm1,xmm2
+   1443f3f4d:	f3 0f 16 d9          	movshdup xmm3,xmm1
+   1443f3f51:	f3 0f 58 d9          	addss  xmm3,xmm1
+   1443f3f55:	0f 12 c9             	movhlps xmm1,xmm1
+   1443f3f58:	f3 0f 58 cb          	addss  xmm1,xmm3
+   1443f3f5c:	f3 44 0f 58 f1       	addss  xmm14,xmm1
+   1443f3f61:	0f 57 c9             	xorps  xmm1,xmm1
+   1443f3f64:	f3 41 0f 51 ce       	sqrtss xmm1,xmm14
+   1443f3f69:	0f 12 d2             	movhlps xmm2,xmm2
+   1443f3f6c:	f3 0f 5e d1          	divss  xmm2,xmm1
+   1443f3f70:	f3 41 0f 59 d3       	mulss  xmm2,xmm11
+   1443f3f75:	0f 16 c2             	movlhps xmm0,xmm2
+   1443f3f78:	0f 58 f8             	addps  xmm7,xmm0
+
+===== height_correction_gate 1443f400c:1443f4032 =====
+PE file offset 43f360c, length 38
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443f400c <.data>:
+   1443f400c:	45 0f 12 ed          	movhlps xmm13,xmm13
+   1443f4010:	66 44 0f 7e e8       	movd   eax,xmm13
+   1443f4015:	25 ff ff ff 7f       	and    eax,0x7fffffff
+   1443f401a:	66 0f 6e c0          	movd   xmm0,eax
+   1443f401e:	0f 2e 05 6f 63 04 02 	ucomiss xmm0,DWORD PTR [rip+0x204636f]        # 0x14643a394
+   1443f4025:	8b 84 24 08 02 00 00 	mov    eax,DWORD PTR [rsp+0x208]
+   1443f402c:	0f 86 59 ff ff ff    	jbe    0x1443f3f8b
+
+===== solver_output_write 1443f414f:1443f4157 =====
+PE file offset 43f374f, length 8
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443f414f <.data>:
+   1443f414f:	0f 29 3e             	movaps XMMWORD PTR [rsi],xmm7
+   1443f4152:	e9 19 06 00 00       	jmp    0x1443f4770
+
+===== real_ball_copy_call 1444687a1:1444687f0 =====
+PE file offset 4467da1, length 79
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001444687a1 <.data>:
+   1444687a1:	4c 8b 8b c8 01 00 00 	mov    r9,QWORD PTR [rbx+0x1c8]
+   1444687a8:	49 8b 89 b8 d2 00 00 	mov    rcx,QWORD PTR [r9+0xd2b8]
+   1444687af:	49 8b 81 68 ce 00 00 	mov    rax,QWORD PTR [r9+0xce68]
+   1444687b6:	48 8b 80 a0 02 00 00 	mov    rax,QWORD PTR [rax+0x2a0]
+   1444687bd:	48 89 84 24 b0 00 00 	mov    QWORD PTR [rsp+0xb0],rax
+   1444687c4:	00
+   1444687c5:	4c 89 ca             	mov    rdx,r9
+   1444687c8:	48 85 c0             	test   rax,rax
+   1444687cb:	74 0a                	je     0x1444687d7
+   1444687cd:	f0 ff 00             	lock inc DWORD PTR [rax]
+   1444687d0:	48 8b 93 c8 01 00 00 	mov    rdx,QWORD PTR [rbx+0x1c8]
+   1444687d7:	48 8b 92 b0 d2 00 00 	mov    rdx,QWORD PTR [rdx+0xd2b0]
+   1444687de:	4c 89 4c 24 20       	mov    QWORD PTR [rsp+0x20],r9
+   1444687e3:	4c 8d 84 24 b0 00 00 	lea    r8,[rsp+0xb0]
+   1444687ea:	00
+   1444687eb:	e8 80 88 f8 ff       	call   0x1443f1070
+
+===== ball_copy_register_binding 1443f1080:1443f108c =====
+PE file offset 43f0680, length 12
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443f1080 <.data>:
+   1443f1080:	4c 89 ce             	mov    rsi,r9
+   1443f1083:	4d 89 c5             	mov    r13,r8
+   1443f1086:	49 89 d6             	mov    r14,rdx
+   1443f1089:	48 89 cf             	mov    rdi,rcx
+
+===== ball_copy_velocity_spin 1443f14d9:1443f150f =====
+PE file offset 43f0ad9, length 54
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443f14d9 <.data>:
+   1443f14d9:	41 8b 86 38 0e 00 00 	mov    eax,DWORD PTR [r14+0xe38]
+   1443f14e0:	89 87 38 0e 00 00    	mov    DWORD PTR [rdi+0xe38],eax
+   1443f14e6:	49 8b 86 30 0e 00 00 	mov    rax,QWORD PTR [r14+0xe30]
+   1443f14ed:	48 89 87 30 0e 00 00 	mov    QWORD PTR [rdi+0xe30],rax
+   1443f14f4:	49 8b 86 40 0e 00 00 	mov    rax,QWORD PTR [r14+0xe40]
+   1443f14fb:	48 89 87 40 0e 00 00 	mov    QWORD PTR [rdi+0xe40],rax
+   1443f1502:	41 8b 86 48 0e 00 00 	mov    eax,DWORD PTR [r14+0xe48]
+   1443f1509:	89 87 48 0e 00 00    	mov    DWORD PTR [rdi+0xe48],eax
+
+===== early_return_epilogue 1443ee361:1443ee397 =====
+PE file offset 43ed961, length 54
+
+/tmp/fm24-trajectory-cut.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000001443ee361 <.data>:
+   1443ee361:	0f 28 b4 24 60 07 00 	movaps xmm6,XMMWORD PTR [rsp+0x760]
+   1443ee368:	00
+   1443ee369:	0f 28 bc 24 70 07 00 	movaps xmm7,XMMWORD PTR [rsp+0x770]
+   1443ee370:	00
+   1443ee371:	44 0f 28 84 24 80 07 	movaps xmm8,XMMWORD PTR [rsp+0x780]
+   1443ee378:	00 00
+   1443ee37a:	44 0f 28 8c 24 90 07 	movaps xmm9,XMMWORD PTR [rsp+0x790]
+   1443ee381:	00 00
+   1443ee383:	48 81 c4 a8 07 00 00 	add    rsp,0x7a8
+   1443ee38a:	5b                   	pop    rbx
+   1443ee38b:	5d                   	pop    rbp
+   1443ee38c:	5f                   	pop    rdi
+   1443ee38d:	5e                   	pop    rsi
+   1443ee38e:	41 5c                	pop    r12
+   1443ee390:	41 5d                	pop    r13
+   1443ee392:	41 5e                	pop    r14
+   1443ee394:	41 5f                	pop    r15
+   1443ee396:	c3                   	ret
