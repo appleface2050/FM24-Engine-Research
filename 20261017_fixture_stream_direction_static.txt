@@ -1,0 +1,156 @@
+Minimal native evidence: fixture output stream direction.
+Windows x64 arguments: RCX=destination, RDX=source, R8=length for imported memcpy.
+Ghidra full exports remain local; original instructions below are from fm.exe.
+
+FUNCTION 0x1424fafa0 selected windows
+   1424fafb8:	48 89 d7                                        	mov    rdi,rdx
+   1424fafbb:	48 89 ce                                        	mov    rsi,rcx
+   1424fafbe:	48 8d 4d e0                                     	lea    rcx,[rbp-0x20]
+   1424fafc2:	e8 d9 a3 42 ff                                  	call   0x1419253a0
+   1424fafc7:	48 8b 45 f0                                     	mov    rax,QWORD PTR [rbp-0x10]
+   1424fafcb:	8b 48 0c                                        	mov    ecx,DWORD PTR [rax+0xc]
+   1424fafce:	83 e1 fd                                        	and    ecx,0xfffffffd
+   1424fafd1:	0f b6 db                                        	movzx  ebx,bl
+   1424fafd4:	8d 0c 59                                        	lea    ecx,[rcx+rbx*2]
+   1424fafd7:	89 48 0c                                        	mov    DWORD PTR [rax+0xc],ecx
+   1424fafda:	48 8d 55 f8                                     	lea    rdx,[rbp-0x8]
+   1424fafde:	48 8b 45 f8                                     	mov    rax,QWORD PTR [rbp-0x8]
+   1424fafe2:	8b 48 0c                                        	mov    ecx,DWORD PTR [rax+0xc]
+   1424fafe5:	83 e1 fd                                        	and    ecx,0xfffffffd
+   1424fafe8:	8d 0c 59                                        	lea    ecx,[rcx+rbx*2]
+   1424fafeb:	89 48 0c                                        	mov    DWORD PTR [rax+0xc],ecx
+   1424fafee:	48 89 f9                                        	mov    rcx,rdi
+   1424faff1:	45 31 c0                                        	xor    r8d,r8d
+   1424faff4:	e8 37 8b 94 ff                                  	call   0x141e43b30
+
+FUNCTION 0x1419253a0 selected windows
+   1419253b5:	48 89 cb                                        	mov    rbx,rcx
+   1419253b8:	48 8d 05 79 69 0e 04                            	lea    rax,[rip+0x40e6979]        # 0x145a0bd38
+   1419253bf:	48 89 01                                        	mov    QWORD PTR [rcx],rax
+   14192543a:	c7 46 20 00 00 00 00                            	mov    DWORD PTR [rsi+0x20],0x0
+   141925441:	48 c7 46 18 00 00 00 00                         	mov    QWORD PTR [rsi+0x18],0x0
+   141925449:	48 c7 46 10 00 00 00 00                         	mov    QWORD PTR [rsi+0x10],0x0
+   141925451:	48 c7 46 08 00 00 00 00                         	mov    QWORD PTR [rsi+0x8],0x0
+   141925459:	48 89 73 08                                     	mov    QWORD PTR [rbx+0x8],rsi
+   14192545d:	f0 ff 06                                        	lock inc DWORD PTR [rsi]
+   141925460:	48 8d 43 08                                     	lea    rax,[rbx+0x8]
+   141925464:	48 89 45 f8                                     	mov    QWORD PTR [rbp-0x8],rax
+   14192549e:	48 c7 40 08 00 00 00 00                         	mov    QWORD PTR [rax+0x8],0x0
+   1419254a6:	c7 40 10 00 00 00 00                            	mov    DWORD PTR [rax+0x10],0x0
+   1419254ad:	48 8d 0d c4 68 0e 04                            	lea    rcx,[rip+0x40e68c4]        # 0x145a0bd78
+   1419254b4:	48 89 08                                        	mov    QWORD PTR [rax],rcx
+   1419254b7:	48 8b 4d f8                                     	mov    rcx,QWORD PTR [rbp-0x8]
+   1419254bb:	48 8b 09                                        	mov    rcx,QWORD PTR [rcx]
+   1419254be:	48 89 48 18                                     	mov    QWORD PTR [rax+0x18],rcx
+   1419254c2:	48 85 c9                                        	test   rcx,rcx
+   1419254c5:	74 03                                           	je     0x1419254ca
+   1419254c7:	f0 ff 01                                        	lock inc DWORD PTR [rcx]
+   1419254ca:	48 89 5d f0                                     	mov    QWORD PTR [rbp-0x10],rbx
+   1419254ce:	48 89 43 10                                     	mov    QWORD PTR [rbx+0x10],rax
+   1419254d2:	f0 ff 40 08                                     	lock inc DWORD PTR [rax+0x8]
+   14192550c:	48 c7 40 08 00 00 00 00                         	mov    QWORD PTR [rax+0x8],0x0
+   141925514:	c7 40 10 00 00 00 00                            	mov    DWORD PTR [rax+0x10],0x0
+   14192551b:	48 8d 0d 06 69 0e 04                            	lea    rcx,[rip+0x40e6906]        # 0x145a0be28
+   141925522:	48 89 08                                        	mov    QWORD PTR [rax],rcx
+   141925525:	48 8b 4d f8                                     	mov    rcx,QWORD PTR [rbp-0x8]
+   141925529:	48 8b 09                                        	mov    rcx,QWORD PTR [rcx]
+   14192552c:	48 89 48 18                                     	mov    QWORD PTR [rax+0x18],rcx
+   141925530:	48 85 c9                                        	test   rcx,rcx
+   141925533:	74 03                                           	je     0x141925538
+   141925535:	f0 ff 01                                        	lock inc DWORD PTR [rcx]
+   141925538:	48 8b 4d f0                                     	mov    rcx,QWORD PTR [rbp-0x10]
+   14192553c:	48 89 41 18                                     	mov    QWORD PTR [rcx+0x18],rax
+   141925540:	f0 ff 40 08                                     	lock inc DWORD PTR [rax+0x8]
+
+FUNCTION 0x141928220 selected windows
+   141928228:	4c 89 c7                                        	mov    rdi,r8
+   14192822b:	48 89 ce                                        	mov    rsi,rcx
+   14192822e:	48 8b 59 18                                     	mov    rbx,QWORD PTR [rcx+0x18]
+   141928232:	8b 6b 10                                        	mov    ebp,DWORD PTR [rbx+0x10]
+   141928235:	48 8b 43 08                                     	mov    rax,QWORD PTR [rbx+0x8]
+   141928239:	29 c5                                           	sub    ebp,eax
+   14192823b:	8b 4b 20                                        	mov    ecx,DWORD PTR [rbx+0x20]
+   14192823e:	29 cd                                           	sub    ebp,ecx
+   141928240:	39 fd                                           	cmp    ebp,edi
+   141928242:	0f 43 ef                                        	cmovae ebp,edi
+   141928245:	85 ed                                           	test   ebp,ebp
+   141928247:	74 14                                           	je     0x14192825d
+   141928249:	41 89 e8                                        	mov    r8d,ebp
+   14192824c:	48 01 c8                                        	add    rax,rcx
+   14192824f:	48 89 d1                                        	mov    rcx,rdx
+   141928252:	48 89 c2                                        	mov    rdx,rax
+   141928255:	e8 c6 64 c5 03                                  	call   0x14557e720
+   14192825a:	01 6b 20                                        	add    DWORD PTR [rbx+0x20],ebp
+   14192825d:	48 63 c5                                        	movsxd rax,ebp
+   141928260:	31 c9                                           	xor    ecx,ecx
+   141928262:	48 39 f8                                        	cmp    rax,rdi
+   141928265:	ba 64 65 6e 73                                  	mov    edx,0x736e6564
+   14192826a:	0f 4d d1                                        	cmovge edx,ecx
+   14192826d:	89 56 10                                        	mov    DWORD PTR [rsi+0x10],edx
+
+FUNCTION 0x1419286d0 selected windows
+   1419286db:	4c 89 c7                                        	mov    rdi,r8
+   1419286de:	49 89 cf                                        	mov    r15,rcx
+   1419286e1:	85 ff                                           	test   edi,edi
+   1419286e3:	74 31                                           	je     0x141928716
+   1419286e5:	49 89 d6                                        	mov    r14,rdx
+   1419286e8:	49 8b 77 18                                     	mov    rsi,QWORD PTR [r15+0x18]
+   1419286ec:	8b 56 20                                        	mov    edx,DWORD PTR [rsi+0x20]
+   1419286ef:	01 fa                                           	add    edx,edi
+   1419286f1:	48 89 f1                                        	mov    rcx,rsi
+   1419286f4:	45 31 c0                                        	xor    r8d,r8d
+   1419286f7:	e8 84 ed ff ff                                  	call   0x141927480
+   1419286fc:	48 63 df                                        	movsxd rbx,edi
+   1419286ff:	8b 4e 20                                        	mov    ecx,DWORD PTR [rsi+0x20]
+   141928702:	48 03 4e 08                                     	add    rcx,QWORD PTR [rsi+0x8]
+   141928706:	4c 89 f2                                        	mov    rdx,r14
+   141928709:	49 89 d8                                        	mov    r8,rbx
+   14192870c:	e8 0f 60 c5 03                                  	call   0x14557e720
+   141928711:	01 7e 20                                        	add    DWORD PTR [rsi+0x20],edi
+   141928714:	eb 03                                           	jmp    0x141928719
+   141928716:	48 63 df                                        	movsxd rbx,edi
+   141928719:	31 c0                                           	xor    eax,eax
+   14192871b:	48 39 fb                                        	cmp    rbx,rdi
+   14192871e:	b9 72 65 6e 73                                  	mov    ecx,0x736e6572
+   141928723:	0f 4d c8                                        	cmovge ecx,eax
+   141928726:	41 89 4f 10                                     	mov    DWORD PTR [r15+0x10],ecx
+   14192872a:	48 89 d8                                        	mov    rax,rbx
+
+FUNCTION 0x14557e720 selected windows
+   14557e720:	ff 25 ea 23 7d 00                               	jmp    QWORD PTR [rip+0x7d23ea]        # 0x145d50b10
+
+DATA 0x145a0bd70 DATA_BUFFER_INPUT_STREAM RTTI locator pointer
+b0bda04501000000
+
+DATA 0x145a0bdb0 DATA_BUFFER_INPUT_STREAM complete object locator
+010000000000000000000000f0603106c8bda005b0bda005
+
+DATA 0x146316100 DATA_BUFFER_INPUT_STREAM native type name
+2e3f4156444154415f4255464645525f494e5055545f53545245414d407369636f7265404000
+
+DATA 0x145a0bda0 DATA_BUFFER_INPUT_STREAM virtual +28
+2082924101000000
+
+DATA 0x145a0be20 DATA_BUFFER_OUTPUT_STREAM RTTI locator pointer
+60bea04501000000
+
+DATA 0x145a0be60 DATA_BUFFER_OUTPUT_STREAM complete object locator
+0100000000000000000000003061310678bea00560bea005
+
+DATA 0x146316140 DATA_BUFFER_OUTPUT_STREAM native type name
+2e3f4156444154415f4255464645525f4f55545055545f53545245414d407369636f7265404000
+
+DATA 0x145a0be50 DATA_BUFFER_OUTPUT_STREAM virtual +28
+d086924101000000
+
+DATA 0x145d4ec28 Original import lookup entry for IAT 145d50b10
+8a69d50500000000
+
+DATA 0x145d5698a Import hint plus memcpy name
+3c006d656d63707900
+
+DATA 0x15cf4a21c Import descriptor binding lookup, DLL name and IAT
+98ebd4050000000000000000a074d505800ad505
+
+DATA 0x145d574a0 VCRUNTIME140.dll import name
+564352554e54494d453134302e646c6c00

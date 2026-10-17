@@ -199,7 +199,7 @@
     {
       "id": "score_consumer_boundary",
       "domain": "detailed_match",
-      "claim": "通过比赛构造、工厂注册、接口虚表，进球加减条件连接到两种原生fixture四字节记录，并接到FIXTURE_RESULT流传输入口；最终比分语义与保留仍未闭合。",
+      "claim": "通过比赛构造、工厂注册、接口虚表，进球加减条件连接到两种原生fixture四字节记录，并确认具体调用把FIXTURE_RESULT记录写入内存输出流；最终比分语义与保留仍未闭合。",
       "status": "partial_chain",
       "inputs": [
         "M+778容器构造、工厂注册表、T+b5及模式",
@@ -207,7 +207,7 @@
       ],
       "outputs": [
         "FIXTURE的I+4c+4*side或FIXTURE_RESULT的I+64+4*side记录",
-        "记录字节条件增减与流传输"
+        "记录字节条件增减；具体输出流按字段顺序写入缓冲区"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -219,7 +219,12 @@
         "0x141e4b040",
         "0x1419c0410",
         "0x140269570",
-        "0x141e43b30"
+        "0x141e43b30",
+        "0x1424faff4",
+        "0x1419253a0",
+        "0x1419286d0",
+        "0x141928220",
+        "0x14557e720"
       ],
       "evidence": {
         "reports": [
@@ -230,7 +235,9 @@
           "20261016_analysis_score_consumers_static.txt",
           "20261016_pending_goal_reversal_static.txt",
           "20261017_fixture_result_binding_static.txt",
-          "20261017_fixture_result_binding_observations.json"
+          "20261017_fixture_result_binding_observations.json",
+          "20261017_fixture_stream_direction_static.txt",
+          "20261017_fixture_stream_direction_observations.json"
         ]
       },
       "upstream": [
@@ -241,8 +248,8 @@
       "unproved": [
         "注册/构造/对象替换的完整运行生命周期",
         "记录各字节的正式含义、初始有效值与最终消费者",
-        "流入口实际调用方向与流虚表实现",
-        "T11b身份、248转存与比赛结束前保留/撤销"
+        "T11b身份、248转存与比赛结束前保留/撤销",
+        "输出调用者的对象与比赛内同一I的连接、终场时序及落盘；反向入口实际输入流参数绑定"
       ]
     },
     {

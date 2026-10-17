@@ -75,6 +75,15 @@ def adjust_fixture_record(record, flags, mode, delta):
     return result
 
 
+def write_fixture_record_fragment(records, buffer, position):
+    """仅转写8次成功的单字节输出；缓冲区容量充足，不模拟完整对象/失败路径。"""
+    result = bytearray(buffer)
+    for value in records:
+        result[position] = value
+        position += 1
+    return bytes(result), position
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -122,6 +131,12 @@ def examples():
     incremented = adjust_fixture_record(record, 0, 0, 1)
     check("same-input-reversal", adjust_fixture_record(incremented, 0, 0, -1), record)
     check("different-mode-is-not-inverse", adjust_fixture_record(incremented, 0x10, 0, -1), [2, 1, 3, 4])
+    check("stream-record-order",
+          write_fixture_record_fragment([1, 2, 3, 4, 5, 6, 7, 8], bytes(8), 0),
+          (bytes([1, 2, 3, 4, 5, 6, 7, 8]), 8))
+    check("stream-current-position-not-always-append",
+          write_fixture_record_fragment([1, 2, 3, 4, 5, 6, 7, 8], bytes([9] * 10), 1),
+          (bytes([9, 1, 2, 3, 4, 5, 6, 7, 8, 9]), 9))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -136,6 +151,7 @@ def verify_original(exe):
     evidences = [json.loads((ROOT / name).read_text()) for name in (
         "20261017_goal_lifecycle_observations.json",
         "20261017_fixture_result_binding_observations.json",
+        "20261017_fixture_stream_direction_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
