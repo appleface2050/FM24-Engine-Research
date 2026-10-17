@@ -1,0 +1,140 @@
+FM24 24.4.2+2081827 fm.exe, base 0x140000000. Original PE static evidence.
+Ranges are half-open; focused instructions are selected from disassembly at known function entry.
+
+FUNCTION 0x144404f40 WINDOW 0x144405256:0x1444052c6
+   144405256:	8b 86 e8 09 00 00                               	mov    eax,DWORD PTR [rsi+0x9e8]
+   14440525c:	8b 8e 6c 0a 00 00                               	mov    ecx,DWORD PTR [rsi+0xa6c]
+   144405262:	39 c8                                           	cmp    eax,ecx
+   144405264:	7e 3f                                           	jle    0x1444052a5
+   144405266:	c6 44 24 2c 00                                  	mov    BYTE PTR [rsp+0x2c],0x0
+   14440526b:	c6 44 24 2e 00                                  	mov    BYTE PTR [rsp+0x2e],0x0
+   144405270:	c6 44 24 2d 00                                  	mov    BYTE PTR [rsp+0x2d],0x0
+   144405275:	48 8d 44 24 2d                                  	lea    rax,[rsp+0x2d]
+   14440527a:	48 89 44 24 20                                  	mov    QWORD PTR [rsp+0x20],rax
+   14440527f:	48 8d 54 24 2c                                  	lea    rdx,[rsp+0x2c]
+   144405284:	4c 8d 44 24 2e                                  	lea    r8,[rsp+0x2e]
+   144405289:	4c 8d 4c 24 2f                                  	lea    r9,[rsp+0x2f]
+   14440528e:	48 89 f1                                        	mov    rcx,rsi
+   144405291:	e8 7a e1 09 00                                  	call   0x1444a3410
+   144405296:	b3 01                                           	mov    bl,0x1
+   144405298:	84 c0                                           	test   al,al
+   14440529a:	74 22                                           	je     0x1444052be
+   14440529c:	e9 63 01 00 00                                  	jmp    0x144405404
+   1444052a1:	31 db                                           	xor    ebx,ebx
+   1444052a3:	eb a4                                           	jmp    0x144405249
+   1444052a5:	75 86                                           	jne    0x14440522d
+   1444052a7:	48 89 f1                                        	mov    rcx,rsi
+   1444052aa:	e8 c1 d9 69 fd                                  	call   0x141aa2c70
+   1444052af:	c6 44 24 2c 01                                  	mov    BYTE PTR [rsp+0x2c],0x1
+   1444052b4:	c6 44 24 2e 00                                  	mov    BYTE PTR [rsp+0x2e],0x0
+   1444052b9:	c6 44 24 2d 00                                  	mov    BYTE PTR [rsp+0x2d],0x0
+   1444052be:	48 89 f1                                        	mov    rcx,rsi
+   1444052c1:	e8 4a f2 69 fd                                  	call   0x141aa4510
+
+FUNCTION 0x144404f40 WINDOW 0x144405309:0x144405362
+   144405309:	88 86 40 d8 00 00                               	mov    BYTE PTR [rsi+0xd840],al
+   14440530f:	48 89 f1                                        	mov    rcx,rsi
+   144405312:	e8 09 f5 69 fd                                  	call   0x141aa4820
+   144405317:	b3 01                                           	mov    bl,0x1
+   144405319:	84 c0                                           	test   al,al
+   14440531b:	0f 85 e3 00 00 00                               	jne    0x144405404
+   144405321:	48 8b 8e f8 cd 00 00                            	mov    rcx,QWORD PTR [rsi+0xcdf8]
+   144405328:	e8 d3 b4 76 fd                                  	call   0x141b70800
+   14440532d:	48 8b 8e 00 ce 00 00                            	mov    rcx,QWORD PTR [rsi+0xce00]
+   144405334:	e8 c7 b4 76 fd                                  	call   0x141b70800
+   144405339:	80 7c 24 2e 00                                  	cmp    BYTE PTR [rsp+0x2e],0x0
+   14440533e:	74 0a                                           	je     0x14440534a
+   144405340:	48 89 f1                                        	mov    rcx,rsi
+   144405343:	e8 88 f5 69 fd                                  	call   0x141aa48d0
+   144405348:	eb 18                                           	jmp    0x144405362
+   14440534a:	80 7c 24 2c 00                                  	cmp    BYTE PTR [rsp+0x2c],0x0
+   14440534f:	0f 84 ce 00 00 00                               	je     0x144405423
+   144405355:	0f b6 54 24 2d                                  	movzx  edx,BYTE PTR [rsp+0x2d]
+   14440535a:	48 89 f1                                        	mov    rcx,rsi
+   14440535d:	e8 de 42 6a fd                                  	call   0x141aa9640
+
+FUNCTION 0x144404f40 WINDOW 0x144405423:0x144405437
+   144405423:	0f b6 54 24 2f                                  	movzx  edx,BYTE PTR [rsp+0x2f]
+   144405428:	8d 42 ff                                        	lea    eax,[rdx-0x1]
+   14440542b:	48 89 f1                                        	mov    rcx,rsi
+   14440542e:	3c 06                                           	cmp    al,0x6
+   144405430:	77 16                                           	ja     0x144405448
+   144405432:	e8 29 70 6a fd                                  	call   0x141aac460
+
+FUNCTION 0x141aa4820 WINDOW 0x141aa4820:0x141aa48cd
+   141aa4820:	56                                              	push   rsi
+   141aa4821:	57                                              	push   rdi
+   141aa4822:	48 83 ec 28                                     	sub    rsp,0x28
+   141aa4826:	31 c0                                           	xor    eax,eax
+   141aa4828:	80 b9 40 d8 00 00 00                            	cmp    BYTE PTR [rcx+0xd840],0x0
+   141aa482f:	0f 85 91 00 00 00                               	jne    0x141aa48c6
+   141aa4835:	48 89 ce                                        	mov    rsi,rcx
+   141aa4838:	83 b9 8c e2 00 00 00                            	cmp    DWORD PTR [rcx+0xe28c],0x0
+   141aa483f:	0f 85 81 00 00 00                               	jne    0x141aa48c6
+   141aa4845:	48 8b be b8 d2 00 00                            	mov    rdi,QWORD PTR [rsi+0xd2b8]
+   141aa484c:	0f 1f 40 00                                     	nop    DWORD PTR [rax+0x0]
+   141aa4850:	8b 8f 94 0d 00 00                               	mov    ecx,DWORD PTR [rdi+0xd94]
+   141aa4856:	83 f9 ff                                        	cmp    ecx,0xffffffff
+   141aa4859:	75 21                                           	jne    0x141aa487c
+   141aa485b:	80 bf 63 0d 00 00 00                            	cmp    BYTE PTR [rdi+0xd63],0x0
+   141aa4862:	74 18                                           	je     0x141aa487c
+   141aa4864:	80 bf 62 0d 00 00 00                            	cmp    BYTE PTR [rdi+0xd62],0x0
+   141aa486b:	75 0f                                           	jne    0x141aa487c
+   141aa486d:	48 89 f9                                        	mov    rcx,rdi
+   141aa4870:	ba 01 00 00 00                                  	mov    edx,0x1
+   141aa4875:	e8 76 60 94 02                                  	call   0x1443ea8f0
+   141aa487a:	eb d4                                           	jmp    0x141aa4850
+   141aa487c:	8b 96 e8 09 00 00                               	mov    edx,DWORD PTR [rsi+0x9e8]
+   141aa4882:	31 c0                                           	xor    eax,eax
+   141aa4884:	39 d1                                           	cmp    ecx,edx
+   141aa4886:	74 3e                                           	je     0x141aa48c6
+   141aa4888:	3b 96 1c 0a 00 00                               	cmp    edx,DWORD PTR [rsi+0xa1c]
+   141aa488e:	74 36                                           	je     0x141aa48c6
+   141aa4890:	3b 96 00 0a 00 00                               	cmp    edx,DWORD PTR [rsi+0xa00]
+   141aa4896:	74 2e                                           	je     0x141aa48c6
+   141aa4898:	48 8b 86 70 ce 00 00                            	mov    rax,QWORD PTR [rsi+0xce70]
+   141aa489f:	3b 90 dc 02 00 00                               	cmp    edx,DWORD PTR [rax+0x2dc]
+   141aa48a5:	75 04                                           	jne    0x141aa48ab
+   141aa48a7:	31 c0                                           	xor    eax,eax
+   141aa48a9:	eb 1b                                           	jmp    0x141aa48c6
+   141aa48ab:	31 c0                                           	xor    eax,eax
+   141aa48ad:	3b 96 04 0a 00 00                               	cmp    edx,DWORD PTR [rsi+0xa04]
+   141aa48b3:	74 11                                           	je     0x141aa48c6
+   141aa48b5:	3b 96 08 0a 00 00                               	cmp    edx,DWORD PTR [rsi+0xa08]
+   141aa48bb:	74 09                                           	je     0x141aa48c6
+   141aa48bd:	3b 96 7c 0a 00 00                               	cmp    edx,DWORD PTR [rsi+0xa7c]
+   141aa48c3:	0f 95 c0                                        	setne  al
+   141aa48c6:	48 83 c4 28                                     	add    rsp,0x28
+   141aa48ca:	5f                                              	pop    rdi
+   141aa48cb:	5e                                              	pop    rsi
+   141aa48cc:	c3                                              	ret
+
+FUNCTION 0x141aa2c70 WINDOW 0x141aa2c70:0x141aa2c98
+   141aa2c70:	41 56                                           	push   r14
+   141aa2c72:	56                                              	push   rsi
+   141aa2c73:	57                                              	push   rdi
+   141aa2c74:	55                                              	push   rbp
+   141aa2c75:	53                                              	push   rbx
+   141aa2c76:	48 81 ec c0 00 00 00                            	sub    rsp,0xc0
+   141aa2c7d:	4c 8b b1 48 e3 00 00                            	mov    r14,QWORD PTR [rcx+0xe348]
+   141aa2c84:	4d 85 f6                                        	test   r14,r14
+   141aa2c87:	0f 84 c4 03 00 00                               	je     0x141aa3051
+   141aa2c8d:	48 89 cf                                        	mov    rdi,rcx
+   141aa2c90:	4c 89 f1                                        	mov    rcx,r14
+   141aa2c93:	e8 f8 30 0e 00                                  	call   0x141b85d90
+
+FUNCTION 0x151d5db40 WINDOW 0x151d5db40:0x151d5db50
+   151d5db40:	56                                              	push   rsi
+   151d5db41:	57                                              	push   rdi
+   151d5db42:	53                                              	push   rbx
+   151d5db43:	48 83 ec 20                                     	sub    rsp,0x20
+   151d5db47:	48 89 ce                                        	mov    rsi,rcx
+   151d5db4a:	fe 81 48 02 00 00                               	inc    BYTE PTR [rcx+0x248]
+
+FUNCTION 0x151d5e9a0 WINDOW 0x151d5e9a0:0x151d5e9b0
+   151d5e9a0:	56                                              	push   rsi
+   151d5e9a1:	57                                              	push   rdi
+   151d5e9a2:	53                                              	push   rbx
+   151d5e9a3:	48 83 ec 20                                     	sub    rsp,0x20
+   151d5e9a7:	48 89 ce                                        	mov    rsi,rcx
+   151d5e9aa:	fe 89 48 02 00 00                               	dec    BYTE PTR [rcx+0x248]

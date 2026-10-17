@@ -1,0 +1,325 @@
+{
+  "target": "FM24 24.4.2+2081827 Windows fm.exe, base 0x140000000",
+  "scope": "薄索引：只覆盖当前P0核心机制及后续方向入口，不是全仓库结论清单。",
+  "status_semantics": "status描述列明边界；局部字节核对不自动升级为完整因果闭合。无本条目宣称最终比分闭环。",
+  "mechanisms": [
+    {
+      "id": "goal_region",
+      "domain": "detailed_match",
+      "claim": "球穿越保留状态可通过球队关联/记录时刻进入区域5/6；不等于有效进球。",
+      "status": "producer_consumer_connected",
+      "inputs": [
+        "正式球轨迹、门口几何、接触与球队引用"
+      ],
+      "outputs": [
+        "区域编号5/6及相关状态"
+      ],
+      "addresses": [
+        "0x145300830",
+        "0x1443ea8f0",
+        "0x1443f0420"
+      ],
+      "evidence": {
+        "reports": [
+          "20261016_球门穿越状态与半径几何.md",
+          "20261016_门框标记与射门关联结果.md"
+        ],
+        "raw": [
+          "20261016_goal_crossing_static.txt",
+          "20261016_goal_crossing_observations.json"
+        ]
+      },
+      "upstream": [],
+      "downstream": [
+        "goal_dispatch_scheduling"
+      ],
+      "unproved": [
+        "完整动作到此状态的自然可达性、全部碰撞及判罚仍不闭合。"
+      ]
+    },
+    {
+      "id": "goal_dispatch_scheduling",
+      "domain": "detailed_match",
+      "claim": "主循环到a6c相等时调用回退，再强制事件分派字节；该次不会走同一普通区域调用点。",
+      "status": "local_control_flow_reconstructed",
+      "inputs": [
+        "已到144405256的时刻/期限",
+        "special返回及两个输出字节",
+        "后续时间门槛返回"
+      ],
+      "outputs": [
+        "回退调用、事件/普通区域/其他分支选择"
+      ],
+      "addresses": [
+        "0x144405256",
+        "0x1444052aa",
+        "0x1444052af",
+        "0x14440534a",
+        "0x144405432",
+        "0x141aa4820"
+      ],
+      "evidence": {
+        "reports": [
+          "20261017_有效进球与比分状态生命周期.md"
+        ],
+        "raw": [
+          "20261017_goal_lifecycle_static.txt",
+          "20261017_goal_lifecycle_observations.json"
+        ]
+      },
+      "upstream": [
+        "goal_region"
+      ],
+      "downstream": [
+        "ordinary_goal_accounting",
+        "pending_goal_reversal"
+      ],
+      "unproved": [
+        "前置和中间辅助调用的全部副作用、自然运行时状态尚未恢复。"
+      ]
+    },
+    {
+      "id": "ordinary_goal_accounting",
+      "domain": "detailed_match",
+      "claim": "普通区域5/6经141aadd50调用进球处理，随后共享重置；进球处理调用辅助函数递增球队248。",
+      "status": "producer_consumer_connected",
+      "inputs": [
+        "分派进入区域5/6",
+        "球队引用与mode=0"
+      ],
+      "outputs": [
+        "所选球队248加一、列表及上层条件计数更新",
+        "稍后进入共享重置"
+      ],
+      "addresses": [
+        "0x141aac460",
+        "0x141aadd50",
+        "0x141aadecd",
+        "0x141a9c88d",
+        "0x141b85c90",
+        "0x151d5db4a",
+        "0x141aae1bb"
+      ],
+      "evidence": {
+        "reports": [
+          "20261016_分析筛选与球队进球计数.md",
+          "20261016_待处理进球引用与通用事件重置.md"
+        ],
+        "raw": [
+          "20261016_analysis_score_consumers_static.txt",
+          "20261016_pending_goal_clear_routing_static.txt"
+        ]
+      },
+      "upstream": [
+        "goal_dispatch_scheduling"
+      ],
+      "downstream": [
+        "pending_ref_clear",
+        "score_consumer_boundary"
+      ],
+      "unproved": [
+        "141a9c400和普通入口全部间接副作用、是否后续改分及最终比分身份未闭合。"
+      ]
+    },
+    {
+      "id": "pending_goal_reversal",
+      "domain": "detailed_match",
+      "claim": "特殊入口先计数并保存球队；回退包装器按保存引用递减，正常完成后清引用。",
+      "status": "producer_consumer_connected",
+      "inputs": [
+        "M.e348引用",
+        "a6c调度与前置门槛"
+      ],
+      "outputs": [
+        "保存球队的248减一、列表/上层条件计数更新、引用为空"
+      ],
+      "addresses": [
+        "0x151af7570",
+        "0x141aa2c70",
+        "0x141aa2c93",
+        "0x141b85d90",
+        "0x151d5e9aa"
+      ],
+      "evidence": {
+        "reports": [
+          "20261016_临时进球计数与定时回退.md"
+        ],
+        "raw": [
+          "20261016_pending_goal_reversal_static.txt",
+          "20261016_pending_goal_reversal_observations.json"
+        ]
+      },
+      "upstream": [
+        "goal_dispatch_scheduling"
+      ],
+      "downstream": [
+        "score_consumer_boundary"
+      ],
+      "unproved": [
+        "完整计数回退不等于全部比赛状态回滚；不能按编号猜测VAR/越位。"
+      ]
+    },
+    {
+      "id": "pending_ref_clear",
+      "domain": "detailed_match",
+      "claim": "共享事件重置会清e348；存在不递减球队计数的受限路径，清引用本身不是确认进球。",
+      "status": "conditional_path_reconstructed",
+      "inputs": [
+        "caller mask、old aa4、双方/上下文引用",
+        "报告列明的附属提前返回条件"
+      ],
+      "outputs": [
+        "e348为空、标志及其他状态更新"
+      ],
+      "addresses": [
+        "0x141aa4ac0",
+        "0x151b00860",
+        "0x151b009e3",
+        "0x1444854d0"
+      ],
+      "evidence": {
+        "reports": [
+          "20261016_待处理进球引用与通用事件重置.md"
+        ],
+        "raw": [
+          "20261016_pending_goal_clear_routing_static.txt",
+          "20261016_pending_goal_clear_routing_observations.json"
+        ]
+      },
+      "upstream": [
+        "ordinary_goal_accounting"
+      ],
+      "downstream": [
+        "pending_goal_reversal"
+      ],
+      "unproved": [
+        "未证明普通进球每次满足受限不递减条件，也未证明全部重置路径保留计数。"
+      ]
+    },
+    {
+      "id": "score_consumer_boundary",
+      "domain": "detailed_match",
+      "claim": "已知T+11b与T+248参与比较，上层Q+0/+1/+3有条件加减；最终比分消费者尚未识别。",
+      "status": "unresolved",
+      "inputs": [
+        "球队计数字段",
+        "I=*(*(M+930)+10)的虚槽28返回记录"
+      ],
+      "outputs": [
+        "比较结果、上层字节更新；正式比分输出未知"
+      ],
+      "addresses": [
+        "0x141a9c892",
+        "0x151d5db40",
+        "0x151d5e9a0",
+        "0x141ad19d0",
+        "0x141abd270"
+      ],
+      "evidence": {
+        "reports": [
+          "20261017_有效进球与比分状态生命周期.md",
+          "20261016_分析筛选与球队进球计数.md"
+        ],
+        "raw": [
+          "20261016_analysis_score_consumers_static.txt",
+          "20261016_pending_goal_reversal_static.txt"
+        ]
+      },
+      "upstream": [
+        "ordinary_goal_accounting",
+        "pending_goal_reversal"
+      ],
+      "downstream": [],
+      "unproved": [
+        "I的构造/虚表绑定、槽28真实实现、Q字段最终读取、T11b身份与248转存/清零、最终比赛结束约束。"
+      ]
+    },
+    {
+      "id": "attribute_execution",
+      "domain": "attributes",
+      "claim": "属性通过门槛/候选评分/轨迹参数条件性起效；局部敏感性不能替代净胜球或胜率权重。",
+      "status": "local_formulas_and_connections",
+      "inputs": [
+        "内部属性、距离、局面、缓存"
+      ],
+      "outputs": [
+        "候选与执行参数、条件速度/旋转"
+      ],
+      "addresses": [
+        "0x144466d10",
+        "0x1443ecc70",
+        "0x1443f2ef0"
+      ],
+      "evidence": {
+        "reports": [
+          "20261015_属性影响证据地图.md",
+          "20261017_动作方向进入球速的条件.md",
+          "20261017_准备阶段的动作范围与正式球提交.md"
+        ],
+        "raw": [
+          "20261017_action91_trajectory_observations.json"
+        ]
+      },
+      "upstream": [],
+      "downstream": [
+        "goal_region"
+      ],
+      "unproved": [
+        "属性变动到最终有效比赛结果仍缺P0链接与全部中间状态，UI增一点不等于内部值增一。"
+      ]
+    },
+    {
+      "id": "transfer_candidates",
+      "domain": "transfers",
+      "claim": "候选筛选/评分/排序已部分恢复；正式报价到签约成交不闭合。",
+      "status": "partial_chain",
+      "inputs": [
+        "球队需求、候选与资格"
+      ],
+      "outputs": [
+        "有限候选排序"
+      ],
+      "addresses": [],
+      "evidence": {
+        "reports": [
+          "20261015_FM2024电脑转会决策.md",
+          "20261015_FM2024球员目标筛选与排序.md",
+          "20261015_FM2024转会偏好与排序修正.md"
+        ],
+        "raw": []
+      },
+      "upstream": [],
+      "downstream": [],
+      "unproved": [
+        "最终候选消费者到报价、卖方接受、合同与日期决策尚待研究；不重启候选池调查。"
+      ]
+    },
+    {
+      "id": "quick_match_resources",
+      "domain": "quick_match",
+      "claim": "QME资源关联与统计分布不能直接当详细引擎公式或快速比分生成式。",
+      "status": "resource_evidence",
+      "inputs": [
+        "FM24原生资源统计关联"
+      ],
+      "outputs": [
+        "属性/统计关联与分布结构"
+      ],
+      "addresses": [],
+      "evidence": {
+        "reports": [
+          "20261014_FM2024整体静态分析.md",
+          "20261014_FM2024比赛机制调查.md"
+        ],
+        "raw": [
+          "20261014_resource_observations.json"
+        ]
+      },
+      "upstream": [],
+      "downstream": [],
+      "unproved": [
+        "QME比分生成入口到比分写入尚未闭合，须与详细引擎分开。"
+      ]
+    }
+  ]
+}
