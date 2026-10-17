@@ -60,6 +60,21 @@ def delay_from_draw(draw):
     return 12 + (((draw * 3) >> 30) & 12)
 
 
+def fixture_record_offset(native_type, side):
+    """仅覆盖已绑定的两种原生类型及有效side=0/1，不推断其他工厂对象。"""
+    return {"FIXTURE": 0x4C, "FIXTURE_RESULT": 0x64}[native_type] + 4 * side
+
+
+def adjust_fixture_record(record, flags, mode, delta):
+    """转写四字节增减；mode=2时冻结两次查询返回同一记录，不赋正式比分名。"""
+    result = list(record)
+    index = 1 if flags & 0x10 else 0
+    result[index] = (result[index] + delta) & 0xFF
+    if mode == 2:
+        result[3] = (result[3] + delta) & 0xFF
+    return result
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -96,6 +111,17 @@ def examples():
     for draw, expected in [(0, 12), (0x55555555, 12), (0x55555556, 16),
                            (0xAAAAAAAA, 16), (0xAAAAAAAB, 20), (0xFFFFFFFF, 20)]:
         check(f"delay-{draw:08x}", delay_from_draw(draw), expected)
+    for native_type, side, offset in [("FIXTURE", 0, 0x4C), ("FIXTURE", 1, 0x50),
+                                      ("FIXTURE_RESULT", 0, 0x64), ("FIXTURE_RESULT", 1, 0x68)]:
+        check(f"layout-{native_type}-{side}", fixture_record_offset(native_type, side), offset)
+    record = [1, 2, 3, 4]
+    check("record-byte0", adjust_fixture_record(record, 0, 0, 1), [2, 2, 3, 4])
+    check("record-byte1", adjust_fixture_record(record, 0x10, 0, 1), [1, 3, 3, 4])
+    check("record-byte0-and3", adjust_fixture_record(record, 0, 2, 1), [2, 2, 3, 5])
+    check("record-byte1-and3-reversal", adjust_fixture_record(record, 0x10, 2, -1), [1, 1, 3, 3])
+    incremented = adjust_fixture_record(record, 0, 0, 1)
+    check("same-input-reversal", adjust_fixture_record(incremented, 0, 0, -1), record)
+    check("different-mode-is-not-inverse", adjust_fixture_record(incremented, 0x10, 0, -1), [2, 1, 3, 4])
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -107,14 +133,20 @@ def verify_original(exe):
     optional_size = struct.unpack_from("<H", data, pe + 20)[0]
     optional = pe + 24
     image_base = struct.unpack_from("<Q", data, optional + 24)[0]
-    evidence = json.loads((ROOT / "20261017_goal_lifecycle_observations.json").read_text())
-    if image_base != int(evidence["image_base"], 16):
-        raise ValueError("PE image base differs from the selected research target")
+    evidences = [json.loads((ROOT / name).read_text()) for name in (
+        "20261017_goal_lifecycle_observations.json",
+        "20261017_fixture_result_binding_observations.json",
+    )]
+    for evidence in evidences:
+        if image_base != int(evidence["image_base"], 16):
+            raise ValueError("PE image base differs from the selected research target")
     sections = []
     for i in range(section_count):
         _, rva, size, raw = struct.unpack_from("<IIII", data, optional + optional_size + i * 40 + 8)
         sections.append((rva, size, raw))
-    for item in evidence["native_assertions"]:
+    native = [item for evidence in evidences for item in evidence["native_assertions"]]
+    static_data = [item for evidence in evidences for item in evidence.get("data_assertions", [])]
+    for item in native + static_data:
         va = int(item["va"], 16)
         expected = bytes.fromhex(item["hex"])
         rva = va - image_base
@@ -126,7 +158,7 @@ def verify_original(exe):
                 break
         else:
             raise ValueError(f"Unmapped instruction {item['va']}")
-    print(f"Original PE instruction assertions passed: {len(evidence['native_assertions'])}.", flush=True)
+    print(f"Original PE assertions passed: {len(native)} instruction/leaf, {len(static_data)} data.", flush=True)
 
 
 if __name__ == "__main__":

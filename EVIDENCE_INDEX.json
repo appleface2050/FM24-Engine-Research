@@ -199,21 +199,27 @@
     {
       "id": "score_consumer_boundary",
       "domain": "detailed_match",
-      "claim": "已知T+11b与T+248参与比较，上层Q+0/+1/+3有条件加减；最终比分消费者尚未识别。",
-      "status": "unresolved",
+      "claim": "通过比赛构造、工厂注册、接口虚表，进球加减条件连接到两种原生fixture四字节记录，并接到FIXTURE_RESULT流传输入口；最终比分语义与保留仍未闭合。",
+      "status": "partial_chain",
       "inputs": [
-        "球队计数字段",
-        "I=*(*(M+930)+10)的虚槽28返回记录"
+        "M+778容器构造、工厂注册表、T+b5及模式",
+        "同一I及其查询返回记录"
       ],
       "outputs": [
-        "比较结果、上层字节更新；正式比分输出未知"
+        "FIXTURE的I+4c+4*side或FIXTURE_RESULT的I+64+4*side记录",
+        "记录字节条件增减与流传输"
       ],
       "addresses": [
-        "0x141a9c892",
-        "0x151d5db40",
-        "0x151d5e9a0",
-        "0x141ad19d0",
-        "0x141abd270"
+        "0x141a8feb7",
+        "0x159f4e2d0",
+        "0x1419d9fe0",
+        "0x14020b4d3",
+        "0x141a3e1b0",
+        "0x143abf6e0",
+        "0x141e4b040",
+        "0x1419c0410",
+        "0x140269570",
+        "0x141e43b30"
       ],
       "evidence": {
         "reports": [
@@ -222,7 +228,9 @@
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
-          "20261016_pending_goal_reversal_static.txt"
+          "20261016_pending_goal_reversal_static.txt",
+          "20261017_fixture_result_binding_static.txt",
+          "20261017_fixture_result_binding_observations.json"
         ]
       },
       "upstream": [
@@ -231,7 +239,10 @@
       ],
       "downstream": [],
       "unproved": [
-        "I的构造/虚表绑定、槽28真实实现、Q字段最终读取、T11b身份与248转存/清零、最终比赛结束约束。"
+        "注册/构造/对象替换的完整运行生命周期",
+        "记录各字节的正式含义、初始有效值与最终消费者",
+        "流入口实际调用方向与流虚表实现",
+        "T11b身份、248转存与比赛结束前保留/撤销"
       ]
     },
     {
