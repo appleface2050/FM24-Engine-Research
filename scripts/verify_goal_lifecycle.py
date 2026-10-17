@@ -107,6 +107,16 @@ def fixture_comparison_status(first, second):
     return 9, 9
 
 
+def handoff_gate(flags):
+    """转写1434f4798调用条件；必须已到该检查点，不代表整个函数入口条件。"""
+    return bool(flags & 4)
+
+
+def snapshot_fixture_records(records):
+    """仅转写成功克隆时两个四字节的值复制，不模拟其他字段或生命周期。"""
+    return bytes(records)
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -176,6 +186,16 @@ def examples():
     check("status-all-equal", fixture_comparison_status([1, 2, 3, 4], [1, 2, 3, 4]), (9, 9))
     check("status-ff-is-signed-negative", fixture_comparison_status([0, 0, 255, 0], [0, 0, 0, 0]), (10, 3))
     check("status-ff-not-validity-check", fixture_comparison_status([255]*4, [255]*4), (9, 9))
+    check("handoff-bit4-clear", handoff_gate(0), False)
+    check("handoff-bit4-set", handoff_gate(4), True)
+    check("handoff-bit10-alone", handoff_gate(0x10), False)
+    check("handoff-bit4-with-other-bits", handoff_gate(0x14), True)
+    source = bytearray([1, 2, 3, 4, 5, 6, 7, 8])
+    snapshot = snapshot_fixture_records(source)
+    check("snapshot-preserves-two-records", snapshot, bytes([1, 2, 3, 4, 5, 6, 7, 8]))
+    source[0] = 9
+    check("snapshot-not-source-alias", snapshot, bytes([1, 2, 3, 4, 5, 6, 7, 8]))
+    check("snapshot-does-not-validate", snapshot_fixture_records([255] * 8), bytes([255] * 8))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -192,6 +212,7 @@ def verify_original(exe):
         "20261017_fixture_result_binding_observations.json",
         "20261017_fixture_stream_direction_observations.json",
         "20261017_fixture_scoreline_consumers_observations.json",
+        "20261017_match_result_handoff_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
