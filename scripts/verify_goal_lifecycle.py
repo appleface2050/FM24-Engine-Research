@@ -145,6 +145,16 @@ def clock_cap_record_writes(first, second, pending=False):
     return first, second, 4, (1, 10), pending
 
 
+def state2_next_state(substate_after_helpers):
+    """转写144405868返回低字节；输入是所有前序helper之后重新读取的e218。"""
+    return 2 | int(substate_after_helpers == 4)
+
+
+def end_entry_reset_block():
+    """转写141ac9db5的104字节源块，不模拟该函数前后的其他副作用。"""
+    return bytes(88) + bytes([0xFF] * 16)
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -240,6 +250,25 @@ def examples():
           ([2, 3, 2, 1], [1, 8, 7, 6], 4, (1, 10), True))
     check("cap-does-not-initialize-all-fields", clock_cap_record_writes([255]*4, [255]*4),
           ([2, 255, 255, 255], [1, 255, 255, 255], 4, (1, 10), False))
+    for substate, expected in [(0, 2), (3, 2), (4, 3), (5, 2)]:
+        check(f"state2-next-{substate}", state2_next_state(substate), expected)
+    cleared = end_entry_reset_block()
+    check("entry-block-length", len(cleared), 104)
+    check("entry-pending-reference-zero", struct.unpack_from("<Q", cleared)[0], 0)
+    check("entry-last-zero-qword", struct.unpack_from("<Q", cleared, 80)[0], 0)
+    check("entry-tail-sentinels", struct.unpack_from("<qq", cleared, 88), (-1, -1))
+    check("entry-clear-blocks-listed-reversal",
+          reverse_pending(2, bool(struct.unpack_from("<Q", cleared)[0])), (2, False, False))
+    check("entry-flags-not-complete-yet", handoff_gate(0x1800000), False)
+    check("entry-delay-current-tick", state3_completion_choice(100, 100 + 2, 0x1800000),
+          (0x1800000, "advance_helper"))
+    check("entry-delay-next-tick", state3_completion_choice(101, 100 + 2, 0x1800000),
+          (0x1800000, "advance_helper"))
+    check("entry-delay-deadline", state3_completion_choice(102, 100 + 2, 0x1800000),
+          (0x1800004, "finalizer"))
+    check("rollback-deadline-delays-finish",
+          state3_completion_choice(100, max(100 + 1, 103), 0x1800000),
+          (0x1800000, "advance_helper"))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -258,6 +287,7 @@ def verify_original(exe):
         "20261017_fixture_scoreline_consumers_observations.json",
         "20261017_match_result_handoff_observations.json",
         "20261017_match_completion_conditions_observations.json",
+        "20261017_state3_entry_cleanup_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

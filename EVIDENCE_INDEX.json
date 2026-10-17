@@ -162,28 +162,38 @@
     {
       "id": "pending_ref_clear",
       "domain": "detailed_match",
-      "claim": "共享事件重置会清e348；存在不递减球队计数的受限路径，清引用本身不是确认进球。",
+      "claim": "共享事件重置及状态2子状态3的结束准备均有清e348路径；后者块复制后另设a14。清引用本身不证明最终有效进球或全部计数保留。",
       "status": "conditional_path_reconstructed",
       "inputs": [
         "caller mask、old aa4、双方/上下文引用",
-        "报告列明的附属提前返回条件"
+        "报告列明的附属提前返回条件",
+        "状态2控制器到期检查及分派处e218=3"
       ],
       "outputs": [
-        "e348为空、标志及其他状态更新"
+        "e348为空、标志及其他状态更新",
+        "结束准备片段清e348，后续a14=tick+d470，最终重读e218=4时返回状态3"
       ],
       "addresses": [
         "0x141aa4ac0",
         "0x151b00860",
         "0x151b009e3",
-        "0x1444854d0"
+        "0x1444854d0",
+        "0x144405944",
+        "0x141ac9db5",
+        "0x141aca037",
+        "0x144405953",
+        "0x144405868"
       ],
       "evidence": {
         "reports": [
-          "20261016_待处理进球引用与通用事件重置.md"
+          "20261016_待处理进球引用与通用事件重置.md",
+          "20261017_有效进球与比分状态生命周期.md"
         ],
         "raw": [
           "20261016_pending_goal_clear_routing_static.txt",
-          "20261016_pending_goal_clear_routing_observations.json"
+          "20261016_pending_goal_clear_routing_observations.json",
+          "20261017_state3_entry_cleanup_static.txt",
+          "20261017_state3_entry_cleanup_observations.json"
         ]
       },
       "upstream": [
@@ -193,7 +203,8 @@
         "pending_goal_reversal"
       ],
       "unproved": [
-        "未证明普通进球每次满足受限不递减条件，也未证明全部重置路径保留计数。"
+        "未证明普通进球每次满足受限不递减条件，也未证明全部重置路径保留计数。",
+        "e218=3自然生产条件、d470来源及清引用后辅助调用的计数/引用副作用"
       ]
     },
     {
@@ -206,7 +217,8 @@
         "同一I及其查询返回记录",
         "临时展示对象F、side和两个查询开关",
         "X+48所持GAME_MATCH、M.aa4的0x4掩码及收尾分支条件",
-        "初始化门槛、推进mode/limit、tick/a14及超限前暂停条件"
+        "初始化门槛、推进mode/limit、tick/a14及超限前暂停条件",
+        "状态2子状态3的块清理检查点及后续期限/子状态重读"
       ],
       "outputs": [
         "FIXTURE的I+4c+4*side或FIXTURE_RESULT的I+64+4*side记录",
@@ -252,7 +264,10 @@
         "0x141a98c3b",
         "0x144406f55",
         "0x144406f72",
-        "0x144406f80"
+        "0x144406f80",
+        "0x144405880",
+        "0x141ac9b70",
+        "0x141aa304b"
       ],
       "evidence": {
         "reports": [
@@ -271,7 +286,9 @@
           "20261017_match_result_handoff_static.txt",
           "20261017_match_result_handoff_observations.json",
           "20261017_match_completion_conditions_static.txt",
-          "20261017_match_completion_conditions_observations.json"
+          "20261017_match_completion_conditions_observations.json",
+          "20261017_state3_entry_cleanup_static.txt",
+          "20261017_state3_entry_cleanup_observations.json"
         ]
       },
       "upstream": [
@@ -285,7 +302,7 @@
         "T11b身份、248转存与比赛结束前保留/撤销",
         "输出调用者的对象与比赛内同一I的连接、终场时序及落盘；反向入口实际输入流参数绑定",
         "比赛内I与临时展示F的身份/复制关系；展示加载成功与终场保留条件",
-        "状态3入口/a14生产者及辅助调用与e348/a6c的关系、全部结束位写入者、正式接受；超限输入自然可达性与频率未知"
+        "已接条件入口；e218=3/d470生产者、清引用后副作用、全部结束位写入者及正式接受仍未知；超限自然可达性/频率未知"
       ]
     },
     {
