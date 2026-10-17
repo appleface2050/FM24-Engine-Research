@@ -117,6 +117,34 @@ def snapshot_fixture_records(records):
     return bytes(records)
 
 
+def iteration_exit_choice(tick, entry_tick, mode, limit, flags, phase_tick=0):
+    """转写141a98930已通过初始化门槛后的局部检查顺序；所有时刻为int32输入。"""
+    if flags & 4:
+        return "already_complete"
+    if limit != -1 and tick >= limit:
+        return "pause"
+    if mode == 2:
+        if phase_tick >= 0x5461 and flags & 0x10010:
+            return "pause"
+    elif mode == 0 and tick > entry_tick:
+        return "pause"
+    return "clock_cap_overwrite" if tick >= 48001 else "dispatch_state"
+
+
+def state3_completion_choice(tick, deadline, flags):
+    """转写144406f55已到比较点的状态；输出在后续helper副作用之前。"""
+    if tick >= deadline:
+        return flags | 4, "finalizer"
+    return flags, "advance_helper"
+
+
+def clock_cap_record_writes(first, second, pending=False):
+    """仅覆盖已绑定FIXTURE_RESULT、有效W/I和正常虚调用的超限直接写入。"""
+    first, second = list(first), list(second)
+    first[0], second[0] = 2, 1
+    return first, second, 4, (1, 10), pending
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -196,6 +224,22 @@ def examples():
     source[0] = 9
     check("snapshot-not-source-alias", snapshot, bytes([1, 2, 3, 4, 5, 6, 7, 8]))
     check("snapshot-does-not-validate", snapshot_fixture_records([255] * 8), bytes([255] * 8))
+    check("cap-clock-48000", iteration_exit_choice(48000, 48000, 1, -1, 0), "dispatch_state")
+    check("cap-clock-48001", iteration_exit_choice(48001, 48001, 1, -1, 0), "clock_cap_overwrite")
+    check("cap-explicit-limit-first", iteration_exit_choice(48001, 48000, 1, 48001, 0), "pause")
+    check("cap-mode0-progress-first", iteration_exit_choice(48001, 48000, 0, -1, 0), "pause")
+    check("cap-mode0-no-progress", iteration_exit_choice(48001, 48001, 0, -1, 0), "clock_cap_overwrite")
+    check("cap-mode2-phase-and-mask", iteration_exit_choice(48001, 48000, 2, -1, 0x10, 21601), "pause")
+    check("cap-mode2-phase-below", iteration_exit_choice(48001, 48000, 2, -1, 0x10, 21600), "clock_cap_overwrite")
+    check("cap-mode2-mask-clear", iteration_exit_choice(48001, 48000, 2, -1, 0, 21601), "clock_cap_overwrite")
+    check("cap-already-complete-first", iteration_exit_choice(48001, 48000, 1, -1, 4), "already_complete")
+    check("state3-before-deadline", state3_completion_choice(199, 200, 0x10), (0x10, "advance_helper"))
+    check("state3-at-deadline", state3_completion_choice(200, 200, 0x10), (0x14, "finalizer"))
+    check("state3-after-deadline", state3_completion_choice(201, 200, 0x10), (0x14, "finalizer"))
+    check("cap-replaces-base-only", clock_cap_record_writes([5, 3, 2, 1], [4, 8, 7, 6], pending=True),
+          ([2, 3, 2, 1], [1, 8, 7, 6], 4, (1, 10), True))
+    check("cap-does-not-initialize-all-fields", clock_cap_record_writes([255]*4, [255]*4),
+          ([2, 255, 255, 255], [1, 255, 255, 255], 4, (1, 10), False))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -213,6 +257,7 @@ def verify_original(exe):
         "20261017_fixture_stream_direction_observations.json",
         "20261017_fixture_scoreline_consumers_observations.json",
         "20261017_match_result_handoff_observations.json",
+        "20261017_match_completion_conditions_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
