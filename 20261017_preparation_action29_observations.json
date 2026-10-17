@@ -1,0 +1,41 @@
+{
+  "target": "FM24 24.4.2+2081827 fm.exe",
+  "method": "static original PE and existing read-only Ghidra",
+  "gate": {
+    "range_instructions": "0x1443c1ca8..0x1443c1cb8",
+    "unsigned_condition": "uint32(P.e40 - 0x93) <= 8",
+    "allowed": [
+      "0x93",
+      "0x94",
+      "0x95",
+      "0x96",
+      "0x97",
+      "0x98",
+      "0x99",
+      "0x9a",
+      "0x9b"
+    ],
+    "current_action_0x91": "fails this check; earlier indirect rewrites not closed"
+  },
+  "submission": {
+    "call": "0x1443c4a09",
+    "callee": "0x1443ecc70",
+    "ball": "*(M+0xd2b8)",
+    "mode": 1,
+    "action": "0x29",
+    "action_block": "P+0xdc0",
+    "target": "current ball position + direction table row 3 XY, runtime global Z increment",
+    "scale": "max(0.25f, float(*(M+0xcdd0)+0x10))"
+  },
+  "consumers": {
+    "equal_selected_history_xy": "early return before speed preparation if tau>=epsilon",
+    "nonzero_computed_speed_norm": "copy A velocity/spin/flag to formal ball",
+    "zero_computed_speed_norm": "call 0x1443f2ef0 with action 0x29",
+    "mode_change": "history path, target z > selected origin z can change 1 to 2"
+  },
+  "limits": [
+    "No full lifecycle proof for P.e40 or A velocity.",
+    "No final 0x29 solver formula recovered.",
+    "No match outcome or frequency experiment."
+  ]
+}
