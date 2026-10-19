@@ -262,6 +262,25 @@ def form_date_skips_append(count, current_date, latest_date):
                 and current_date >> 16 == latest_date >> 16)
 
 
+def stage_row_compare_fragment(first, second, rules=(0, 1)):
+    """限定mode0/普通主键；行=(+8,+a,+c)，None表示进入未建模的后续平局处理。"""
+    def signed_word(value):
+        value &= 0xFFFF
+        return value if value < 0x8000 else value - 0x10000
+
+    delta = signed_word(second[2]) - signed_word(first[2])
+    if delta:
+        return delta
+    for rule in rules:  # 仅覆盖原生规则0、1；其他规则不在该局部模型范围内。
+        if rule not in (0, 1):
+            return None
+        left = signed_word(first[0] - first[1]) if rule == 0 else signed_word(first[0])
+        right = signed_word(second[0] - second[1]) if rule == 0 else signed_word(second[0])
+        if right != left:
+            return right - left
+    return None
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -465,6 +484,24 @@ def examples():
     check("form-empty-has-no-date-skip", form_date_skips_append(0, 0x07EA0064, None), False)
     check("form20-latest-wrap", form_latest_slot(20, 19, 20), 18)
     check("form60-latest-wrap", form_latest_slot(2, 59, 60), 0)
+    check("stage-primary-precedes-difference",
+          stage_row_compare_fragment((100, 0, 6), (1, 0, 9)), 3)
+    check("stage-rule0-difference",
+          stage_row_compare_fragment((10, 7, 6), (9, 7, 6)), -1)
+    check("stage-rule1-after-equal-difference",
+          stage_row_compare_fragment((8, 5, 6), (9, 6, 6)), 1)
+    check("stage-rule-order-difference-first",
+          stage_row_compare_fragment((8, 0, 6), (9, 7, 6), (0, 1)), -6)
+    check("stage-rule-order-field8-first",
+          stage_row_compare_fragment((8, 0, 6), (9, 7, 6), (1, 0)), 1)
+    check("stage-negative-difference-sign-extension",
+          stage_row_compare_fragment((0, 1, 6), (0, 0, 6)), 1)
+    check("stage-full-tie-is-outside-fragment",
+          stage_row_compare_fragment((8, 5, 6), (8, 5, 6)), None)
+    changed = league_entry_accumulation([3, 255, 0, 255], [1, 255, 0, 255], (5, 4, 0, 0))
+    check("stage-frozen-accumulation-changes-comparison",
+          (stage_row_compare_fragment((5, 4, 6), (9, 7, 6)),
+           stage_row_compare_fragment((*changed[:2], 6), (9, 7, 6))), (1, -1))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -558,6 +595,7 @@ def verify_original(exe):
         "20261019_delegate_registration_observations.json",
         "20261019_player_stats_result_consumer_observations.json",
         "20261019_form_history_question_boundary_observations.json",
+        "20261019_stage_aggregate_order_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

@@ -378,7 +378,15 @@
         "0x154346a10",
         "0x1435c1b78",
         "0x143531168",
-        "0x14353141e"
+        "0x14353141e",
+        "0x141fdf380",
+        "0x141f6fb40",
+        "0x141fbb0d0",
+        "0x141fbdbf0",
+        "0x141fbdc10",
+        "0x141fc36a0",
+        "0x141fc4970",
+        "0x141fbb546"
       ],
       "evidence": {
         "reports": [
@@ -423,7 +431,9 @@
           "20261019_player_stats_result_consumer_static.txt",
           "20261019_player_stats_result_consumer_observations.json",
           "20261019_form_history_question_boundary_static.txt",
-          "20261019_form_history_question_boundary_observations.json"
+          "20261019_form_history_question_boundary_observations.json",
+          "20261019_stage_aggregate_order_static.txt",
+          "20261019_stage_aggregate_order_observations.json"
         ]
       },
       "upstream": [
@@ -442,7 +452,8 @@
         "B+50与扫描列表条目的完整身份/替换时序及其最终赛程消费者；处理游标前进不代表接受记录字节",
         "已接B+20结果克隆列表→批量回调及GAME_UI复制后刷新；正式赛程字段写入、刷新后保留、回调输出标记的完整下游和自然可达性仍未闭合",
         "已定位ACTUAL_COMP→LEAGUE_STAGE记录累计候选；后续查询R与此前F同一性、C+1c0阶段对象类型/构造、累计字段的正式语义及前后修订尚未闭合",
-        "已定位O+8注册和条件同一D；已绑定PLAYER_STATS_MANAGER及1427336e0现有表现对象/同日返回的整个调用只读路径，另已接表现记录追加末段和PRESS_CONFERENCE_QUESTION消费；完整身份保持、非同日/满环释放、问题链帮助函数及其余Q/W副作用、自然记录保留仍未闭合"
+        "已定位O+8注册和条件同一D；已绑定PLAYER_STATS_MANAGER及1427336e0现有表现对象/同日返回的整个调用只读路径，另已接表现记录追加末段和PRESS_CONFERENCE_QUESTION消费；完整身份保持、非同日/满环释放、问题链帮助函数及其余Q/W副作用、自然记录保留仍未闭合",
+        "已接同一S+98条目在保持条件下进入排序/规则0和1/条件E+e1位置写入；141f6d500后对同一S调用+308的实际调度、条目重建/修订与位置正式下游仍未闭合；不把临时试算记录比较器当实际列表身份依据"
       ],
       "connections": [
         {
@@ -873,6 +884,70 @@
           ],
           "evidence": "20261019_form_history_question_boundary_observations.json",
           "limit": "writes question property; does not establish formal score acceptance"
+        },
+        {
+          "source": "default S+98 entry pointer range",
+          "callsite": "0x141fbb3b6",
+          "callee": "0x141ef06e0",
+          "receiver": "RCX=range start,RDX=end,R9=141fbdbf0",
+          "target": "original entry pointers handed to sorter",
+          "conditions": [
+            "retained LEAGUE_STAGE",
+            "argument9 null",
+            "selected rule/flag path"
+          ],
+          "evidence": "20261019_stage_aggregate_order_observations.json",
+          "limit": "accumulation-to-sort scheduling and intervening identity remain unproved"
+        },
+        {
+          "source": "two existing entry pointers A/B",
+          "callsite": "0x141fbdbf4",
+          "callee": "0x141fbdc10",
+          "receiver": "same A/B; global14642a608=current S",
+          "target": "signed comparison then sign-bit boolean",
+          "conditions": [
+            "selected comparator route"
+          ],
+          "evidence": "20261019_stage_aggregate_order_observations.json",
+          "limit": "all other modes/fallback comparisons excluded from local model"
+        },
+        {
+          "source": "primary tie and configured rule ID",
+          "callsite": "0x141fbddfe",
+          "callee": "0x141fc36a0",
+          "receiver": "A/B, rule as R8D,group0 as R9D",
+          "target": "selected rule comparison",
+          "conditions": [
+            "ordinary unadjusted primary branch",
+            "mode0 and selected rules0/1"
+          ],
+          "evidence": "20261019_stage_aggregate_order_observations.json",
+          "limit": "further tie handling outside fragment"
+        },
+        {
+          "source": "right entry overall fields",
+          "callsite": "0x141fc36f7",
+          "callee": "0x141fc4970",
+          "receiver": "B with selected rule0/1",
+          "target": "low16 difference or field+8 then signed extension",
+          "conditions": [
+            "jump-table cases0/1",
+            "group0"
+          ],
+          "evidence": "20261019_stage_aggregate_order_observations.json",
+          "limit": "rule order is configured; not universal ranking formula"
+        },
+        {
+          "source": "left entry overall fields",
+          "callsite": "0x141fc3757",
+          "callee": "0x141fc4970",
+          "receiver": "A with same selected rule",
+          "target": "signed B criterion minus signed A criterion",
+          "conditions": [
+            "selected common return path"
+          ],
+          "evidence": "20261019_stage_aggregate_order_observations.json",
+          "limit": "same-pointer/list retention is conditional; not final score acceptance"
         }
       ]
     },

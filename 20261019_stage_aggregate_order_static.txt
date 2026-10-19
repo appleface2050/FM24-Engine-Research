@@ -1,0 +1,394 @@
+FM24 stage aggregate fields to live list ordering checkpoints
+Minimal selected original PE fragments. No target execution; full working exports remain local.
+
+same stage list lookup by team ID (decode entry 141f7ed90)
+141f7ed90:	48 85 d2             	test   rdx,rdx
+141f7ed93:	74 05                	je     0x141f7ed9a
+141f7ed95:	8b 52 0c             	mov    edx,DWORD PTR [rdx+0xc]
+141f7ed98:	eb 05                	jmp    0x141f7ed9f
+141f7ed9a:	ba ff ff ff ff       	mov    edx,0xffffffff
+141f7ed9f:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+141f7eda2:	48 8b 80 68 03 00 00 	mov    rax,QWORD PTR [rax+0x368]
+141f7eda9:	48 ff e0             	rex.W jmp rax
+
+stage virtual368 read-only S+98 lookup (decode entry 141fdf380)
+141fdf380:	4c 8b 81 98 00 00 00 	mov    r8,QWORD PTR [rcx+0x98]
+141fdf387:	4c 8b 89 a0 00 00 00 	mov    r9,QWORD PTR [rcx+0xa0]
+141fdf38e:	4d 39 c1             	cmp    r9,r8
+141fdf391:	74 3f                	je     0x141fdf3d2
+141fdf393:	66 2e 0f 1f 84 00 00 00 00 00 	cs nop WORD PTR [rax+rax*1+0x0]
+141fdf39d:	0f 1f 00             	nop    DWORD PTR [rax]
+141fdf3a0:	49 8b 00             	mov    rax,QWORD PTR [r8]
+141fdf3a3:	48 8b 48 78          	mov    rcx,QWORD PTR [rax+0x78]
+141fdf3a7:	48 85 c9             	test   rcx,rcx
+141fdf3aa:	74 14                	je     0x141fdf3c0
+141fdf3ac:	8b 49 0c             	mov    ecx,DWORD PTR [rcx+0xc]
+141fdf3af:	39 d1                	cmp    ecx,edx
+141fdf3b1:	75 16                	jne    0x141fdf3c9
+141fdf3b3:	eb 1f                	jmp    0x141fdf3d4
+141fdf3b5:	66 2e 0f 1f 84 00 00 00 00 00 	cs nop WORD PTR [rax+rax*1+0x0]
+141fdf3bf:	90                   	nop
+141fdf3c0:	b9 ff ff ff ff       	mov    ecx,0xffffffff
+141fdf3c5:	39 d1                	cmp    ecx,edx
+141fdf3c7:	74 0b                	je     0x141fdf3d4
+141fdf3c9:	49 83 c0 08          	add    r8,0x8
+141fdf3cd:	4d 39 c8             	cmp    r8,r9
+141fdf3d0:	75 ce                	jne    0x141fdf3a0
+141fdf3d2:	31 c0                	xor    eax,eax
+141fdf3d4:	c3                   	ret
+
+aggregate field selector jump and fields4/5/6 (decode entry 141f6fb40)
+141f6fb40:	56                   	push   rsi
+141f6fb41:	57                   	push   rdi
+141f6fb42:	53                   	push   rbx
+141f6fb43:	48 83 ec 30          	sub    rsp,0x30
+141f6fb47:	0f be c2             	movsx  eax,dl
+141f6fb4a:	83 f8 0f             	cmp    eax,0xf
+141f6fb4d:	77 5c                	ja     0x141f6fbab
+141f6fb4f:	48 8d 15 0a 01 00 00 	lea    rdx,[rip+0x10a]        # 0x141f6fc60
+141f6fb56:	48 63 04 82          	movsxd rax,DWORD PTR [rdx+rax*4]
+141f6fb5a:	48 01 d0             	add    rax,rdx
+141f6fb5d:	ff e0                	jmp    rax
+141f6fb83:	0f b7 41 08          	movzx  eax,WORD PTR [rcx+0x8]
+141f6fb87:	e9 cc 00 00 00       	jmp    0x141f6fc58
+141f6fb8c:	0f b7 41 0a          	movzx  eax,WORD PTR [rcx+0xa]
+141f6fb90:	e9 c3 00 00 00       	jmp    0x141f6fc58
+141f6fb95:	0f b7 41 08          	movzx  eax,WORD PTR [rcx+0x8]
+141f6fb99:	66 2b 41 0a          	sub    ax,WORD PTR [rcx+0xa]
+141f6fb9d:	e9 b6 00 00 00       	jmp    0x141f6fc58
+141f6fc58:	48 83 c4 30          	add    rsp,0x30
+141f6fc5c:	5b                   	pop    rbx
+141f6fc5d:	5f                   	pop    rdi
+141f6fc5e:	5e                   	pop    rsi
+141f6fc5f:	c3                   	ret
+
+stage308 default list, mode/global binding, sorter, position output (decode entry 141fbb0d0)
+141fbb0d0:	41 57                	push   r15
+141fbb0d2:	41 56                	push   r14
+141fbb0d4:	41 55                	push   r13
+141fbb0d6:	41 54                	push   r12
+141fbb0d8:	56                   	push   rsi
+141fbb0d9:	57                   	push   rdi
+141fbb0da:	55                   	push   rbp
+141fbb0db:	53                   	push   rbx
+141fbb0dc:	48 81 ec 98 00 00 00 	sub    rsp,0x98
+141fbb0e3:	4c 89 ce             	mov    rsi,r9
+141fbb0e6:	45 89 c6             	mov    r14d,r8d
+141fbb0e9:	41 89 d7             	mov    r15d,edx
+141fbb0ec:	48 8b 84 24 20 01 00 00 	mov    rax,QWORD PTR [rsp+0x120]
+141fbb0f4:	48 8d b9 98 00 00 00 	lea    rdi,[rcx+0x98]
+141fbb0fb:	48 85 c0             	test   rax,rax
+141fbb0fe:	48 0f 45 f8          	cmovne rdi,rax
+141fbb102:	48 8b 07             	mov    rax,QWORD PTR [rdi]
+141fbb105:	48 89 44 24 70       	mov    QWORD PTR [rsp+0x70],rax
+141fbb10a:	48 0f be 91 d8 00 00 00 	movsx  rdx,BYTE PTR [rcx+0xd8]
+141fbb112:	48 8d 1c d0          	lea    rbx,[rax+rdx*8]
+141fbb116:	48 89 5c 24 60       	mov    QWORD PTR [rsp+0x60],rbx
+141fbb11b:	4d 85 c9             	test   r9,r9
+141fbb11e:	48 89 4c 24 68       	mov    QWORD PTR [rsp+0x68],rcx
+141fbb1fe:	48 8b 44 24 68       	mov    rax,QWORD PTR [rsp+0x68]
+141fbb203:	44 88 b8 da 00 00 00 	mov    BYTE PTR [rax+0xda],r15b
+141fbb20a:	48 89 05 f7 f3 46 04 	mov    QWORD PTR [rip+0x446f3f7],rax        # 0x14642a608
+141fbb211:	48 8b 80 c8 00 00 00 	mov    rax,QWORD PTR [rax+0xc8]
+141fbb218:	48 8b 48 40          	mov    rcx,QWORD PTR [rax+0x40]
+141fbb21c:	48 39 48 48          	cmp    QWORD PTR [rax+0x48],rcx
+141fbb390:	49 8b 44 24 08       	mov    rax,QWORD PTR [r12+0x8]
+141fbb395:	49 3b 04 24          	cmp    rax,QWORD PTR [r12]
+141fbb399:	0f 84 ad 00 00 00    	je     0x141fbb44c
+141fbb39f:	49 89 f8             	mov    r8,rdi
+141fbb3a2:	4d 29 f8             	sub    r8,r15
+141fbb3a5:	49 c1 f8 03          	sar    r8,0x3
+141fbb3a9:	4c 8d 0d 40 28 00 00 	lea    r9,[rip+0x2840]        # 0x141fbdbf0
+141fbb3b0:	4c 89 f9             	mov    rcx,r15
+141fbb3b3:	48 89 fa             	mov    rdx,rdi
+141fbb3b6:	e8 25 53 f3 ff       	call   0x141ef06e0
+141fbb518:	48 8b 74 24 68       	mov    rsi,QWORD PTR [rsp+0x68]
+141fbb51d:	0f 1f 00             	nop    DWORD PTR [rax]
+141fbb520:	49 ff c7             	inc    r15
+141fbb523:	48 0f be 86 d8 00 00 00 	movsx  rax,BYTE PTR [rsi+0xd8]
+141fbb52b:	49 39 c7             	cmp    r15,rax
+141fbb52e:	0f 8d e3 04 00 00    	jge    0x141fbba17
+141fbb534:	49 8b 04 24          	mov    rax,QWORD PTR [r12]
+141fbb538:	4e 8b 2c f8          	mov    r13,QWORD PTR [rax+r15*8]
+141fbb53c:	80 bc 24 08 01 00 00 00 	cmp    BYTE PTR [rsp+0x108],0x0
+141fbb544:	74 26                	je     0x141fbb56c
+141fbb546:	45 88 bd e1 00 00 00 	mov    BYTE PTR [r13+0xe1],r15b
+141fbb54d:	80 bc 24 28 01 00 00 00 	cmp    BYTE PTR [rsp+0x128],0x0
+141fbb555:	74 07                	je     0x141fbb55e
+141fbb557:	45 88 bd e7 00 00 00 	mov    BYTE PTR [r13+0xe7],r15b
+141fbb55e:	41 80 bd d8 00 00 00 ff 	cmp    BYTE PTR [r13+0xd8],0xff
+141fbb566:	0f 84 61 02 00 00    	je     0x141fbb7cd
+
+boolean comparator adapter (decode entry 141fbdbf0)
+141fbdbf0:	48 83 ec 28          	sub    rsp,0x28
+141fbdbf4:	e8 17 00 00 00       	call   0x141fbdc10
+141fbdbf9:	c1 e8 1f             	shr    eax,0x1f
+141fbdbfc:	48 83 c4 28          	add    rsp,0x28
+141fbdc00:	c3                   	ret
+
+live comparison selected primary/rule path (decode entry 141fbdc10)
+141fbdc1c:	48 89 cf             	mov    rdi,rcx
+141fbdc1f:	48 8b 0d e2 c9 46 04 	mov    rcx,QWORD PTR [rip+0x446c9e2]        # 0x14642a608
+141fbdc26:	48 85 c9             	test   rcx,rcx
+141fbdc29:	0f 84 b8 03 00 00    	je     0x141fbdfe7
+141fbdc2f:	48 89 d6             	mov    rsi,rdx
+141fbdc32:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+141fbdc35:	ff 90 10 03 00 00    	call   QWORD PTR [rax+0x310]
+141fbdc3b:	89 c3                	mov    ebx,eax
+141fbdc3d:	48 8b 0d c4 c9 46 04 	mov    rcx,QWORD PTR [rip+0x446c9c4]        # 0x14642a608
+141fbdc44:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+141fbdc47:	ff 90 18 03 00 00    	call   QWORD PTR [rax+0x318]
+141fbdc4d:	84 c0                	test   al,al
+141fbdc4f:	0f 8e 90 00 00 00    	jle    0x141fbdce5
+141fbdc55:	48 8b 0d ac c9 46 04 	mov    rcx,QWORD PTR [rip+0x446c9ac]        # 0x14642a608
+141fbdc5c:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+141fbdc5f:	31 d2                	xor    edx,edx
+141fbdc61:	ff 90 20 03 00 00    	call   QWORD PTR [rax+0x320]
+141fbdc67:	3c 0f                	cmp    al,0xf
+141fbdc69:	75 7a                	jne    0x141fbdce5
+141fbdce5:	48 8b 0d 1c c9 46 04 	mov    rcx,QWORD PTR [rip+0x446c91c]        # 0x14642a608
+141fbdcec:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+141fbdcef:	ff 90 78 03 00 00    	call   QWORD PTR [rax+0x378]
+141fbdcf5:	f6 40 63 01          	test   BYTE PTR [rax+0x63],0x1
+141fbdcf9:	75 67                	jne    0x141fbdd62
+141fbdcfb:	48 8b 0d 06 c9 46 04 	mov    rcx,QWORD PTR [rip+0x446c906]        # 0x14642a608
+141fbdd02:	48 8b 91 c8 00 00 00 	mov    rdx,QWORD PTR [rcx+0xc8]
+141fbdd09:	48 8b 42 40          	mov    rax,QWORD PTR [rdx+0x40]
+141fbdd0d:	48 8b 6a 48          	mov    rbp,QWORD PTR [rdx+0x48]
+141fbdd11:	48 39 e8             	cmp    rax,rbp
+141fbdd14:	74 2a                	je     0x141fbdd40
+141fbdd16:	48 89 c2             	mov    rdx,rax
+141fbdd19:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+141fbdd20:	80 3a 17             	cmp    BYTE PTR [rdx],0x17
+141fbdd23:	74 0b                	je     0x141fbdd30
+141fbdd25:	48 ff c2             	inc    rdx
+141fbdd28:	48 39 ea             	cmp    rdx,rbp
+141fbdd2b:	75 f3                	jne    0x141fbdd20
+141fbdd2d:	48 89 ea             	mov    rdx,rbp
+141fbdd30:	48 39 ea             	cmp    rdx,rbp
+141fbdd33:	74 0b                	je     0x141fbdd40
+141fbdd35:	29 c2                	sub    edx,eax
+141fbdd37:	83 fa ff             	cmp    edx,0xffffffff
+141fbdd3a:	0f 85 87 00 00 00    	jne    0x141fbddc7
+141fbdd40:	48 0f be c3          	movsx  rax,bl
+141fbdd44:	48 c1 e0 03          	shl    rax,0x3
+141fbdd48:	48 8d 04 40          	lea    rax,[rax+rax*2]
+141fbdd4c:	0f bf 5c 06 0c       	movsx  ebx,WORD PTR [rsi+rax*1+0xc]
+141fbdd51:	0f bf 44 07 0c       	movsx  eax,WORD PTR [rdi+rax*1+0xc]
+141fbdd56:	29 c3                	sub    ebx,eax
+141fbdd58:	85 db                	test   ebx,ebx
+141fbdd5a:	0f 85 89 02 00 00    	jne    0x141fbdfe9
+141fbdd60:	eb 5e                	jmp    0x141fbddc0
+141fbddc0:	48 8b 0d 41 c8 46 04 	mov    rcx,QWORD PTR [rip+0x446c841]        # 0x14642a608
+141fbddc7:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+141fbddca:	ff 90 18 03 00 00    	call   QWORD PTR [rax+0x318]
+141fbddd0:	84 c0                	test   al,al
+141fbddd2:	7e 4f                	jle    0x141fbde23
+141fbddd4:	31 ed                	xor    ebp,ebp
+141fbddd6:	66 2e 0f 1f 84 00 00 00 00 00 	cs nop WORD PTR [rax+rax*1+0x0]
+141fbdde0:	48 8b 0d 21 c8 46 04 	mov    rcx,QWORD PTR [rip+0x446c821]        # 0x14642a608
+141fbdde7:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+141fbddea:	89 ea                	mov    edx,ebp
+141fbddec:	ff 90 20 03 00 00    	call   QWORD PTR [rax+0x320]
+141fbddf2:	48 89 f9             	mov    rcx,rdi
+141fbddf5:	48 89 f2             	mov    rdx,rsi
+141fbddf8:	41 89 c0             	mov    r8d,eax
+141fbddfb:	45 31 c9             	xor    r9d,r9d
+141fbddfe:	e8 9d 58 00 00       	call   0x141fc36a0
+141fbde03:	85 c0                	test   eax,eax
+141fbde05:	0f 85 ed 01 00 00    	jne    0x141fbdff8
+141fbde0b:	40 fe c5             	inc    bpl
+141fbde0e:	48 8b 0d f3 c7 46 04 	mov    rcx,QWORD PTR [rip+0x446c7f3]        # 0x14642a608
+141fbde15:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+141fbde18:	ff 90 18 03 00 00    	call   QWORD PTR [rax+0x318]
+141fbde1e:	40 38 c5             	cmp    bpl,al
+141fbde21:	7c bd                	jl     0x141fbdde0
+141fbdfe7:	31 db                	xor    ebx,ebx
+141fbdfe9:	89 d8                	mov    eax,ebx
+141fbdfeb:	48 83 c4 28          	add    rsp,0x28
+141fbdfef:	5b                   	pop    rbx
+141fbdff0:	5d                   	pop    rbp
+141fbdff1:	5f                   	pop    rdi
+141fbdff2:	5e                   	pop    rsi
+141fbdff3:	41 5e                	pop    r14
+141fbdff5:	41 5f                	pop    r15
+141fbdff7:	c3                   	ret
+141fbdff8:	89 c3                	mov    ebx,eax
+141fbdffa:	eb ed                	jmp    0x141fbdfe9
+
+bound stage metadata leaves (decode entry 141fdf2d0)
+141fdf2d0:	0f b6 81 da 00 00 00 	movzx  eax,BYTE PTR [rcx+0xda]
+141fdf2d7:	c3                   	ret
+141fdf2e0:	48 8b 89 c8 00 00 00 	mov    rcx,QWORD PTR [rcx+0xc8]
+141fdf2e7:	8b 41 48             	mov    eax,DWORD PTR [rcx+0x48]
+141fdf2ea:	2b 41 40             	sub    eax,DWORD PTR [rcx+0x40]
+141fdf2ed:	c3                   	ret
+141fdf2f0:	48 8b 81 c8 00 00 00 	mov    rax,QWORD PTR [rcx+0xc8]
+141fdf2f7:	48 0f be ca          	movsx  rcx,dl
+141fdf2fb:	48 8b 40 40          	mov    rax,QWORD PTR [rax+0x40]
+141fdf2ff:	0f b6 04 08          	movzx  eax,BYTE PTR [rax+rcx*1]
+141fdf303:	c3                   	ret
+
+stage378 returns metadata (decode entry 141fdf3f0)
+141fdf3f0:	48 8b 81 c8 00 00 00 	mov    rax,QWORD PTR [rcx+0xc8]
+141fdf3f7:	c3                   	ret
+
+criterion0/1 pair comparison and signed return conversion (decode entry 141fc36a0)
+141fc36a0:	41 56                	push   r14
+141fc36a2:	56                   	push   rsi
+141fc36a3:	57                   	push   rdi
+141fc36a4:	55                   	push   rbp
+141fc36a5:	53                   	push   rbx
+141fc36a6:	48 83 ec 20          	sub    rsp,0x20
+141fc36aa:	45 31 f6             	xor    r14d,r14d
+141fc36ad:	41 80 f8 2a          	cmp    r8b,0x2a
+141fc36b1:	0f 87 a9 00 00 00    	ja     0x141fc3760
+141fc36b7:	44 89 c3             	mov    ebx,r8d
+141fc36ba:	48 89 d6             	mov    rsi,rdx
+141fc36bd:	48 89 cf             	mov    rdi,rcx
+141fc36c0:	41 0f b6 c0          	movzx  eax,r8b
+141fc36c4:	48 8d 0d 41 03 00 00 	lea    rcx,[rip+0x341]        # 0x141fc3a0c
+141fc36cb:	48 63 04 81          	movsxd rax,DWORD PTR [rcx+rax*4]
+141fc36cf:	48 01 c8             	add    rax,rcx
+141fc36d2:	ff e0                	jmp    rax
+141fc36d4:	49 0f be c1          	movsx  rax,r9b
+141fc36d8:	48 c1 e0 03          	shl    rax,0x3
+141fc36dc:	48 8d 2c 40          	lea    rbp,[rax+rax*2]
+141fc36e0:	48 8b 05 21 6f 46 04 	mov    rax,QWORD PTR [rip+0x4466f21]        # 0x14642a608
+141fc36e7:	4c 8b 48 70          	mov    r9,QWORD PTR [rax+0x70]
+141fc36eb:	4c 8b 46 78          	mov    r8,QWORD PTR [rsi+0x78]
+141fc36ef:	48 01 ee             	add    rsi,rbp
+141fc36f2:	48 89 f1             	mov    rcx,rsi
+141fc36f5:	89 da                	mov    edx,ebx
+141fc36f7:	e8 74 12 00 00       	call   0x141fc4970
+141fc36fc:	44 0f bf f0          	movsx  r14d,ax
+141fc3700:	48 01 fd             	add    rbp,rdi
+141fc3703:	48 8b 05 fe 6e 46 04 	mov    rax,QWORD PTR [rip+0x4466efe]        # 0x14642a608
+141fc370a:	4c 8b 48 70          	mov    r9,QWORD PTR [rax+0x70]
+141fc370e:	4c 8b 47 78          	mov    r8,QWORD PTR [rdi+0x78]
+141fc3712:	eb 3e                	jmp    0x141fc3752
+141fc3752:	48 89 e9             	mov    rcx,rbp
+141fc3755:	89 da                	mov    edx,ebx
+141fc3757:	e8 14 12 00 00       	call   0x141fc4970
+141fc375c:	98                   	cwde
+141fc375d:	41 29 c6             	sub    r14d,eax
+141fc3760:	44 89 f0             	mov    eax,r14d
+141fc3763:	48 83 c4 20          	add    rsp,0x20
+141fc3767:	5b                   	pop    rbx
+141fc3768:	5d                   	pop    rbp
+141fc3769:	5f                   	pop    rdi
+141fc376a:	5e                   	pop    rsi
+141fc376b:	41 5e                	pop    r14
+141fc376d:	c3                   	ret
+
+criterion0/1 selector and return (decode entry 141fc4970)
+141fc497a:	80 fa 2a             	cmp    dl,0x2a
+141fc497d:	0f 87 b1 00 00 00    	ja     0x141fc4a34
+141fc4983:	4d 89 ce             	mov    r14,r9
+141fc4986:	4c 89 c7             	mov    rdi,r8
+141fc4989:	89 d3                	mov    ebx,edx
+141fc498b:	31 f6                	xor    esi,esi
+141fc498d:	0f b6 c2             	movzx  eax,dl
+141fc4990:	48 8d 15 b1 09 00 00 	lea    rdx,[rip+0x9b1]        # 0x141fc5348
+141fc4997:	48 63 04 82          	movsxd rax,DWORD PTR [rdx+rax*4]
+141fc499b:	48 01 d0             	add    rax,rdx
+141fc499e:	ff e0                	jmp    rax
+141fc49a0:	0f b7 71 08          	movzx  esi,WORD PTR [rcx+0x8]
+141fc49a4:	e9 fc 08 00 00       	jmp    0x141fc52a5
+141fc49a9:	0f b7 71 08          	movzx  esi,WORD PTR [rcx+0x8]
+141fc49ad:	66 2b 71 0a          	sub    si,WORD PTR [rcx+0xa]
+141fc49b1:	e9 ef 08 00 00       	jmp    0x141fc52a5
+141fc52a5:	89 f0                	mov    eax,esi
+141fc52a7:	48 83 c4 50          	add    rsp,0x50
+141fc52ab:	5b                   	pop    rbx
+141fc52ac:	5d                   	pop    rbp
+141fc52ad:	5f                   	pop    rdi
+141fc52ae:	5e                   	pop    rsi
+141fc52af:	41 5e                	pop    r14
+141fc52b1:	c3                   	ret
+141fc52b2:	e8 a9 33 f7 ff       	call   0x141f38660
+
+small pointer-sort path, comparator calls and insertion (decode entry 141ef06e0)
+141ef06e0:	41 57                	push   r15
+141ef06e2:	41 56                	push   r14
+141ef06e4:	41 55                	push   r13
+141ef06e6:	41 54                	push   r12
+141ef06e8:	56                   	push   rsi
+141ef06e9:	57                   	push   rdi
+141ef06ea:	55                   	push   rbp
+141ef06eb:	53                   	push   rbx
+141ef06ec:	48 83 ec 48          	sub    rsp,0x48
+141ef06f0:	4d 89 cc             	mov    r12,r9
+141ef06f3:	49 89 d6             	mov    r14,rdx
+141ef06f6:	48 89 cf             	mov    rdi,rcx
+141ef06f9:	48 89 d0             	mov    rax,rdx
+141ef06fc:	48 29 c8             	sub    rax,rcx
+141ef06ff:	48 3d 08 01 00 00    	cmp    rax,0x108
+141ef0705:	0f 8d 93 00 00 00    	jge    0x141ef079e
+141ef070b:	4c 39 f7             	cmp    rdi,r14
+141ef070e:	0f 84 21 02 00 00    	je     0x141ef0935
+141ef0714:	4c 8d 7f 08          	lea    r15,[rdi+0x8]
+141ef0718:	4d 39 f7             	cmp    r15,r14
+141ef071b:	0f 84 14 02 00 00    	je     0x141ef0935
+141ef0721:	4c 89 fd             	mov    rbp,r15
+141ef0724:	eb 2e                	jmp    0x141ef0754
+141ef0726:	66 2e 0f 1f 84 00 00 00 00 00 	cs nop WORD PTR [rax+rax*1+0x0]
+141ef0730:	49 89 e8             	mov    r8,rbp
+141ef0733:	49 29 f8             	sub    r8,rdi
+141ef0736:	4c 89 f9             	mov    rcx,r15
+141ef0739:	48 89 fa             	mov    rdx,rdi
+141ef073c:	e8 ef df 68 03       	call   0x14557e730
+141ef0741:	48 89 fe             	mov    rsi,rdi
+141ef0744:	48 89 1e             	mov    QWORD PTR [rsi],rbx
+141ef0747:	48 83 c5 08          	add    rbp,0x8
+141ef074b:	4c 39 f5             	cmp    rbp,r14
+141ef074e:	0f 84 e1 01 00 00    	je     0x141ef0935
+141ef0754:	48 8b 5d 00          	mov    rbx,QWORD PTR [rbp+0x0]
+141ef0758:	48 8b 17             	mov    rdx,QWORD PTR [rdi]
+141ef075b:	48 89 d9             	mov    rcx,rbx
+141ef075e:	41 ff d4             	call   r12
+141ef0761:	84 c0                	test   al,al
+141ef0763:	75 cb                	jne    0x141ef0730
+141ef0765:	48 8b 55 f8          	mov    rdx,QWORD PTR [rbp-0x8]
+141ef0769:	48 89 d9             	mov    rcx,rbx
+141ef076c:	41 ff d4             	call   r12
+141ef076f:	48 89 e9             	mov    rcx,rbp
+141ef0772:	48 89 ee             	mov    rsi,rbp
+141ef0775:	84 c0                	test   al,al
+141ef0777:	74 cb                	je     0x141ef0744
+141ef0779:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+141ef0780:	48 8d 71 f8          	lea    rsi,[rcx-0x8]
+141ef0784:	48 8b 51 f0          	mov    rdx,QWORD PTR [rcx-0x10]
+141ef0788:	48 8b 41 f8          	mov    rax,QWORD PTR [rcx-0x8]
+141ef078c:	48 89 01             	mov    QWORD PTR [rcx],rax
+141ef078f:	48 89 d9             	mov    rcx,rbx
+141ef0792:	41 ff d4             	call   r12
+141ef0795:	48 89 f1             	mov    rcx,rsi
+141ef0798:	84 c0                	test   al,al
+141ef079a:	75 e4                	jne    0x141ef0780
+141ef079c:	eb a6                	jmp    0x141ef0744
+141ef0935:	48 83 c4 48          	add    rsp,0x48
+141ef0939:	5b                   	pop    rbx
+141ef093a:	5d                   	pop    rbp
+141ef093b:	5f                   	pop    rdi
+141ef093c:	5e                   	pop    rsi
+141ef093d:	41 5c                	pop    r12
+141ef093f:	41 5d                	pop    r13
+141ef0941:	41 5e                	pop    r14
+141ef0943:	41 5f                	pop    r15
+141ef0945:	c3                   	ret
+
+0x145a41df0 d0b0fb4101000000 retained LEAGUE_STAGE virtual+308
+0x145a41df8 d0f2fd4101000000 retained LEAGUE_STAGE virtual+310
+0x145a41e00 e0f2fd4101000000 retained LEAGUE_STAGE virtual+318
+0x145a41e08 f0f2fd4101000000 retained LEAGUE_STAGE virtual+320
+0x145a41e28 90edf74101000000 retained LEAGUE_STAGE virtual+340
+0x145a41e50 80f3fd4101000000 retained LEAGUE_STAGE virtual+368
+0x145a41e60 f0f3fd4101000000 retained LEAGUE_STAGE virtual+378
+0x141f6fc70 23ffffff relative jump-table case4 at base141f6fc60 ->141f6fb83
+0x141f6fc74 2cffffff relative jump-table case5 at base141f6fc60 ->141f6fb8c
+0x141f6fc78 35ffffff relative jump-table case6 at base141f6fc60 ->141f6fb95
+0x141fc3a0c c8fcffff relative jump-table case0 at base141fc3a0c ->141fc36d4
+0x141fc3a10 c8fcffff relative jump-table case1 at base141fc3a0c ->141fc36d4
+0x141fc5348 61f6ffff relative jump-table case0 at base141fc5348 ->141fc49a9
+0x141fc534c 58f6ffff relative jump-table case1 at base141fc5348 ->141fc49a0
