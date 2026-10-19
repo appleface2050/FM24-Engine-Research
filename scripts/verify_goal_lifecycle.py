@@ -211,6 +211,15 @@ def precopy_entry_eligible(entry_tick, match_tick, side, kind, team_flags):
     return bool(team_flags & 0x1001) or (kind < 20 and bool((0x82322 >> kind) & 1))
 
 
+def league_entry_accumulation(first, second, counters):
+    """转写141f6e0dd..12f检查点；冻结查询对象/记录，未模拟整段阶段处理。"""
+    values = [query_fixture_byte(record, prefer_byte1=True) for record in (first, second)]
+    own, opponent = [value if value < 128 else value - 256 for value in values]
+    total_own, total_opponent, byte_e, byte_f = counters
+    return ((total_own + own) & 0xFFFF, (total_opponent + opponent) & 0xFFFF,
+            (byte_e + 1) & 0xFF, (byte_f + 1) & 0xFF)
+
+
 def result_admission_fallback(load_ok, output_flag=True):
     """仅转写140205c81..e32的回调返回/输出标记，不模拟加载或正式接受。"""
     return True, output_flag if load_ok else False
@@ -379,6 +388,18 @@ def examples():
     earlier = snapshot_fixture_records([2, 255, 0, 255, 1, 255, 0, 255])
     refreshed = snapshot_fixture_records([3, 255, 0, 255, 1, 255, 0, 255])
     check("admission-refresh-replaces-earlier-value-copy", (earlier[0], refreshed[0]), (2, 3))
+    check("league-entry-prefers-non-ff-byte1",
+          league_entry_accumulation([2, 3, 0, 255], [1, 255, 0, 255], (10, 7, 4, 4)),
+          (13, 8, 5, 5))
+    check("league-entry-zero-byte1-is-used",
+          league_entry_accumulation([2, 0, 0, 255], [1, 255, 0, 255], (10, 7, 4, 4)),
+          (10, 8, 5, 5))
+    check("league-entry-ff-values-sign-extend-at-checkpoint",
+          league_entry_accumulation([255] * 4, [255] * 4, (0, 0, 0, 0)),
+          (65535, 65535, 1, 1))
+    check("league-entry-word-and-byte-wrap",
+          league_entry_accumulation([1, 255, 0, 255], [0, 255, 0, 255], (65535, 0, 255, 255)),
+          (0, 0, 0, 0))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -467,6 +488,7 @@ def verify_original(exe):
         "20261019_precopy_tactic_callback_observations.json",
         "20261019_result_owner_cursor_observations.json",
         "20261019_result_batch_admission_observations.json",
+        "20261019_actual_comp_stage_consumer_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

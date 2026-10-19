@@ -388,7 +388,9 @@
           "20261019_result_owner_cursor_static.txt",
           "20261019_result_owner_cursor_observations.json",
           "20261019_result_batch_admission_static.txt",
-          "20261019_result_batch_admission_observations.json"
+          "20261019_result_batch_admission_observations.json",
+          "20261019_actual_comp_stage_consumer_static.txt",
+          "20261019_actual_comp_stage_consumer_observations.json"
         ]
       },
       "upstream": [
@@ -405,7 +407,8 @@
         "已接条件入口；e218=3其他生产分支、d470加载覆盖、默认球队清理已条件排除改分；事件队列/通用引用管理及其余结束调用副作用、全部结束位写入者及正式接受仍未知；超限自然可达性/频率未知",
         "归档/列表自然生命周期、143190140完整下游及正式赛程接受仍未知；已排除141a98050空列表和单一类型9/完成位保持路径的计分改写；已接类型9→6动态资格及状态5跳过路径、类型8不释放路径；活动球员离场、其余战术应用和141ac8820其余调用副作用待证；完成位、入列、描述与归档均不能替代有效进球确认",
         "B+50与扫描列表条目的完整身份/替换时序及其最终赛程消费者；处理游标前进不代表接受记录字节",
-        "已接B+20结果克隆列表→批量回调及GAME_UI复制后刷新；正式赛程字段写入、刷新后保留、回调输出标记的完整下游和自然可达性仍未闭合"
+        "已接B+20结果克隆列表→批量回调及GAME_UI复制后刷新；正式赛程字段写入、刷新后保留、回调输出标记的完整下游和自然可达性仍未闭合",
+        "已定位ACTUAL_COMP→LEAGUE_STAGE记录累计候选；后续查询R与此前F同一性、C+1c0阶段对象类型/构造、累计字段的正式语义及前后修订尚未闭合"
       ],
       "connections": [
         {
@@ -514,6 +517,34 @@
           ],
           "evidence": "20261019_result_batch_admission_observations.json",
           "limit": "helper result is frozen input; callback success does not imply load success or formal acceptance"
+        },
+        {
+          "source": "R selected from later fixture query, not identified with earlier batch F",
+          "callsite": "0x143434ab0",
+          "callee": "0x141e436d0",
+          "receiver": "I=*(Wtmp+10); RCX=I, RDX=R",
+          "target": "copy checkpoint before C.virtual+128 at143434ae2",
+          "conditions": [
+            "selected query/virtual+f0/provider gates passed",
+            "I and R retain compatible FIXTURE_RESULT layout; allocation/copy normal"
+          ],
+          "evidence": "20261019_actual_comp_stage_consumer_observations.json",
+          "limit": "later query identity and post-copy preservation unproved; C type binding is conditional"
+        },
+        {
+          "source": "I forwarded by C.virtual+128; stage S selected through C+1c0 and I+38",
+          "callsite": "0x141f6d4f5",
+          "callee": "0x141f6d500",
+          "receiver": "S with LEAGUE_STAGE vtable145a41ae8; RDX=I; arg8=S+98",
+          "target": "selected entry E; record query values contribute to E+8/+a word updates",
+          "conditions": [
+            "ACTUAL_COMP or FRIENDLY_ACTUAL_COMP type retained at C virtual+128",
+            "selected S retains LEAGUE_STAGE type",
+            "valid stage index and matching entry selected; intervening helpers return",
+            "record values frozen at accumulation checkpoint"
+          ],
+          "evidence": "20261019_actual_comp_stage_consumer_observations.json",
+          "limit": "stage entry constructor, link to prior batch F, full field names and final score acceptance remain unproved"
         }
       ]
     },
