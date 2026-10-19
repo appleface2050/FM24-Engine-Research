@@ -1,0 +1,131 @@
+Minimal native evidence: remaining-opportunity comparison, phase record byte 2, delay initial value and post-clear indirect-call boundary.
+24d/24e football names remain inferred; comparisons sign-extend bytes into 32-bit sums.
+141ac5340 is a five-byte E9 thunk; bytes after the jump are not exported as code.
+
+FUNCTION 0x144405cf0 selected windows
+   144405cfc:	48 89 ce                                        	mov    rsi,rcx
+   144405cff:	80 b9 e2 e1 00 00 00                            	cmp    BYTE PTR [rcx+0xe1e2],0x0
+   144405d06:	74 37                                           	je     0x144405d3f
+   144405d3f:	4c 8b b6 30 09 00 00                            	mov    r14,QWORD PTR [rsi+0x930]
+   144405d63:	8b 96 e8 09 00 00                               	mov    edx,DWORD PTR [rsi+0x9e8]
+   144405d69:	c6 44 24 78 ff                                  	mov    BYTE PTR [rsp+0x78],0xff
+   144405d6e:	4c 8d 84 24 90 00 00 00                         	lea    r8,[rsp+0x90]
+   144405d76:	4c 8d 4c 24 78                                  	lea    r9,[rsp+0x78]
+   144405d7b:	48 89 d9                                        	mov    rcx,rbx
+   144405d7e:	e8 9d a6 fe ff                                  	call   0x1443f0420
+   144405db8:	0f b6 c0                                        	movzx  eax,al
+   144405dbb:	8d 48 ff                                        	lea    ecx,[rax-0x1]
+   144405dbe:	83 f9 04                                        	cmp    ecx,0x4
+   144405dc1:	73 0f                                           	jae    0x144405dd2
+   144405dc3:	48 89 f1                                        	mov    rcx,rsi
+   144405dc6:	b2 01                                           	mov    dl,0x1
+   144405dc8:	e8 a3 08 00 00                                  	call   0x144406670
+   144405dcd:	e9 f2 07 00 00                                  	jmp    0x1444065c4
+   144405dd2:	83 c0 fb                                        	add    eax,0xfffffffb
+   144405dd5:	83 f8 01                                        	cmp    eax,0x1
+   144405dd8:	77 52                                           	ja     0x144405e2c
+   144405dda:	48 8b 96 30 d2 00 00                            	mov    rdx,QWORD PTR [rsi+0xd230]
+   144405ff0:	48 8b 86 30 d2 00 00                            	mov    rax,QWORD PTR [rsi+0xd230]
+   144405ff7:	fe 80 58 14 00 00                               	inc    BYTE PTR [rax+0x1458]
+   144405ffd:	48 8b 86 30 d2 00 00                            	mov    rax,QWORD PTR [rsi+0xd230]
+   144406004:	48 8b 80 d0 01 00 00                            	mov    rax,QWORD PTR [rax+0x1d0]
+   14440600b:	fe 80 4d 02 00 00                               	inc    BYTE PTR [rax+0x24d]
+   144406011:	48 8b 86 30 d2 00 00                            	mov    rax,QWORD PTR [rsi+0xd230]
+   144406018:	48 8b 80 d0 01 00 00                            	mov    rax,QWORD PTR [rax+0x1d0]
+   14440601f:	48 8b 80 58 05 00 00                            	mov    rax,QWORD PTR [rax+0x558]
+   144406026:	fe 80 53 01 00 00                               	inc    BYTE PTR [rax+0x153]
+   14440602c:	48 8b 86 30 d2 00 00                            	mov    rax,QWORD PTR [rsi+0xd230]
+   144406033:	48 8b 80 d0 01 00 00                            	mov    rax,QWORD PTR [rax+0x1d0]
+   14440603a:	fe 88 4e 02 00 00                               	dec    BYTE PTR [rax+0x24e]
+   144406040:	48 8b 86 30 d2 00 00                            	mov    rax,QWORD PTR [rsi+0xd230]
+   144406047:	48 8b 80 d0 01 00 00                            	mov    rax,QWORD PTR [rax+0x1d0]
+   14440604e:	0f b6 88 4f 02 00 00                            	movzx  ecx,BYTE PTR [rax+0x24f]
+   144406055:	48 d3 e7                                        	shl    rdi,cl
+   144406058:	48 09 b8 50 02 00 00                            	or     QWORD PTR [rax+0x250],rdi
+   14440605f:	48 8b 86 30 d2 00 00                            	mov    rax,QWORD PTR [rsi+0xd230]
+   144406066:	48 8b 80 d0 01 00 00                            	mov    rax,QWORD PTR [rax+0x1d0]
+   14440606d:	fe 80 4f 02 00 00                               	inc    BYTE PTR [rax+0x24f]
+   144406073:	8b 86 e8 09 00 00                               	mov    eax,DWORD PTR [rsi+0x9e8]
+   144406079:	89 86 34 0a 00 00                               	mov    DWORD PTR [rsi+0xa34],eax
+   14440607f:	48 8b 86 30 d2 00 00                            	mov    rax,QWORD PTR [rsi+0xd230]
+   144406086:	48 8b 88 d0 01 00 00                            	mov    rcx,QWORD PTR [rax+0x1d0]
+   14440608d:	48 89 8e 30 ce 00 00                            	mov    QWORD PTR [rsi+0xce30],rcx
+   144406094:	49 8b 4e 10                                     	mov    rcx,QWORD PTR [r14+0x10]
+   144406098:	48 0f be 90 ee 01 00 00                         	movsx  rdx,BYTE PTR [rax+0x1ee]
+   1444060a0:	48 8b 01                                        	mov    rax,QWORD PTR [rcx]
+   1444060a3:	ff 50 28                                        	call   QWORD PTR [rax+0x28]
+   1444060a6:	48 85 c0                                        	test   rax,rax
+   1444060a9:	74 03                                           	je     0x1444060ae
+   1444060ab:	fe 40 02                                        	inc    BYTE PTR [rax+0x2]
+   1444061b1:	48 8b 86 f8 cd 00 00                            	mov    rax,QWORD PTR [rsi+0xcdf8]
+   1444061b8:	48 8b 8e 00 ce 00 00                            	mov    rcx,QWORD PTR [rsi+0xce00]
+   1444061bf:	0f be 90 4d 02 00 00                            	movsx  edx,BYTE PTR [rax+0x24d]
+   1444061c6:	0f be 99 4d 02 00 00                            	movsx  ebx,BYTE PTR [rcx+0x24d]
+   1444061cd:	0f be b9 4e 02 00 00                            	movsx  edi,BYTE PTR [rcx+0x24e]
+   1444061d4:	01 df                                           	add    edi,ebx
+   1444061d6:	39 d7                                           	cmp    edi,edx
+   1444061d8:	7d 1f                                           	jge    0x1444061f9
+   1444061da:	48 8b 96 30 d2 00 00                            	mov    rdx,QWORD PTR [rsi+0xd230]
+   1444061e1:	48 89 c1                                        	mov    rcx,rax
+   1444061e4:	e8 b7 61 77 fd                                  	call   0x141b7c3a0
+   1444061e9:	48 8b 8e 30 d2 00 00                            	mov    rcx,QWORD PTR [rsi+0xd230]
+   1444061f0:	48 8b 96 f8 cd 00 00                            	mov    rdx,QWORD PTR [rsi+0xcdf8]
+   1444061f7:	eb 2b                                           	jmp    0x144406224
+   1444061f9:	0f be 80 4e 02 00 00                            	movsx  eax,BYTE PTR [rax+0x24e]
+   144406200:	01 d0                                           	add    eax,edx
+   144406202:	48 8b 96 30 d2 00 00                            	mov    rdx,QWORD PTR [rsi+0xd230]
+   144406209:	39 d8                                           	cmp    eax,ebx
+   14440620b:	0f 8d cc 00 00 00                               	jge    0x1444062dd
+   144406211:	e8 8a 61 77 fd                                  	call   0x141b7c3a0
+   144406216:	48 8b 8e 30 d2 00 00                            	mov    rcx,QWORD PTR [rsi+0xd230]
+   14440621d:	48 8b 96 00 ce 00 00                            	mov    rdx,QWORD PTR [rsi+0xce00]
+   144406224:	41 b0 01                                        	mov    r8b,0x1
+   144406227:	e8 74 90 08 00                                  	call   0x14448f2a0
+   14440622c:	48 8b 86 30 d2 00 00                            	mov    rax,QWORD PTR [rsi+0xd230]
+   144406233:	c6 80 5b 14 00 00 01                            	mov    BYTE PTR [rax+0x145b],0x1
+   14440623a:	c6 86 18 e2 00 00 03                            	mov    BYTE PTR [rsi+0xe218],0x3
+   144406241:	8b 86 a4 e3 00 00                               	mov    eax,DWORD PTR [rsi+0xe3a4]
+   144406247:	89 86 14 0a 00 00                               	mov    DWORD PTR [rsi+0xa14],eax
+
+FUNCTION 0x141a8fc30 selected windows
+   141a9077e:	48 b8 14 00 00 00 ff ff ff ff                   	movabs rax,0xffffffff00000014
+   141a90788:	48 89 86 70 d4 00 00                            	mov    QWORD PTR [rsi+0xd470],rax
+
+FUNCTION 0x141ac5340 selected windows
+   141ac5340:	e9 cb 5e 08 10                                  	jmp    0x151b4b210
+
+FUNCTION 0x151b4b210 selected windows
+   151b4b222:	48 89 cb                                        	mov    rbx,rcx
+   151b4b225:	48 8b 81 70 ce 00 00                            	mov    rax,QWORD PTR [rcx+0xce70]
+   151b4b35e:	48 8b bb f8 cd 00 00                            	mov    rdi,QWORD PTR [rbx+0xcdf8]
+   151b4b365:	48 8b 8f 38 01 00 00                            	mov    rcx,QWORD PTR [rdi+0x138]
+   151b4b36c:	48 8b 01                                        	mov    rax,QWORD PTR [rcx]
+   151b4b36f:	ff 50 58                                        	call   QWORD PTR [rax+0x58]
+   151b4b3ed:	48 8b b3 00 ce 00 00                            	mov    rsi,QWORD PTR [rbx+0xce00]
+   151b4b3f4:	48 8b 8e 38 01 00 00                            	mov    rcx,QWORD PTR [rsi+0x138]
+   151b4b3fb:	48 8b 01                                        	mov    rax,QWORD PTR [rcx]
+   151b4b3fe:	ff 50 58                                        	call   QWORD PTR [rax+0x58]
+
+FUNCTION 0x141ac9b70 selected windows
+   141ac9e2b:	48 89 d9                                        	mov    rcx,rbx
+   141ac9e2e:	e8 0d b5 ff ff                                  	call   0x141ac5340
+   141ac9ea4:	48 8b 88 c8 01 00 00                            	mov    rcx,QWORD PTR [rax+0x1c8]
+   141ac9eab:	b2 11                                           	mov    dl,0x11
+   141ac9ead:	45 31 c0                                        	xor    r8d,r8d
+   141ac9eb0:	e8 8b 15 ff ff                                  	call   0x141abb440
+
+FUNCTION 0x141abb440 selected windows
+   141abb44a:	89 d3                                           	mov    ebx,edx
+   141abb44c:	49 89 ce                                        	mov    r14,rcx
+   141abb721:	49 8b 86 30 09 00 00                            	mov    rax,QWORD PTR [r14+0x930]
+   141abb728:	48 8b 48 10                                     	mov    rcx,QWORD PTR [rax+0x10]
+   141abb72c:	48 8b 01                                        	mov    rax,QWORD PTR [rcx]
+   141abb72f:	31 d2                                           	xor    edx,edx
+   141abb731:	ff 50 30                                        	call   QWORD PTR [rax+0x30]
+   141abb785:	41 88 86 e5 cd 00 00                            	mov    BYTE PTR [r14+0xcde5],al
+   141abb78c:	41 88 8e e4 cd 00 00                            	mov    BYTE PTR [r14+0xcde4],cl
+   141abb793:	88 43 6c                                        	mov    BYTE PTR [rbx+0x6c],al
+   141abb796:	88 4b 6d                                        	mov    BYTE PTR [rbx+0x6d],cl
+   141abb799:	48 8d 54 24 38                                  	lea    rdx,[rsp+0x38]
+   141abb79e:	48 89 f9                                        	mov    rcx,rdi
+   141abb7a1:	e8 ea 96 91 02                                  	call   0x1443d4e90

@@ -155,6 +155,24 @@ def end_entry_reset_block():
     return bytes(88) + bytes([0xFF] * 16)
 
 
+def remaining_opportunity_winner(first, first_remaining, second, second_remaining):
+    """转写1444061bf..20b：输入为四个原始字节，在实际比较点冻结。"""
+    a, u, b, v = [value if value < 128 else value - 256
+                  for value in (first, first_remaining, second, second_remaining)]
+    if a > b + v:
+        return 0
+    if b > a + u:
+        return 1
+    return None
+
+
+def increment_phase_record(record):
+    """仅转写1444060ab在查询非空时对记录第2字节的递增。"""
+    result = list(record)
+    result[2] = (result[2] + 1) & 0xFF
+    return result
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -269,6 +287,18 @@ def examples():
     check("rollback-deadline-delays-finish",
           state3_completion_choice(100, max(100 + 1, 103), 0x1800000),
           (0x1800000, "advance_helper"))
+    check("remaining-side0-equality-continues", remaining_opportunity_winner(3, 2, 1, 2), None)
+    check("remaining-side0-strictly-exceeds", remaining_opportunity_winner(3, 2, 1, 1), 0)
+    check("remaining-side1-strictly-exceeds", remaining_opportunity_winner(1, 1, 3, 2), 1)
+    check("remaining-side1-equality-continues", remaining_opportunity_winner(1, 2, 3, 2), None)
+    check("remaining-no-attempts-tie", remaining_opportunity_winner(2, 0, 2, 0), None)
+    check("remaining-no-attempts-different", remaining_opportunity_winner(3, 0, 2, 0), 0)
+    check("phase-byte2-independent", increment_phase_record([2, 3, 0, 5]), [2, 3, 1, 5])
+    check("phase-byte2-wrap-not-initialization-proof", increment_phase_record([2, 3, 255, 5]), [2, 3, 0, 5])
+    check("constructor-delay-before-deadline", state3_completion_choice(119, 100 + 20, 0x1800000),
+          (0x1800000, "advance_helper"))
+    check("constructor-delay-at-deadline", state3_completion_choice(120, 100 + 20, 0x1800000),
+          (0x1800004, "finalizer"))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -288,6 +318,7 @@ def verify_original(exe):
         "20261017_match_result_handoff_observations.json",
         "20261017_match_completion_conditions_observations.json",
         "20261017_state3_entry_cleanup_observations.json",
+        "20261019_remaining_opportunity_end_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
