@@ -368,6 +368,7 @@ def verify_original(exe):
         "20261019_post_clear_dispatch_observations.json",
         "20261019_event_queue_result_service_observations.json",
         "20261019_archived_result_stream_observations.json",
+        "20261019_result_list_precopy_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
