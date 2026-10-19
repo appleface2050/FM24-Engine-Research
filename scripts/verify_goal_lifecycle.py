@@ -211,6 +211,11 @@ def precopy_entry_eligible(entry_tick, match_tick, side, kind, team_flags):
     return bool(team_flags & 0x1001) or (kind < 20 and bool((0x82322 >> kind) & 1))
 
 
+def result_admission_fallback(load_ok, output_flag=True):
+    """仅转写140205c81..e32的回调返回/输出标记，不模拟加载或正式接受。"""
+    return True, output_flag if load_ok else False
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -365,6 +370,15 @@ def examples():
     check("precopy-tick-mismatch-excluded", precopy_entry_eligible(99, 100, 0, 9, 0x1001), False)
     check("precopy-fixed-mask-types", tuple(k for k in range(20) if precopy_entry_eligible(100, 100, 0, k, 0)),
           (1, 5, 8, 9, 13, 19))
+    check("admission-load-fails-but-callback-returns-one",
+          result_admission_fallback(False), (True, False))
+    check("admission-load-success-leaves-output-flag",
+          result_admission_fallback(True), (True, True))
+    check("admission-load-success-does-not-set-output-flag",
+          result_admission_fallback(True, False), (True, False))
+    earlier = snapshot_fixture_records([2, 255, 0, 255, 1, 255, 0, 255])
+    refreshed = snapshot_fixture_records([3, 255, 0, 255, 1, 255, 0, 255])
+    check("admission-refresh-replaces-earlier-value-copy", (earlier[0], refreshed[0]), (2, 3))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -452,6 +466,7 @@ def verify_original(exe):
         "20261019_result_list_precopy_observations.json",
         "20261019_precopy_tactic_callback_observations.json",
         "20261019_result_owner_cursor_observations.json",
+        "20261019_result_batch_admission_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

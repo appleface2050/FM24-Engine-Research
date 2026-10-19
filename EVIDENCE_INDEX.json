@@ -386,7 +386,9 @@
           "20261019_precopy_tactic_callback_static.txt",
           "20261019_precopy_tactic_callback_observations.json",
           "20261019_result_owner_cursor_static.txt",
-          "20261019_result_owner_cursor_observations.json"
+          "20261019_result_owner_cursor_observations.json",
+          "20261019_result_batch_admission_static.txt",
+          "20261019_result_batch_admission_observations.json"
         ]
       },
       "upstream": [
@@ -402,7 +404,8 @@
         "比赛内I与临时展示F的身份/复制关系；展示加载成功与终场保留条件",
         "已接条件入口；e218=3其他生产分支、d470加载覆盖、默认球队清理已条件排除改分；事件队列/通用引用管理及其余结束调用副作用、全部结束位写入者及正式接受仍未知；超限自然可达性/频率未知",
         "归档/列表自然生命周期、143190140完整下游及正式赛程接受仍未知；已排除141a98050空列表和单一类型9/完成位保持路径的计分改写；已接类型9→6动态资格及状态5跳过路径、类型8不释放路径；活动球员离场、其余战术应用和141ac8820其余调用副作用待证；完成位、入列、描述与归档均不能替代有效进球确认",
-        "B+50与扫描列表条目的完整身份/替换时序及其最终赛程消费者；处理游标前进不代表接受记录字节"
+        "B+50与扫描列表条目的完整身份/替换时序及其最终赛程消费者；处理游标前进不代表接受记录字节",
+        "已接B+20结果克隆列表→批量回调及GAME_UI复制后刷新；正式赛程字段写入、刷新后保留、回调输出标记的完整下游和自然可达性仍未闭合"
       ],
       "connections": [
         {
@@ -445,6 +448,72 @@
           "evidence": "20261019_result_list_precopy_observations.json",
           "limit": "list retention/archive/description does not prove formal competition acceptance",
           "callee": "0x143453710"
+        },
+        {
+          "source": "selected X from B+20; W=*(X+10); current I=*(W+10)",
+          "callsite": "0x14343256d",
+          "callee": "0x141e436d0",
+          "receiver": "new F, vtable145608078 FIXTURE_RESULT",
+          "target": "F fields including records+64/+68 copied from current I",
+          "conditions": [
+            "specified date/time and virtual+38 gates passed",
+            "X+10 nonnull; valid source I; allocation/copy normal"
+          ],
+          "evidence": "20261019_result_batch_admission_observations.json",
+          "limit": "copy checkpoint; list producer and later preservation not proved"
+        },
+        {
+          "source": "temporary vector contains F pointers appended at143432586",
+          "callsite": "0x143432a0b",
+          "callee": "0x143435b90",
+          "receiver": "P saved at rbp+148; second argument vector address rbp+190",
+          "target": "batch selects this explicit vector; F passed to G.virtual+170",
+          "conditions": [
+            "specified nonempty vector branch reached",
+            "P receiver valid; do not assume P equals global146374488 without caller proof"
+          ],
+          "evidence": "20261019_result_batch_admission_observations.json",
+          "limit": "batch processing entrance only; not formal score acceptance"
+        },
+        {
+          "source": "F passed as callback RDX; current W=*( *Xout +10); current I=*(W+10)",
+          "callsite": "0x140205d26",
+          "callee": "0x141e45360",
+          "receiver": "RCX=F, RDX=current I",
+          "target": "F refreshed through141e436d0 including +64/+68",
+          "conditions": [
+            "GAME_UI vtable binding retained",
+            "selected refresh checkpoint reached; current W/I valid",
+            "compatible FIXTURE_RESULT source/target; copy normal"
+          ],
+          "evidence": "20261019_result_batch_admission_observations.json",
+          "limit": "not immutable first clone; later callback return and final acceptance unproved"
+        },
+        {
+          "source": "source I and destination F passed through141e45360 unchanged",
+          "callsite": "0x141e45368",
+          "callee": "0x141e436d0",
+          "receiver": "RCX=F, RDX=I",
+          "target": "F record values overwritten at this copy checkpoint",
+          "conditions": [
+            "wrapper entry reached with valid same-layout objects",
+            "copy completes normally"
+          ],
+          "evidence": "20261019_result_batch_admission_observations.json",
+          "limit": "not a proof that natural score differs between two copy times"
+        },
+        {
+          "source": "GAME_UI fallback selected; Wout arg5 and F callback argument",
+          "callsite": "0x140205c7c",
+          "callee": "0x143462e10",
+          "receiver": "global146374488, RDX=Wout, R8=F, R9B=1",
+          "target": "helper false clears output byte c; callback still returns AL=1",
+          "conditions": [
+            "fallback checkpoint reached",
+            "helper returns normally; output pointer valid"
+          ],
+          "evidence": "20261019_result_batch_admission_observations.json",
+          "limit": "helper result is frozen input; callback success does not imply load success or formal acceptance"
         }
       ]
     },

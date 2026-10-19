@@ -1,0 +1,211 @@
+FM24 result batch / GAME_UI admission: minimal native windows
+Full functions were decoded from their entry; only selected original instructions follow.
+Gaps are omitted instructions, not fall-through proof. Formal competition acceptance is unproved.
+
+FUNCTION 143432280:143435417 (end exclusive)
+   143432319:	48 8d 43 f8          	lea    rax,[rbx-0x8]
+   14343231d:	48 89 85 48 01 00 00 	mov    QWORD PTR [rbp+0x148],rax
+   143432324:	0f 57 c0             	xorps  xmm0,xmm0
+   143432327:	0f 29 85 90 01 00 00 	movaps XMMWORD PTR [rbp+0x190],xmm0
+   14343232e:	48 c7 85 a0 01 00 00 00 00 00 00 	mov    QWORD PTR [rbp+0x1a0],0x0
+   143432339:	4c 8b 25 50 21 f4 02 	mov    r12,QWORD PTR [rip+0x2f42150]        # 0x146374490
+   143432340:	49 8b 44 24 28       	mov    rax,QWORD PTR [r12+0x28]
+   143432345:	49 2b 44 24 20       	sub    rax,QWORD PTR [r12+0x20]
+   14343234a:	0f 84 85 07 00 00    	je     0x143432ad5
+   143432350:	48 c1 f8 03          	sar    rax,0x3
+   143432354:	48 83 f8 02          	cmp    rax,0x2
+   143432358:	b9 01 00 00 00       	mov    ecx,0x1
+   14343235d:	48 0f 43 c8          	cmovae rcx,rax
+   143432361:	48 89 8d 80 01 00 00 	mov    QWORD PTR [rbp+0x180],rcx
+   143432368:	45 31 f6             	xor    r14d,r14d
+   14343236b:	45 31 ed             	xor    r13d,r13d
+   14343236e:	4c 89 a5 58 01 00 00 	mov    QWORD PTR [rbp+0x158],r12
+   1434323a0:	49 89 1e             	mov    QWORD PTR [r14],rbx
+   1434323a3:	4c 8b b5 98 01 00 00 	mov    r14,QWORD PTR [rbp+0x198]
+   1434323aa:	49 83 c6 08          	add    r14,0x8
+   1434323ae:	4c 89 b5 98 01 00 00 	mov    QWORD PTR [rbp+0x198],r14
+   1434323b5:	49 ff c5             	inc    r13
+   1434323b8:	4c 39 ad 80 01 00 00 	cmp    QWORD PTR [rbp+0x180],r13
+   1434323bf:	0f 84 2b 06 00 00    	je     0x1434329f0
+   1434323c5:	49 8b 44 24 20       	mov    rax,QWORD PTR [r12+0x20]
+   1434323ca:	4e 8b 3c e8          	mov    r15,QWORD PTR [rax+r13*8]
+   143432498:	49 8b 07             	mov    rax,QWORD PTR [r15]
+   14343249b:	4c 89 f9             	mov    rcx,r15
+   14343249e:	ff 50 38             	call   QWORD PTR [rax+0x38]
+   1434324a1:	84 c0                	test   al,al
+   1434324a3:	0f 85 d7 fe ff ff    	jne    0x143432380
+   1434324a9:	49 83 7f 10 00       	cmp    QWORD PTR [r15+0x10],0x0
+   1434324ae:	0f 84 01 ff ff ff    	je     0x1434323b5
+   1434324b4:	e8 d7 d1 00 00       	call   0x14343f690
+   1434324b9:	48 89 c6             	mov    rsi,rax
+   1434324bc:	49 8b 47 10          	mov    rax,QWORD PTR [r15+0x10]
+   1434324c0:	48 8b 50 10          	mov    rdx,QWORD PTR [rax+0x10]
+   1434324c4:	48 c7 46 08 00 00 00 00 	mov    QWORD PTR [rsi+0x8],0x0
+   1434324cc:	48 c7 46 10 00 00 00 00 	mov    QWORD PTR [rsi+0x10],0x0
+   1434324d4:	48 c7 46 20 00 00 00 00 	mov    QWORD PTR [rsi+0x20],0x0
+   1434324dc:	48 c7 46 28 00 00 00 00 	mov    QWORD PTR [rsi+0x28],0x0
+   1434324e4:	c7 46 40 ff ff 00 00 	mov    DWORD PTR [rsi+0x40],0xffff
+   1434324eb:	66 c7 46 45 ff ff    	mov    WORD PTR [rsi+0x45],0xffff
+   1434324f1:	66 c7 46 30 00 00    	mov    WORD PTR [rsi+0x30],0x0
+   1434324f7:	48 c7 46 18 00 00 00 00 	mov    QWORD PTR [rsi+0x18],0x0
+   1434324ff:	c6 46 3a ff          	mov    BYTE PTR [rsi+0x3a],0xff
+   143432503:	48 b8 00 00 ff ff 00 00 ff ff 	movabs rax,0xffff0000ffff0000
+   14343250d:	48 89 46 32          	mov    QWORD PTR [rsi+0x32],rax
+   143432511:	c7 46 3b 00 00 01 00 	mov    DWORD PTR [rsi+0x3b],0x10000
+   143432518:	c6 46 3f 00          	mov    BYTE PTR [rsi+0x3f],0x0
+   14343251c:	c6 46 44 02          	mov    BYTE PTR [rsi+0x44],0x2
+   143432520:	48 b8 01 00 6c 07 01 00 6c 07 	movabs rax,0x76c0001076c0001
+   14343252a:	48 89 46 48          	mov    QWORD PTR [rsi+0x48],rax
+   14343252e:	c7 46 50 ff ff ff ff 	mov    DWORD PTR [rsi+0x50],0xffffffff
+   143432535:	c6 46 54 ff          	mov    BYTE PTR [rsi+0x54],0xff
+   143432539:	48 8d 05 38 5b 1d 02 	lea    rax,[rip+0x21d5b38]        # 0x145608078
+   143432540:	48 89 06             	mov    QWORD PTR [rsi],rax
+   143432543:	b8 ff ff ff ff       	mov    eax,0xffffffff
+   143432548:	48 89 46 58          	mov    QWORD PTR [rsi+0x58],rax
+   14343254c:	c7 46 60 00 00 00 00 	mov    DWORD PTR [rsi+0x60],0x0
+   143432553:	48 c7 46 64 ff ff ff ff 	mov    QWORD PTR [rsi+0x64],0xffffffffffffffff
+   14343255b:	c7 46 74 00 00 00 00 	mov    DWORD PTR [rsi+0x74],0x0
+   143432562:	48 c7 46 6c 00 00 00 00 	mov    QWORD PTR [rsi+0x6c],0x0
+   14343256a:	48 89 f1             	mov    rcx,rsi
+   14343256d:	e8 5e 11 a1 fe       	call   0x141e436d0
+   143432572:	48 8b 9d 98 01 00 00 	mov    rbx,QWORD PTR [rbp+0x198]
+   143432579:	48 3b 9d a0 01 00 00 	cmp    rbx,QWORD PTR [rbp+0x1a0]
+   143432580:	0f 84 ad 01 00 00    	je     0x143432733
+   143432586:	48 89 33             	mov    QWORD PTR [rbx],rsi
+   143432589:	e9 15 fe ff ff       	jmp    0x1434323a3
+   1434329f0:	4c 39 b5 90 01 00 00 	cmp    QWORD PTR [rbp+0x190],r14
+   1434329f7:	0f 84 e0 00 00 00    	je     0x143432add
+   1434329fd:	48 8d 95 90 01 00 00 	lea    rdx,[rbp+0x190]
+   143432a04:	48 8b 8d 48 01 00 00 	mov    rcx,QWORD PTR [rbp+0x148]
+   143432a0b:	e8 80 31 00 00       	call   0x143435b90
+   143432a10:	48 8b 0d 79 1a f4 02 	mov    rcx,QWORD PTR [rip+0x2f41a79]        # 0x146374490
+   143432a17:	e8 b4 d0 0b 00       	call   0x1434efad0
+
+FUNCTION 143435b90:14343d7aa (end exclusive)
+   143435d4e:	48 85 d2             	test   rdx,rdx
+   143435d51:	48 89 8d 58 03 00 00 	mov    QWORD PTR [rbp+0x358],rcx
+   143435d58:	48 8d 81 b0 00 00 00 	lea    rax,[rcx+0xb0]
+   143435d5f:	48 89 95 90 00 00 00 	mov    QWORD PTR [rbp+0x90],rdx
+   143435d66:	48 0f 45 c2          	cmovne rax,rdx
+   143435d6a:	48 89 85 c0 02 00 00 	mov    QWORD PTR [rbp+0x2c0],rax
+   143435d71:	0f 95 85 ff 03 00 00 	setne  BYTE PTR [rbp+0x3ff]
+   14343acb8:	48 8b 85 c0 02 00 00 	mov    rax,QWORD PTR [rbp+0x2c0]
+   14343acbf:	48 8b 00             	mov    rax,QWORD PTR [rax]
+   14343acc2:	4c 8b 24 f0          	mov    r12,QWORD PTR [rax+rsi*8]
+   14343acc6:	48 89 f9             	mov    rcx,rdi
+   14343acc9:	e8 12 f3 59 fe       	call   0x1419d9fe0
+   14343acce:	48 c7 85 80 03 00 00 00 00 00 00 	mov    QWORD PTR [rbp+0x380],0x0
+   14343acd9:	c6 85 fe 03 00 00 01 	mov    BYTE PTR [rbp+0x3fe],0x1
+   14343ace0:	48 8b 0d f9 a1 ff 02 	mov    rcx,QWORD PTR [rip+0x2ffa1f9]        # 0x146434ee0
+   14343ace7:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+   14343acea:	48 8d 95 80 03 00 00 	lea    rdx,[rbp+0x380]
+   14343acf1:	48 89 54 24 30       	mov    QWORD PTR [rsp+0x30],rdx
+   14343acf6:	48 8d 95 fe 03 00 00 	lea    rdx,[rbp+0x3fe]
+   14343acfd:	48 89 54 24 28       	mov    QWORD PTR [rsp+0x28],rdx
+   14343ad02:	48 89 7c 24 20       	mov    QWORD PTR [rsp+0x20],rdi
+   14343ad07:	4c 89 e2             	mov    rdx,r12
+   14343ad0a:	4c 8b 85 00 03 00 00 	mov    r8,QWORD PTR [rbp+0x300]
+   14343ad11:	44 0f b6 8d ff 03 00 00 	movzx  r9d,BYTE PTR [rbp+0x3ff]
+   14343ad19:	ff 90 70 01 00 00    	call   QWORD PTR [rax+0x170]
+   14343ad1f:	84 c0                	test   al,al
+   14343ad21:	0f 84 79 ff ff ff    	je     0x14343aca0
+   14343b09c:	80 bd fe 03 00 00 00 	cmp    BYTE PTR [rbp+0x3fe],0x0
+   14343b0a3:	0f 84 61 1c 00 00    	je     0x14343cd0a
+
+FUNCTION 14316c4b0:14316d241 (end exclusive)
+   14316c4d3:	49 89 cd             	mov    r13,rcx
+   14316c4d6:	ba d0 07 00 00       	mov    edx,0x7d0
+   14316c4db:	e8 60 c3 ec fd       	call   0x141038840
+   14316c4e0:	48 8d 05 d1 38 95 02 	lea    rax,[rip+0x29538d1]        # 0x145abfdb8
+   14316c4e7:	49 89 45 00          	mov    QWORD PTR [r13+0x0],rax
+   14316c8d4:	4c 89 2d 05 86 2c 03 	mov    QWORD PTR [rip+0x32c8605],r13        # 0x146434ee0
+
+FUNCTION 1478718d0:14787196d (end exclusive)
+   1478718d0:	56                   	push   rsi
+   1478718d1:	57                   	push   rdi
+   1478718d2:	48 83 ec 28          	sub    rsp,0x28
+   1478718d6:	48 89 ce             	mov    rsi,rcx
+   1478718d9:	e8 d2 ab 8f fb       	call   0x14316c4b0
+   1478718de:	48 8d be d8 01 00 00 	lea    rdi,[rsi+0x1d8]
+   1478718e5:	48 89 f9             	mov    rcx,rdi
+   1478718e8:	e8 03 d2 7d f9       	call   0x14104eaf0
+   1478718ed:	48 8d 05 a4 fb d8 fd 	lea    rax,[rip+0xfffffffffdd8fba4]        # 0x145601498
+   1478718f4:	48 89 06             	mov    QWORD PTR [rsi],rax
+
+FUNCTION 1402059c0:140205e9d (end exclusive)
+   1402059c0:	41 57                	push   r15
+   1402059c2:	41 56                	push   r14
+   1402059c4:	41 55                	push   r13
+   1402059c6:	41 54                	push   r12
+   1402059c8:	56                   	push   rsi
+   1402059c9:	57                   	push   rdi
+   1402059ca:	55                   	push   rbp
+   1402059cb:	53                   	push   rbx
+   1402059cc:	48 81 ec 08 01 00 00 	sub    rsp,0x108
+   1402059d3:	44 89 cb             	mov    ebx,r9d
+   1402059d6:	4d 89 c7             	mov    r15,r8
+   1402059d9:	48 89 d7             	mov    rdi,rdx
+   140205a1d:	4c 8b ac 24 80 01 00 00 	mov    r13,QWORD PTR [rsp+0x180]
+   140205a25:	4c 8b b4 24 70 01 00 00 	mov    r14,QWORD PTR [rsp+0x170]
+   140205c6c:	48 8b 0d 15 e8 16 06 	mov    rcx,QWORD PTR [rip+0x616e815]        # 0x146374488
+   140205c73:	4c 89 f2             	mov    rdx,r14
+   140205c76:	49 89 f8             	mov    r8,rdi
+   140205c79:	41 b1 01             	mov    r9b,0x1
+   140205c7c:	e8 8f d1 25 03       	call   0x143462e10
+   140205c81:	84 c0                	test   al,al
+   140205c83:	0f 85 94 01 00 00    	jne    0x140205e1d
+   140205c89:	48 8b 84 24 78 01 00 00 	mov    rax,QWORD PTR [rsp+0x178]
+   140205c91:	c6 00 00             	mov    BYTE PTR [rax],0x0
+   140205c94:	e9 84 01 00 00       	jmp    0x140205e1d
+   140205d12:	49 8b 4d 00          	mov    rcx,QWORD PTR [r13+0x0]
+   140205d16:	48 8b 59 10          	mov    rbx,QWORD PTR [rcx+0x10]
+   140205d1a:	48 85 db             	test   rbx,rbx
+   140205d1d:	74 33                	je     0x140205d52
+   140205d1f:	48 8b 53 10          	mov    rdx,QWORD PTR [rbx+0x10]
+   140205d23:	48 89 f9             	mov    rcx,rdi
+   140205d26:	e8 35 f6 c3 01       	call   0x141e45360
+   140205d2b:	48 8d 7c 24 50       	lea    rdi,[rsp+0x50]
+   140205d30:	48 89 f9             	mov    rcx,rdi
+   140205d33:	48 89 da             	mov    rdx,rbx
+   140205d36:	e8 b5 45 7d 01       	call   0x1419da2f0
+   140205d3b:	4c 89 f1             	mov    rcx,r14
+   140205d3e:	48 89 fa             	mov    rdx,rdi
+   140205d41:	e8 9a 48 7d 01       	call   0x1419da5e0
+   140205d46:	48 89 f9             	mov    rcx,rdi
+   140205d49:	e8 32 56 7d 01       	call   0x1419db380
+   140205d4e:	49 8b 4d 00          	mov    rcx,QWORD PTR [r13+0x0]
+   140205e1d:	b0 01                	mov    al,0x1
+   140205e1f:	48 81 c4 08 01 00 00 	add    rsp,0x108
+   140205e26:	5b                   	pop    rbx
+   140205e27:	5d                   	pop    rbp
+   140205e28:	5f                   	pop    rdi
+   140205e29:	5e                   	pop    rsi
+   140205e2a:	41 5c                	pop    r12
+   140205e2c:	41 5d                	pop    r13
+   140205e2e:	41 5e                	pop    r14
+   140205e30:	41 5f                	pop    r15
+   140205e32:	c3                   	ret    
+
+FUNCTION 141e45360:141e45376 (end exclusive)
+   141e45360:	56                   	push   rsi
+   141e45361:	48 83 ec 20          	sub    rsp,0x20
+   141e45365:	48 89 ce             	mov    rsi,rcx
+   141e45368:	e8 63 e3 ff ff       	call   0x141e436d0
+   141e4536d:	48 89 f0             	mov    rax,rsi
+   141e45370:	48 83 c4 20          	add    rsp,0x20
+   141e45374:	5e                   	pop    rsi
+   141e45375:	c3                   	ret    
+
+0x1434f8e60 31c0c3 complete leaf: XOR EAX,EAX; RET
+0x1431b58b0 31c0c3 complete GAME virtual+170 leaf: XOR EAX,EAX; RET
+
+STATIC DATA
+0x145601490 e018604501000000 GAME_UI vtable[-1] complete object locator
+0x1456018e0 010000000000000000000000c0632906f8186005e0186005 GAME_UI COL; TypeDescriptor RVA at+12
+0x1462963d0 2e3f415647414d455f5549404000 GAME_UI native RTTI
+0x145601608 c059204001000000 GAME_UI virtual+170 target
+0x145abfdb0 1006ac4501000000 GAME vtable[-1] complete object locator
+0x145ac0610 010000000000000000000000e0632906701960051006ac05 GAME COL; TypeDescriptor RVA at+12
+0x1462963f0 2e3f415647414d45404000 GAME native RTTI
+0x145abff28 b0581b4301000000 GAME virtual+170 target
+0x145af7540 608e4f4301000000 FIXTURE_TO_PLAY_FULL virtual+38 target (existing RTTI binding)
