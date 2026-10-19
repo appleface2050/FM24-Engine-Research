@@ -1,9 +1,12 @@
 """复核进球生命周期的局部分支转写；不是 FM24 模拟器或最终比分模型。"""
 
 import argparse
+import hashlib
 import json
+import re
 import struct
 from pathlib import Path
+from urllib.parse import unquote
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -365,9 +368,70 @@ def examples():
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
+def verify_index() -> None:
+    """检查当前机制引用、关键连接证据及四个入口文档的本地链接。"""
+    index = json.loads((ROOT / "EVIDENCE_INDEX.json").read_text())
+    if not (ROOT / index["target_identity"]).is_file():
+        raise ValueError("Missing recorded target identity")
+    mechanisms = index["mechanisms"]
+    ids = {item["id"] for item in mechanisms}
+    if len(ids) != len(mechanisms):
+        raise ValueError("Duplicate mechanism ID")
+    for item in mechanisms:
+        for direction in ("upstream", "downstream"):
+            for reference in item[direction]:
+                if reference not in ids:
+                    raise ValueError(f"Unknown mechanism: {item['id']} -> {reference}")
+        paths = [path for paths in item["evidence"].values() for path in paths]
+        for connection in item.get("connections", []):
+            paths.append(connection["evidence"])
+            evidence = json.loads((ROOT / connection["evidence"]).read_text())
+            addresses = {entry["va"] for entry in evidence["native_assertions"]}
+            if connection["callsite"] not in addresses:
+                raise ValueError(f"Connection callsite has no byte assertion: {connection['callsite']}")
+        for path in paths:
+            if not (ROOT / path).is_file():
+                raise ValueError(f"Missing evidence file: {path}")
+    for name in ("README.md", "RESEARCH_MAP.md", "OPEN_QUESTIONS.md",
+                 "20261017_有效进球与比分状态生命周期.md"):
+        for target in re.findall(r"\]\(([^)]+)\)", (ROOT / name).read_text()):
+            if "://" in target or target.startswith("#"):
+                continue
+            path = unquote(target.split("#")[0])
+            if not (ROOT / path).exists():
+                raise ValueError(f"Missing local document link: {name} -> {target}")
+    print(f"Index references and local document links passed: {len(mechanisms)} mechanisms.", flush=True)
+
+
+def verify_target_identity(data: bytes, expected: dict) -> None:
+    """先核对完整输入，再核对PE身份；不匹配时不得继续套用地址证据。"""
+    if len(data) != expected["file_size"]:
+        raise ValueError("Target file size differs; do not apply this evidence")
+    if hashlib.sha256(data).hexdigest() != expected["sha256"]:
+        raise ValueError("Target SHA-256 differs; do not apply this evidence")
+    pe = struct.unpack_from("<I", data, 0x3C)[0]
+    optional = pe + 24
+    actual = {
+        "machine": hex(struct.unpack_from("<H", data, pe + 4)[0]),
+        "time_date_stamp": hex(struct.unpack_from("<I", data, pe + 8)[0]),
+        "section_count": struct.unpack_from("<H", data, pe + 6)[0],
+        "optional_magic": hex(struct.unpack_from("<H", data, optional)[0]),
+        "image_base": hex(struct.unpack_from("<Q", data, optional + 24)[0]),
+        "entry_point_rva": hex(struct.unpack_from("<I", data, optional + 16)[0]),
+        "size_of_image": struct.unpack_from("<I", data, optional + 56)[0],
+    }
+    if actual != expected["pe"]:
+        raise ValueError("Target PE identity differs from the recorded input")
+
+
 def verify_original(exe):
     """只读原PE并复核证据中的指令字节；不加载或执行目标程序。"""
+    print(f"Checking target identity and original bytes: {exe}", flush=True)
     data = exe.read_bytes()
+    index = json.loads((ROOT / "EVIDENCE_INDEX.json").read_text())
+    identity = json.loads((ROOT / index["target_identity"]).read_text())
+    verify_target_identity(data, identity)
+    print("Whole-file target identity passed; this does not verify the reported semantics.", flush=True)
     pe = struct.unpack_from("<I", data, 0x3C)[0]
     section_count = struct.unpack_from("<H", data, pe + 6)[0]
     optional_size = struct.unpack_from("<H", data, pe + 20)[0]
@@ -387,6 +451,7 @@ def verify_original(exe):
         "20261019_archived_result_stream_observations.json",
         "20261019_result_list_precopy_observations.json",
         "20261019_precopy_tactic_callback_observations.json",
+        "20261019_result_owner_cursor_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -395,27 +460,42 @@ def verify_original(exe):
     for i in range(section_count):
         _, rva, size, raw = struct.unpack_from("<IIII", data, optional + optional_size + i * 40 + 8)
         sections.append((rva, size, raw))
+
+    def mapped_bytes(va, length):
+        """按原PE区段映射读取地址，不依赖Ghidra指令文本。"""
+        rva = va - image_base
+        for start, size, raw in sections:
+            if start <= rva and rva + length <= start + size:
+                offset = raw + rva - start
+                return data[offset:offset + length]
+        raise ValueError(f"Unmapped original address {va:#x}")
+
     native = [item for evidence in evidences for item in evidence["native_assertions"]]
     static_data = [item for evidence in evidences for item in evidence.get("data_assertions", [])]
     for item in native + static_data:
         va = int(item["va"], 16)
         expected = bytes.fromhex(item["hex"])
-        rva = va - image_base
-        for start, size, raw in sections:
-            if start <= rva and rva + len(expected) <= start + size:
-                offset = raw + rva - start
-                if data[offset:offset + len(expected)] != expected:
-                    raise AssertionError(f"Original bytes differ at {item['va']}; stop using this evidence")
-                break
-        else:
-            raise ValueError(f"Unmapped instruction {item['va']}")
+        if mapped_bytes(va, len(expected)) != expected:
+            raise AssertionError(f"Original bytes differ at {item['va']}; stop using this evidence")
     print(f"Original PE assertions passed: {len(native)} instruction/leaf, {len(static_data)} data.", flush=True)
+    connections = [connection for item in index["mechanisms"]
+                   for connection in item.get("connections", [])]
+    for connection in connections:
+        callsite = int(connection["callsite"], 16)
+        raw = mapped_bytes(callsite, 5)
+        if raw[0] != 0xE8:
+            raise AssertionError(f"Not a direct E8 call at {callsite:#x}")
+        callee = callsite + 5 + struct.unpack_from("<i", raw, 1)[0]
+        if callee != int(connection["callee"], 16):
+            raise AssertionError(f"Direct call target differs at {callsite:#x}")
+    print(f"Direct-call displacement checks passed: {len(connections)}. Object-flow semantics remain conditional.", flush=True)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--exe", type=Path, help="可选：核对原始fm.exe字节；不会执行游戏")
+    parser.add_argument("--exe", type=Path, help="可选：核对完整目标身份、字节和关键调用目标；不会执行游戏")
     args = parser.parse_args()
+    verify_index()
     examples()
     if args.exe:
         verify_original(args.exe)
