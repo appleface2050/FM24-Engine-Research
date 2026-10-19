@@ -201,6 +201,13 @@ def archive_span_checkpoint(previous, position, limit, maximum):
     return "record", position, max(maximum, position), span
 
 
+def precopy_entry_eligible(entry_tick, match_tick, side, kind, team_flags):
+    """转写141a98050的条目资格；输入为原生int32/byte值，不执行或模拟回调。"""
+    if entry_tick != match_tick or side > 1 or kind == 0x0E:
+        return False
+    return bool(team_flags & 0x1001) or (kind < 20 and bool((0x82322 >> kind) & 1))
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -345,6 +352,16 @@ def examples():
           ("record", 8, 12, (8, 0)))
     check("archive-span-initial-zero-does-not-retry", archive_span_checkpoint(0, 0, 100, 0),
           ("record", 0, 0, (0, 0)))
+    check("precopy-type9-mask-with-zero-team-flags", precopy_entry_eligible(100, 100, 0, 9, 0), True)
+    check("precopy-type6-after-type9-writes-zero", precopy_entry_eligible(100, 100, 0, 6, 0), False)
+    check("precopy-type6-after-type9-writes-one", precopy_entry_eligible(100, 100, 0, 6, 1), True)
+    check("precopy-team-flag-bit1000-allows-type6", precopy_entry_eligible(100, 100, 0, 6, 0x1000), True)
+    check("precopy-team-flag-bit100-is-insufficient", precopy_entry_eligible(100, 100, 0, 6, 0x100), False)
+    check("precopy-kind14-excluded-before-team-flags", precopy_entry_eligible(100, 100, 0, 14, 0x1001), False)
+    check("precopy-side2-excluded", precopy_entry_eligible(100, 100, 2, 9, 0x1001), False)
+    check("precopy-tick-mismatch-excluded", precopy_entry_eligible(99, 100, 0, 9, 0x1001), False)
+    check("precopy-fixed-mask-types", tuple(k for k in range(20) if precopy_entry_eligible(100, 100, 0, k, 0)),
+          (1, 5, 8, 9, 13, 19))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
