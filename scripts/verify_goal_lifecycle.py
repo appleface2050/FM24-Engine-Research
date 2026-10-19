@@ -211,6 +211,17 @@ def precopy_entry_eligible(entry_tick, match_tick, side, kind, team_flags):
     return bool(team_flags & 0x1001) or (kind < 20 and bool((0x82322 >> kind) & 1))
 
 
+def loaded_date_bucket_slot(packed_day):
+    """仅转写141e6be60同年/已加载分支的槽位检查；类别与年份已在检查点固定。"""
+    slot = ((packed_day & 0x1FF) - 1) & 0xFFFF
+    return slot if slot < 366 else None
+
+
+def competition_dispatch_after_index_copy(index_result, provider, reference, lookup, competition):
+    """转写1445eb65e..6cb门槛；index_result是前序返回值，原调用者不检查它。"""
+    return bool(provider and reference and lookup and competition)
+
+
 def league_entry_accumulation(first, second, counters):
     """转写141f6e0dd..12f检查点；冻结查询对象/记录，未模拟整段阶段处理。"""
     values = [query_fixture_byte(record, prefer_byte1=True) for record in (first, second)]
@@ -400,6 +411,17 @@ def examples():
     check("league-entry-word-and-byte-wrap",
           league_entry_accumulation([1, 255, 0, 255], [0, 255, 0, 255], (65535, 0, 255, 255)),
           (0, 0, 0, 0))
+    check("date-bucket-first-day", loaded_date_bucket_slot(1), 0)
+    check("date-bucket-last-slot", loaded_date_bucket_slot(366), 365)
+    check("date-bucket-zero-rejected", loaded_date_bucket_slot(0), None)
+    check("date-bucket-367-rejected", loaded_date_bucket_slot(367), None)
+    check("date-bucket-packed-high-bits-masked", loaded_date_bucket_slot(0xA001), 0)
+    check("index-copy-false-does-not-block-competition",
+          competition_dispatch_after_index_copy(False, True, True, True, True), True)
+    check("index-copy-true-same-competition-choice",
+          competition_dispatch_after_index_copy(True, True, True, True, True), True)
+    check("index-copy-true-does-not-bypass-missing-competition",
+          competition_dispatch_after_index_copy(True, True, True, True, False), False)
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -489,6 +511,7 @@ def verify_original(exe):
         "20261019_result_owner_cursor_observations.json",
         "20261019_result_batch_admission_observations.json",
         "20261019_actual_comp_stage_consumer_observations.json",
+        "20261019_result_index_query_bridge_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

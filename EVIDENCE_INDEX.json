@@ -390,7 +390,9 @@
           "20261019_result_batch_admission_static.txt",
           "20261019_result_batch_admission_observations.json",
           "20261019_actual_comp_stage_consumer_static.txt",
-          "20261019_actual_comp_stage_consumer_observations.json"
+          "20261019_actual_comp_stage_consumer_observations.json",
+          "20261019_result_index_query_bridge_static.txt",
+          "20261019_result_index_query_bridge_observations.json"
         ]
       },
       "upstream": [
@@ -408,7 +410,8 @@
         "归档/列表自然生命周期、143190140完整下游及正式赛程接受仍未知；已排除141a98050空列表和单一类型9/完成位保持路径的计分改写；已接类型9→6动态资格及状态5跳过路径、类型8不释放路径；活动球员离场、其余战术应用和141ac8820其余调用副作用待证；完成位、入列、描述与归档均不能替代有效进球确认",
         "B+50与扫描列表条目的完整身份/替换时序及其最终赛程消费者；处理游标前进不代表接受记录字节",
         "已接B+20结果克隆列表→批量回调及GAME_UI复制后刷新；正式赛程字段写入、刷新后保留、回调输出标记的完整下游和自然可达性仍未闭合",
-        "已定位ACTUAL_COMP→LEAGUE_STAGE记录累计候选；后续查询R与此前F同一性、C+1c0阶段对象类型/构造、累计字段的正式语义及前后修订尚未闭合"
+        "已定位ACTUAL_COMP→LEAGUE_STAGE记录累计候选；后续查询R与此前F同一性、C+1c0阶段对象类型/构造、累计字段的正式语义及前后修订尚未闭合",
+        "142d26fb0的单个O+8委托在COMP_MANAGER类型下可接索引复制与同一F的赛事+128；委托赋值、写/读D身份、桶类别来源、间接副作用及自然保留仍未闭合；更新返回值未被调用者检查"
       ],
       "connections": [
         {
@@ -545,6 +548,94 @@
           ],
           "evidence": "20261019_actual_comp_stage_consumer_observations.json",
           "limit": "stage entry constructor, link to prior batch F, full field names and final score acceptance remain unproved"
+        },
+        {
+          "source": "F=R12 at14343ccf8 checkpoint",
+          "callsite": "0x14343cd05",
+          "callee": "0x142d26fb0",
+          "receiver": "O=global146364cd0; RDX=F, R8=wrapper address",
+          "target": "gated forwarding through one object *(O+8), virtual+a0",
+          "conditions": [
+            "selected batch checkpoint reached; R12 identifies the record at this checkpoint",
+            "earlier helper preservation and delegate registration not asserted"
+          ],
+          "evidence": "20261019_result_index_query_bridge_observations.json",
+          "limit": "single delegate, not proof of subscriber-list iteration or global result acceptance"
+        },
+        {
+          "source": "COMP_MANAGER virtual+a0 receives F as RDX",
+          "callsite": "0x1445eb659",
+          "callee": "0x141e6c020",
+          "receiver": "P retaining COMP_MANAGER type; RCX=P+8, RDX=F",
+          "target": "cloned index update attempted; returned AL not tested before later provider gates",
+          "conditions": [
+            "delegate actually bound to this retained type",
+            "normal helper return"
+          ],
+          "evidence": "20261019_result_index_query_bridge_observations.json",
+          "limit": "same F pointer later forwarded to C.virtual+128 regardless of update boolean; not proof update succeeded"
+        },
+        {
+          "source": "F passed into index-update entry",
+          "callsite": "0x141e6c0ef",
+          "callee": "0x141e436d0",
+          "receiver": "new K with FIXTURE_RESULT vtable145608078",
+          "target": "K+64/+68 copied from F at copy checkpoint",
+          "conditions": [
+            "valid compatible F; allocation and copy normal"
+          ],
+          "evidence": "20261019_result_index_query_bridge_observations.json",
+          "limit": "future helper effects and final query equality remain unproved"
+        },
+        {
+          "source": "source F ordered teams and encoded date",
+          "callsite": "0x141e6c105",
+          "callee": "0x141e6c530",
+          "receiver": "writer D=P+8; RDX=F, R8B=1",
+          "target": "selected loaded bucket searched for ordered team match",
+          "conditions": [
+            "category helper returns valid index; bucket and source valid"
+          ],
+          "evidence": "20261019_result_index_query_bridge_observations.json",
+          "limit": "lookup failure goes to a separate insertion route; full diagnostics not modeled"
+        },
+        {
+          "source": "located old record and new K",
+          "callsite": "0x141e6c11b",
+          "callee": "0x141e5a990",
+          "receiver": "same writer D; RDX=old, R8B=1, R9=K",
+          "target": "selected match path redirects registered pointer locations and removes old bucket entry",
+          "conditions": [
+            "matched same-year replacement checkpoint reached; relevant provider checks pass",
+            "destructor/move calls return normally"
+          ],
+          "evidence": "20261019_result_index_query_bridge_observations.json",
+          "limit": "only selected pointer fixup/removal; not whole-function purity"
+        },
+        {
+          "source": "K after selected replacement success or missing-old branch",
+          "callsite": "0x141e6c203",
+          "callee": "0x141e6b370",
+          "receiver": "writer D, RDX=K, category supplied by141e6aef0",
+          "target": "same-year valid loaded day bucket appends K and sets category+b71",
+          "conditions": [
+            "same year; valid category/day; helpers normal",
+            "selected bucket has append capacity"
+          ],
+          "evidence": "20261019_result_index_query_bridge_observations.json",
+          "limit": "cross-year path, full selector and later mutation not recovered"
+        },
+        {
+          "source": "query date and enumerated category",
+          "callsite": "0x141e6a101",
+          "callee": "0x141e6be60",
+          "receiver": "query D supplied by caller",
+          "target": "bucket entries filtered; selected entry virtual+110 return appended as R",
+          "conditions": [
+            "selected query gates pass; source object retains FIXTURE_RESULT for clone interpretation"
+          ],
+          "evidence": "20261019_result_index_query_bridge_observations.json",
+          "limit": "query D equals writer D only with independently established manager identity; R is a clone, not the indexed pointer"
         }
       ]
     },
