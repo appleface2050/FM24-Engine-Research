@@ -368,7 +368,17 @@
         "0x144c5c1b1",
         "0x1434d18eb",
         "0x144c5a58b",
-        "0x144c5a1c2"
+        "0x144c5a1c2",
+        "0x142733260",
+        "0x14273374c",
+        "0x142733ced",
+        "0x145a73368",
+        "0x145a73468",
+        "0x154333f70",
+        "0x154346a10",
+        "0x1435c1b78",
+        "0x143531168",
+        "0x14353141e"
       ],
       "evidence": {
         "reports": [
@@ -411,7 +421,9 @@
           "20261019_delegate_registration_static.txt",
           "20261019_delegate_registration_observations.json",
           "20261019_player_stats_result_consumer_static.txt",
-          "20261019_player_stats_result_consumer_observations.json"
+          "20261019_player_stats_result_consumer_observations.json",
+          "20261019_form_history_question_boundary_static.txt",
+          "20261019_form_history_question_boundary_observations.json"
         ]
       },
       "upstream": [
@@ -430,7 +442,7 @@
         "B+50与扫描列表条目的完整身份/替换时序及其最终赛程消费者；处理游标前进不代表接受记录字节",
         "已接B+20结果克隆列表→批量回调及GAME_UI复制后刷新；正式赛程字段写入、刷新后保留、回调输出标记的完整下游和自然可达性仍未闭合",
         "已定位ACTUAL_COMP→LEAGUE_STAGE记录累计候选；后续查询R与此前F同一性、C+1c0阶段对象类型/构造、累计字段的正式语义及前后修订尚未闭合",
-        "已定位O+8工厂赋值、GAME_COMP_MANAGER+a0及保持条件下同一D；已绑定派生额外PLAYER_STATS_MANAGER的Q=入口W+10、局部比分读取/分差门槛和载荷调用；完整身份保持、1427336e0/1435c18a0及其余Q/W副作用、桶类别来源和自然记录保留仍未闭合"
+        "已定位O+8注册和条件同一D；已绑定PLAYER_STATS_MANAGER及1427336e0现有表现对象/同日返回的整个调用只读路径，另已接表现记录追加末段和PRESS_CONFERENCE_QUESTION消费；完整身份保持、非同日/满环释放、问题链帮助函数及其余Q/W副作用、自然记录保留仍未闭合"
       ],
       "connections": [
         {
@@ -794,6 +806,73 @@
           ],
           "evidence": "20261019_player_stats_result_consumer_observations.json",
           "limit": "full W/record preservation or replacement not established"
+        },
+        {
+          "source": "1427336e0 inputs holder/team/player",
+          "callsite": "0x142733704",
+          "callee": "0x142733260",
+          "receiver": "holder vector, team as RDX, player as R8",
+          "target": "existing matched H returned",
+          "conditions": [
+            "existing H+8 equals input team",
+            "valid list and selected retained H type"
+          ],
+          "evidence": "20261019_form_history_question_boundary_observations.json",
+          "limit": "matched lookup read-only; creation branches excluded"
+        },
+        {
+          "source": "created PRESS_CONFERENCE_QUESTION J plus cached Q/W",
+          "callsite": "0x1435c1b78",
+          "callee": "0x143530f30",
+          "receiver": "service and selected subject; R8 points to J local",
+          "target": "Q passed as argument7 and W as argument9",
+          "conditions": [
+            "question selected/created",
+            "Q nonnull",
+            "normal prior helpers"
+          ],
+          "evidence": "20261019_form_history_question_boundary_observations.json",
+          "limit": "question consumer; not fixture result acceptance"
+        },
+        {
+          "source": "question admission retains J,Q,W",
+          "callsite": "0x143531168",
+          "callee": "0x143531320",
+          "receiver": "RCX=J, RDX=team, R8=Q, R9=W",
+          "target": "selected question-context builder",
+          "conditions": [
+            "admission gates pass",
+            "W nonnull",
+            "Q virtual+f0 returns nonzero"
+          ],
+          "evidence": "20261019_form_history_question_boundary_observations.json",
+          "limit": "other admission/property helpers not proved pure"
+        },
+        {
+          "source": "selected question type and Q side",
+          "callsite": "0x14353141e",
+          "callee": "0x141e44b10",
+          "receiver": "Q as RCX, side derived from team reference",
+          "target": "return value later written under qres in J+8",
+          "conditions": [
+            "selected descriptor branch",
+            "valid Q and team references"
+          ],
+          "evidence": "20261019_form_history_question_boundary_observations.json",
+          "limit": "return enum/whole helper side effects not established"
+        },
+        {
+          "source": "value from141e44b10",
+          "callsite": "0x14353144b",
+          "callee": "0x141974e70",
+          "receiver": "J+8 attribute container",
+          "target": "property key0x71726573 gets signed returned byte",
+          "conditions": [
+            "selected question branch",
+            "normal helper returns"
+          ],
+          "evidence": "20261019_form_history_question_boundary_observations.json",
+          "limit": "writes question property; does not establish formal score acceptance"
         }
       ]
     },

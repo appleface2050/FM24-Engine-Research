@@ -249,6 +249,19 @@ def player_stats_record_checks(first, second):
     return left, right, signed_magnitude <= 1, both_byte2_nonnegative
 
 
+def form_latest_slot(count, head, capacity):
+    """转写两种已绑定表现对象+40：仅用于非空、数量/头下标有效的环形记录。"""
+    slot = count + head - 1
+    return slot if slot < capacity else slot - capacity
+
+
+def form_date_skips_append(count, current_date, latest_date):
+    """转写14273371f..74c；已找到现有表现对象，日期为原始uint32打包值。"""
+    return bool(count and latest_date is not None
+                and ((current_date ^ latest_date) & 0x1FF) == 0
+                and current_date >> 16 == latest_date >> 16)
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -443,6 +456,15 @@ def examples():
           player_stats_record_checks([3, 255, 0, 255], [1, 255, 0, 255]), (3, 1, False, True))
     check("player-stats-ff-is-not-result-validity",
           player_stats_record_checks([255] * 4, [255] * 4), (-1, -1, True, False))
+    check("form-date-ignores-nonday-flags",
+          form_date_skips_append(3, 0x07EA0064, 0x07EA8064), True)
+    check("form-date-different-year-continues",
+          form_date_skips_append(3, 0x07EA0064, 0x07E90064), False)
+    check("form-date-different-day-continues",
+          form_date_skips_append(3, 0x07EA0064, 0x07EA0063), False)
+    check("form-empty-has-no-date-skip", form_date_skips_append(0, 0x07EA0064, None), False)
+    check("form20-latest-wrap", form_latest_slot(20, 19, 20), 18)
+    check("form60-latest-wrap", form_latest_slot(2, 59, 60), 0)
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -535,6 +557,7 @@ def verify_original(exe):
         "20261019_result_index_query_bridge_observations.json",
         "20261019_delegate_registration_observations.json",
         "20261019_player_stats_result_consumer_observations.json",
+        "20261019_form_history_question_boundary_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
