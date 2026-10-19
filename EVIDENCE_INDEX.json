@@ -353,7 +353,14 @@
         "0x145af7508",
         "0x1434f02c0",
         "0x1434f0950",
-        "0x1434f9090"
+        "0x1434f9090",
+        "0x141cc4136",
+        "0x141cc6588",
+        "0x142d05f80",
+        "0x155d65980",
+        "0x155ab2110",
+        "0x142bff120",
+        "0x144c597a0"
       ],
       "evidence": {
         "reports": [
@@ -392,7 +399,9 @@
           "20261019_actual_comp_stage_consumer_static.txt",
           "20261019_actual_comp_stage_consumer_observations.json",
           "20261019_result_index_query_bridge_static.txt",
-          "20261019_result_index_query_bridge_observations.json"
+          "20261019_result_index_query_bridge_observations.json",
+          "20261019_delegate_registration_static.txt",
+          "20261019_delegate_registration_observations.json"
         ]
       },
       "upstream": [
@@ -411,7 +420,7 @@
         "B+50与扫描列表条目的完整身份/替换时序及其最终赛程消费者；处理游标前进不代表接受记录字节",
         "已接B+20结果克隆列表→批量回调及GAME_UI复制后刷新；正式赛程字段写入、刷新后保留、回调输出标记的完整下游和自然可达性仍未闭合",
         "已定位ACTUAL_COMP→LEAGUE_STAGE记录累计候选；后续查询R与此前F同一性、C+1c0阶段对象类型/构造、累计字段的正式语义及前后修订尚未闭合",
-        "142d26fb0的单个O+8委托在COMP_MANAGER类型下可接索引复制与同一F的赛事+128；委托赋值、写/读D身份、桶类别来源、间接副作用及自然保留仍未闭合；更新返回值未被调用者检查"
+        "已定位O+8工厂赋值及GAME_COMP_MANAGER+a0→基类索引复制/赛事分派，保持两次发布和O+8时读写D相同；完整身份保持、派生额外消费者144c597a0、桶类别来源、间接副作用及自然记录保留仍未闭合；更新返回值未被基类检查"
       ],
       "connections": [
         {
@@ -636,6 +645,70 @@
           ],
           "evidence": "20261019_result_index_query_bridge_observations.json",
           "limit": "query D equals writer D only with independently established manager identity; R is a clone, not the indexed pointer"
+        },
+        {
+          "source": "selected0x278 allocation O held in RSI",
+          "callsite": "0x1431823b6",
+          "callee": "0x142cfc230",
+          "receiver": "O passed as RCX",
+          "target": "derived construction; then1431823bb publishes RSI to global146364cd0",
+          "conditions": [
+            "selected allocation succeeds",
+            "constructor returns normally"
+          ],
+          "evidence": "20261019_delegate_registration_observations.json",
+          "limit": "global146429ad8 publication must survive intervening calls"
+        },
+        {
+          "source": "same rule owner O",
+          "callsite": "0x142cfc250",
+          "callee": "0x141ca7890",
+          "receiver": "base this=O",
+          "target": "141ca7b94 publishes O to global146429ad8",
+          "conditions": [
+            "selected derived construction"
+          ],
+          "evidence": "20261019_delegate_registration_observations.json",
+          "limit": "later helpers may overwrite globals; no lifetime invariant"
+        },
+        {
+          "source": "setup input O and flag in RCX/RDX",
+          "callsite": "0x142d05fca",
+          "callee": "0x141cc3f00",
+          "receiver": "same O retained in R15",
+          "target": "virtual+268 returns P;141cc4136 writes O+8=P",
+          "conditions": [
+            "retained GAME_RULE_GROUP_MANAGER vtable",
+            "selected factory completes normally"
+          ],
+          "evidence": "20261019_delegate_registration_observations.json",
+          "limit": "virtual binding uses data/trampolines; setup effects and later replacement remain conditional"
+        },
+        {
+          "source": "allocated derived manager P held in RBX",
+          "callsite": "0x155ab2128",
+          "callee": "0x1445e6be0",
+          "receiver": "base this=P",
+          "target": "after base construction155ab2134 installs GAME_COMP_MANAGER vtable",
+          "conditions": [
+            "constructor completes normally",
+            "derived type retained"
+          ],
+          "evidence": "20261019_delegate_registration_observations.json",
+          "limit": "base constructor alone does not prove final type; selected derived installation does"
+        },
+        {
+          "source": "GAME_COMP_MANAGER +a0 receives P,F,W,tag",
+          "callsite": "0x142bff128",
+          "callee": "0x1445eb640",
+          "receiver": "same RCX=P,RDX=F,R8=W,R9=tag",
+          "target": "base index-copy and conditional competition dispatch",
+          "conditions": [
+            "retained derived vtable145a9bc38",
+            "normal base return"
+          ],
+          "evidence": "20261019_delegate_registration_observations.json",
+          "limit": "after base return144c597a0 consumes saved W; preservation unproved"
         }
       ]
     },

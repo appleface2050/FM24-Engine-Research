@@ -1,0 +1,145 @@
+FM24 static delegate registration and retained-identity evidence
+Original PE bounded instruction fragments; no target execution.
+Full local decompilations are not included.
+
+rule owner base/global publication (decode entry 141ca7890)
+141ca78ab:	49 89 cc             	mov    r12,rcx
+141ca78ae:	48 8d 05 b3 69 d7 03 	lea    rax,[rip+0x3d769b3]        # 0x145a1e268
+141ca78b5:	48 89 01             	mov    QWORD PTR [rcx],rax
+141ca78b8:	48 c7 41 08 00 00 00 00 	mov    QWORD PTR [rcx+0x8],0x0
+141ca7b94:	4c 89 25 3d 1f 78 04 	mov    QWORD PTR [rip+0x4781f3d],r12        # 0x146429ad8
+
+rule owner creation and publication (decode entry 143182030)
+1431823a6:	b9 78 02 00 00       	mov    ecx,0x278
+1431823ab:	e8 9c 66 36 02       	call   0x1454e8a4c
+1431823b0:	48 89 c6             	mov    rsi,rax
+1431823b3:	48 89 c1             	mov    rcx,rax
+1431823b6:	e8 75 9e b7 ff       	call   0x142cfc230
+1431823bb:	48 89 35 0e 29 1e 03 	mov    QWORD PTR [rip+0x31e290e],rsi        # 0x146364cd0
+
+derived rule owner construction (decode entry 142cfc230)
+142cfc24d:	48 89 ce             	mov    rsi,rcx
+142cfc250:	e8 3b b6 fa fe       	call   0x141ca7890
+142cfc274:	48 8d 05 8d ae da 02 	lea    rax,[rip+0x2daae8d]        # 0x145aa7108
+142cfc27b:	48 89 06             	mov    QWORD PTR [rsi],rax
+
+setup calls shared registration (decode entry 142d05fa0)
+142d05fc6:	48 89 4d 28          	mov    QWORD PTR [rbp+0x28],rcx
+142d05fca:	e8 31 df fb fe       	call   0x141cc3f00
+
+shared registration checkpoint (decode entry 141cc3f00)
+141cc3f1d:	41 89 d4             	mov    r12d,edx
+141cc3f20:	49 89 cf             	mov    r15,rcx
+141cc4124:	49 8b 07             	mov    rax,QWORD PTR [r15]
+141cc4127:	4c 89 f9             	mov    rcx,r15
+141cc412a:	44 89 e2             	mov    edx,r12d
+141cc412d:	ff 90 68 02 00 00    	call   QWORD PTR [rax+0x268]
+141cc4133:	49 89 c6             	mov    r14,rax
+141cc4136:	49 89 47 08          	mov    QWORD PTR [r15+0x8],rax
+141cc413a:	48 85 c0             	test   rax,rax
+141cc413d:	0f 84 43 08 00 00    	je     0x141cc4986
+141cc4143:	49 8b 06             	mov    rax,QWORD PTR [r14]
+141cc4146:	4c 89 75 c0          	mov    QWORD PTR [rbp-0x40],r14
+141cc414a:	4c 89 f1             	mov    rcx,r14
+141cc414d:	ff 50 08             	call   QWORD PTR [rax+0x8]
+
+another factory/replacement checkpoint (decode entry 141cc6500)
+141cc6523:	48 89 d6             	mov    rsi,rdx
+141cc6526:	49 89 ce             	mov    r14,rcx
+141cc6575:	0f b6 15 07 ed 76 04 	movzx  edx,BYTE PTR [rip+0x476ed07]        # 0x146435283
+141cc657c:	49 8b 06             	mov    rax,QWORD PTR [r14]
+141cc657f:	4c 89 f1             	mov    rcx,r14
+141cc6582:	ff 90 68 02 00 00    	call   QWORD PTR [rax+0x268]
+141cc6588:	49 89 46 08          	mov    QWORD PTR [r14+0x8],rax
+141cc658c:	48 85 c0             	test   rax,rax
+141cc658f:	0f 85 a5 00 00 00    	jne    0x141cc663a
+
+base factory for comparison only (decode entry 141cc3ee0)
+141cc3ee0:	53                   	push   rbx
+141cc3ee1:	48 83 ec 20          	sub    rsp,0x20
+141cc3ee5:	89 d3                	mov    ebx,edx
+141cc3ee7:	b9 e0 ac 00 00       	mov    ecx,0xace0
+141cc3eec:	e8 5b 4b 82 03       	call   0x1454e8a4c
+141cc3ef1:	48 89 c1             	mov    rcx,rax
+141cc3ef4:	89 da                	mov    edx,ebx
+141cc3ef6:	48 83 c4 20          	add    rsp,0x20
+141cc3efa:	5b                   	pop    rbx
+141cc3efb:	e9 e0 2c 92 02       	jmp    0x1445e6be0
+
+base constructor trampoline (decode entry 1445e6be0)
+1445e6be0:	e9 db 22 05 16       	jmp    0x15a638ec0
+
+actual base constructor (decode entry 15a638ec0)
+15a638ed4:	89 d3                	mov    ebx,edx
+15a638ed6:	48 89 ce             	mov    rsi,rcx
+15a638ed9:	48 8d 05 18 0f 62 eb 	lea    rax,[rip+0xffffffffeb620f18]        # 0x145c59df8
+15a638ee0:	48 89 01             	mov    QWORD PTR [rcx],rax
+15a638ee3:	48 83 c1 08          	add    rcx,0x8
+15a638ee7:	e8 e4 65 81 e7       	call   0x141e4f4d0
+
+derived factory trampoline (decode entry 142d05f80)
+142d05f80:	e9 fb f9 05 13       	jmp    0x155d65980
+
+derived factory (decode entry 155d65980)
+155d65980:	53                   	push   rbx
+155d65981:	48 83 ec 20          	sub    rsp,0x20
+155d65985:	89 d3                	mov    ebx,edx
+155d65987:	b9 58 ad 00 00       	mov    ecx,0xad58
+155d6598c:	e8 bb 30 78 ef       	call   0x1454e8a4c
+155d65991:	48 89 c1             	mov    rcx,rax
+155d65994:	89 da                	mov    edx,ebx
+155d65996:	48 83 c4 20          	add    rsp,0x20
+155d6599a:	5b                   	pop    rbx
+155d6599b:	e9 10 3e e9 ec       	jmp    0x142bf97b0
+
+derived constructor trampoline (decode entry 142bf97b0)
+142bf97b0:	e9 5b 89 eb 12       	jmp    0x155ab2110
+
+derived constructor installs GAME_COMP_MANAGER (decode entry 155ab2110)
+155ab2125:	48 89 cb             	mov    rbx,rcx
+155ab2128:	e8 b3 4a b3 ee       	call   0x1445e6be0
+155ab212d:	48 8d 05 04 9b fe ef 	lea    rax,[rip+0xffffffffeffe9b04]        # 0x145a9bc38
+155ab2134:	48 89 03             	mov    QWORD PTR [rbx],rax
+
+derived result hook (decode entry 142bff120)
+142bff120:	56                   	push   rsi
+142bff121:	48 83 ec 20          	sub    rsp,0x20
+142bff125:	4c 89 c6             	mov    rsi,r8
+142bff128:	e8 13 c5 9e 01       	call   0x1445eb640
+142bff12d:	48 8b 0d 94 46 83 03 	mov    rcx,QWORD PTR [rip+0x3834694]        # 0x1464337c8
+142bff134:	48 89 f2             	mov    rdx,rsi
+142bff137:	48 83 c4 20          	add    rsp,0x20
+142bff13b:	5e                   	pop    rsi
+142bff13c:	e9 5f a6 05 02       	jmp    0x144c597a0
+
+deleting destructor establishes prior misnaming (decode entry 1445fcaf0)
+1445fcaf0:	56                   	push   rsi
+1445fcaf1:	57                   	push   rdi
+1445fcaf2:	48 83 ec 28          	sub    rsp,0x28
+1445fcaf6:	89 d7                	mov    edi,edx
+1445fcaf8:	48 89 ce             	mov    rsi,rcx
+1445fcafb:	e8 90 aa fe ff       	call   0x1445e7590
+1445fcb00:	85 ff                	test   edi,edi
+1445fcb02:	74 08                	je     0x1445fcb0c
+1445fcb04:	48 89 f1             	mov    rcx,rsi
+1445fcb07:	e8 7c bf ee 00       	call   0x1454e8a88
+1445fcb0c:	48 89 f0             	mov    rax,rsi
+1445fcb0f:	48 83 c4 28          	add    rsp,0x28
+1445fcb13:	5f                   	pop    rdi
+1445fcb14:	5e                   	pop    rsi
+1445fcb15:	c3                   	ret
+
+destruction installs base vtable (decode entry 1445e7590)
+1445e75b0:	48 8d 05 41 28 67 01 	lea    rax,[rip+0x1672841]        # 0x145c59df8
+1445e75b7:	48 89 01             	mov    QWORD PTR [rcx],rax
+
+0x145aa7100 5079aa4501000000 GAME_RULE_GROUP_MANAGER vtable[-1]
+0x145aa7950 010000000000000000000000e0c532066879aa055079aa05 GAME_RULE_GROUP_MANAGER COL
+0x14632c5f0 2e3f415647414d455f52554c455f47524f55505f4d414e41474552404000 GAME_RULE_GROUP_MANAGER native RTTI
+0x145a9bc30 90c0a94501000000 GAME_COMP_MANAGER vtable[-1]
+0x145a9c090 01000000000000000000000050a63206a8c0a90590c0a905 GAME_COMP_MANAGER COL
+0x14632a660 2e3f415647414d455f434f4d505f4d414e41474552404000 GAME_COMP_MANAGER native RTTI
+0x145aa7370 805fd04201000000 GAME_RULE_GROUP_MANAGER +268 ->142d05f80
+0x145a1e4d0 e03ecc4101000000 base +268 ->141cc3ee0; not the selected derived factory
+0x145a9bcd8 20f1bf4201000000 GAME_COMP_MANAGER +a0 ->142bff120
+0x145c59df8 f0ca5f4401000000 COMP_MANAGER slot0 ->1445fcaf0 deleting destructor
