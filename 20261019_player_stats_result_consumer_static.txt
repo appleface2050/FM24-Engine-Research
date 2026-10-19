@@ -1,0 +1,176 @@
+FM24 static post-result PLAYER_STATS_MANAGER consumer
+Bounded original PE fragments; no execution. Full decompilation retained locally only.
+
+selected PLAYER_STATS_MANAGER allocation/publication (decode entry 142bfa310)
+142bfa667:	48 83 3d 59 91 83 03 00 	cmp    QWORD PTR [rip+0x3839159],0x0        # 0x1464337c8
+142bfa66f:	75 9e                	jne    0x142bfa60f
+142bfa671:	c6 05 25 93 83 03 01 	mov    BYTE PTR [rip+0x3839325],0x1        # 0x14643399d
+142bfa678:	b9 30 00 00 00       	mov    ecx,0x30
+142bfa67d:	e8 ca e3 8e 02       	call   0x1454e8a4c
+142bfa682:	48 89 c7             	mov    rdi,rax
+142bfa685:	48 89 c1             	mov    rcx,rax
+142bfa688:	e8 93 49 db 01       	call   0x1449af020
+142bfa68d:	48 8d 05 34 e3 08 03 	lea    rax,[rip+0x308e334]        # 0x145c889c8
+142bfa694:	48 89 07             	mov    QWORD PTR [rdi],rax
+142bfa697:	48 8d 05 42 e3 08 03 	lea    rax,[rip+0x308e342]        # 0x145c889e0
+142bfa69e:	48 89 47 28          	mov    QWORD PTR [rdi+0x28],rax
+142bfa6a2:	48 89 3d 1f 91 83 03 	mov    QWORD PTR [rip+0x383911f],rdi        # 0x1464337c8
+142bfa6a9:	c6 05 ed 92 83 03 00 	mov    BYTE PTR [rip+0x38392ed],0x0        # 0x14643399d
+
+wrapper and cached record acquisition (decode entry 144c597a0)
+144c59816:	48 89 8d 10 01 00 00 	mov    QWORD PTR [rbp+0x110],rcx
+144c5981d:	48 85 d2             	test   rdx,rdx
+144c59820:	0f 84 67 3f 00 00    	je     0x144c5d78d
+144c59826:	48 8b 42 10          	mov    rax,QWORD PTR [rdx+0x10]
+144c5982a:	48 89 85 18 02 00 00 	mov    QWORD PTR [rbp+0x218],rax
+144c59831:	48 85 c0             	test   rax,rax
+144c59834:	0f 84 93 03 00 00    	je     0x144c59bcd
+144c5983a:	48 8b 05 0f ae 71 01 	mov    rax,QWORD PTR [rip+0x171ae0f]        # 0x146374650
+144c59841:	48 89 85 08 01 00 00 	mov    QWORD PTR [rbp+0x108],rax
+144c59848:	48 83 3d 98 9c 70 01 00 	cmp    QWORD PTR [rip+0x1709c98],0x0        # 0x1463634e8
+144c59850:	48 89 95 f0 01 00 00 	mov    QWORD PTR [rbp+0x1f0],rdx
+
+Q and W escape to1435c18a0 (decode entry 144c597a0)
+144c5a18d:	48 8b 0d ec 92 7d 01 	mov    rcx,QWORD PTR [rip+0x17d92ec]        # 0x146433480
+144c5a194:	48 8b 95 f0 01 00 00 	mov    rdx,QWORD PTR [rbp+0x1f0]
+144c5a19b:	48 89 54 24 38       	mov    QWORD PTR [rsp+0x38],rdx
+144c5a1a0:	40 88 74 24 30       	mov    BYTE PTR [rsp+0x30],sil
+144c5a1a5:	48 8b 95 18 02 00 00 	mov    rdx,QWORD PTR [rbp+0x218]
+144c5a1ac:	48 89 54 24 28       	mov    QWORD PTR [rsp+0x28],rdx
+144c5a1b1:	88 44 24 20          	mov    BYTE PTR [rsp+0x20],al
+144c5a1b5:	48 89 da             	mov    rdx,rbx
+144c5a1b8:	4c 8b 85 00 02 00 00 	mov    r8,QWORD PTR [rbp+0x200]
+144c5a1bf:	49 89 f9             	mov    r9,rdi
+144c5a1c2:	e8 d9 76 96 fe       	call   0x1435c18a0
+
+W escape to1427336e0 (decode entry 144c597a0)
+144c5a575:	4c 89 64 24 20       	mov    QWORD PTR [rsp+0x20],r12
+144c5a57a:	48 8b 95 20 02 00 00 	mov    rdx,QWORD PTR [rbp+0x220]
+144c5a581:	4c 8b 85 f0 01 00 00 	mov    r8,QWORD PTR [rbp+0x1f0]
+144c5a588:	4d 89 e9             	mov    r9,r13
+144c5a58b:	e8 50 91 ad fd       	call   0x1427336e0
+
+record consumer, prerequisite gates and downstream call (decode entry 144c597a0)
+144c5c062:	48 8b 8d 18 02 00 00 	mov    rcx,QWORD PTR [rbp+0x218]
+144c5c069:	48 8b 95 28 02 00 00 	mov    rdx,QWORD PTR [rbp+0x228]
+144c5c070:	49 89 e8             	mov    r8,rbp
+144c5c073:	e8 08 ae 1e fd       	call   0x141e46e80
+144c5c078:	48 39 7d e8          	cmp    QWORD PTR [rbp-0x18],rdi
+144c5c07c:	0f 85 3e 01 00 00    	jne    0x144c5c1c0
+144c5c082:	48 8b 85 88 01 00 00 	mov    rax,QWORD PTR [rbp+0x188]
+144c5c089:	8b 40 0c             	mov    eax,DWORD PTR [rax+0xc]
+144c5c08c:	48 8b 8d f0 01 00 00 	mov    rcx,QWORD PTR [rbp+0x1f0]
+144c5c093:	3b 81 8c 00 00 00    	cmp    eax,DWORD PTR [rcx+0x8c]
+144c5c099:	0f 85 21 01 00 00    	jne    0x144c5c1c0
+144c5c09f:	48 8b 8d 18 02 00 00 	mov    rcx,QWORD PTR [rbp+0x218]
+144c5c0a6:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+144c5c0a9:	31 d2                	xor    edx,edx
+144c5c0ab:	ff 50 30             	call   QWORD PTR [rax+0x30]
+144c5c0ae:	41 b5 ff             	mov    r13b,0xff
+144c5c0b1:	48 85 c0             	test   rax,rax
+144c5c0b4:	74 1a                	je     0x144c5c0d0
+144c5c0b6:	44 0f b6 68 03       	movzx  r13d,BYTE PTR [rax+0x3]
+144c5c0bb:	41 80 fd ff          	cmp    r13b,0xff
+144c5c0bf:	75 0f                	jne    0x144c5c0d0
+144c5c0c1:	44 0f b6 68 01       	movzx  r13d,BYTE PTR [rax+0x1]
+144c5c0c6:	41 80 fd ff          	cmp    r13b,0xff
+144c5c0ca:	75 04                	jne    0x144c5c0d0
+144c5c0cc:	44 0f b6 28          	movzx  r13d,BYTE PTR [rax]
+144c5c0d0:	48 8b 8d 18 02 00 00 	mov    rcx,QWORD PTR [rbp+0x218]
+144c5c0d7:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+144c5c0da:	ba 01 00 00 00       	mov    edx,0x1
+144c5c0df:	ff 50 30             	call   QWORD PTR [rax+0x30]
+144c5c0e2:	48 85 c0             	test   rax,rax
+144c5c0e5:	b1 ff                	mov    cl,0xff
+144c5c0e7:	74 15                	je     0x144c5c0fe
+144c5c0e9:	0f b6 48 03          	movzx  ecx,BYTE PTR [rax+0x3]
+144c5c0ed:	80 f9 ff             	cmp    cl,0xff
+144c5c0f0:	75 0c                	jne    0x144c5c0fe
+144c5c0f2:	0f b6 48 01          	movzx  ecx,BYTE PTR [rax+0x1]
+144c5c0f6:	80 f9 ff             	cmp    cl,0xff
+144c5c0f9:	75 03                	jne    0x144c5c0fe
+144c5c0fb:	0f b6 08             	movzx  ecx,BYTE PTR [rax]
+144c5c0fe:	41 0f be c5          	movsx  eax,r13b
+144c5c102:	0f be c9             	movsx  ecx,cl
+144c5c105:	29 c8                	sub    eax,ecx
+144c5c107:	89 c1                	mov    ecx,eax
+144c5c109:	f7 d9                	neg    ecx
+144c5c10b:	0f 48 c8             	cmovs  ecx,eax
+144c5c10e:	80 f9 01             	cmp    cl,0x1
+144c5c111:	0f 8f a9 00 00 00    	jg     0x144c5c1c0
+144c5c117:	0f b6 45 20          	movzx  eax,BYTE PTR [rbp+0x20]
+144c5c11b:	3a 45 21             	cmp    al,BYTE PTR [rbp+0x21]
+144c5c11e:	0f 9c c0             	setl   al
+144c5c121:	48 8b 8d d0 01 00 00 	mov    rcx,QWORD PTR [rbp+0x1d0]
+144c5c128:	80 f1 01             	xor    cl,0x1
+144c5c12b:	08 c1                	or     cl,al
+144c5c12d:	0f 85 8d 00 00 00    	jne    0x144c5c1c0
+144c5c133:	48 8b 85 40 01 00 00 	mov    rax,QWORD PTR [rbp+0x140]
+144c5c13a:	48 8b 88 b0 00 00 00 	mov    rcx,QWORD PTR [rax+0xb0]
+144c5c141:	48 85 c9             	test   rcx,rcx
+144c5c144:	74 7a                	je     0x144c5c1c0
+144c5c146:	48 8b 95 18 02 00 00 	mov    rdx,QWORD PTR [rbp+0x218]
+144c5c14d:	e8 be 13 1a fd       	call   0x141dfd510
+144c5c152:	84 c0                	test   al,al
+144c5c154:	74 6a                	je     0x144c5c1c0
+144c5c156:	48 8b 8d 18 02 00 00 	mov    rcx,QWORD PTR [rbp+0x218]
+144c5c15d:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+144c5c160:	31 d2                	xor    edx,edx
+144c5c162:	ff 50 30             	call   QWORD PTR [rax+0x30]
+144c5c165:	48 85 c0             	test   rax,rax
+144c5c168:	74 25                	je     0x144c5c18f
+144c5c16a:	80 78 02 00          	cmp    BYTE PTR [rax+0x2],0x0
+144c5c16e:	78 1f                	js     0x144c5c18f
+144c5c170:	48 8b 8d 18 02 00 00 	mov    rcx,QWORD PTR [rbp+0x218]
+144c5c177:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+144c5c17a:	ba 01 00 00 00       	mov    edx,0x1
+144c5c17f:	ff 50 30             	call   QWORD PTR [rax+0x30]
+144c5c182:	48 85 c0             	test   rax,rax
+144c5c185:	74 08                	je     0x144c5c18f
+144c5c187:	b2 01                	mov    dl,0x1
+144c5c189:	80 78 02 00          	cmp    BYTE PTR [rax+0x2],0x0
+144c5c18d:	79 02                	jns    0x144c5c191
+144c5c18f:	31 d2                	xor    edx,edx
+144c5c191:	48 8b 0d f0 72 7d 01 	mov    rcx,QWORD PTR [rip+0x17d72f0]        # 0x146433488
+144c5c198:	88 54 24 20          	mov    BYTE PTR [rsp+0x20],dl
+144c5c19c:	48 8b 95 88 01 00 00 	mov    rdx,QWORD PTR [rbp+0x188]
+144c5c1a3:	4c 8b 85 28 02 00 00 	mov    r8,QWORD PTR [rbp+0x228]
+144c5c1aa:	4c 8b 8d 40 01 00 00 	mov    r9,QWORD PTR [rbp+0x140]
+144c5c1b1:	e8 ea 55 87 fe       	call   0x1434d17a0
+
+FIXTURE_RESULT record query leaf (decode entry 140269580)
+140269580:	48 8d 44 91 64       	lea    rax,[rcx+rdx*4+0x64]
+140269585:	c3                   	ret
+
+selected payload generation and next consumer (decode entry 1434d17a0)
+1434d17a9:	4c 89 cb             	mov    rbx,r9
+1434d17ac:	4c 89 c7             	mov    rdi,r8
+1434d17af:	48 89 d6             	mov    rsi,rdx
+1434d17b2:	49 89 ce             	mov    r14,rcx
+1434d17b5:	48 8b 02             	mov    rax,QWORD PTR [rdx]
+1434d17b8:	48 89 d1             	mov    rcx,rdx
+1434d17bb:	ff 90 a0 02 00 00    	call   QWORD PTR [rax+0x2a0]
+1434d17c1:	48 85 c0             	test   rax,rax
+1434d188a:	0f b6 84 24 b0 00 00 00 	movzx  eax,BYTE PTR [rsp+0xb0]
+1434d1892:	48 c7 44 24 30 00 00 00 00 	mov    QWORD PTR [rsp+0x30],0x0
+1434d189b:	48 c7 44 24 50 00 00 00 00 	mov    QWORD PTR [rsp+0x50],0x0
+1434d18a4:	48 c7 44 24 58 00 00 00 00 	mov    QWORD PTR [rsp+0x58],0x0
+1434d18ad:	48 c7 44 24 40 00 00 00 00 	mov    QWORD PTR [rsp+0x40],0x0
+1434d18b6:	66 c7 44 24 60 00 00 	mov    WORD PTR [rsp+0x60],0x0
+1434d18bd:	8b 0d f9 bc e4 02    	mov    ecx,DWORD PTR [rip+0x2e4bcf9]        # 0x14631d5bc
+1434d18c3:	89 4c 24 48          	mov    DWORD PTR [rsp+0x48],ecx
+1434d18c7:	48 89 7c 24 28       	mov    QWORD PTR [rsp+0x28],rdi
+1434d18cc:	48 89 5c 24 38       	mov    QWORD PTR [rsp+0x38],rbx
+1434d18d1:	0f b6 c0             	movzx  eax,al
+1434d18d4:	c1 e0 0d             	shl    eax,0xd
+1434d18d7:	05 00 20 00 00       	add    eax,0x2000
+1434d18dc:	89 44 24 4c          	mov    DWORD PTR [rsp+0x4c],eax
+1434d18e0:	4c 8d 44 24 28       	lea    r8,[rsp+0x28]
+1434d18e5:	4c 89 f1             	mov    rcx,r14
+1434d18e8:	48 89 f2             	mov    rdx,rsi
+1434d18eb:	e8 40 48 ff ff       	call   0x1434c6130
+
+0x145c889c0 408ac84501000000 PLAYER_STATS_MANAGER vtable[-1]
+0x145c88a40 010000000000000000000000e06c3506588ac805408ac805 PLAYER_STATS_MANAGER COL
+0x146356cf0 2e3f4156504c415945525f53544154535f4d414e41474552404000 native RTTI .?AVPLAYER_STATS_MANAGER@@
+0x1456080a8 8095264001000000 FIXTURE_RESULT +30 ->140269580: record+64+side*4

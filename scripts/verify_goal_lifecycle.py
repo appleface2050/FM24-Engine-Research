@@ -236,6 +236,19 @@ def result_admission_fallback(load_ok, output_flag=True):
     return True, output_flag if load_ok else False
 
 
+def player_stats_record_checks(first, second):
+    """转写144c5c09f..191的冻结记录读取；返回局部比较，不模拟外围资格/调用。"""
+    left = query_fixture_byte(first, prefer_byte1=True, prefer_byte3=True)
+    right = query_fixture_byte(second, prefer_byte1=True, prefer_byte3=True)
+    left = left if left < 128 else left - 256
+    right = right if right < 128 else right - 256
+    magnitude_byte = abs(left - right) & 0xFF
+    signed_magnitude = magnitude_byte if magnitude_byte < 128 else magnitude_byte - 256
+    both_byte2_nonnegative = all(record is not None and record[2] < 128
+                                 for record in (first, second))
+    return left, right, signed_magnitude <= 1, both_byte2_nonnegative
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -422,6 +435,14 @@ def examples():
           competition_dispatch_after_index_copy(True, True, True, True, True), True)
     check("index-copy-true-does-not-bypass-missing-competition",
           competition_dispatch_after_index_copy(True, True, True, True, False), False)
+    check("player-stats-byte3-precedes-byte1",
+          player_stats_record_checks([9, 5, 0, 1], [7, 4, 0, 1]), (1, 1, True, True))
+    check("player-stats-byte1-fallback-and-byte2-marker",
+          player_stats_record_checks([1, 3, 255, 255], [9, 2, 255, 255]), (3, 2, True, False))
+    check("player-stats-byte0-fallback-margin-two",
+          player_stats_record_checks([3, 255, 0, 255], [1, 255, 0, 255]), (3, 1, False, True))
+    check("player-stats-ff-is-not-result-validity",
+          player_stats_record_checks([255] * 4, [255] * 4), (-1, -1, True, False))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -513,6 +534,7 @@ def verify_original(exe):
         "20261019_actual_comp_stage_consumer_observations.json",
         "20261019_result_index_query_bridge_observations.json",
         "20261019_delegate_registration_observations.json",
+        "20261019_player_stats_result_consumer_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

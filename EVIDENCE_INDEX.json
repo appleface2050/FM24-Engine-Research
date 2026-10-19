@@ -360,7 +360,15 @@
         "0x155d65980",
         "0x155ab2110",
         "0x142bff120",
-        "0x144c597a0"
+        "0x144c597a0",
+        "0x144c597a0",
+        "0x144c59826",
+        "0x144c5c0ab",
+        "0x144c5c10e",
+        "0x144c5c1b1",
+        "0x1434d18eb",
+        "0x144c5a58b",
+        "0x144c5a1c2"
       ],
       "evidence": {
         "reports": [
@@ -401,7 +409,9 @@
           "20261019_result_index_query_bridge_static.txt",
           "20261019_result_index_query_bridge_observations.json",
           "20261019_delegate_registration_static.txt",
-          "20261019_delegate_registration_observations.json"
+          "20261019_delegate_registration_observations.json",
+          "20261019_player_stats_result_consumer_static.txt",
+          "20261019_player_stats_result_consumer_observations.json"
         ]
       },
       "upstream": [
@@ -420,7 +430,7 @@
         "B+50与扫描列表条目的完整身份/替换时序及其最终赛程消费者；处理游标前进不代表接受记录字节",
         "已接B+20结果克隆列表→批量回调及GAME_UI复制后刷新；正式赛程字段写入、刷新后保留、回调输出标记的完整下游和自然可达性仍未闭合",
         "已定位ACTUAL_COMP→LEAGUE_STAGE记录累计候选；后续查询R与此前F同一性、C+1c0阶段对象类型/构造、累计字段的正式语义及前后修订尚未闭合",
-        "已定位O+8工厂赋值及GAME_COMP_MANAGER+a0→基类索引复制/赛事分派，保持两次发布和O+8时读写D相同；完整身份保持、派生额外消费者144c597a0、桶类别来源、间接副作用及自然记录保留仍未闭合；更新返回值未被基类检查"
+        "已定位O+8工厂赋值、GAME_COMP_MANAGER+a0及保持条件下同一D；已绑定派生额外PLAYER_STATS_MANAGER的Q=入口W+10、局部比分读取/分差门槛和载荷调用；完整身份保持、1427336e0/1435c18a0及其余Q/W副作用、桶类别来源和自然记录保留仍未闭合"
       ],
       "connections": [
         {
@@ -709,6 +719,81 @@
           ],
           "evidence": "20261019_delegate_registration_observations.json",
           "limit": "after base return144c597a0 consumes saved W; preservation unproved"
+        },
+        {
+          "source": "selected0x30 allocation retained in RDI",
+          "callsite": "0x142bfa688",
+          "callee": "0x1449af020",
+          "receiver": "new service this",
+          "target": "vtable installation145c889c8 then global1464337c8 publication",
+          "conditions": [
+            "selected empty-global branch",
+            "constructor and subsequent setup return normally"
+          ],
+          "evidence": "20261019_player_stats_result_consumer_observations.json",
+          "limit": "retained type only; not a runtime observation"
+        },
+        {
+          "source": "cached Q=entry W+10 plus current team",
+          "callsite": "0x144c5c073",
+          "callee": "0x141e46e80",
+          "receiver": "Q as RCX; output=caller frame RBP",
+          "target": "output stack record before selected margin gate",
+          "conditions": [
+            "selected loop branch reached",
+            "Q and output pointers valid"
+          ],
+          "evidence": "20261019_player_stats_result_consumer_observations.json",
+          "limit": "helper/provider side effects not ruled out"
+        },
+        {
+          "source": "Q record reads and fifth byte flag",
+          "callsite": "0x144c5c1b1",
+          "callee": "0x1434d17a0",
+          "receiver": "global146433488 with selected player/team/stat arguments",
+          "target": "conditional payload construction then1434c6130",
+          "conditions": [
+            "prerequisite index/player-ID and margin checks pass",
+            "subsequent stack/object/141dfd510 gates pass"
+          ],
+          "evidence": "20261019_player_stats_result_consumer_observations.json",
+          "limit": "record selection is not score validity; helper has independent gates"
+        },
+        {
+          "source": "raw fifth parameter0/1",
+          "callsite": "0x1434d18eb",
+          "callee": "0x1434c6130",
+          "receiver": "same service and player; R8 points to local payload",
+          "target": "payload flag0x2000/0x4000 and supplied references",
+          "conditions": [
+            "helper object/global gates pass"
+          ],
+          "evidence": "20261019_player_stats_result_consumer_observations.json",
+          "limit": "event meaning and downstream mutation not established"
+        },
+        {
+          "source": "cached W and Q from caller frame",
+          "callsite": "0x144c5a1c2",
+          "callee": "0x1435c18a0",
+          "receiver": "service global146433480",
+          "target": "Q and W forwarded as stack arguments",
+          "conditions": [
+            "selected branch reaches this checkpoint"
+          ],
+          "evidence": "20261019_player_stats_result_consumer_observations.json",
+          "limit": "unresolved shared-object mutation boundary"
+        },
+        {
+          "source": "entry wrapper W cached at frame+1f0",
+          "callsite": "0x144c5a58b",
+          "callee": "0x1427336e0",
+          "receiver": "selected object at player+f8 then+58",
+          "target": "same W passed as R8",
+          "conditions": [
+            "selected object/help-call gates pass"
+          ],
+          "evidence": "20261019_player_stats_result_consumer_observations.json",
+          "limit": "full W/record preservation or replacement not established"
         }
       ]
     },
