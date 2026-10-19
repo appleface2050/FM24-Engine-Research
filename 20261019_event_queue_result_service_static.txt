@@ -1,0 +1,186 @@
+FM24 24.4.2+2081827 Windows fm.exe; base 0x140000000; static only.
+Selected instructions from original PE, decoded from known exception-table entries.
+Queue timing/context and cleanup: reuse 20261016_event_threshold_lifecycle_static.txt and 20261016_event_result_revision_static.txt.
+No whole-function no-side-effect or final score acceptance claim.
+
+WINDOW 1419ffffe:141a0000d (owner 1419fff30:141a00618)
+1419ffffe 0f57c0 xorps  xmm0,xmm0
+141a00001 410f29442420 movaps XMMWORD PTR [r12+0x20],xmm0
+141a00007 410f29442430 movaps XMMWORD PTR [r12+0x30],xmm0
+
+WINDOW 1443d65a0:1443d65b4 (owner 1443d6590:1443d6c6a)
+1443d65a0 4989cf mov    r15,rcx
+1443d65a3 488b8178010000 mov    rax,QWORD PTR [rcx+0x178]
+1443d65aa 488b8980010000 mov    rcx,QWORD PTR [rcx+0x180]
+1443d65b1 4829c1 sub    rcx,rax
+
+WINDOW 1443d6710:1443d6718 (owner 1443d6590:1443d6c6a)
+1443d6710 4c89f0 mov    rax,r14
+1443d6713 eb1c jmp    0x1443d6731
+1443d6715 662e0f1f840000000000 cs nop WORD PTR [rax+rax*1+0x0]
+
+WINDOW 1443d6731:1443d6740 (owner 1443d6590:1443d6c6a)
+1443d6731 488b5030 mov    rdx,QWORD PTR [rax+0x30]
+1443d6735 4885d2 test   rdx,rdx
+1443d6738 747d je     0x1443d67b7
+1443d673a 80786e00 cmp    BYTE PTR [rax+0x6e],0x0
+1443d673e 7477 je     0x1443d67b7
+
+WINDOW 1443d67b7:1443d67cd (owner 1443d6590:1443d6c6a)
+1443d67b7 0fb65069 movzx  edx,BYTE PTR [rax+0x69]
+1443d67bb 4584c9 test   r9b,r9b
+1443d67be 0f85e5000000 jne    0x1443d68a9
+1443d67c4 80fa07 cmp    dl,0x7
+1443d67c7 0f85e3020000 jne    0x1443d6ab0
+
+WINDOW 1443d68a9:1443d68bd (owner 1443d6590:1443d6c6a)
+1443d68a9 80fa07 cmp    dl,0x7
+1443d68ac 0f85fe010000 jne    0x1443d6ab0
+1443d68b2 41807e6815 cmp    BYTE PTR [r14+0x68],0x15
+1443d68b7 0f85f3010000 jne    0x1443d6ab0
+
+WINDOW 1443d6ab0:1443d6ac2 (owner 1443d6590:1443d6c6a)
+1443d6ab0 410fb64669 movzx  eax,BYTE PTR [r14+0x69]
+1443d6ab5 04f7 add    al,0xf7
+1443d6ab7 3c01 cmp    al,0x1
+1443d6ab9 775f ja     0x1443d6b1a
+1443d6abb 41807e68ff cmp    BYTE PTR [r14+0x68],0xff
+1443d6ac0 7529 jne    0x1443d6aeb
+
+WINDOW 1443d6b1a:1443d6b1d (owner 1443d6590:1443d6c6a)
+1443d6b1a 4531f6 xor    r14d,r14d
+
+WINDOW 1434f4cfe:1434f4d14 (owner 1434f4910:1434f50f3)
+1434f4cfe 498b5748 mov    rdx,QWORD PTR [r15+0x48]
+1434f4d02 4c89f9 mov    rcx,r15
+1434f4d05 4531c0 xor    r8d,r8d
+1434f4d08 4531c9 xor    r9d,r9d
+1434f4d0b e830080000 call   0x1434f5540
+1434f4d10 4d8b7710 mov    r14,QWORD PTR [r15+0x10]
+
+WINDOW 1434f555d:1434f5590 (owner 1434f5540:1434f691a)
+1434f5566 4889d0 mov    rax,rdx
+1434f5569 4c898db8000000 mov    QWORD PTR [rbp+0xb8],r9
+1434f5570 4c09c8 or     rax,r9
+1434f5573 0f8421130000 je     0x1434f689a
+1434f5579 4c89c3 mov    rbx,r8
+1434f557c 4989d5 mov    r13,rdx
+1434f557f 4989cf mov    r15,rcx
+1434f5582 488b0507e5f302 mov    rax,QWORD PTR [rip+0x2f3e507]        # 0x146433a90
+1434f5589 488985a8000000 mov    QWORD PTR [rbp+0xa8],rax
+
+WINDOW 1434f5618:1434f562f (owner 1434f5540:1434f691a)
+1434f5618 488b055126f302 mov    rax,QWORD PTR [rip+0x2f32651]        # 0x146427c70
+1434f561f 4885c0 test   rax,rax
+1434f5622 0f84dd010000 je     0x1434f5805
+1434f5628 ffd0 call   rax
+1434f562a 4889c6 mov    rsi,rax
+1434f562d e9e8010000 jmp    0x1434f581a
+
+WINDOW 1434f5805:1434f585a (owner 1434f5540:1434f691a)
+1434f5805 b9b8000000 mov    ecx,0xb8
+1434f580a e891ebbafc call   0x1400a43a0
+1434f580f 4889c6 mov    rsi,rax
+1434f5812 4889c1 mov    rcx,rax
+1434f5815 e8c6474efe call   0x1419d9fe0
+1434f581a 498b7f10 mov    rdi,QWORD PTR [r15+0x10]
+1434f581e 49897710 mov    QWORD PTR [r15+0x10],rsi
+1434f5822 4885ff test   rdi,rdi
+1434f5825 7414 je     0x1434f583b
+1434f5827 4889f9 mov    rcx,rdi
+1434f582a e8515b4efe call   0x1419db380
+1434f582f 4889f9 mov    rcx,rdi
+1434f5832 e8f900b8fc call   0x140075930
+1434f5837 498b7710 mov    rsi,QWORD PTR [r15+0x10]
+1434f583b 4885f6 test   rsi,rsi
+1434f583e 0f8456100000 je     0x1434f689a
+1434f5844 48899db0000000 mov    QWORD PTR [rbp+0xb0],rbx
+1434f584b 498b9530090000 mov    rdx,QWORD PTR [r13+0x930]
+1434f5852 4889f1 mov    rcx,rsi
+1434f5855 e8864d4efe call   0x1419da5e0
+
+WINDOW 1434f6244:1434f6257 (owner 1434f5540:1434f691a)
+1434f6244 488b0dfdebe702 mov    rcx,QWORD PTR [rip+0x2e7ebfd]        # 0x146374e48
+1434f624b 498b5710 mov    rdx,QWORD PTR [r15+0x10]
+1434f624f 4989f8 mov    r8,rdi
+1434f6252 e819e187ff call   0x142d74370
+
+WINDOW 142d74383:142d743c6 (owner 142d74370:142d75b58)
+142d74383 4885d2 test   rdx,rdx
+142d74386 7462 je     0x142d743ea
+142d74388 4989d4 mov    r12,rdx
+142d7438b 4989cd mov    r13,rcx
+142d7438e 488b7210 mov    rsi,QWORD PTR [rdx+0x10]
+142d74392 488b0d47396b03 mov    rcx,QWORD PTR [rip+0x36b3947]        # 0x146427ce0
+142d74399 4885c9 test   rcx,rcx
+142d7439c 7445 je     0x142d743e3
+142d7439e 488b5620 mov    rdx,QWORD PTR [rsi+0x20]
+142d743a2 4885d2 test   rdx,rdx
+142d743a5 743c je     0x142d743e3
+142d743a7 4d89c6 mov    r14,r8
+142d743aa 4c8b3d670d5f03 mov    r15,QWORD PTR [rip+0x35f0d67]        # 0x146365118
+142d743b1 488b2d90ec6b03 mov    rbp,QWORD PTR [rip+0x36bec90]        # 0x146433048
+142d743b8 488b01 mov    rax,QWORD PTR [rcx]
+142d743bb ff90d0010000 call   QWORD PTR [rax+0x1d0]
+142d743c1 4885c0 test   rax,rax
+142d743c4 741d je     0x142d743e3
+
+WINDOW 142d743e3:142d743fe (owner 142d74370:142d75b58)
+142d743e3 c74658ffffffff mov    DWORD PTR [rsi+0x58],0xffffffff
+142d743ea 4881c4a8000000 add    rsp,0xa8
+142d743f1 5b pop    rbx
+142d743f2 5d pop    rbp
+142d743f3 5f pop    rdi
+142d743f4 5e pop    rsi
+142d743f5 415c pop    r12
+142d743f7 415d pop    r13
+142d743f9 415e pop    r14
+142d743fb 415f pop    r15
+142d743fd c3 ret
+
+WINDOW 142d74481:142d744b6 (owner 142d74370:142d75b58)
+142d74481 418b4510 mov    eax,DWORD PTR [r13+0x10]
+142d74485 8d4801 lea    ecx,[rax+0x1]
+142d74488 41894d10 mov    DWORD PTR [r13+0x10],ecx
+142d7448c 89442464 mov    DWORD PTR [rsp+0x64],eax
+142d74490 894658 mov    DWORD PTR [rsi+0x58],eax
+142d74493 4c89642478 mov    QWORD PTR [rsp+0x78],r12
+142d74498 4c89b42480000000 mov    QWORD PTR [rsp+0x80],r14
+142d744a0 66c78424880000000100 mov    WORD PTR [rsp+0x88],0x1
+142d744aa c684248a00000000 mov    BYTE PTR [rsp+0x8a],0x0
+142d744b2 498b4d18 mov    rcx,QWORD PTR [r13+0x18]
+
+WINDOW 142d744eb:142d74506 (owner 142d74370:142d75b58)
+142d744eb 488b0a mov    rcx,QWORD PTR [rdx]
+142d744ee 4885c9 test   rcx,rcx
+142d744f1 7413 je     0x142d74506
+142d744f3 488d542478 lea    rdx,[rsp+0x78]
+142d744f8 4c8d442464 lea    r8,[rsp+0x64]
+142d744fd e88e4b0000 call   0x142d79090
+142d74502 84c0 test   al,al
+142d74504 751a jne    0x142d74520
+
+WINDOW 142d790df:142d79113 (owner 142d79090:142d79381)
+142d790df 4989c6 mov    r14,rax
+142d790e2 48c7400800000000 mov    QWORD PTR [rax+0x8],0x0
+142d790ea 488d05f718d302 lea    rax,[rip+0x2d318f7]        # 0x145aaa9e8
+142d790f1 498906 mov    QWORD PTR [r14],rax
+142d790f4 8b4500 mov    eax,DWORD PTR [rbp+0x0]
+142d790f7 41894610 mov    DWORD PTR [r14+0x10],eax
+142d790fb 4c89e9 mov    rcx,r13
+142d790fe 4889da mov    rdx,rbx
+142d79101 4d89f0 mov    r8,r14
+142d79104 e887020000 call   0x142d79390
+142d79109 89c3 mov    ebx,eax
+142d7910b 84c0 test   al,al
+142d7910d 0f8497000000 je     0x142d791aa
+
+WINDOW 142d791aa:142d791ca (owner 142d79090:142d79381)
+142d791aa 4c89f1 mov    rcx,r14
+142d791ad e86eefffff call   0x142d78120
+142d791b2 e931010000 jmp    0x142d792e8
+142d791b7 4d3b7d40 cmp    r15,QWORD PTR [r13+0x40]
+142d791bb 740d je     0x142d791ca
+142d791bd 4d8937 mov    QWORD PTR [r15],r14
+142d791c0 4983453808 add    QWORD PTR [r13+0x38],0x8
+142d791c5 e919010000 jmp    0x142d792e3

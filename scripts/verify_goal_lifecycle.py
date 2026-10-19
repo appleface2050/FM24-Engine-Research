@@ -182,6 +182,17 @@ def event_suffix_gates(primary):
     return masked_group, jump_table
 
 
+def unlinked_revision_candidates(subtype):
+    """冻结记录无关联；只计算结果7候选及原始9/10门槛，不模拟上下文/调用。"""
+    return subtype == 7, ((subtype - 9) & 0xFF) <= 1
+
+
+def reserve_service_serial(counter):
+    """转写142d74481..490的检查点；编号分配发生在下游成功与否已知之前。"""
+    serial = counter & 0xFFFFFFFF
+    return (serial + 1) & 0xFFFFFFFF, serial
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -313,6 +324,11 @@ def examples():
     check("primary-3-enters-mask-only", event_suffix_gates(3), (True, False))
     check("primary-15-enters-both", event_suffix_gates(0x15), (True, True))
     check("primary-18-above-switch-range", event_suffix_gates(0x18), (False, False))
+    check("unlinked-ending-marker-no-revision-candidate", unlinked_revision_candidates(0x11), (False, False))
+    check("unlinked-subtype9-normalization-candidate", unlinked_revision_candidates(9), (False, True))
+    check("unlinked-subtype10-normalization-candidate", unlinked_revision_candidates(10), (False, True))
+    check("unlinked-subtype7-context-still-required", unlinked_revision_candidates(7), (True, False))
+    check("service-serial-reserved-before-acceptance", reserve_service_serial(7), (8, 7))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -334,6 +350,7 @@ def verify_original(exe):
         "20261017_state3_entry_cleanup_observations.json",
         "20261019_remaining_opportunity_end_observations.json",
         "20261019_post_clear_dispatch_observations.json",
+        "20261019_event_queue_result_service_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
