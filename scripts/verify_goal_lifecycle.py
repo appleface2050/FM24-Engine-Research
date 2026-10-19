@@ -193,6 +193,14 @@ def reserve_service_serial(counter):
     return (serial + 1) & 0xFFFFFFFF, serial
 
 
+def archive_span_checkpoint(previous, position, limit, maximum):
+    """转写142d794a1..4ed；输入为最终比较点的int32值，不执行序列化或重试。"""
+    if previous > 0 and previous == position and limit != -1:
+        return "retry", 0, maximum, None
+    span = (previous, (position - previous) & 0xFFFFFFFF)
+    return "record", position, max(maximum, position), span
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -329,6 +337,14 @@ def examples():
     check("unlinked-subtype10-normalization-candidate", unlinked_revision_candidates(10), (False, True))
     check("unlinked-subtype7-context-still-required", unlinked_revision_candidates(7), (True, False))
     check("service-serial-reserved-before-acceptance", reserve_service_serial(7), (8, 7))
+    check("archive-span-advances", archive_span_checkpoint(8, 12, 100, 9),
+          ("record", 12, 12, (8, 4)))
+    check("archive-span-same-positive-retries", archive_span_checkpoint(8, 8, 100, 12),
+          ("retry", 0, 12, None))
+    check("archive-span-unlimited-allows-zero", archive_span_checkpoint(8, 8, -1, 12),
+          ("record", 8, 12, (8, 0)))
+    check("archive-span-initial-zero-does-not-retry", archive_span_checkpoint(0, 0, 100, 0),
+          ("record", 0, 0, (0, 0)))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -351,6 +367,7 @@ def verify_original(exe):
         "20261019_remaining_opportunity_end_observations.json",
         "20261019_post_clear_dispatch_observations.json",
         "20261019_event_queue_result_service_observations.json",
+        "20261019_archived_result_stream_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
