@@ -173,6 +173,15 @@ def increment_phase_record(record):
     return result
 
 
+def event_suffix_gates(primary):
+    """转写1443d573d和5afa的门槛；不执行通用插入或跳表分支体。"""
+    signed = primary if primary < 128 else primary - 256
+    unsigned = signed & 0xFFFFFFFF
+    masked_group = unsigned <= 0x15 and bool(0x203008 & (1 << unsigned))
+    jump_table = ((unsigned - 8) & 0xFFFFFFFF) <= 0xF
+    return masked_group, jump_table
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -299,6 +308,11 @@ def examples():
           (0x1800000, "advance_helper"))
     check("constructor-delay-at-deadline", state3_completion_choice(120, 100 + 20, 0x1800000),
           (0x1800004, "finalizer"))
+    check("post-clear-primary-ff-bypasses-both", event_suffix_gates(0xFF), (False, False))
+    check("primary-11-is-distinct-from-ff", event_suffix_gates(0x11), (False, True))
+    check("primary-3-enters-mask-only", event_suffix_gates(3), (True, False))
+    check("primary-15-enters-both", event_suffix_gates(0x15), (True, True))
+    check("primary-18-above-switch-range", event_suffix_gates(0x18), (False, False))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -319,6 +333,7 @@ def verify_original(exe):
         "20261017_match_completion_conditions_observations.json",
         "20261017_state3_entry_cleanup_observations.json",
         "20261019_remaining_opportunity_end_observations.json",
+        "20261019_post_clear_dispatch_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

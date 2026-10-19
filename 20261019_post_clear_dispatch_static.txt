@@ -1,0 +1,113 @@
+FM24 24.4.2+2081827, base 0x140000000. Static original PE only; no game execution.
+Selected native instructions decoded from full exception-table entry; omitted code is not proven effect-free.
+Team constructor and callsite identity: reuse 20261016_team_event_context_static.txt and 20261019_remaining_opportunity_end_static.txt.
+
+WINDOW 141abb44a:141abb494 (owner 141abb440:141abb7fa)
+141abb44a 89d3 mov    ebx,edx
+141abb44c 4989ce mov    r14,rcx
+141abb44f 4d85c0 test   r8,r8
+141abb452 7412 je     0x141abb466
+141abb454 410fb680ee010000 movzx  eax,BYTE PTR [r8+0x1ee]
+141abb45c 410fb690bb060000 movzx  edx,BYTE PTR [r8+0x6bb]
+141abb464 eb04 jmp    0x141abb46a
+141abb466 b0ff mov    al,0xff
+141abb468 b2ff mov    dl,0xff
+141abb46a 498d8e68080000 lea    rcx,[r14+0x868]
+141abb471 88542428 mov    BYTE PTR [rsp+0x28],dl
+141abb475 88442420 mov    BYTE PTR [rsp+0x20],al
+141abb479 c7442430ffffffff mov    DWORD PTR [rsp+0x30],0xffffffff
+141abb481 488d542438 lea    rdx,[rsp+0x38]
+141abb486 41b0ff mov    r8b,0xff
+141abb489 4189d9 mov    r9d,ebx
+141abb48c e89f4af4ff call   0x1419fff30
+141abb491 80fb13 cmp    bl,0x13
+
+WINDOW 141abb78c:141abb7a6 (owner 141abb440:141abb7fa)
+141abb78c 41888ee4cd0000 mov    BYTE PTR [r14+0xcde4],cl
+141abb793 88436c mov    BYTE PTR [rbx+0x6c],al
+141abb796 884b6d mov    BYTE PTR [rbx+0x6d],cl
+141abb799 488d542438 lea    rdx,[rsp+0x38]
+141abb79e 4889f9 mov    rcx,rdi
+141abb7a1 e8ea969102 call   0x1443d4e90
+
+WINDOW 1419fff4d:1419fff59 (owner 1419fff30:141a00618)
+1419fff4d 4589cf mov    r15d,r9d
+1419fff50 4489c7 mov    edi,r8d
+1419fff53 4989d6 mov    r14,rdx
+1419fff56 4889cb mov    rbx,rcx
+
+WINDOW 141a000a4:141a000b8 (owner 1419fff30:141a00618)
+141a000a4 41887c2468 mov    BYTE PTR [r12+0x68],dil
+141a000a9 45887c2469 mov    BYTE PTR [r12+0x69],r15b
+141a000ae 41884c246a mov    BYTE PTR [r12+0x6a],cl
+141a000b3 418844246b mov    BYTE PTR [r12+0x6b],al
+
+WINDOW 1443d4ea3:1443d4ecc (owner 1443d4e90:1443d5f94)
+1443d4ea3 4889542458 mov    QWORD PTR [rsp+0x58],rdx
+1443d4ea8 4989cc mov    r12,rcx
+1443d4eab 488b9978010000 mov    rbx,QWORD PTR [rcx+0x178]
+1443d4eb2 488b8980010000 mov    rcx,QWORD PTR [rcx+0x180]
+1443d4eb9 4889ca mov    rdx,rcx
+1443d4ebc 4829da sub    rdx,rbx
+1443d4ebf 48895c2468 mov    QWORD PTR [rsp+0x68],rbx
+1443d4ec4 4885d2 test   rdx,rdx
+1443d4ec7 4c89642450 mov    QWORD PTR [rsp+0x50],r12
+
+WINDOW 1443d5212:1443d522d (owner 1443d4e90:1443d5f94)
+1443d5212 4c8929 mov    QWORD PTR [rcx],r13
+1443d5215 4d85ed test   r13,r13
+1443d5218 7405 je     0x1443d521f
+1443d521a f041ff4500 lock inc DWORD PTR [r13+0x0]
+1443d521f 498384248001000008 add    QWORD PTR [r12+0x180],0x8
+1443d5228 e99e040000 jmp    0x1443d56cb
+
+WINDOW 1443d5739:1443d5759 (owner 1443d4e90:1443d5f94)
+1443d5739 4c8b6808 mov    r13,QWORD PTR [rax+0x8]
+1443d573d 410fbe4568 movsx  eax,BYTE PTR [r13+0x68]
+1443d5742 83f815 cmp    eax,0x15
+1443d5745 0f87af030000 ja     0x1443d5afa
+1443d574b b908302000 mov    ecx,0x203008
+1443d5750 0fa3c1 bt     ecx,eax
+1443d5753 0f83a1030000 jae    0x1443d5afa
+
+WINDOW 1443d5afa:1443d5b1b (owner 1443d4e90:1443d5f94)
+1443d5afa 410fbe4568 movsx  eax,BYTE PTR [r13+0x68]
+1443d5aff 83c0f8 add    eax,0xfffffff8
+1443d5b02 83f80f cmp    eax,0xf
+1443d5b05 0f87b5030000 ja     0x1443d5ec0
+1443d5b0b 488d0d42040000 lea    rcx,[rip+0x442]        # 0x1443d5f54
+1443d5b12 48630481 movsxd rax,DWORD PTR [rcx+rax*4]
+1443d5b16 4801c8 add    rax,rcx
+1443d5b19 ffe0 jmp    rax
+
+WINDOW 1443d5ec0:1443d5ed5 (owner 1443d4e90:1443d5f94)
+1443d5ec0 90 nop
+1443d5ec1 4881c498000000 add    rsp,0x98
+1443d5ec8 5b pop    rbx
+1443d5ec9 5d pop    rbp
+1443d5eca 5f pop    rdi
+1443d5ecb 5e pop    rsi
+1443d5ecc 415c pop    r12
+1443d5ece 415d pop    r13
+1443d5ed0 415e pop    r14
+1443d5ed2 415f pop    r15
+1443d5ed4 c3 ret    
+
+WINDOW 15a00c440:15a00c491 (owner 15a00c440:15a00c491)
+15a00c440 4883ec28 sub    rsp,0x28
+15a00c444 0f57c0 xorps  xmm0,xmm0
+15a00c447 0f290424 movaps XMMWORD PTR [rsp],xmm0
+15a00c44b 660f76c9 pcmpeqd xmm1,xmm1
+15a00c44f 660f7f4c2410 movdqa XMMWORD PTR [rsp+0x10],xmm1
+15a00c455 8b05e5c241ec mov    eax,DWORD PTR [rip+0xffffffffec41c2e5]        # 0x146428740
+15a00c45b 660f7f8900020000 movdqa XMMWORD PTR [rcx+0x200],xmm1
+15a00c463 0f2981f0010000 movaps XMMWORD PTR [rcx+0x1f0],xmm0
+15a00c46a 0f298110020000 movaps XMMWORD PTR [rcx+0x210],xmm0
+15a00c471 898120020000 mov    DWORD PTR [rcx+0x220],eax
+15a00c477 c78124020000000080bf mov    DWORD PTR [rcx+0x224],0xbf800000
+15a00c481 48c7812802000000000000 mov    QWORD PTR [rcx+0x228],0x0
+15a00c48c 4883c428 add    rsp,0x28
+15a00c490 c3 ret    
+
+1443f7700 e93b4dc115 E9 thunk to 15a00c440; following bytes excluded
+DATA 145a198e0 00773f4401000000 team vtable +58 = 1443f7700
