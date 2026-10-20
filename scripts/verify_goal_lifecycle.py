@@ -281,6 +281,20 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def fixture_result_status(record):
+    """FIXTURE_RESULT+f0：仅side0默认记录低字节的符号位，不代表正式接受。"""
+    return not bool(query_fixture_byte(record) & 0x80)
+
+
+def submitted_summary_scores(records, side):
+    """141e47150比分片段；None表示门槛阻断写入；辅助调用副作用不在本模型内。"""
+    if not fixture_result_status(records[0]):
+        return None
+    own, opponent = records[side], records[1 - side]
+    selected = 1 if own[1] < 0x80 else 0
+    return own[selected], opponent[selected]
+
+
 def redirect_registered_result_slots(slots, values, old, replacement):
     """仅转写已进入141e5af90的槽间接改写；不模拟查找、释放或整次提交。"""
     result = dict(values)
@@ -527,6 +541,24 @@ def examples():
     check("unregistered-alias-is-not-redirected",
           redirect_registered_result_slots([], {0x1000: 0x2000}, 0x2000, 0x3000),
           {0x1000: 0x2000})
+    check("result-status-zero-is-available", fixture_result_status([0, 255, 0, 255]), True)
+    check("result-status-127", fixture_result_status([127, 255, 0, 255]), True)
+    check("result-status-128", fixture_result_status([128, 0, 0, 255]), False)
+    check("result-status-byte1-cannot-rescue-byte0",
+          fixture_result_status([255, 3, 0, 255]), False)
+    ordinary_records = ([2, 255, 0, 255], [1, 255, 0, 255])
+    check("summary-team-perspectives",
+          (submitted_summary_scores(ordinary_records, 0), submitted_summary_scores(ordinary_records, 1)),
+          ((2, 1), (1, 2)))
+    asymmetric_records = ([2, 3, 0, 255], [1, 255, 0, 255])
+    check("summary-own-byte1-selects-both-fields",
+          (submitted_summary_scores(asymmetric_records, 0), submitted_summary_scores(asymmetric_records, 1)),
+          ((3, 255), (1, 2)))
+    check("summary-unavailable-leaves-score-fields-unwritten",
+          submitted_summary_scores(([255, 3, 0, 255], [1, 2, 0, 255]), 1), None)
+    check("query-status-exclusion-is-optional-and-one-sided",
+          (bool(True and fixture_result_status([0, 255, 0, 255])),
+           bool(False and fixture_result_status([0, 255, 0, 255]))), (True, False))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -622,6 +654,7 @@ def verify_original(exe):
         "20261019_form_history_question_boundary_observations.json",
         "20261019_stage_aggregate_order_observations.json",
         "20261020_fixture_pointer_registration_observations.json",
+        "20261020_result_summary_status_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
