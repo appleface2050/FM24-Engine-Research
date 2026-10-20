@@ -401,14 +401,21 @@
         "0x141e6a1b0",
         "0x1445ed190",
         "0x1445ed301",
-        "0x141dbbc9c"
+        "0x141dbbc9c",
+        "0x1434341d3",
+        "0x14343441f",
+        "0x1434ef590",
+        "0x1434ef65f",
+        "0x1434ef7dd",
+        "0x1434ef7f7"
       ],
       "evidence": {
         "reports": [
           "20261017_有效进球与比分状态生命周期.md",
           "20261016_分析筛选与球队进球计数.md",
           "20261020_结果指针登记与正式拥有者边界.md",
-          "20261020_提交结果摘要与查询状态门槛.md"
+          "20261020_提交结果摘要与查询状态门槛.md",
+          "20261020_实际赛程筛选与任务结果收集.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -454,7 +461,9 @@
           "20261020_fixture_pointer_registration_static.txt",
           "20261020_fixture_pointer_registration_observations.json",
           "20261020_result_summary_status_static.txt",
-          "20261020_result_summary_status_observations.json"
+          "20261020_result_summary_status_observations.json",
+          "20261020_schedule_task_collection_static.txt",
+          "20261020_schedule_task_collection_observations.json"
         ]
       },
       "upstream": [
@@ -476,7 +485,8 @@
         "已定位O+8注册和条件同一D；已绑定PLAYER_STATS_MANAGER及1427336e0现有表现对象/同日返回的整个调用只读路径，另已接表现记录追加末段和PRESS_CONFERENCE_QUESTION消费；完整身份保持、非同日/满环释放、问题链帮助函数及其余Q/W副作用、自然记录保留仍未闭合",
         "已接同一S+98条目在保持条件下进入排序/规则0和1/条件E+e1位置写入；141f6d500后对同一S调用+308的实际调度、条目重建/修订与位置正式下游仍未闭合；不把临时试算记录比较器当实际列表身份依据",
         "登记向量可含栈槽；该向量不是正式结果归属证据。未证明全部出口登记平衡、中间槽值保持、正常提交后待赛条目移除/已赛转换及同一结果引用的正式接受。",
-        "已接提交F到双方球队+a0摘要及K的条件查询排除；摘要采用F而非回查K。真实待赛调度的第8参数、同一K保留、摘要清理虚析构及1445ed190调用后服务语义待证；第一侧记录符号位不是双方/完成位验证。"
+        "已接提交F到双方球队+a0摘要及K的条件查询排除；摘要采用F而非回查K。真实待赛调度的第8参数、同一K保留、摘要清理虚析构及1445ed190调用后服务语义待证；第一侧记录符号位不是双方/完成位验证。",
+        "已接实际查询第8参数=1、同候选传入任务及推进后B+20收集生产者；FULL选择器1434eecf0、X+10/X+58生产保持及反馈到同一D的修订仍未闭合。B+20追加发生在推进之后，不能与B+8待处理工作列表混同。"
       ],
       "connections": [
         {
@@ -1075,6 +1085,46 @@
           ],
           "evidence": "20261020_result_summary_status_observations.json",
           "limit": "conditional consumer connection; not official result acceptance or whole-path preservation"
+        },
+        {
+          "source": "D=*(global146429ad8+8)+8; caller RSP+38=1",
+          "callsite": "0x1434341d3",
+          "callee": "0x141e69d60",
+          "receiver": "selected native call arguments",
+          "target": "query output container RBP+1b8",
+          "conditions": [
+            "selected scheduling time branch",
+            "arg8 enables f0 exclusion; all other filters apply"
+          ],
+          "evidence": "20261020_schedule_task_collection_observations.json",
+          "limit": "cloned identities and intermediate side effects remain conditional; not final score acceptance"
+        },
+        {
+          "source": "same callee-saved RSI candidate from queried container",
+          "callsite": "0x14343441f",
+          "callee": "0x1434ef590",
+          "receiver": "selected native call arguments",
+          "target": "task owns virtual+110 clone then conditionally collects X in B+20",
+          "conditions": [
+            "other scheduler exclusions passed",
+            "B=global146374490; args3/4/5=0",
+            "FULL requires selector return0; progress returns; X+58 nonempty and spare capacity"
+          ],
+          "evidence": "20261020_schedule_task_collection_observations.json",
+          "limit": "cloned identities and intermediate side effects remain conditional; not final score acceptance"
+        },
+        {
+          "source": "queried candidate input",
+          "callsite": "0x1434ef5c8",
+          "callee": "0x1434eecf0",
+          "receiver": "selected native call arguments",
+          "target": "selector AL controls FULL versus other task path",
+          "conditions": [
+            "caller arg3=0; arg4=0",
+            "selector policy not recovered"
+          ],
+          "evidence": "20261020_schedule_task_collection_observations.json",
+          "limit": "cloned identities and intermediate side effects remain conditional; not final score acceptance"
         }
       ]
     },

@@ -281,6 +281,16 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def scheduled_task_type(force_full, selector, alternate):
+    """1434ef590的分流片段；selector为1434eecf0冻结返回，不推断其足球含义。"""
+    return "OTHER" if not force_full and (selector or alternate) else "FULL"
+
+
+def full_task_collection(marker):
+    """FULL+30仅依据X+58；假定已返回推进调用并到达集合选择点。"""
+    return "append" if marker else "destroy"
+
+
 def fixture_result_status(record):
     """FIXTURE_RESULT+f0：仅side0默认记录低字节的符号位，不代表正式接受。"""
     return not bool(query_fixture_byte(record) & 0x80)
@@ -559,6 +569,14 @@ def examples():
     check("query-status-exclusion-is-optional-and-one-sided",
           (bool(True and fixture_result_status([0, 255, 0, 255])),
            bool(False and fixture_result_status([0, 255, 0, 255]))), (True, False))
+    check("actual-scheduler-excludes-populated-first-record",
+          (not fixture_result_status([255, 255, 0, 255]),
+           not fixture_result_status([0, 255, 0, 255])), (True, False))
+    check("actual-scheduler-selected-full-branch", scheduled_task_type(False, False, False), "FULL")
+    check("task-selector-can-choose-other", scheduled_task_type(False, True, False), "OTHER")
+    check("force-full-bypasses-selector", scheduled_task_type(True, True, True), "FULL")
+    check("collection-marker-empty-does-not-append", full_task_collection(0), "destroy")
+    check("collection-marker-present-appends", full_task_collection(0x1000), "append")
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -655,6 +673,7 @@ def verify_original(exe):
         "20261019_stage_aggregate_order_observations.json",
         "20261020_fixture_pointer_registration_observations.json",
         "20261020_result_summary_status_observations.json",
+        "20261020_schedule_task_collection_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
