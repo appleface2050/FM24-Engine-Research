@@ -281,6 +281,20 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def redirect_registered_result_slots(slots, values, old, replacement):
+    """仅转写已进入141e5af90的槽间接改写；不模拟查找、释放或整次提交。"""
+    result = dict(values)
+    for slot in slots:
+        if result[slot] == old:
+            result[slot] = replacement
+    return result
+
+
+def unregister_result_slot(slots, slot):
+    """仅转写已满足*slot非空的141e58023末段：按地址移除，非按结果值。"""
+    return [item for item in slots if item != slot]
+
+
 def examples():
     """用手算期望验证相等时刻、回退门槛、位操作和延迟边界。"""
     n = 0
@@ -502,6 +516,17 @@ def examples():
     check("stage-frozen-accumulation-changes-comparison",
           (stage_row_compare_fragment((5, 4, 6), (9, 7, 6)),
            stage_row_compare_fragment((*changed[:2], 6), (9, 7, 6))), (1, -1))
+    check("registered-slot-replacement-is-indirect",
+          redirect_registered_result_slots([0x1000], {0x1000: 0x2000}, 0x2000, 0x3000),
+          {0x1000: 0x3000})
+    check("registered-slot-no-longer-old-is-preserved",
+          redirect_registered_result_slots([0x1000], {0x1000: 0x4000}, 0x2000, 0x3000),
+          {0x1000: 0x4000})
+    check("unregister-compares-slot-address-not-pointee",
+          unregister_result_slot([0x1000, 0x1008, 0x1000], 0x1000), [0x1008])
+    check("unregistered-alias-is-not-redirected",
+          redirect_registered_result_slots([], {0x1000: 0x2000}, 0x2000, 0x3000),
+          {0x1000: 0x2000})
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -596,6 +621,7 @@ def verify_original(exe):
         "20261019_player_stats_result_consumer_observations.json",
         "20261019_form_history_question_boundary_observations.json",
         "20261019_stage_aggregate_order_observations.json",
+        "20261020_fixture_pointer_registration_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

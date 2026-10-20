@@ -1,0 +1,169 @@
+FM24 static selected instruction windows. No target code executed.
+Target identity: 20261019_fm24_target_identity.json
+Ranges below are excerpts, not whole-function purity proofs.
+1454e9d70 excerpt covers selected scalar lookup for at most one entry.
+
+DECODE FROM 0x141e50f80; EXCERPT ONLY
+WINDOW [0x141e50ffe, 0x141e5100a)
+   141e50ffe:	45 89 ce             	mov    r14d,r9d
+   141e51001:	45 89 c4             	mov    r12d,r8d
+   141e51004:	49 89 d7             	mov    r15,rdx
+   141e51007:	49 89 cd             	mov    r13,rcx
+WINDOW [0x141e510cb, 0x141e510f3)
+   141e510cb:	49 8b 0f             	mov    rcx,QWORD PTR [r15]
+   141e510ce:	e8 dd 14 ff ff       	call   0x141e425b0
+   141e510d3:	48 8b 35 f6 91 5d 04 	mov    rsi,QWORD PTR [rip+0x45d91f6]        # 0x14642a2d0
+   141e510da:	48 3b 35 f7 91 5d 04 	cmp    rsi,QWORD PTR [rip+0x45d91f7]        # 0x14642a2d8
+   141e510e1:	74 10                	je     0x141e510f3
+   141e510e3:	4c 89 3e             	mov    QWORD PTR [rsi],r15
+   141e510e6:	48 83 05 e2 91 5d 04 08 	add    QWORD PTR [rip+0x45d91e2],0x8        # 0x14642a2d0
+   141e510ee:	e9 5f 01 00 00       	jmp    0x141e51252
+WINDOW [0x141e5801d, 0x141e58094)
+   141e5801d:	49 83 3f 00          	cmp    QWORD PTR [r15],0x0
+   141e58021:	74 6e                	je     0x141e58091
+   141e58023:	48 8b 3d a6 22 5d 04 	mov    rdi,QWORD PTR [rip+0x45d22a6]        # 0x14642a2d0
+   141e5802a:	48 8b 0d 97 22 5d 04 	mov    rcx,QWORD PTR [rip+0x45d2297]        # 0x14642a2c8
+   141e58031:	48 89 fa             	mov    rdx,rdi
+   141e58034:	4d 89 f8             	mov    r8,r15
+   141e58037:	e8 34 1d 69 03       	call   0x1454e9d70
+   141e5803c:	48 89 c6             	mov    rsi,rax
+   141e5803f:	48 39 f8             	cmp    rax,rdi
+   141e58042:	74 26                	je     0x141e5806a
+   141e58044:	48 89 f0             	mov    rax,rsi
+   141e58047:	66 0f 1f 84 00 00 00 00 00 	nop    WORD PTR [rax+rax*1+0x0]
+   141e58050:	48 83 c0 08          	add    rax,0x8
+   141e58054:	48 39 f8             	cmp    rax,rdi
+   141e58057:	74 11                	je     0x141e5806a
+   141e58059:	48 8b 08             	mov    rcx,QWORD PTR [rax]
+   141e5805c:	4c 39 f9             	cmp    rcx,r15
+   141e5805f:	74 ef                	je     0x141e58050
+   141e58061:	48 89 0e             	mov    QWORD PTR [rsi],rcx
+   141e58064:	48 83 c6 08          	add    rsi,0x8
+   141e58068:	eb e6                	jmp    0x141e58050
+   141e5806a:	48 39 fe             	cmp    rsi,rdi
+   141e5806d:	74 22                	je     0x141e58091
+   141e5806f:	48 8b 1d 5a 22 5d 04 	mov    rbx,QWORD PTR [rip+0x45d225a]        # 0x14642a2d0
+   141e58076:	48 29 fb             	sub    rbx,rdi
+   141e58079:	48 89 f1             	mov    rcx,rsi
+   141e5807c:	48 89 fa             	mov    rdx,rdi
+   141e5807f:	49 89 d8             	mov    r8,rbx
+   141e58082:	e8 a9 66 72 03       	call   0x14557e730
+   141e58087:	48 01 f3             	add    rbx,rsi
+   141e5808a:	48 89 1d 3f 22 5d 04 	mov    QWORD PTR [rip+0x45d223f],rbx        # 0x14642a2d0
+   141e58091:	41 b6 01             	mov    r14b,0x1
+
+DECODE FROM 0x141e73030; EXCERPT ONLY
+WINDOW [0x141e730a3, 0x141e73127)
+   141e730a3:	48 89 c3             	mov    rbx,rax
+   141e730a6:	48 8b 00             	mov    rax,QWORD PTR [rax]
+   141e730a9:	48 89 d9             	mov    rcx,rbx
+   141e730ac:	ff 90 10 01 00 00    	call   QWORD PTR [rax+0x110]
+   141e730b2:	48 89 c7             	mov    rdi,rax
+   141e730b5:	48 89 84 24 88 00 00 00 	mov    QWORD PTR [rsp+0x88],rax
+   141e730bd:	48 89 f1             	mov    rcx,rsi
+   141e730c0:	48 89 da             	mov    rdx,rbx
+   141e730c3:	41 b0 01             	mov    r8b,0x1
+   141e730c6:	49 89 c1             	mov    r9,rax
+   141e730c9:	e8 c2 78 fe ff       	call   0x141e5a990
+   141e730ce:	84 c0                	test   al,al
+   141e730d0:	74 55                	je     0x141e73127
+   141e730d2:	48 8b 84 24 d0 00 00 00 	mov    rax,QWORD PTR [rsp+0xd0]
+   141e730da:	8b 00                	mov    eax,DWORD PTR [rax]
+   141e730dc:	89 47 4c             	mov    DWORD PTR [rdi+0x4c],eax
+   141e730df:	48 8d 05 66 8f bd 03 	lea    rax,[rip+0x3bd8f66]        # 0x145a4c04c
+   141e730e6:	48 89 44 24 50       	mov    QWORD PTR [rsp+0x50],rax
+   141e730eb:	c6 44 24 58 00       	mov    BYTE PTR [rsp+0x58],0x0
+   141e730f0:	48 c7 44 24 48 00 00 00 00 	mov    QWORD PTR [rsp+0x48],0x0
+   141e730f9:	48 c7 44 24 40 00 00 00 00 	mov    QWORD PTR [rsp+0x40],0x0
+   141e73102:	c6 44 24 30 00       	mov    BYTE PTR [rsp+0x30],0x0
+   141e73107:	c6 44 24 28 00       	mov    BYTE PTR [rsp+0x28],0x0
+   141e7310c:	c6 44 24 20 00       	mov    BYTE PTR [rsp+0x20],0x0
+   141e73111:	48 8d 94 24 88 00 00 00 	lea    rdx,[rsp+0x88]
+   141e73119:	48 89 f1             	mov    rcx,rsi
+   141e7311c:	41 b0 03             	mov    r8b,0x3
+   141e7311f:	45 31 c9             	xor    r9d,r9d
+   141e73122:	e8 59 de fd ff       	call   0x141e50f80
+
+DECODE FROM 0x141e6c020; EXCERPT ONLY
+WINDOW [0x141e6c30e, 0x141e6c324)
+   141e6c30e:	48 8d 94 24 90 00 00 00 	lea    rdx,[rsp+0x90]
+   141e6c316:	48 89 c1             	mov    rcx,rax
+   141e6c319:	41 b0 03             	mov    r8b,0x3
+   141e6c31c:	45 31 c9             	xor    r9d,r9d
+   141e6c31f:	e8 5c 4c fe ff       	call   0x141e50f80
+
+DECODE FROM 0x141e5a990; EXCERPT ONLY
+WINDOW [0x141e5af90, 0x141e5afd2)
+   141e5af90:	48 8b 0d 39 f3 5c 04 	mov    rcx,QWORD PTR [rip+0x45cf339]        # 0x14642a2d0
+   141e5af97:	48 8b 05 2a f3 5c 04 	mov    rax,QWORD PTR [rip+0x45cf32a]        # 0x14642a2c8
+   141e5af9e:	48 29 c1             	sub    rcx,rax
+   141e5afa1:	74 2f                	je     0x141e5afd2
+   141e5afa3:	48 89 ca             	mov    rdx,rcx
+   141e5afa6:	48 c1 fa 03          	sar    rdx,0x3
+   141e5afaa:	48 83 fa 02          	cmp    rdx,0x2
+   141e5afae:	41 b8 01 00 00 00    	mov    r8d,0x1
+   141e5afb4:	4c 0f 43 c2          	cmovae r8,rdx
+   141e5afb8:	48 83 f9 10          	cmp    rcx,0x10
+   141e5afbc:	73 54                	jae    0x141e5b012
+   141e5afbe:	31 d2                	xor    edx,edx
+   141e5afc0:	41 f6 c0 01          	test   r8b,0x1
+   141e5afc4:	74 0c                	je     0x141e5afd2
+   141e5afc6:	48 8b 04 d0          	mov    rax,QWORD PTR [rax+rdx*8]
+   141e5afca:	48 39 30             	cmp    QWORD PTR [rax],rsi
+   141e5afcd:	75 03                	jne    0x141e5afd2
+   141e5afcf:	4c 89 30             	mov    QWORD PTR [rax],r14
+
+DECODE FROM 0x141e6e9a0; EXCERPT ONLY
+WINDOW [0x141e6e9a0, 0x141e6e9c4)
+   141e6e9a0:	41 57                	push   r15
+   141e6e9a2:	41 56                	push   r14
+   141e6e9a4:	41 54                	push   r12
+   141e6e9a6:	56                   	push   rsi
+   141e6e9a7:	57                   	push   rdi
+   141e6e9a8:	53                   	push   rbx
+   141e6e9a9:	48 83 ec 38          	sub    rsp,0x38
+   141e6e9ad:	49 89 cc             	mov    r12,rcx
+   141e6e9b0:	48 8b 05 11 b9 5b 04 	mov    rax,QWORD PTR [rip+0x45bb911]        # 0x14642a2c8
+   141e6e9b7:	48 3b 05 12 b9 5b 04 	cmp    rax,QWORD PTR [rip+0x45bb912]        # 0x14642a2d0
+   141e6e9be:	0f 84 e6 00 00 00    	je     0x141e6eaaa
+WINDOW [0x141e6e9f7, 0x141e6ea39)
+   141e6e9f7:	48 b8 73 68 6f 75 6c 64 20 62 	movabs rax,0x6220646c756f6873
+   141e6ea01:	48 89 43 08          	mov    QWORD PTR [rbx+0x8],rax
+   141e6ea05:	48 b8 65 20 6e 6f 20 70 6f 69 	movabs rax,0x696f70206f6e2065
+   141e6ea0f:	48 89 43 10          	mov    QWORD PTR [rbx+0x10],rax
+   141e6ea13:	48 b8 6e 74 65 72 73 20 6c 65 	movabs rax,0x656c20737265746e
+   141e6ea1d:	48 89 43 18          	mov    QWORD PTR [rbx+0x18],rax
+   141e6ea21:	48 b8 66 74 20 69 6e 20 68 65 	movabs rax,0x6568206e69207466
+   141e6ea2b:	48 89 43 20          	mov    QWORD PTR [rbx+0x20],rax
+   141e6ea2f:	66 c7 43 28 72 65    	mov    WORD PTR [rbx+0x28],0x6572
+   141e6ea35:	c6 43 2a 00          	mov    BYTE PTR [rbx+0x2a],0x0
+WINDOW [0x141e6ea93, 0x141e6eaaa)
+   141e6ea93:	48 8b 05 2e b8 5b 04 	mov    rax,QWORD PTR [rip+0x45bb82e]        # 0x14642a2c8
+   141e6ea9a:	48 3b 05 2f b8 5b 04 	cmp    rax,QWORD PTR [rip+0x45bb82f]        # 0x14642a2d0
+   141e6eaa1:	74 07                	je     0x141e6eaaa
+   141e6eaa3:	48 89 05 26 b8 5b 04 	mov    QWORD PTR [rip+0x45bb826],rax        # 0x14642a2d0
+
+DECODE FROM 0x1454e9d70; EXCERPT ONLY
+WINDOW [0x1454e9d70, 0x1454e9d89)
+   1454e9d70:	44 8b 1d 45 92 e1 00 	mov    r11d,DWORD PTR [rip+0xe19245]        # 0x146302fbc
+   1454e9d77:	4c 8b ca             	mov    r9,rdx
+   1454e9d7a:	4c 2b c9             	sub    r9,rcx
+   1454e9d7d:	4c 8b d2             	mov    r10,rdx
+   1454e9d80:	49 8b d1             	mov    rdx,r9
+   1454e9d83:	48 83 e2 e0          	and    rdx,0xffffffffffffffe0
+   1454e9d87:	74 44                	je     0x1454e9dcd
+WINDOW [0x1454e9dcd, 0x1454e9dd3)
+   1454e9dcd:	49 83 e1 f0          	and    r9,0xfffffffffffffff0
+   1454e9dd1:	74 37                	je     0x1454e9e0a
+WINDOW [0x1454e9e0a, 0x1454e9e22)
+   1454e9e0a:	49 3b ca             	cmp    rcx,r10
+   1454e9e0d:	74 0f                	je     0x1454e9e1e
+   1454e9e0f:	90                   	nop
+   1454e9e10:	4c 39 01             	cmp    QWORD PTR [rcx],r8
+   1454e9e13:	74 09                	je     0x1454e9e1e
+   1454e9e15:	48 83 c1 08          	add    rcx,0x8
+   1454e9e19:	49 3b ca             	cmp    rcx,r10
+   1454e9e1c:	75 f2                	jne    0x1454e9e10
+   1454e9e1e:	48 8b c1             	mov    rax,rcx
+   1454e9e21:	c3                   	ret    
+
