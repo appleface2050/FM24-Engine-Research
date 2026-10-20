@@ -281,6 +281,12 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def payload_header_matches(header, code, field4, side, flag):
+    """141a44bb8..bd5只比较DWORD0及字节4/5/6；不读取字节7。"""
+    return (struct.unpack_from("<I", header)[0] == code
+            and header[4] == field4 and header[5] == side and header[6] == flag)
+
+
 def team_payload_forwards_match(has_primary, flags):
     """只描述14513c65d门槛；False不证明此前容器复制帮助函数保分。"""
     return bool(has_primary and flags & 1)
@@ -607,6 +613,11 @@ def examples():
           empty_team_payload_fields(0x50, 0x1234), (0, 1, 1, 0x1234))
     check("empty-team-payload-copies-optional-reference",
           empty_team_payload_fields(0x20, 0x1234, 0x5678), (1, 0, 0, 0x5678))
+    fresh_header = bytes.fromhex("0500000000ff0000")
+    check("fresh-payload-side0-forces-rebuild", payload_header_matches(fresh_header, 5, 42, 0, 1), False)
+    check("fresh-payload-side1-forces-rebuild", payload_header_matches(fresh_header, 5, 0, 1, 1), False)
+    check("cache-equality-ignores-byte7",
+          payload_header_matches(bytes.fromhex("050000002a0001ff"), 5, 42, 0, 1), True)
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -706,6 +717,7 @@ def verify_original(exe):
         "20261020_schedule_task_collection_observations.json",
         "20261020_full_output_order_observations.json",
         "20261020_team_payload_match_gate_observations.json",
+        "20261020_payload_cache_cold_path_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
