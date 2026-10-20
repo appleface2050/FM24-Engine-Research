@@ -446,7 +446,14 @@
         "0x141960bb0",
         "0x141958a30",
         "0x15114cee0",
-        "0x14195a6c0"
+        "0x14195a6c0",
+        "0x141957c40",
+        "0x141958550",
+        "0x144361db0",
+        "0x141958770",
+        "0x14195bc70",
+        "0x14435e2c0",
+        "0x144361f90"
       ],
       "evidence": {
         "reports": [
@@ -520,7 +527,11 @@
           "20261020_payload_player_read_dedup_static.txt",
           "20261020_payload_player_read_dedup_observations.json",
           "20261020_payload_label_dispatch_static.txt",
-          "20261020_payload_label_dispatch_observations.json"
+          "20261020_payload_label_dispatch_observations.json",
+          "20261020_payload_descriptor_transfer_static.txt",
+          "20261020_payload_descriptor_transfer_observations.json",
+          "20261020_payload_nested_ownership_static.txt",
+          "20261020_payload_nested_ownership_observations.json"
         ]
       },
       "upstream": [
@@ -548,7 +559,7 @@
         "14513b9b0空Q+138整次保分仅为局部边界，自然可达性未知；非空复制/释放别名及bit0置位后的141a452b0实际case1下游保分仍待证。",
         "已核对事件标量转换及目标记录合并；已识别标准库导入，A+34=0保持、正长度malloc首次成功、合法所有权/无计分别名和外部接口假设下可限定聚合器保留；首次零长度空源memmove实现未独立核对。池补充/失败恢复虚回调、case1及公共M消费者仍未闭合。",
         "已排除case1中7处固定mask/ID球员读取的对象写入，已接静态代码映射及6字节历史去重到16字节独立输出。追加增长/1418ff320、其他case1帮助函数及141a61540转交M到141a63a60的副作用仍未闭合。",
-        "已绑定38/3a记录分派及由比赛字段确定的低字节变体；外层选定分支不再解引用M，但141960bb0写共享+110/条目+1c且可加载/记统计。141958a30已解析E9目标15114cee0，复制/实例化/清理帮助函数及共享对象与计分对象分离仍待证。"
+        "已绑定38/3a分派与共享资源查询写入。15114cee0为字段转移而非普通复制；实际目标保持全零且静态栈偏移常量保持时，转移及随后源清理整段无CALL，已条件排除其计分副作用。141957c40嵌套构建/144361db0、资源加载和最终目标清理仍待证。 已核对元素构建共享引用递增/子对象分支，以及组+21拥有控制与第二槽控制引用的独立释放；144361f90、虚析构、分配/池释放和自然模板布局仍待证。"
       ],
       "connections": [
         {
@@ -1566,48 +1577,54 @@
           "callsite": "0x141a6973d",
           "callee": "0x141958a30",
           "receiver": "destination stack+40 descriptor",
-          "target": "copy stub141958a30 -> E9 target15114cee0",
+          "target": "descriptor field transfer via E9 target15114cee0; clears source pointers",
           "conditions": [
-            "resource query returns"
+            "resource query returns",
+            "destination+0/+8/+10 retain entry zero initialization",
+            "distinct valid descriptor ranges; prologue DWORD15828ea84 retained"
           ],
-          "evidence": "20261020_payload_label_dispatch_observations.json",
-          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+          "evidence": "20261020_payload_descriptor_transfer_observations.json",
+          "limit": "selected whole transfer has no CALL; generic nonempty-target/equal-reference behavior differs; final-score preservation remains open"
         },
         {
           "source": "queried descriptor at stack+60",
           "callsite": "0x141a69769",
           "callee": "0x141958a30",
           "receiver": "destination stack+40 descriptor",
-          "target": "copy stub141958a30 -> E9 target15114cee0",
+          "target": "descriptor field transfer via E9 target15114cee0; clears source pointers",
           "conditions": [
-            "resource query returns"
+            "resource query returns",
+            "destination+0/+8/+10 retain entry zero initialization",
+            "distinct valid descriptor ranges; prologue DWORD15828ea84 retained"
           ],
-          "evidence": "20261020_payload_label_dispatch_observations.json",
-          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+          "evidence": "20261020_payload_descriptor_transfer_observations.json",
+          "limit": "selected whole transfer has no CALL; generic nonempty-target/equal-reference behavior differs; final-score preservation remains open"
         },
         {
           "source": "temporary descriptor at stack+60",
           "callsite": "0x141a69745",
           "callee": "0x141958550",
           "receiver": "temporary descriptor",
-          "target": "reference cleanup and conditional release",
+          "target": "moved-from descriptor cleanup; null +0/+8/+10 follows selected transfer",
           "conditions": [
-            "descriptor copy returns"
+            "selected field transfer returns",
+            "source pointer fields remain zero until cleanup"
           ],
-          "evidence": "20261020_payload_label_dispatch_observations.json",
-          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+          "evidence": "20261020_payload_descriptor_transfer_observations.json",
+          "limit": "whole moved-from cleanup path has no CALL; does not cover final destination cleanup"
         },
         {
           "source": "temporary descriptor at stack+60",
           "callsite": "0x141a69771",
           "callee": "0x141958550",
           "receiver": "temporary descriptor",
-          "target": "reference cleanup and conditional release",
+          "target": "moved-from descriptor cleanup; null +0/+8/+10 follows selected transfer",
           "conditions": [
-            "descriptor copy returns"
+            "selected field transfer returns",
+            "source pointer fields remain zero until cleanup"
           ],
-          "evidence": "20261020_payload_label_dispatch_observations.json",
-          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+          "evidence": "20261020_payload_descriptor_transfer_observations.json",
+          "limit": "whole moved-from cleanup path has no CALL; does not cover final destination cleanup"
         },
         {
           "source": "local descriptor at stack+40",
@@ -1646,6 +1663,119 @@
           ],
           "evidence": "20261020_payload_label_dispatch_observations.json",
           "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+        },
+        {
+          "source": "allocator146426ca0; size0x18 (24 bytes)",
+          "callsite": "0x141957c95",
+          "callee": "0x1418fef20",
+          "receiver": "fresh24-byte vector header",
+          "target": "descriptor+10 published before root check",
+          "conditions": [
+            "selected initialized allocator path; successful allocation"
+          ],
+          "evidence": "20261020_payload_descriptor_transfer_observations.json",
+          "limit": "whole resolver/final destination cleanup and score/global alias separation remain open"
+        },
+        {
+          "source": "allocator146426ca0; size0x28 (40 bytes)",
+          "callsite": "0x141957ea5",
+          "callee": "0x1418fef20",
+          "receiver": "fresh40-byte group record",
+          "target": "per-root source entry representation",
+          "conditions": [
+            "nonempty valid resource root"
+          ],
+          "evidence": "20261020_payload_descriptor_transfer_observations.json",
+          "limit": "whole resolver/final destination cleanup and score/global alias separation remain open"
+        },
+        {
+          "source": "original resource element RDI",
+          "callsite": "0x1419581c9",
+          "callee": "0x144361db0",
+          "receiver": "new pool block RBX; RDX=original element",
+          "target": "nested element initialization/copy boundary",
+          "conditions": [
+            "descriptor DWORD+18 != -1",
+            "valid nested source range; pool allocation returns"
+          ],
+          "evidence": "20261020_payload_descriptor_transfer_observations.json",
+          "limit": "whole resolver/final destination cleanup and score/global alias separation remain open"
+        },
+        {
+          "source": "selected nested element allocation path",
+          "callsite": "0x14195815e",
+          "callee": "0x14195bf20",
+          "receiver": "pool provider",
+          "target": "pool pop/refill selection",
+          "conditions": [
+            "descriptor DWORD+18 != -1"
+          ],
+          "evidence": "20261020_payload_descriptor_transfer_observations.json",
+          "limit": "whole resolver/final destination cleanup and score/global alias separation remain open"
+        },
+        {
+          "source": "queried entry or null; global default reference; selected resource key",
+          "callsite": "0x141960e1f",
+          "callee": "0x141957c40",
+          "receiver": "query output descriptor R13",
+          "target": "new auxiliary vector descriptor+10 and nested resource representation",
+          "conditions": [
+            "query reaches common return construction",
+            "descriptor+10 initialized0 and DWORD+18 set to resource key"
+          ],
+          "evidence": "20261020_payload_descriptor_transfer_observations.json",
+          "limit": "pool/allocator, per-element helper, resource root aliases and final destination cleanup not yet excluded"
+        },
+        {
+          "source": "source element+10",
+          "callsite": "0x144361e6b",
+          "callee": "0x14435e2c0",
+          "receiver": "new child pool block",
+          "target": "nested child construction",
+          "conditions": [
+            "original element+10 !=0",
+            "new child block returned"
+          ],
+          "evidence": "20261020_payload_nested_ownership_observations.json",
+          "limit": "reference writes, recursive release and pool/free or virtual helper effects remain; no full score preservation"
+        },
+        {
+          "source": "non-null40-byte group in outer vector",
+          "callsite": "0x1419587d8",
+          "callee": "0x14195bc70",
+          "receiver": "group record",
+          "target": "group element/control-reference cleanup",
+          "conditions": [
+            "outer item non-null"
+          ],
+          "evidence": "20261020_payload_nested_ownership_observations.json",
+          "limit": "reference writes, recursive release and pool/free or virtual helper effects remain; no full score preservation"
+        },
+        {
+          "source": "first pointer in16-byte slot",
+          "callsite": "0x14195bcc4",
+          "callee": "0x144361f90",
+          "receiver": "owned element",
+          "target": "element destruction boundary",
+          "conditions": [
+            "group+21 !=0",
+            "slot first pointer non-null"
+          ],
+          "evidence": "20261020_payload_nested_ownership_observations.json",
+          "limit": "reference writes, recursive release and pool/free or virtual helper effects remain; no full score preservation"
+        },
+        {
+          "source": "group buffer begin and cap-begin",
+          "callsite": "0x14195bd68",
+          "callee": "0x1418ff320",
+          "receiver": "allocator global1463634e8",
+          "target": "release group16-byte-slot array",
+          "conditions": [
+            "group buffer non-null",
+            "all selected cleanup loops return"
+          ],
+          "evidence": "20261020_payload_nested_ownership_observations.json",
+          "limit": "reference writes, recursive release and pool/free or virtual helper effects remain; no full score preservation"
         }
       ]
     },

@@ -281,6 +281,36 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def payload_element_without_child(header, reference, reference_count):
+    """144361db0源+10为空的新目标路径；只列字段和共享引用计数变化。"""
+    return (header, reference, 0), (reference_count + int(bool(reference))) & 0xFFFFFFFF
+
+
+def payload_group_release_actions(owns_first, slots):
+    """列出条件动作；控制计数冻结于第二遍递减前，不建模第一遍析构的副作用。"""
+    actions = []
+    if owns_first:
+        actions.extend(("destroy_element", element) for element, _ in slots if element)
+    for _, control in slots:
+        if control is not None:
+            pointer, count = control
+            actions.append(("decrement_control", pointer))
+            if count == 1:
+                actions.append(("virtual_destroy", pointer))
+    return actions
+
+
+def payload_move_into_empty(source):
+    """15114cee0的不同对象/空目标路径；元组为(+0,+8,+10,+18,+1c)。"""
+    root, reference, auxiliary, mode, flag = source
+    return (root, reference, auxiliary, mode, flag), (0, 0, 0, mode, flag)
+
+
+def payload_transfer_reference_fields(destination, source):
+    """仅15114cfcc..d00b字段结果；不建模旧引用释放副作用。"""
+    return (destination, source) if destination == source else (source, 0)
+
+
 def payload_reference_variant(first, second, third):
     """141a615a6..601：32位和按signed解释，再两次向零取余；仅返回低字节的有符号值。"""
     total = (first + second + third) & 0xFFFFFFFF
@@ -694,6 +724,30 @@ def examples():
     for code, base in ((0x38, 0x4B74F), (0x3A, 0x4B752)):
         for variant, delta in ((0, 0), (1, 1), (2, 2), (-1, 2)):
             check(f"payload-resource-key-{code}-{variant}", payload_resource_key(code, variant), base + delta)
+    populated = (0x1000, 0x2000, 0x3000, 0x4B752, 0xFF)
+    moved, emptied = payload_move_into_empty(populated)
+    check("descriptor-empty-target-receives-fields", moved, populated)
+    check("descriptor-source-retains-only-metadata", emptied, (0, 0, 0, 0x4B752, 0xFF))
+    check("descriptor-source-all-cleanup-pointers-null", emptied[:3], (0, 0, 0))
+    check("descriptor-transfer-null-source-reference",
+          payload_move_into_empty((0x1000, 0, 0x3000, -1, 0)),
+          ((0x1000, 0, 0x3000, -1, 0), (0, 0, 0, -1, 0)))
+    check("descriptor-equal-reference-keeps-both", payload_transfer_reference_fields(7, 7), (7, 7))
+    check("descriptor-distinct-reference-transfers", payload_transfer_reference_fields(0, 7), (7, 0))
+    check("element-null-child-shares-reference",
+          payload_element_without_child(0x1000, 0x2000, 1), ((0x1000, 0x2000, 0), 2))
+    check("element-null-reference-does-not-increment",
+          payload_element_without_child(0x1000, 0, 0), ((0x1000, 0, 0), 0))
+    slots = [(0x1000, (0x2000, 1)), (0, None)]
+    check("group-borrowed-still-destroys-last-control",
+          payload_group_release_actions(False, slots),
+          [("decrement_control", 0x2000), ("virtual_destroy", 0x2000)])
+    check("group-owned-destroys-first-before-control",
+          payload_group_release_actions(True, slots),
+          [("destroy_element", 0x1000), ("decrement_control", 0x2000), ("virtual_destroy", 0x2000)])
+    check("group-shared-control-does-not-destroy",
+          payload_group_release_actions(False, [(0x1000, (0x2000, 2))]),
+          [("decrement_control", 0x2000)])
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -798,6 +852,8 @@ def verify_original(exe):
         "20261020_payload_allocator_boundary_observations.json",
         "20261020_payload_player_read_dedup_observations.json",
         "20261020_payload_label_dispatch_observations.json",
+        "20261020_payload_descriptor_transfer_observations.json",
+        "20261020_payload_nested_ownership_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
