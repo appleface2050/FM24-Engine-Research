@@ -281,6 +281,18 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def payload_control_reference_cycle(initial, copies, source_releases):
+    """有效引用计数的冻结算例：构建增加、外部释放、清理副本；不执行虚调用。"""
+    after_build = (initial + copies) & 0xFFFFFFFF
+    before_cleanup = (after_build - source_releases) & 0xFFFFFFFF
+    count = before_cleanup
+    virtual_calls = 0
+    for _ in range(copies):
+        count = (count - 1) & 0xFFFFFFFF
+        virtual_calls += int(count == 0)
+    return after_build, before_cleanup, count, virtual_calls
+
+
 def payload_element_without_child(header, reference, reference_count):
     """144361db0源+10为空的新目标路径；只列字段和共享引用计数变化。"""
     return (header, reference, 0), (reference_count + int(bool(reference))) & 0xFFFFFFFF
@@ -748,6 +760,14 @@ def examples():
     check("group-shared-control-does-not-destroy",
           payload_group_release_actions(False, [(0x1000, (0x2000, 2))]),
           [("decrement_control", 0x2000)])
+    check("control-source-owner-retained",
+          payload_control_reference_cycle(1, 1, 0), (2, 2, 1, 0))
+    check("control-source-owner-released",
+          payload_control_reference_cycle(1, 1, 1), (2, 1, 0, 1))
+    check("control-aliased-occurrences-owner-retained",
+          payload_control_reference_cycle(1, 3, 0), (4, 4, 1, 0))
+    check("control-aliased-occurrences-owner-released",
+          payload_control_reference_cycle(1, 3, 1), (4, 3, 0, 1))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -854,6 +874,7 @@ def verify_original(exe):
         "20261020_payload_label_dispatch_observations.json",
         "20261020_payload_descriptor_transfer_observations.json",
         "20261020_payload_nested_ownership_observations.json",
+        "20261020_payload_release_retention_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

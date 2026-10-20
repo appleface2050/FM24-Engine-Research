@@ -453,7 +453,13 @@
         "0x141958770",
         "0x14195bc70",
         "0x14435e2c0",
-        "0x144361f90"
+        "0x144361f90",
+        "0x1418ff320",
+        "0x14435e8b0",
+        "0x144362050",
+        "0x14195bd50",
+        "0x14435e90f",
+        "0x14435ea59"
       ],
       "evidence": {
         "reports": [
@@ -531,7 +537,9 @@
           "20261020_payload_descriptor_transfer_static.txt",
           "20261020_payload_descriptor_transfer_observations.json",
           "20261020_payload_nested_ownership_static.txt",
-          "20261020_payload_nested_ownership_observations.json"
+          "20261020_payload_nested_ownership_observations.json",
+          "20261020_payload_release_retention_static.txt",
+          "20261020_payload_release_retention_observations.json"
         ]
       },
       "upstream": [
@@ -559,7 +567,7 @@
         "14513b9b0空Q+138整次保分仅为局部边界，自然可达性未知；非空复制/释放别名及bit0置位后的141a452b0实际case1下游保分仍待证。",
         "已核对事件标量转换及目标记录合并；已识别标准库导入，A+34=0保持、正长度malloc首次成功、合法所有权/无计分别名和外部接口假设下可限定聚合器保留；首次零长度空源memmove实现未独立核对。池补充/失败恢复虚回调、case1及公共M消费者仍未闭合。",
         "已排除case1中7处固定mask/ID球员读取的对象写入，已接静态代码映射及6字节历史去重到16字节独立输出。追加增长/1418ff320、其他case1帮助函数及141a61540转交M到141a63a60的副作用仍未闭合。",
-        "已绑定38/3a分派与共享资源查询写入。15114cee0为字段转移而非普通复制；实际目标保持全零且静态栈偏移常量保持时，转移及随后源清理整段无CALL，已条件排除其计分副作用。141957c40嵌套构建/144361db0、资源加载和最终目标清理仍待证。 已核对元素构建共享引用递增/子对象分支，以及组+21拥有控制与第二槽控制引用的独立释放；144361f90、虚析构、分配/池释放和自然模板布局仍待证。"
+        "已条件排除实际空目标字段转移和源清理；已接元素/子对象销毁、共享引用释放及1418ff320。三处virtual+0归零点已定位，匹配计数且原持有者保留可排除归零；渲染期间原持有者释放/引用变化、具体虚调用类型、资源加载及池回收仍未闭合。 子对象构建/销毁池已绑定同一固定146439db0，初始化标签sitranslation::VARIABLE、大小0x58；不据标签直接证明全部回调保分。"
       ],
       "connections": [
         {
@@ -1776,6 +1784,130 @@
           ],
           "evidence": "20261020_payload_nested_ownership_observations.json",
           "limit": "reference writes, recursive release and pool/free or virtual helper effects remain; no full score preservation"
+        },
+        {
+          "source": "element+10",
+          "callsite": "0x144361fb4",
+          "callee": "0x14435e8b0",
+          "receiver": "child object",
+          "target": "child lifetime cleanup",
+          "conditions": [
+            "element child pointer non-null"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "reference owner retention, concrete virtual types and recursive/pool cleanup effects remain unproved"
+        },
+        {
+          "source": "child cleanup returned",
+          "callsite": "0x144361fb9",
+          "callee": "0x144362050",
+          "receiver": "pool provider",
+          "target": "pool selection before returning child block",
+          "conditions": [
+            "child pointer was non-null"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "reference owner retention, concrete virtual types and recursive/pool cleanup effects remain unproved"
+        },
+        {
+          "source": "selected pool metadata",
+          "callsite": "0x144361ff3",
+          "callee": "0x1443203d0",
+          "receiver": "pool object",
+          "target": "conditional pool recycle helper",
+          "conditions": [
+            "tracking disabled or decrement hits0",
+            "pool+61 !=0"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "reference owner retention, concrete virtual types and recursive/pool cleanup effects remain unproved"
+        },
+        {
+          "source": "child+30 vector buffer and capacity bytes",
+          "callsite": "0x14435e927",
+          "callee": "0x1418ff320",
+          "receiver": "allocator global1463634e8",
+          "target": "release control-pointer array",
+          "conditions": [
+            "optional vector non-null and buffer non-null",
+            "all per-item virtual callbacks return"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "reference owner retention, concrete virtual types and recursive/pool cleanup effects remain unproved"
+        },
+        {
+          "source": "child+38/+48 pointer range",
+          "callsite": "0x14435ea26",
+          "callee": "0x1418ff320",
+          "receiver": "allocator global1463634e8",
+          "target": "release shared-reference array",
+          "conditions": [
+            "buffer non-null",
+            "all per-reference releases return"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "reference owner retention, concrete virtual types and recursive/pool cleanup effects remain unproved"
+        },
+        {
+          "source": "shared reference in child pointer array",
+          "callsite": "0x14435ea0b",
+          "callee": "0x1443356b0",
+          "receiver": "reference address-4",
+          "target": "release zero-count reference block",
+          "conditions": [
+            "reference non-null; DWORD count decrement hits0"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "reference owner retention, concrete virtual types and recursive/pool cleanup effects remain unproved"
+        },
+        {
+          "source": "child+10 reference",
+          "callsite": "0x14435ea6e",
+          "callee": "0x1443356b0",
+          "receiver": "reference address-4",
+          "target": "release zero-count reference block",
+          "conditions": [
+            "reference non-null; DWORD count decrement hits0"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "reference owner retention, concrete virtual types and recursive/pool cleanup effects remain unproved"
+        },
+        {
+          "source": "child+8 reference",
+          "callsite": "0x14435ea86",
+          "callee": "0x1443356b0",
+          "receiver": "reference address-4",
+          "target": "release zero-count reference block",
+          "conditions": [
+            "reference non-null; DWORD count decrement hits0"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "reference owner retention, concrete virtual types and recursive/pool cleanup effects remain unproved"
+        },
+        {
+          "source": "source element child non-null",
+          "callsite": "0x144361dff",
+          "callee": "0x144362050",
+          "receiver": "child pool provider",
+          "target": "same pool used later by destruction",
+          "conditions": [
+            "source+10 !=0"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "allocation label/constructor/destructor binding; not complete type or harmless-callback proof"
+        },
+        {
+          "source": "label sitranslation::VARIABLE; size0x58",
+          "callsite": "0x1443620da",
+          "callee": "0x1418ff970",
+          "receiver": "fixed pool146439db0",
+          "target": "pool initialization identity",
+          "conditions": [
+            "TLS guard requires initialization",
+            "initialization guard accepts current thread"
+          ],
+          "evidence": "20261020_payload_release_retention_observations.json",
+          "limit": "allocation label/constructor/destructor binding; not complete type or harmless-callback proof"
         }
       ]
     },
