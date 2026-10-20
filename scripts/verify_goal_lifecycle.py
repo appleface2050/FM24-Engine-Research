@@ -786,6 +786,11 @@ def examples():
     initialized, _ = initialize_fixture_record_heads([[255]*4, [255]*4], 0, [0, 0])
     check("ordinary increment after reached zero write",
           adjust_fixture_record(initialized[0], 0, 0, 1), [1, 255, 255, 255])
+    team = bytearray([255] * 0x250)
+    team[0x118:0x120] = (0x0A0A006400000000).to_bytes(8, "little")
+    team[0x138:0x249] = bytes(0x111)
+    check("team constructor offset and count start at zero",
+          (team[0x11B], team[0x248], team[0x249]), (0, 0, 255))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -894,6 +899,9 @@ def verify_original(exe):
         "20261020_payload_nested_ownership_observations.json",
         "20261020_payload_release_retention_observations.json",
         "20261020_fixture_score_initialization_observations.json",
+        "20261020_payload_null_slot_isolation_observations.json",
+        "20261020_stage_dirty_acceptance_observations.json",
+        "20261020_finalize_helper_preservation_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

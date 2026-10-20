@@ -477,7 +477,10 @@
           "20261020_球队产物辅助调用的保分边界.md",
           "20261020_新建产物的缓存重建与计分读取.md",
           "20261020_产物生成的球员读取与事件去重.md",
-          "20261020_比赛比分初始化与普通记账起点.md"
+          "20261020_比赛比分初始化与普通记账起点.md",
+          "20261020_空槽文本求值与计分隔离边界.md",
+          "20261020_赛事脏标志与阶段正式消费.md",
+          "20261020_收尾只读辅助与球队处理边界.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -547,7 +550,13 @@
           "20261020_payload_release_retention_static.txt",
           "20261020_payload_release_retention_observations.json",
           "20261020_fixture_score_initialization_static.txt",
-          "20261020_fixture_score_initialization_observations.json"
+          "20261020_fixture_score_initialization_observations.json",
+          "20261020_payload_null_slot_isolation_static.txt",
+          "20261020_payload_null_slot_isolation_observations.json",
+          "20261020_stage_dirty_acceptance_static.txt",
+          "20261020_stage_dirty_acceptance_observations.json",
+          "20261020_finalize_helper_preservation_static.txt",
+          "20261020_finalize_helper_preservation_observations.json"
         ]
       },
       "upstream": [
@@ -575,7 +584,8 @@
         "14513b9b0空Q+138整次保分仅为局部边界，自然可达性未知；非空复制/释放别名及bit0置位后的141a452b0实际case1下游保分仍待证。",
         "已核对事件标量转换及目标记录合并；已识别标准库导入，A+34=0保持、正长度malloc首次成功、合法所有权/无计分别名和外部接口假设下可限定聚合器保留；首次零长度空源memmove实现未独立核对。池补充/失败恢复虚回调、case1及公共M消费者仍未闭合。",
         "已排除case1中7处固定mask/ID球员读取的对象写入，已接静态代码映射及6字节历史去重到16字节独立输出。追加增长/1418ff320、其他case1帮助函数及141a61540转交M到141a63a60的副作用仍未闭合。",
-        "已条件排除实际空目标字段转移和源清理；已接元素/子对象销毁、共享引用释放及1418ff320。三处virtual+0归零点已定位，匹配计数且原持有者保留可排除归零；渲染期间原持有者释放/引用变化、具体虚调用类型、资源加载及池回收仍未闭合。 子对象构建/销毁池已绑定同一固定146439db0，初始化标签sitranslation::VARIABLE、大小0x58；不据标签直接证明全部回调保分。"
+        "已条件排除实际空目标字段转移和源清理；已接元素/子对象销毁、共享引用释放及1418ff320。三处virtual+0归零点已定位，匹配计数且原持有者保留可排除归零；渲染期间原持有者释放/引用变化、具体虚调用类型、资源加载及池回收仍未闭合。 子对象构建/销毁池已绑定同一固定146439db0，初始化标签sitranslation::VARIABLE、大小0x58；不据标签直接证明全部回调保分。",
+        "38/3a空槽求值已排除控制虚调用及字符串/池析构；完整资源缓存生命周期与普通存储首次初始化仍有明确条件边界，见空槽专项。"
       ],
       "connections": [
         {
@@ -1929,6 +1939,108 @@
           ],
           "evidence": "20261020_fixture_score_initialization_observations.json",
           "limit": "initial write checkpoint only; does not prove later helpers retain zero or natural shot reachability"
+        },
+        {
+          "source": "M team-object creation helper141ac7a90",
+          "callsite": "0x141ac7c71",
+          "callee": "0x141b6c960",
+          "receiver": "new 0x5e0-byte T, arg2=M",
+          "target": "T+11b=0, memset[T+138,T+249)=0 including T+248; published as M+cdf8/ce00",
+          "conditions": [
+            "successful ordinary object allocation",
+            "construction path reaches publication"
+          ],
+          "evidence": "20261020_fixture_score_initialization_observations.json",
+          "limit": "constructor checkpoint only; input loading and later preparation may change fields"
+        },
+        {
+          "source": "M team-object creation helper141ac7a90",
+          "callsite": "0x141ac7d0b",
+          "callee": "0x141b6c960",
+          "receiver": "new 0x5e0-byte T, arg2=M",
+          "target": "T+11b=0, memset[T+138,T+249)=0 including T+248; published as M+cdf8/ce00",
+          "conditions": [
+            "successful ordinary object allocation",
+            "construction path reaches publication"
+          ],
+          "evidence": "20261020_fixture_score_initialization_observations.json",
+          "limit": "constructor checkpoint only; input loading and later preparation may change fields"
+        },
+        {
+          "source": "GAME_COMP_MANAGER+220 forwards C",
+          "callsite": "0x142c16539",
+          "callee": "0x1445ea1f0",
+          "receiver": "P,C",
+          "target": "selected C stage-list scheduling",
+          "conditions": [
+            "reached derived callback, same C retained"
+          ],
+          "evidence": "20261020_stage_dirty_acceptance_observations.json",
+          "limit": "all earlier subscribers and scheduler reachability remain conditional"
+        },
+        {
+          "source": "stage S from C+1c0 list",
+          "callsite": "0x1445ea3d5",
+          "callee": "0x1445ead90",
+          "receiver": "P,S,C",
+          "target": "same-S sorting, position read and history consumer",
+          "conditions": [
+            "type/stage relation gates pass",
+            "S+428 returns nonzero"
+          ],
+          "evidence": "20261020_stage_dirty_acceptance_observations.json",
+          "limit": "history sink is TC_LEAGUE_HISTORY, not current fixture acceptance"
+        },
+        {
+          "source": "stack history row populated from E",
+          "callsite": "0x1437ac32e",
+          "callee": "0x1437db1b0",
+          "receiver": "H+40 container, derived key, local row",
+          "target": "existing-key list receives independent 0x28-byte row",
+          "conditions": [
+            "existing valid key",
+            "nonnull per-key list",
+            "capacity available",
+            "allocation succeeds"
+          ],
+          "evidence": "20261020_stage_dirty_acceptance_observations.json",
+          "limit": "team competition history; no final fixture acceptance claim"
+        },
+        {
+          "source": "141ac8820 reached readonly result helper",
+          "callsite": "0x141ac8c0e",
+          "callee": "0x141ac8d90",
+          "receiver": "same M",
+          "target": "readonly integer calculation via141b85b40",
+          "conditions": [
+            "valid reached match/team/player objects"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "this whole helper only; outer finalizer still has other callbacks"
+        },
+        {
+          "source": "team-history processor A+1c8=M",
+          "callsite": "0x141b25d4d",
+          "callee": "0x141abbdd0",
+          "receiver": "M",
+          "target": "readonly arithmetic via141b85b40 and ceilf/floorf",
+          "conditions": [
+            "valid reached objects and standard scalar math import contracts"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "does not establish rest of141b252f0 preserves score"
+        },
+        {
+          "source": "141ac9190 team-result calculation",
+          "callsite": "0x141ac942f",
+          "callee": "0x141b87020",
+          "receiver": "T,0",
+          "target": "readonly comparison",
+          "conditions": [
+            "valid reached T and opponent"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "other virtual+d0 call uses separately bound fixture/manager types"
         }
       ]
     },
