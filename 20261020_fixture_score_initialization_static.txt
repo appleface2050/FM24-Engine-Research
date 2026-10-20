@@ -77,3 +77,51 @@ Decoded from known function entries with --insn-width=16 before selecting these 
    141b6cfbd:	0f 29 b6 40 05 00 00                            	movaps XMMWORD PTR [rsi+0x540],xmm6
    141b6cfc4:	48 89 be 60 05 00 00                            	mov    QWORD PTR [rsi+0x560],rdi
    141b6cfcb:	c6 86 68 05 00 00 00                            	mov    BYTE PTR [rsi+0x568],0x0
+
+Actual FULL native setup route (separate from mode1 stream reconstruction):
+   1434f7f26:	c6 45 48 00                                     	mov    BYTE PTR [rbp+0x48],0x0
+   1434f7f2a:	44 88 65 49                                     	mov    BYTE PTR [rbp+0x49],r12b
+   1434f7f2e:	48 8d 55 b0                                     	lea    rdx,[rbp-0x50]
+   1434f7f32:	4c 8d 45 48                                     	lea    r8,[rbp+0x48]
+   1434f7f36:	48 89 f1                                        	mov    rcx,rsi
+   1434f7f39:	e8 12 04 5c 00                                  	call   0x143ab8350
+   1434f7f3e:	45 84 e4                                        	test   r12b,r12b
+   1434f7f41:	0f 84 b7 00 00 00                               	je     0x1434f7ffe
+   143ab862f:	48 8d 7d b0                                     	lea    rdi,[rbp-0x50]
+   143ab8633:	48 89 f9                                        	mov    rcx,rdi
+   143ab8636:	4c 89 ea                                        	mov    rdx,r13
+   143ab8639:	e8 b2 9e 6c 01                                  	call   0x1451824f0
+   143ab863e:	48 89 bd 70 01 00 00                            	mov    QWORD PTR [rbp+0x170],rdi
+   143ab8645:	48 8d 8d 70 01 00 00                            	lea    rcx,[rbp+0x170]
+   143ab864c:	48 89 f2                                        	mov    rdx,rsi
+   143ab864f:	49 89 d8                                        	mov    r8,rbx
+   143ab8652:	e8 89 f3 6e 01                                  	call   0x1451a79e0
+   143ab8657:	4c 8d be f8 cd 00 00                            	lea    r15,[rsi+0xcdf8]
+   1451a7a24:	48 8b 09                                        	mov    rcx,QWORD PTR [rcx]
+   1451a7a27:	48 85 c9                                        	test   rcx,rcx
+   1451a7a2a:	0f 84 0f 01 00 00                               	je     0x1451a7b3f
+   1451a7a30:	49 89 d4                                        	mov    r12,rdx
+   1451a7a33:	48 8b 01                                        	mov    rax,QWORD PTR [rcx]
+   1451a7a36:	ff 50 08                                        	call   QWORD PTR [rax+0x8]
+   1451a7a39:	41 88 84 24 b9 06 00 00                         	mov    BYTE PTR [r12+0x6b9],al
+   1451a7a41:	4c 89 e1                                        	mov    rcx,r12
+   1451a7a44:	e8 97 9a 8e fc                                  	call   0x141a914e0
+   1451a7a49:	4c 89 e1                                        	mov    rcx,r12
+   1451a7a4c:	e8 3f 00 92 fc                                  	call   0x141ac7a90
+   1451a7a51:	84 c0                                           	test   al,al
+   1451a7a53:	0f 84 49 0b 00 00                               	je     0x1451a85a2
+   1451a7bd5:	4b 8b bc fc f8 cd 00 00                         	mov    rdi,QWORD PTR [r12+r15*8+0xcdf8]
+   1451a7bdd:	4c 89 a7 60 05 00 00                            	mov    QWORD PTR [rdi+0x560],r12
+   1451a7be4:	48 89 f9                                        	mov    rcx,rdi
+   1451a7be7:	e8 b4 81 9c fc                                  	call   0x141b6fda0
+   1451a7bec:	84 c0                                           	test   al,al
+   1451a7bee:	0f 84 ae 09 00 00                               	je     0x1451a85a2
+   1451a7bf4:	89 5d 10                                        	mov    DWORD PTR [rbp+0x10],ebx
+   1451a7bf7:	48 89 75 60                                     	mov    QWORD PTR [rbp+0x60],rsi
+   1451a7bfb:	44 88 bf b5 00 00 00                            	mov    BYTE PTR [rdi+0xb5],r15b
+   1451a7c02:	4c 89 f8                                        	mov    rax,r15
+   1451a7c05:	48 83 f0 01                                     	xor    rax,0x1
+   1451a7c09:	49 8b 84 c4 f8 cd 00 00                         	mov    rax,QWORD PTR [r12+rax*8+0xcdf8]
+   1451a7c11:	48 89 87 28 01 00 00                            	mov    QWORD PTR [rdi+0x128],rax
+   1451a7c18:	48 8b 87 38 01 00 00                            	mov    rax,QWORD PTR [rdi+0x138]
+   1451a7c1f:	44 88 b8 ee 01 00 00                            	mov    BYTE PTR [rax+0x1ee],r15b

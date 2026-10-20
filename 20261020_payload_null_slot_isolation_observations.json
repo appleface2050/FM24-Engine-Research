@@ -5080,6 +5080,23 @@
         "whole_chunk_free": false
       },
       "invariant": "live pool cell prevents whole-chunk recycle under valid pool accounting"
+    },
+    {
+      "input": {
+        "original_owner_references": 1,
+        "clone_occurrences": 3
+      },
+      "operations": [
+        "copy INC three times:1->4",
+        "original owner retained",
+        "clone cleanup DEC three times:4->1"
+      ],
+      "output": {
+        "final_count": 1,
+        "virtual_zero_calls": 0
+      },
+      "invariant": "retained source owner prevents zero count even when the same object appears multiple times",
+      "counterexample": "original owner release during output yields4->3 before cleanup, then3->0; final cleanup invokes virtual+0"
     }
   ],
   "limitations": [
@@ -5092,6 +5109,7 @@
     "No natural goal-to-final-score closure, no game execution, no runtime observation.",
     "1443202b0 replenishes raw SLIST cells and updates pool counters/event; its underlying14431ffa0 allocation remains a separate successful-storage boundary.",
     "Ordinary output/release isolation is conditional on valid storage/ownership, positive-size first malloc success and already-initialized pools; remaining first-lazy configuration helpers receive constants/local vector/pool, not M or source control-object arguments. Unknown configuration writes are not an observed scoring callback.",
-    "1443591f0 preserves provider slot identity, but provider virtual+18/+28 semantics and count changes are not bound.14435df90 clears root content via1452ef220, whose typed destruction scope is not expanded. Existing null-slot output does not synchronously re-enter141960ee0 before clone cleanup; arbitrary concurrent cache unload remains outside coverage."
+    "1443591f0 preserves provider slot identity, but provider virtual+18/+28 semantics and count changes are not bound.14435df90 clears root content via1452ef220, whose typed destruction scope is not expanded. Existing null-slot output does not synchronously re-enter141960ee0 before clone cleanup; arbitrary concurrent cache unload remains outside coverage.",
+    "Post-query retained-owner conclusion is conditional: observed restored calls contain no resource query, but no-nested-query across unresolved internal helpers is an explicit additional condition, not a complete call-graph result. Concurrent/external unload is excluded. Main branch may be restricted to context+108==0 to bypass14195a770; its internal14192b870/141931b80/141935510/141937eb0/14192ef30 are not fully expanded."
   ]
 }
