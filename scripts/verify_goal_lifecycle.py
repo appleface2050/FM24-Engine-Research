@@ -281,6 +281,11 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def payload_growth_capacity(count):
+    """141a76b0c..b56的正常小规模容量计算；不建模溢出极限分支。"""
+    return max(count + 1, count + count // 2)
+
+
 def project_payload_event(record):
     """1443cc280的字节0..8映射；不建模未写入的字节9或上层分配器。"""
     code, value = struct.unpack_from("<HH", record)
@@ -636,6 +641,8 @@ def examples():
         projected = project_payload_event(source)
         check(f"event-projection-code-{code}", projected,
               struct.pack("<HHHBBB", code, expected_count, 7, 1, 2, 3))
+    for count, expected in ((0, 1), (1, 2), (2, 3), (3, 4), (4, 6)):
+        check(f"payload-growth-capacity-{count}", payload_growth_capacity(count), expected)
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -737,6 +744,7 @@ def verify_original(exe):
         "20261020_team_payload_match_gate_observations.json",
         "20261020_payload_cache_cold_path_observations.json",
         "20261020_payload_event_aggregation_observations.json",
+        "20261020_payload_allocator_boundary_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

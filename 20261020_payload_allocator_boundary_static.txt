@@ -1,0 +1,223 @@
+Static FM24 excerpts; no target execution.
+Allocator body through RET; malloc success/failure prefix; fresh vectors; growth/copy/free windows.
+   1418fef20:	41 56                	push   r14
+   1418fef22:	56                   	push   rsi
+   1418fef23:	57                   	push   rdi
+   1418fef24:	53                   	push   rbx
+   1418fef25:	48 83 ec 28          	sub    rsp,0x28
+   1418fef29:	48 89 d6             	mov    rsi,rdx
+   1418fef2c:	80 79 34 00          	cmp    BYTE PTR [rcx+0x34],0x0
+   1418fef30:	0f 84 83 00 00 00    	je     0x1418fefb9
+   1418fef36:	48 8b 41 18          	mov    rax,QWORD PTR [rcx+0x18]
+   1418fef3a:	48 8b 51 20          	mov    rdx,QWORD PTR [rcx+0x20]
+   1418fef3e:	48 29 c2             	sub    rdx,rax
+   1418fef41:	48 c1 fa 03          	sar    rdx,0x3
+   1418fef45:	48 39 f2             	cmp    rdx,rsi
+   1418fef48:	76 6f                	jbe    0x1418fefb9
+   1418fef4a:	48 8b 1c f0          	mov    rbx,QWORD PTR [rax+rsi*8]
+   1418fef4e:	48 85 db             	test   rbx,rbx
+   1418fef51:	74 66                	je     0x1418fefb9
+   1418fef53:	44 8b 73 78          	mov    r14d,DWORD PTR [rbx+0x78]
+   1418fef57:	48 8d 4b 20          	lea    rcx,[rbx+0x20]
+   1418fef5b:	ff 15 57 0b 45 04    	call   QWORD PTR [rip+0x4450b57]        # 0x145d4fab8
+   1418fef61:	48 89 c7             	mov    rdi,rax
+   1418fef64:	48 85 c0             	test   rax,rax
+   1418fef67:	74 0a                	je     0x1418fef73
+   1418fef69:	80 7b 48 00          	cmp    BYTE PTR [rbx+0x48],0x0
+   1418fef6d:	74 04                	je     0x1418fef73
+   1418fef6f:	f0 ff 43 40          	lock inc DWORD PTR [rbx+0x40]
+   1418fef73:	48 85 ff             	test   rdi,rdi
+   1418fef76:	75 1c                	jne    0x1418fef94
+   1418fef78:	31 c0                	xor    eax,eax
+   1418fef7a:	83 7b 38 00          	cmp    DWORD PTR [rbx+0x38],0x0
+   1418fef7e:	0f 95 c0             	setne  al
+   1418fef81:	44 8b 44 83 54       	mov    r8d,DWORD PTR [rbx+rax*4+0x54]
+   1418fef86:	8b 53 50             	mov    edx,DWORD PTR [rbx+0x50]
+   1418fef89:	48 89 d9             	mov    rcx,rbx
+   1418fef8c:	e8 3f 12 a2 02       	call   0x1443201d0
+   1418fef91:	48 89 c7             	mov    rdi,rax
+   1418fef94:	48 85 ff             	test   rdi,rdi
+   1418fef97:	74 14                	je     0x1418fefad
+   1418fef99:	80 7b 60 00          	cmp    BYTE PTR [rbx+0x60],0x0
+   1418fef9d:	74 0e                	je     0x1418fefad
+   1418fef9f:	44 8b 43 50          	mov    r8d,DWORD PTR [rbx+0x50]
+   1418fefa3:	48 89 f9             	mov    rcx,rdi
+   1418fefa6:	31 d2                	xor    edx,edx
+   1418fefa8:	e8 93 f7 c7 03       	call   0x14557e740
+   1418fefad:	4d 85 f6             	test   r14,r14
+   1418fefb0:	74 24                	je     0x1418fefd6
+   1418fefb2:	89 37                	mov    DWORD PTR [rdi],esi
+   1418fefb4:	4c 01 f7             	add    rdi,r14
+   1418fefb7:	eb 1d                	jmp    0x1418fefd6
+   1418fefb9:	8b 59 30             	mov    ebx,DWORD PTR [rcx+0x30]
+   1418fefbc:	8d 0c 33             	lea    ecx,[rbx+rsi*1]
+   1418fefbf:	ba 00 10 00 00       	mov    edx,0x1000
+   1418fefc4:	e8 87 e7 9e 03       	call   0x1452ed750
+   1418fefc9:	48 89 c7             	mov    rdi,rax
+   1418fefcc:	48 85 db             	test   rbx,rbx
+   1418fefcf:	74 05                	je     0x1418fefd6
+   1418fefd1:	89 37                	mov    DWORD PTR [rdi],esi
+   1418fefd3:	48 01 df             	add    rdi,rbx
+   1418fefd6:	48 89 f8             	mov    rax,rdi
+   1418fefd9:	48 83 c4 28          	add    rsp,0x28
+   1418fefdd:	5b                   	pop    rbx
+   1418fefde:	5f                   	pop    rdi
+   1418fefdf:	5e                   	pop    rsi
+   1418fefe0:	41 5e                	pop    r14
+   1418fefe2:	c3                   	ret    
+   1452ed750:	56                   	push   rsi
+   1452ed751:	57                   	push   rdi
+   1452ed752:	53                   	push   rbx
+   1452ed753:	48 83 ec 30          	sub    rsp,0x30
+   1452ed757:	48 89 ce             	mov    rsi,rcx
+   1452ed75a:	f6 c2 01             	test   dl,0x1
+   1452ed75d:	75 66                	jne    0x1452ed7c5
+   1452ed75f:	48 85 f6             	test   rsi,rsi
+   1452ed762:	0f 84 c0 00 00 00    	je     0x1452ed828
+   1452ed768:	48 89 f1             	mov    rcx,rsi
+   1452ed76b:	ff 15 27 37 a6 00    	call   QWORD PTR [rip+0xa63727]        # 0x145d50e98
+   1452ed771:	48 85 c0             	test   rax,rax
+   1452ed774:	0f 85 a6 00 00 00    	jne    0x1452ed820
+   1452ed77a:	bf 01 00 00 00       	mov    edi,0x1
+   1452ed77f:	48 8b 1d 12 37 a6 00 	mov    rbx,QWORD PTR [rip+0xa63712]        # 0x145d50e98
+   1452ed786:	66 2e 0f 1f 84 00 00 00 00 00 	cs nop WORD PTR [rax+rax*1+0x0]
+   1452ed790:	48 8b 0d f9 94 13 01 	mov    rcx,QWORD PTR [rip+0x11394f9]        # 0x146426c90
+   1452ed797:	48 85 c9             	test   rcx,rcx
+   1452ed79a:	0f 84 ad 00 00 00    	je     0x1452ed84d
+   1452ed7a0:	48 83 ff 20          	cmp    rdi,0x20
+   1452ed7a4:	0f 84 a3 00 00 00    	je     0x1452ed84d
+   1452ed7aa:	48 8b 01             	mov    rax,QWORD PTR [rcx]
+   1452ed7ad:	48 89 f2             	mov    rdx,rsi
+   1452ed7b0:	49 89 f8             	mov    r8,rdi
+   1452ed7b3:	ff 50 08             	call   QWORD PTR [rax+0x8]
+   1452ed7b6:	48 89 f1             	mov    rcx,rsi
+   1452ed7b9:	ff d3                	call   rbx
+   1452ed7bb:	48 ff c7             	inc    rdi
+   1452ed7be:	48 85 c0             	test   rax,rax
+   1452ed7c1:	74 cd                	je     0x1452ed790
+   1452ed7c3:	eb 5b                	jmp    0x1452ed820
+   1452ed820:	48 83 c4 30          	add    rsp,0x30
+   1452ed824:	5b                   	pop    rbx
+   1452ed825:	5f                   	pop    rdi
+   1452ed826:	5e                   	pop    rsi
+   1452ed827:	c3                   	ret    
+   14557e730:	ff 25 e2 23 7d 00    	jmp    QWORD PTR [rip+0x7d23e2]        # 0x145d50b18
+   14557e740:	ff 25 da 23 7d 00    	jmp    QWORD PTR [rip+0x7d23da]        # 0x145d50b20
+   14513c6fd:	48 89 f2             	mov    rdx,rsi
+   14513c700:	48 83 c2 08          	add    rdx,0x8
+   14513c704:	c7 42 18 00 00 00 00 	mov    DWORD PTR [rdx+0x18],0x0
+   14513c70b:	48 c7 42 10 00 00 00 00 	mov    QWORD PTR [rdx+0x10],0x0
+   14513c713:	48 c7 42 08 00 00 00 00 	mov    QWORD PTR [rdx+0x8],0x0
+   14513c71b:	48 c7 02 00 00 00 00 	mov    QWORD PTR [rdx],0x0
+   14513c722:	c7 46 40 00 00 00 00 	mov    DWORD PTR [rsi+0x40],0x0
+   14513c729:	48 c7 46 38 00 00 00 00 	mov    QWORD PTR [rsi+0x38],0x0
+   14513c731:	48 c7 46 30 00 00 00 00 	mov    QWORD PTR [rsi+0x30],0x0
+   14513c739:	48 c7 46 28 00 00 00 00 	mov    QWORD PTR [rsi+0x28],0x0
+   141a76b0c:	49 89 ef             	mov    r15,rbp
+   141a76b0f:	4d 2b 3c 24          	sub    r15,QWORD PTR [r12]
+   141a76b13:	4c 89 f8             	mov    rax,r15
+   141a76b16:	48 d1 f8             	sar    rax,1
+   141a76b19:	48 b9 cd cc cc cc cc cc cc cc 	movabs rcx,0xcccccccccccccccd
+   141a76b23:	48 0f af c1          	imul   rax,rcx
+   141a76b27:	48 8d 70 01          	lea    rsi,[rax+0x1]
+   141a76b2b:	48 89 c3             	mov    rbx,rax
+   141a76b2e:	48 d1 eb             	shr    rbx,1
+   141a76b31:	48 ba 99 99 99 99 99 99 99 19 	movabs rdx,0x1999999999999999
+   141a76b3b:	48 89 d1             	mov    rcx,rdx
+   141a76b3e:	48 29 d9             	sub    rcx,rbx
+   141a76b41:	48 01 c3             	add    rbx,rax
+   141a76b44:	48 39 f3             	cmp    rbx,rsi
+   141a76b47:	48 89 f7             	mov    rdi,rsi
+   141a76b4a:	48 89 74 24 48       	mov    QWORD PTR [rsp+0x48],rsi
+   141a76b4f:	48 0f 46 de          	cmovbe rbx,rsi
+   141a76b53:	48 39 c8             	cmp    rax,rcx
+   141a76b56:	48 0f 47 da          	cmova  rbx,rdx
+   141a76b5a:	48 8b 0d 87 c9 8e 04 	mov    rcx,QWORD PTR [rip+0x48ec987]        # 0x1463634e8
+   141a76b61:	48 8d 04 1b          	lea    rax,[rbx+rbx*1]
+   141a76b65:	48 8d 14 80          	lea    rdx,[rax+rax*4]
+   141a76b69:	e8 b2 83 e8 ff       	call   0x1418fef20
+   141a76b85:	49 8b 14 24          	mov    rdx,QWORD PTR [r12]
+   141a76b89:	49 8b 74 24 08       	mov    rsi,QWORD PTR [r12+0x8]
+   141a76b8e:	49 89 e8             	mov    r8,rbp
+   141a76b91:	49 29 d0             	sub    r8,rdx
+   141a76b94:	48 89 f9             	mov    rcx,rdi
+   141a76b97:	e8 94 7b b0 03       	call   0x14557e730
+   141a76b9c:	48 39 ee             	cmp    rsi,rbp
+   141a76b9f:	74 1a                	je     0x141a76bbb
+   141a76ba1:	49 01 ff             	add    r15,rdi
+   141a76ba4:	49 83 c7 0a          	add    r15,0xa
+   141a76ba8:	4d 8b 44 24 08       	mov    r8,QWORD PTR [r12+0x8]
+   141a76bad:	49 29 e8             	sub    r8,rbp
+   141a76bb0:	4c 89 f9             	mov    rcx,r15
+   141a76bb3:	48 89 ea             	mov    rdx,rbp
+   141a76bb6:	e8 75 7b b0 03       	call   0x14557e730
+   141a76bbb:	48 89 fe             	mov    rsi,rdi
+   141a76bbe:	49 8b 3c 24          	mov    rdi,QWORD PTR [r12]
+   141a76bc2:	48 85 ff             	test   rdi,rdi
+   141a76bc5:	0f 84 1a 01 00 00    	je     0x141a76ce5
+   141a76cce:	e9 a7 00 00 00       	jmp    0x141a76d7a
+   141a76cd3:	8b 40 30             	mov    eax,DWORD PTR [rax+0x30]
+   141a76cd6:	48 29 c7             	sub    rdi,rax
+   141a76cd9:	48 89 f9             	mov    rcx,rdi
+   141a76cdc:	ff 15 ae a1 2d 04    	call   QWORD PTR [rip+0x42da1ae]        # 0x145d50e90
+   141a76ce2:	4d 89 fc             	mov    r12,r15
+   141a76ce5:	49 89 34 24          	mov    QWORD PTR [r12],rsi
+   141a76ce9:	48 8b 44 24 48       	mov    rax,QWORD PTR [rsp+0x48]
+   141a76cee:	48 8d 04 80          	lea    rax,[rax+rax*4]
+   141a76cf2:	48 8d 04 46          	lea    rax,[rsi+rax*2]
+   141a76cf6:	49 89 44 24 08       	mov    QWORD PTR [r12+0x8],rax
+   141a76cfb:	48 8d 04 9b          	lea    rax,[rbx+rbx*4]
+   141a76cff:	48 8d 04 46          	lea    rax,[rsi+rax*2]
+   141a76d03:	49 89 44 24 10       	mov    QWORD PTR [r12+0x10],rax
+
+IMPORT BINDINGS (PE original lookup table, not loaded runtime IAT):
+[
+  {
+    "iat": "0x145d4fab8",
+    "dll": "KERNEL32.dll",
+    "symbol": "InterlockedPopEntrySList",
+    "descriptor": "0x15cf4a03c",
+    "lookup": "0x145d4dbd0",
+    "hint_name": "0x145d53758"
+  },
+  {
+    "iat": "0x145d4fac0",
+    "dll": "KERNEL32.dll",
+    "symbol": "InterlockedPushEntrySList",
+    "descriptor": "0x15cf4a03c",
+    "lookup": "0x145d4dbd8",
+    "hint_name": "0x145d53774"
+  },
+  {
+    "iat": "0x145d50b18",
+    "dll": "VCRUNTIME140.dll",
+    "symbol": "memmove",
+    "descriptor": "0x15cf4a21c",
+    "lookup": "0x145d4ec30",
+    "hint_name": "0x145d56994"
+  },
+  {
+    "iat": "0x145d50b20",
+    "dll": "VCRUNTIME140.dll",
+    "symbol": "memset",
+    "descriptor": "0x15cf4a21c",
+    "lookup": "0x145d4ec38",
+    "hint_name": "0x145d5699e"
+  },
+  {
+    "iat": "0x145d50e90",
+    "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+    "symbol": "free",
+    "descriptor": "0x15cf4a294",
+    "lookup": "0x145d4efa8",
+    "hint_name": "0x145d56fda"
+  },
+  {
+    "iat": "0x145d50e98",
+    "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+    "symbol": "malloc",
+    "descriptor": "0x15cf4a294",
+    "lookup": "0x145d4efb0",
+    "hint_name": "0x145d56fe2"
+  }
+]

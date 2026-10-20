@@ -432,7 +432,11 @@
         "0x141a59d9e",
         "0x141a61540",
         "0x141a76920",
-        "0x1443cc280"
+        "0x1443cc280",
+        "0x1418fef20",
+        "0x1452ed750",
+        "0x14557e730",
+        "0x14557e740"
       ],
       "evidence": {
         "reports": [
@@ -499,7 +503,9 @@
           "20261020_payload_cache_cold_path_static.txt",
           "20261020_payload_cache_cold_path_observations.json",
           "20261020_payload_event_aggregation_static.txt",
-          "20261020_payload_event_aggregation_observations.json"
+          "20261020_payload_event_aggregation_observations.json",
+          "20261020_payload_allocator_boundary_static.txt",
+          "20261020_payload_allocator_boundary_observations.json"
         ]
       },
       "upstream": [
@@ -525,7 +531,7 @@
         "已接实际查询第8参数=1、同候选传入任务及推进后B+20收集生产者；FULL选择器1434eecf0、X+10/X+58生产保持及反馈到同一D的修订仍未闭合。B+20追加发生在推进之后，不能与B+8待处理工作列表混同。",
         "FULL选择器早分支已恢复；选定同日收尾X+58先发布/填充，X+10后发布/克隆。14513ae30两次以M调用14513b9b0及141ac8820的计分副作用仍未知，不能把标记/包装器存在当结果保留。",
         "14513b9b0空Q+138整次保分仅为局部边界，自然可达性未知；非空复制/释放别名及bit0置位后的141a452b0实际case1下游保分仍待证。",
-        "置位分支初次头必重建；已核对141a76920目标记录合并及1443cc280无CALL/全局访问的标量映射。扩容分配/复制/释放、case1与公共消费者副作用仍未排除；不能把目标16位计数当球队进球数。"
+        "已核对事件标量转换及目标记录合并；已识别标准库导入，A+34=0保持、正长度malloc首次成功、合法所有权/无计分别名和外部接口假设下可限定聚合器保留；首次零长度空源memmove实现未独立核对。池补充/失败恢复虚回调、case1及公共M消费者仍未闭合。"
       ],
       "connections": [
         {
@@ -1321,6 +1327,57 @@
           ],
           "evidence": "20261020_payload_event_aggregation_observations.json",
           "limit": "leaf has no CALL/global access; does not prove allocator or whole-cache preservation"
+        },
+        {
+          "source": "allocator global1463634e8 and capacity*10",
+          "callsite": "0x141a76b69",
+          "callee": "0x1418fef20",
+          "receiver": "native call arguments",
+          "target": "new destination buffer",
+          "conditions": [
+            "destination end equals capacity and new record must append"
+          ],
+          "evidence": "20261020_payload_allocator_boundary_observations.json",
+          "limit": "import contracts assumed; pool/recovery paths and complete natural-match preservation unproved"
+        },
+        {
+          "source": "DWORD(prefix+request) and flags0x1000",
+          "callsite": "0x1418fefc4",
+          "callee": "0x1452ed750",
+          "receiver": "native call arguments",
+          "target": "allocation wrapper",
+          "conditions": [
+            "selected A+34=0 ordinary branch",
+            "positive DWORD(prefix+request), flags0x1000"
+          ],
+          "evidence": "20261020_payload_allocator_boundary_observations.json",
+          "limit": "import contracts assumed; pool/recovery paths and complete natural-match preservation unproved"
+        },
+        {
+          "source": "new buffer, old begin, old end-begin",
+          "callsite": "0x141a76b97",
+          "callee": "0x14557e730",
+          "receiver": "native call arguments",
+          "target": "memmove import thunk",
+          "conditions": [
+            "growth succeeded",
+            "copy old buffer prefix to new buffer; zero length possible"
+          ],
+          "evidence": "20261020_payload_allocator_boundary_observations.json",
+          "limit": "import contracts assumed; pool/recovery paths and complete natural-match preservation unproved"
+        },
+        {
+          "source": "new tail, old insertion pointer, old end-insertion",
+          "callsite": "0x141a76bb6",
+          "callee": "0x14557e730",
+          "receiver": "native call arguments",
+          "target": "memmove import thunk",
+          "conditions": [
+            "growth succeeded",
+            "saved old end differs from insertion pointer"
+          ],
+          "evidence": "20261020_payload_allocator_boundary_observations.json",
+          "limit": "import contracts assumed; pool/recovery paths and complete natural-match preservation unproved"
         }
       ]
     },
