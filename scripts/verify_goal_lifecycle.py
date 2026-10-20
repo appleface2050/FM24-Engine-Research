@@ -78,6 +78,15 @@ def adjust_fixture_record(record, flags, mode, delta):
     return result
 
 
+def initialize_fixture_record_heads(records, mode, prior_offsets):
+    """转写141a9275c窗口：已绑定两侧查询成功，只清R0；mode2另存R3。"""
+    result = [list(record) for record in records]
+    for record in result:
+        record[0] = 0
+    offsets = [record[3] for record in result] if mode == 2 else list(prior_offsets)
+    return result, offsets
+
+
 def write_fixture_record_fragment(records, buffer, position):
     """仅转写8次成功的单字节输出；缓冲区容量充足，不模拟完整对象/失败路径。"""
     result = bytearray(buffer)
@@ -768,6 +777,15 @@ def examples():
           payload_control_reference_cycle(1, 3, 0), (4, 4, 1, 0))
     check("control-aliased-occurrences-owner-released",
           payload_control_reference_cycle(1, 3, 1), (4, 3, 0, 1))
+    check("initialization sets only record heads",
+          initialize_fixture_record_heads([[255]*4, [255]*4], 0, [0, 0]),
+          ([[0, 255, 255, 255], [0, 255, 255, 255]], [0, 0]))
+    check("mode2 reads existing fourth byte into offsets",
+          initialize_fixture_record_heads([[7, 8, 9, 3], [6, 5, 4, 2]], 2, [0, 0]),
+          ([[0, 8, 9, 3], [0, 5, 4, 2]], [3, 2]))
+    initialized, _ = initialize_fixture_record_heads([[255]*4, [255]*4], 0, [0, 0])
+    check("ordinary increment after reached zero write",
+          adjust_fixture_record(initialized[0], 0, 0, 1), [1, 255, 255, 255])
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -875,6 +893,7 @@ def verify_original(exe):
         "20261020_payload_descriptor_transfer_observations.json",
         "20261020_payload_nested_ownership_observations.json",
         "20261020_payload_release_retention_observations.json",
+        "20261020_fixture_score_initialization_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

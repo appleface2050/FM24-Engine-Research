@@ -162,3 +162,5 @@ mkdir -p /tmp/fm24-ghidra
 已有匹配的 Ghidra 项目时，可用 `-process fm.exe -noanalysis -readOnly` 替代 `-import ... -noanalysis`，并去掉 `-deleteProject`，复用已导入的 Program；脚本的临时数据库修改会被丢弃。新一轮触球证据采用此方式，另外核对了关键窗口与原文件的一致性，覆盖范围见对应报告。
 
 `scripts/FM24ReadWindows.java` 从已有 Ghidra Program 导出每个指定地址的 96 字节，不运行目标。配合上述只读 `-process` 方式，参数为输出文件和地址，例如 `-postScript FM24ReadWindows.java /tmp/fm24-windows.txt 1453017d0 145305a50`；这些窗口必须与原 PE 对应位置比较，不能当运行时取值。球轨迹报告记录了本轮 29 个窗口及其比对结果。
+
+2026-10-20补证：[比赛记录初始化](20261020_比赛比分初始化与普通记账起点.md)已定位实际FULL调用中的双方R[0]=0及mode2的R[3]→T+11b；其后准备/比赛/收尾的保留与正式结果闭环仍未完成。

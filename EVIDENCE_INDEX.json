@@ -459,7 +459,12 @@
         "0x144362050",
         "0x14195bd50",
         "0x14435e90f",
-        "0x14435ea59"
+        "0x14435ea59",
+        "0x141a92120",
+        "0x141a92770",
+        "0x141a92786",
+        "0x141a927b2",
+        "0x141a927d6"
       ],
       "evidence": {
         "reports": [
@@ -471,7 +476,8 @@
           "20261020_FULL选择条件与双产物生成顺序.md",
           "20261020_球队产物辅助调用的保分边界.md",
           "20261020_新建产物的缓存重建与计分读取.md",
-          "20261020_产物生成的球员读取与事件去重.md"
+          "20261020_产物生成的球员读取与事件去重.md",
+          "20261020_比赛比分初始化与普通记账起点.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -539,7 +545,9 @@
           "20261020_payload_nested_ownership_static.txt",
           "20261020_payload_nested_ownership_observations.json",
           "20261020_payload_release_retention_static.txt",
-          "20261020_payload_release_retention_observations.json"
+          "20261020_payload_release_retention_observations.json",
+          "20261020_fixture_score_initialization_static.txt",
+          "20261020_fixture_score_initialization_observations.json"
         ]
       },
       "upstream": [
@@ -1908,6 +1916,19 @@
           ],
           "evidence": "20261020_payload_release_retention_observations.json",
           "limit": "allocation label/constructor/destructor binding; not complete type or harmless-callback proof"
+        },
+        {
+          "source": "X+48=M, actual FULL initialization branch",
+          "callsite": "0x1434f4252",
+          "callee": "0x141a92120",
+          "receiver": "M, arg2=0",
+          "target": "W=*(M+930), I=*(W+10), virtual+28(side0/1), R[0]=0",
+          "conditions": [
+            "newly created nonnull match reaches FULL setup",
+            "registered FIXTURE_RESULT vtable remains installed for concrete +64/+68 identity"
+          ],
+          "evidence": "20261020_fixture_score_initialization_observations.json",
+          "limit": "initial write checkpoint only; does not prove later helpers retain zero or natural shot reachability"
         }
       ]
     },

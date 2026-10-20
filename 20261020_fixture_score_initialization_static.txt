@@ -1,0 +1,52 @@
+FM24 24.4.2+2081827: minimal original-PE initialization excerpts
+Decoded from known entries before selecting these windows.
+   1434f4240:	48 8b 5e 48          	mov    rbx,QWORD PTR [rsi+0x48]
+   1434f4244:	48 85 db             	test   rbx,rbx
+   1434f4247:	0f 84 88 00 00 00    	je     0x1434f42d5
+   1434f424d:	48 89 d9             	mov    rcx,rbx
+   1434f4250:	31 d2                	xor    edx,edx
+   1434f4252:	e8 c9 de 59 fe       	call   0x141a92120
+   1434f4257:	c6 83 de e1 00 00 00 	mov    BYTE PTR [rbx+0xe1de],0x0
+   141a92607:	4c 8b be 30 09 00 00 	mov    r15,QWORD PTR [rsi+0x930]
+   141a9260e:	48 8b 8e 28 e6 00 00 	mov    rcx,QWORD PTR [rsi+0xe628]
+   141a9275c:	49 8b 5f 10          	mov    rbx,QWORD PTR [r15+0x10]
+   141a92760:	48 8b 03             	mov    rax,QWORD PTR [rbx]
+   141a92763:	48 89 d9             	mov    rcx,rbx
+   141a92766:	31 d2                	xor    edx,edx
+   141a92768:	ff 50 28             	call   QWORD PTR [rax+0x28]
+   141a9276b:	48 85 c0             	test   rax,rax
+   141a9276e:	74 03                	je     0x141a92773
+   141a92770:	c6 00 00             	mov    BYTE PTR [rax],0x0
+   141a92773:	48 8b 03             	mov    rax,QWORD PTR [rbx]
+   141a92776:	ba 01 00 00 00       	mov    edx,0x1
+   141a9277b:	48 89 d9             	mov    rcx,rbx
+   141a9277e:	ff 50 28             	call   QWORD PTR [rax+0x28]
+   141a92781:	48 85 c0             	test   rax,rax
+   141a92784:	74 03                	je     0x141a92789
+   141a92786:	c6 00 00             	mov    BYTE PTR [rax],0x0
+   141a92789:	80 be b8 06 00 00 02 	cmp    BYTE PTR [rsi+0x6b8],0x2
+   141a92790:	75 4b                	jne    0x141a927dd
+   141a92792:	48 8b 03             	mov    rax,QWORD PTR [rbx]
+   141a92795:	48 89 d9             	mov    rcx,rbx
+   141a92798:	31 d2                	xor    edx,edx
+   141a9279a:	ff 50 30             	call   QWORD PTR [rax+0x30]
+   141a9279d:	40 b5 ff             	mov    bpl,0xff
+   141a927a0:	b1 ff                	mov    cl,0xff
+   141a927a2:	48 85 c0             	test   rax,rax
+   141a927a5:	74 04                	je     0x141a927ab
+   141a927a7:	0f b6 48 03          	movzx  ecx,BYTE PTR [rax+0x3]
+   141a927ab:	48 8b 86 f8 cd 00 00 	mov    rax,QWORD PTR [rsi+0xcdf8]
+   141a927b2:	88 88 1b 01 00 00    	mov    BYTE PTR [rax+0x11b],cl
+   141a927b8:	48 8b 03             	mov    rax,QWORD PTR [rbx]
+   141a927bb:	ba 01 00 00 00       	mov    edx,0x1
+   141a927c0:	48 89 d9             	mov    rcx,rbx
+   141a927c3:	ff 50 30             	call   QWORD PTR [rax+0x30]
+   141a927c6:	48 85 c0             	test   rax,rax
+   141a927c9:	74 04                	je     0x141a927cf
+   141a927cb:	0f b6 68 03          	movzx  ebp,BYTE PTR [rax+0x3]
+   141a927cf:	48 8b 86 00 ce 00 00 	mov    rax,QWORD PTR [rsi+0xce00]
+   141a927d6:	40 88 a8 1b 01 00 00 	mov    BYTE PTR [rax+0x11b],bpl
+   140269570:	48 8d 44 91 64       	lea    rax,[rcx+rdx*4+0x64]
+   140269575:	c3                   	ret    
+   140269580:	48 8d 44 91 64       	lea    rax,[rcx+rdx*4+0x64]
+   140269585:	c3                   	ret    
