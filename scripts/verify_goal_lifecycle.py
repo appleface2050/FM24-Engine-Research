@@ -281,6 +281,17 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def team_payload_forwards_match(has_primary, flags):
+    """只描述14513c65d门槛；False不证明此前容器复制帮助函数保分。"""
+    return bool(has_primary and flags & 1)
+
+
+def empty_team_payload_fields(flags, old_reference, secondary_reference=None):
+    """Q+138为空的整段无CALL路径；只列输出三标志和+18引用字段。"""
+    return ((flags >> 5) & 1, (flags >> 4) & 1, (flags >> 6) & 1,
+            old_reference if secondary_reference is None else secondary_reference)
+
+
 def selected_full_selector(active_byte, mode_byte, flag_28d, first_object_flags):
     """仅低字节：args2/3=0且引用合格、首侧2f=0及关联对象非空的早分支。"""
     if not active_byte or mode_byte == 2 or not flag_28d:
@@ -589,6 +600,13 @@ def examples():
     check("full-selector-mode-two-returns-one", selected_full_selector(1, 2, 1, 1), 1)
     check("full-selector-flag28d-zero-returns-one", selected_full_selector(1, 1, 0, 1), 1)
     check("full-selector-uncovered-tail-is-unknown", selected_full_selector(1, 1, 1, 0), None)
+    check("team-payload-no-primary-skips-match-forward", team_payload_forwards_match(False, 1), False)
+    check("team-payload-bit-clear-skips-match-forward", team_payload_forwards_match(True, 0), False)
+    check("team-payload-bit-set-forwards-match", team_payload_forwards_match(True, 1), True)
+    check("empty-team-payload-keeps-optional-reference",
+          empty_team_payload_fields(0x50, 0x1234), (0, 1, 1, 0x1234))
+    check("empty-team-payload-copies-optional-reference",
+          empty_team_payload_fields(0x20, 0x1234, 0x5678), (1, 0, 0, 0x5678))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -687,6 +705,7 @@ def verify_original(exe):
         "20261020_result_summary_status_observations.json",
         "20261020_schedule_task_collection_observations.json",
         "20261020_full_output_order_observations.json",
+        "20261020_team_payload_match_gate_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

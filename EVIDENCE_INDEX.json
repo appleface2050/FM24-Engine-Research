@@ -416,7 +416,13 @@
         "0x1434f4f22",
         "0x14513ae30",
         "0x14513b8ac",
-        "0x14513b8d6"
+        "0x14513b8d6",
+        "0x14513b9b0",
+        "0x14513ba0d",
+        "0x14513c65d",
+        "0x14513c78b",
+        "0x141a452b0",
+        "0x141a4537d"
       ],
       "evidence": {
         "reports": [
@@ -425,7 +431,8 @@
           "20261020_结果指针登记与正式拥有者边界.md",
           "20261020_提交结果摘要与查询状态门槛.md",
           "20261020_实际赛程筛选与任务结果收集.md",
-          "20261020_FULL选择条件与双产物生成顺序.md"
+          "20261020_FULL选择条件与双产物生成顺序.md",
+          "20261020_球队产物辅助调用的保分边界.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -475,7 +482,9 @@
           "20261020_schedule_task_collection_static.txt",
           "20261020_schedule_task_collection_observations.json",
           "20261020_full_output_order_static.txt",
-          "20261020_full_output_order_observations.json"
+          "20261020_full_output_order_observations.json",
+          "20261020_team_payload_match_gate_static.txt",
+          "20261020_team_payload_match_gate_observations.json"
         ]
       },
       "upstream": [
@@ -499,7 +508,8 @@
         "登记向量可含栈槽；该向量不是正式结果归属证据。未证明全部出口登记平衡、中间槽值保持、正常提交后待赛条目移除/已赛转换及同一结果引用的正式接受。",
         "已接提交F到双方球队+a0摘要及K的条件查询排除；摘要采用F而非回查K。真实待赛调度的第8参数、同一K保留、摘要清理虚析构及1445ed190调用后服务语义待证；第一侧记录符号位不是双方/完成位验证。",
         "已接实际查询第8参数=1、同候选传入任务及推进后B+20收集生产者；FULL选择器1434eecf0、X+10/X+58生产保持及反馈到同一D的修订仍未闭合。B+20追加发生在推进之后，不能与B+8待处理工作列表混同。",
-        "FULL选择器早分支已恢复；选定同日收尾X+58先发布/填充，X+10后发布/克隆。14513ae30两次以M调用14513b9b0及141ac8820的计分副作用仍未知，不能把标记/包装器存在当结果保留。"
+        "FULL选择器早分支已恢复；选定同日收尾X+58先发布/填充，X+10后发布/克隆。14513ae30两次以M调用14513b9b0及141ac8820的计分副作用仍未知，不能把标记/包装器存在当结果保留。",
+        "14513b9b0空Q+138整次保分仅为局部边界，自然可达性未知；非空复制/释放别名及bit0置位后的141a452b0实际case1下游保分仍待证。"
       ],
       "connections": [
         {
@@ -1190,6 +1200,59 @@
           ],
           "evidence": "20261020_full_output_order_observations.json",
           "limit": "order and source escape proved locally; whole-path score retention unproved"
+        },
+        {
+          "source": "saved M via two stack pointer layers",
+          "callsite": "0x14513c78b",
+          "callee": "0x141a452b0",
+          "receiver": "selected native call arguments",
+          "target": "conditional downstream dispatcher",
+          "conditions": [
+            "nonnull Q+138",
+            "A+1db0 bit0=1; M identity retained",
+            "arg3=5; arg5=1"
+          ],
+          "evidence": "20261020_team_payload_match_gate_observations.json",
+          "limit": "conditional source forwarding; not whole nonnull-path preservation"
+        },
+        {
+          "source": "incoming dispatcher arguments",
+          "callsite": "0x141a452e6",
+          "callee": "0x141a44b80",
+          "receiver": "selected native call arguments",
+          "target": "pre-switch helper",
+          "conditions": [
+            "normal dispatcher entry",
+            "side effects unproved"
+          ],
+          "evidence": "20261020_team_payload_match_gate_observations.json",
+          "limit": "conditional source forwarding; not whole nonnull-path preservation"
+        },
+        {
+          "source": "same reference-wrapper RSI",
+          "callsite": "0x141a4537d",
+          "callee": "0x141a583a0",
+          "receiver": "selected native call arguments",
+          "target": "case1 producer",
+          "conditions": [
+            "fifth argument=1",
+            "relative table141a45518 resolves141a4535b"
+          ],
+          "evidence": "20261020_team_payload_match_gate_observations.json",
+          "limit": "conditional source forwarding; not whole nonnull-path preservation"
+        },
+        {
+          "source": "same reference-wrapper RSI and switch key EBX",
+          "callsite": "0x141a453e1",
+          "callee": "0x141a61540",
+          "receiver": "selected native call arguments",
+          "target": "common helper after selected producer",
+          "conditions": [
+            "selected case1 helper returns",
+            "side effects unproved"
+          ],
+          "evidence": "20261020_team_payload_match_gate_observations.json",
+          "limit": "conditional source forwarding; not whole nonnull-path preservation"
         }
       ]
     },
