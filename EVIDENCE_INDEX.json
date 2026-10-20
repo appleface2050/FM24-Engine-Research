@@ -407,7 +407,16 @@
         "0x1434ef590",
         "0x1434ef65f",
         "0x1434ef7dd",
-        "0x1434ef7f7"
+        "0x1434ef7f7",
+        "0x1434eecf0",
+        "0x1434eed9d",
+        "0x1434ef18b",
+        "0x1434f49cf",
+        "0x1434f4ed0",
+        "0x1434f4f22",
+        "0x14513ae30",
+        "0x14513b8ac",
+        "0x14513b8d6"
       ],
       "evidence": {
         "reports": [
@@ -415,7 +424,8 @@
           "20261016_分析筛选与球队进球计数.md",
           "20261020_结果指针登记与正式拥有者边界.md",
           "20261020_提交结果摘要与查询状态门槛.md",
-          "20261020_实际赛程筛选与任务结果收集.md"
+          "20261020_实际赛程筛选与任务结果收集.md",
+          "20261020_FULL选择条件与双产物生成顺序.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -463,7 +473,9 @@
           "20261020_result_summary_status_static.txt",
           "20261020_result_summary_status_observations.json",
           "20261020_schedule_task_collection_static.txt",
-          "20261020_schedule_task_collection_observations.json"
+          "20261020_schedule_task_collection_observations.json",
+          "20261020_full_output_order_static.txt",
+          "20261020_full_output_order_observations.json"
         ]
       },
       "upstream": [
@@ -486,7 +498,8 @@
         "已接同一S+98条目在保持条件下进入排序/规则0和1/条件E+e1位置写入；141f6d500后对同一S调用+308的实际调度、条目重建/修订与位置正式下游仍未闭合；不把临时试算记录比较器当实际列表身份依据",
         "登记向量可含栈槽；该向量不是正式结果归属证据。未证明全部出口登记平衡、中间槽值保持、正常提交后待赛条目移除/已赛转换及同一结果引用的正式接受。",
         "已接提交F到双方球队+a0摘要及K的条件查询排除；摘要采用F而非回查K。真实待赛调度的第8参数、同一K保留、摘要清理虚析构及1445ed190调用后服务语义待证；第一侧记录符号位不是双方/完成位验证。",
-        "已接实际查询第8参数=1、同候选传入任务及推进后B+20收集生产者；FULL选择器1434eecf0、X+10/X+58生产保持及反馈到同一D的修订仍未闭合。B+20追加发生在推进之后，不能与B+8待处理工作列表混同。"
+        "已接实际查询第8参数=1、同候选传入任务及推进后B+20收集生产者；FULL选择器1434eecf0、X+10/X+58生产保持及反馈到同一D的修订仍未闭合。B+20追加发生在推进之后，不能与B+8待处理工作列表混同。",
+        "FULL选择器早分支已恢复；选定同日收尾X+58先发布/填充，X+10后发布/克隆。14513ae30两次以M调用14513b9b0及141ac8820的计分副作用仍未知，不能把标记/包装器存在当结果保留。"
       ],
       "connections": [
         {
@@ -1125,6 +1138,58 @@
           ],
           "evidence": "20261020_schedule_task_collection_observations.json",
           "limit": "cloned identities and intermediate side effects remain conditional; not final score acceptance"
+        },
+        {
+          "source": "fresh 0xe8 allocation P",
+          "callsite": "0x1434f49ca",
+          "callee": "0x14513a540",
+          "receiver": "selected native call arguments",
+          "target": "constructor normal return then X+58=P",
+          "conditions": [
+            "selected same-date/provider/global28d branch",
+            "constructor is E9 stub; not pure by name"
+          ],
+          "evidence": "20261020_full_output_order_observations.json",
+          "limit": "order and source escape proved locally; whole-path score retention unproved"
+        },
+        {
+          "source": "published X+58=P and current X+48=M",
+          "callsite": "0x1434f4ed0",
+          "callee": "0x14513ae30",
+          "receiver": "selected native call arguments",
+          "target": "populate P before result-wrapper clone",
+          "conditions": [
+            "global14642ed30=0 selects arg3=0",
+            "helper may pass M onward"
+          ],
+          "evidence": "20261020_full_output_order_observations.json",
+          "limit": "order and source escape proved locally; whole-path score retention unproved"
+        },
+        {
+          "source": "same source M in RDI then R8; M+cdf8",
+          "callsite": "0x14513b8ac",
+          "callee": "0x14513b9b0",
+          "receiver": "selected native call arguments",
+          "target": "helper with destination P+90",
+          "conditions": [
+            "reached selected helper call",
+            "all side effects remain unknown"
+          ],
+          "evidence": "20261020_full_output_order_observations.json",
+          "limit": "order and source escape proved locally; whole-path score retention unproved"
+        },
+        {
+          "source": "same source M in RDI then R8; M+ce00",
+          "callsite": "0x14513b8d6",
+          "callee": "0x14513b9b0",
+          "receiver": "selected native call arguments",
+          "target": "helper with destination P+b8",
+          "conditions": [
+            "prior helper returned",
+            "all side effects remain unknown"
+          ],
+          "evidence": "20261020_full_output_order_observations.json",
+          "limit": "order and source escape proved locally; whole-path score retention unproved"
         }
       ]
     },

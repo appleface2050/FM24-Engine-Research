@@ -281,6 +281,13 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def selected_full_selector(active_byte, mode_byte, flag_28d, first_object_flags):
+    """仅低字节：args2/3=0且引用合格、首侧2f=0及关联对象非空的早分支。"""
+    if not active_byte or mode_byte == 2 or not flag_28d:
+        return 1
+    return 0 if first_object_flags & 1 else None  # None为未覆盖后续分支，不代表返回值。
+
+
 def scheduled_task_type(force_full, selector, alternate):
     """1434ef590的分流片段；selector为1434eecf0冻结返回，不推断其足球含义。"""
     return "OTHER" if not force_full and (selector or alternate) else "FULL"
@@ -577,6 +584,11 @@ def examples():
     check("force-full-bypasses-selector", scheduled_task_type(True, True, True), "FULL")
     check("collection-marker-empty-does-not-append", full_task_collection(0), "destroy")
     check("collection-marker-present-appends", full_task_collection(0x1000), "append")
+    check("full-selector-active-first-object-bit", selected_full_selector(1, 1, 1, 1), 0)
+    check("full-selector-inactive-prefix-returns-one", selected_full_selector(0, 1, 1, 1), 1)
+    check("full-selector-mode-two-returns-one", selected_full_selector(1, 2, 1, 1), 1)
+    check("full-selector-flag28d-zero-returns-one", selected_full_selector(1, 1, 0, 1), 1)
+    check("full-selector-uncovered-tail-is-unknown", selected_full_selector(1, 1, 1, 0), None)
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -674,6 +686,7 @@ def verify_original(exe):
         "20261020_fixture_pointer_registration_observations.json",
         "20261020_result_summary_status_observations.json",
         "20261020_schedule_task_collection_observations.json",
+        "20261020_full_output_order_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
