@@ -281,6 +281,17 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def project_payload_event(record):
+    """1443cc280的字节0..8映射；不建模未写入的字节9或上层分配器。"""
+    code, value = struct.unpack_from("<HH", record)
+    preserves_value = (code not in (0xE, 0x264) and
+                       (400 <= code <= 407 or 300 <= code <= 317 or
+                        601 <= code <= 620 or 350 <= code <= 357 or
+                        113 <= code <= 120 or 4 <= code <= 9))
+    return struct.pack("<HHHBBB", code, value if preserves_value else 1,
+                       value, record[5], record[6], record[7])
+
+
 def payload_header_matches(header, code, field4, side, flag):
     """141a44bb8..bd5只比较DWORD0及字节4/5/6；不读取字节7。"""
     return (struct.unpack_from("<I", header)[0] == code
@@ -618,6 +629,13 @@ def examples():
     check("fresh-payload-side1-forces-rebuild", payload_header_matches(fresh_header, 5, 0, 1, 1), False)
     check("cache-equality-ignores-byte7",
           payload_header_matches(bytes.fromhex("050000002a0001ff"), 5, 42, 0, 1), True)
+    for code, expected_count in ((4, 7), (9, 7), (10, 1), (14, 1),
+                                 (111, 1), (113, 7), (120, 7), (121, 1),
+                                 (611, 7), (612, 1), (620, 7), (621, 1)):
+        source = struct.pack("<HHBBBBBB", code, 7, 99, 1, 2, 3, 88, 77)
+        projected = project_payload_event(source)
+        check(f"event-projection-code-{code}", projected,
+              struct.pack("<HHHBBB", code, expected_count, 7, 1, 2, 3))
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -718,6 +736,7 @@ def verify_original(exe):
         "20261020_full_output_order_observations.json",
         "20261020_team_payload_match_gate_observations.json",
         "20261020_payload_cache_cold_path_observations.json",
+        "20261020_payload_event_aggregation_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

@@ -430,7 +430,9 @@
         "0x141a4515b",
         "0x141a59d8e",
         "0x141a59d9e",
-        "0x141a61540"
+        "0x141a61540",
+        "0x141a76920",
+        "0x1443cc280"
       ],
       "evidence": {
         "reports": [
@@ -495,7 +497,9 @@
           "20261020_team_payload_match_gate_static.txt",
           "20261020_team_payload_match_gate_observations.json",
           "20261020_payload_cache_cold_path_static.txt",
-          "20261020_payload_cache_cold_path_observations.json"
+          "20261020_payload_cache_cold_path_observations.json",
+          "20261020_payload_event_aggregation_static.txt",
+          "20261020_payload_event_aggregation_observations.json"
         ]
       },
       "upstream": [
@@ -521,7 +525,7 @@
         "已接实际查询第8参数=1、同候选传入任务及推进后B+20收集生产者；FULL选择器1434eecf0、X+10/X+58生产保持及反馈到同一D的修订仍未闭合。B+20追加发生在推进之后，不能与B+8待处理工作列表混同。",
         "FULL选择器早分支已恢复；选定同日收尾X+58先发布/填充，X+10后发布/克隆。14513ae30两次以M调用14513b9b0及141ac8820的计分副作用仍未知，不能把标记/包装器存在当结果保留。",
         "14513b9b0空Q+138整次保分仅为局部边界，自然可达性未知；非空复制/释放别名及bit0置位后的141a452b0实际case1下游保分仍待证。",
-        "置位分支初次新建头与side/flag实参不符，141a44b80必重建；缓存命中不能替代该路径。重建复制/释放、141a76920及case1/公共消费者的计分副作用仍未排除。"
+        "置位分支初次头必重建；已核对141a76920目标记录合并及1443cc280无CALL/全局访问的标量映射。扩容分配/复制/释放、case1与公共消费者副作用仍未排除；不能把目标16位计数当球队进球数。"
       ],
       "connections": [
         {
@@ -1291,6 +1295,32 @@
           ],
           "evidence": "20261020_payload_cache_cold_path_observations.json",
           "limit": "arguments are copied-event buffers; helper purity and global/alias effects unproved"
+        },
+        {
+          "source": "10-byte temporary event entry at R14",
+          "callsite": "0x141a76a30",
+          "callee": "0x1443cc280",
+          "receiver": "stack-local destination record",
+          "target": "destination bytes0..8 only",
+          "conditions": [
+            "valid source/destination ranges",
+            "nonoverlapping source and destination"
+          ],
+          "evidence": "20261020_payload_event_aggregation_observations.json",
+          "limit": "leaf has no CALL/global access; does not prove allocator or whole-cache preservation"
+        },
+        {
+          "source": "10-byte temporary event entry at R14",
+          "callsite": "0x141a76c1c",
+          "callee": "0x1443cc280",
+          "receiver": "stack-local destination record",
+          "target": "destination bytes0..8 only",
+          "conditions": [
+            "valid source/destination ranges",
+            "nonoverlapping source and destination"
+          ],
+          "evidence": "20261020_payload_event_aggregation_observations.json",
+          "limit": "leaf has no CALL/global access; does not prove allocator or whole-cache preservation"
         }
       ]
     },
