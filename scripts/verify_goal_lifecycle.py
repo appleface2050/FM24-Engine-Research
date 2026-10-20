@@ -281,6 +281,21 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def payload_reference_variant(first, second, third):
+    """141a615a6..601：32位和按signed解释，再两次向零取余；仅返回低字节的有符号值。"""
+    total = (first + second + third) & 0xFFFFFFFF
+    total = total if total < 0x80000000 else total - 0x100000000
+    remainder = (abs(total) % 10) * (-1 if total < 0 else 1)
+    return (abs(remainder) % 3) * (-1 if remainder < 0 else 1)
+
+
+def payload_resource_key(code, variant):
+    """仅已核对的38/3a分派；其他代码不在本局部模型范围内。"""
+    base = {0x38: 0x4B74F, 0x3A: 0x4B752}[code]
+    low = variant & 0xFF
+    return base + (0 if low == 0 else 1 if low == 1 else 2)
+
+
 def payload_player_read(raw_byte):
     """仅ID3f/41/42、mask800000000的只读路径；无属性足球名称推断。"""
     value = raw_byte if raw_byte < 128 else raw_byte - 256
@@ -671,6 +686,14 @@ def examples():
     changed = bytearray(candidate)
     changed[11] = 0
     check("annotation-ignored-byte11", payload_annotation_duplicate(0x3F3, changed, [historical]), True)
+    for total, expected in ((0, 0), (1, 1), (2, 2), (9, 0), (10, 0),
+                            (-1, -1), (-9, 0), (-10, 0)):
+        check(f"payload-reference-variant-{total}", payload_reference_variant(total, 0, 0), expected)
+    check("payload-reference-sum-wraps-signed32",
+          payload_reference_variant(0x7FFFFFFF, 1, 0), -2)
+    for code, base in ((0x38, 0x4B74F), (0x3A, 0x4B752)):
+        for variant, delta in ((0, 0), (1, 1), (2, 2), (-1, 2)):
+            check(f"payload-resource-key-{code}-{variant}", payload_resource_key(code, variant), base + delta)
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -774,6 +797,7 @@ def verify_original(exe):
         "20261020_payload_event_aggregation_observations.json",
         "20261020_payload_allocator_boundary_observations.json",
         "20261020_payload_player_read_dedup_observations.json",
+        "20261020_payload_label_dispatch_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

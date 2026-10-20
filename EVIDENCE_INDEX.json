@@ -442,7 +442,11 @@
         "0x141a43cb0",
         "0x141a42d70",
         "0x140290e70",
-        "0x141a63a60"
+        "0x141a63a60",
+        "0x141960bb0",
+        "0x141958a30",
+        "0x15114cee0",
+        "0x14195a6c0"
       ],
       "evidence": {
         "reports": [
@@ -514,7 +518,9 @@
           "20261020_payload_allocator_boundary_static.txt",
           "20261020_payload_allocator_boundary_observations.json",
           "20261020_payload_player_read_dedup_static.txt",
-          "20261020_payload_player_read_dedup_observations.json"
+          "20261020_payload_player_read_dedup_observations.json",
+          "20261020_payload_label_dispatch_static.txt",
+          "20261020_payload_label_dispatch_observations.json"
         ]
       },
       "upstream": [
@@ -541,7 +547,8 @@
         "FULL选择器早分支已恢复；选定同日收尾X+58先发布/填充，X+10后发布/克隆。14513ae30两次以M调用14513b9b0及141ac8820的计分副作用仍未知，不能把标记/包装器存在当结果保留。",
         "14513b9b0空Q+138整次保分仅为局部边界，自然可达性未知；非空复制/释放别名及bit0置位后的141a452b0实际case1下游保分仍待证。",
         "已核对事件标量转换及目标记录合并；已识别标准库导入，A+34=0保持、正长度malloc首次成功、合法所有权/无计分别名和外部接口假设下可限定聚合器保留；首次零长度空源memmove实现未独立核对。池补充/失败恢复虚回调、case1及公共M消费者仍未闭合。",
-        "已排除case1中7处固定mask/ID球员读取的对象写入，已接静态代码映射及6字节历史去重到16字节独立输出。追加增长/1418ff320、其他case1帮助函数及141a61540转交M到141a63a60的副作用仍未闭合。"
+        "已排除case1中7处固定mask/ID球员读取的对象写入，已接静态代码映射及6字节历史去重到16字节独立输出。追加增长/1418ff320、其他case1帮助函数及141a61540转交M到141a63a60的副作用仍未闭合。",
+        "已绑定38/3a记录分派及由比赛字段确定的低字节变体；外层选定分支不再解引用M，但141960bb0写共享+110/条目+1c且可加载/记统计。141958a30已解析E9目标15114cee0，复制/实例化/清理帮助函数及共享对象与计分对象分离仍待证。"
       ],
       "connections": [
         {
@@ -1527,6 +1534,118 @@
           ],
           "evidence": "20261020_payload_player_read_dedup_observations.json",
           "limit": "public formatter and output growth side effects remain open; no final-score acceptance proof"
+        },
+        {
+          "source": "G=global1463634f8; selected resource key4b74f..4b754",
+          "callsite": "0x141a69730",
+          "callee": "0x141960bb0",
+          "receiver": "G and stack+60 temporary descriptor",
+          "target": "resource entry query; shared H+110/E+1c writes",
+          "conditions": [
+            "selected38/3a branch",
+            "variant1 for69730; variant0/other for6975c"
+          ],
+          "evidence": "20261020_payload_label_dispatch_observations.json",
+          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+        },
+        {
+          "source": "G=global1463634f8; selected resource key4b74f..4b754",
+          "callsite": "0x141a6975c",
+          "callee": "0x141960bb0",
+          "receiver": "G and stack+60 temporary descriptor",
+          "target": "resource entry query; shared H+110/E+1c writes",
+          "conditions": [
+            "selected38/3a branch",
+            "variant1 for69730; variant0/other for6975c"
+          ],
+          "evidence": "20261020_payload_label_dispatch_observations.json",
+          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+        },
+        {
+          "source": "queried descriptor at stack+60",
+          "callsite": "0x141a6973d",
+          "callee": "0x141958a30",
+          "receiver": "destination stack+40 descriptor",
+          "target": "copy stub141958a30 -> E9 target15114cee0",
+          "conditions": [
+            "resource query returns"
+          ],
+          "evidence": "20261020_payload_label_dispatch_observations.json",
+          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+        },
+        {
+          "source": "queried descriptor at stack+60",
+          "callsite": "0x141a69769",
+          "callee": "0x141958a30",
+          "receiver": "destination stack+40 descriptor",
+          "target": "copy stub141958a30 -> E9 target15114cee0",
+          "conditions": [
+            "resource query returns"
+          ],
+          "evidence": "20261020_payload_label_dispatch_observations.json",
+          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+        },
+        {
+          "source": "temporary descriptor at stack+60",
+          "callsite": "0x141a69745",
+          "callee": "0x141958550",
+          "receiver": "temporary descriptor",
+          "target": "reference cleanup and conditional release",
+          "conditions": [
+            "descriptor copy returns"
+          ],
+          "evidence": "20261020_payload_label_dispatch_observations.json",
+          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+        },
+        {
+          "source": "temporary descriptor at stack+60",
+          "callsite": "0x141a69771",
+          "callee": "0x141958550",
+          "receiver": "temporary descriptor",
+          "target": "reference cleanup and conditional release",
+          "conditions": [
+            "descriptor copy returns"
+          ],
+          "evidence": "20261020_payload_label_dispatch_observations.json",
+          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+        },
+        {
+          "source": "local descriptor at stack+40",
+          "callsite": "0x141a69781",
+          "callee": "0x14195a6c0",
+          "receiver": "original output slot saved at stack+38",
+          "target": "output reference via14195a6c0; may remain null",
+          "conditions": [
+            "selected branch reaches merge6977b",
+            "R8D=0"
+          ],
+          "evidence": "20261020_payload_label_dispatch_observations.json",
+          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+        },
+        {
+          "source": "local descriptor at stack+40",
+          "callsite": "0x141a6978b",
+          "callee": "0x141958550",
+          "receiver": "local descriptor",
+          "target": "final descriptor cleanup",
+          "conditions": [
+            "output conversion returns"
+          ],
+          "evidence": "20261020_payload_label_dispatch_observations.json",
+          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
+        },
+        {
+          "source": "non-null resource entryE; E.begin==E.end",
+          "callsite": "0x141960cee",
+          "callee": "0x141960ee0",
+          "receiver": "G and E",
+          "target": "resource entry loading helper141960ee0",
+          "conditions": [
+            "query resolves non-null E",
+            "entry begin equals end"
+          ],
+          "evidence": "20261020_payload_label_dispatch_observations.json",
+          "limit": "shared state writes and downstream helper effects remain; no whole-path preservation claim"
         }
       ]
     },
