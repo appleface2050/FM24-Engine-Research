@@ -436,7 +436,13 @@
         "0x1418fef20",
         "0x1452ed750",
         "0x14557e730",
-        "0x14557e740"
+        "0x14557e740",
+        "0x1443b3fc0",
+        "0x1419c9ce0",
+        "0x141a43cb0",
+        "0x141a42d70",
+        "0x140290e70",
+        "0x141a63a60"
       ],
       "evidence": {
         "reports": [
@@ -447,7 +453,8 @@
           "20261020_实际赛程筛选与任务结果收集.md",
           "20261020_FULL选择条件与双产物生成顺序.md",
           "20261020_球队产物辅助调用的保分边界.md",
-          "20261020_新建产物的缓存重建与计分读取.md"
+          "20261020_新建产物的缓存重建与计分读取.md",
+          "20261020_产物生成的球员读取与事件去重.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -505,7 +512,9 @@
           "20261020_payload_event_aggregation_static.txt",
           "20261020_payload_event_aggregation_observations.json",
           "20261020_payload_allocator_boundary_static.txt",
-          "20261020_payload_allocator_boundary_observations.json"
+          "20261020_payload_allocator_boundary_observations.json",
+          "20261020_payload_player_read_dedup_static.txt",
+          "20261020_payload_player_read_dedup_observations.json"
         ]
       },
       "upstream": [
@@ -531,7 +540,8 @@
         "已接实际查询第8参数=1、同候选传入任务及推进后B+20收集生产者；FULL选择器1434eecf0、X+10/X+58生产保持及反馈到同一D的修订仍未闭合。B+20追加发生在推进之后，不能与B+8待处理工作列表混同。",
         "FULL选择器早分支已恢复；选定同日收尾X+58先发布/填充，X+10后发布/克隆。14513ae30两次以M调用14513b9b0及141ac8820的计分副作用仍未知，不能把标记/包装器存在当结果保留。",
         "14513b9b0空Q+138整次保分仅为局部边界，自然可达性未知；非空复制/释放别名及bit0置位后的141a452b0实际case1下游保分仍待证。",
-        "已核对事件标量转换及目标记录合并；已识别标准库导入，A+34=0保持、正长度malloc首次成功、合法所有权/无计分别名和外部接口假设下可限定聚合器保留；首次零长度空源memmove实现未独立核对。池补充/失败恢复虚回调、case1及公共M消费者仍未闭合。"
+        "已核对事件标量转换及目标记录合并；已识别标准库导入，A+34=0保持、正长度malloc首次成功、合法所有权/无计分别名和外部接口假设下可限定聚合器保留；首次零长度空源memmove实现未独立核对。池补充/失败恢复虚回调、case1及公共M消费者仍未闭合。",
+        "已排除case1中7处固定mask/ID球员读取的对象写入，已接静态代码映射及6字节历史去重到16字节独立输出。追加增长/1418ff320、其他case1帮助函数及141a61540转交M到141a63a60的副作用仍未闭合。"
       ],
       "connections": [
         {
@@ -1378,6 +1388,145 @@
           ],
           "evidence": "20261020_payload_allocator_boundary_observations.json",
           "limit": "import contracts assumed; pool/recovery paths and complete natural-match preservation unproved"
+        },
+        {
+          "source": "player from M team+178 array; ID3f/41/42 and mask800000000",
+          "callsite": "0x141a591c5",
+          "callee": "0x1443b3fc0",
+          "receiver": "selected player object",
+          "target": "scaled integer return; no object write in selected path",
+          "conditions": [
+            "player reference valid",
+            "fixed bit35 mask and selected IDs retained"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "does not prove all masks or entire case1 preserve score"
+        },
+        {
+          "source": "player from M team+178 array; ID3f/41/42 and mask800000000",
+          "callsite": "0x141a5ac73",
+          "callee": "0x1443b3fc0",
+          "receiver": "selected player object",
+          "target": "scaled integer return; no object write in selected path",
+          "conditions": [
+            "player reference valid",
+            "fixed bit35 mask and selected IDs retained"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "does not prove all masks or entire case1 preserve score"
+        },
+        {
+          "source": "player from M team+178 array; ID3f/41/42 and mask800000000",
+          "callsite": "0x141a5acaa",
+          "callee": "0x1443b3fc0",
+          "receiver": "selected player object",
+          "target": "scaled integer return; no object write in selected path",
+          "conditions": [
+            "player reference valid",
+            "fixed bit35 mask and selected IDs retained"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "does not prove all masks or entire case1 preserve score"
+        },
+        {
+          "source": "player from M team+178 array; ID3f/41/42 and mask800000000",
+          "callsite": "0x141a5c32c",
+          "callee": "0x1443b3fc0",
+          "receiver": "selected player object",
+          "target": "scaled integer return; no object write in selected path",
+          "conditions": [
+            "player reference valid",
+            "fixed bit35 mask and selected IDs retained"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "does not prove all masks or entire case1 preserve score"
+        },
+        {
+          "source": "player from M team+178 array; ID3f/41/42 and mask800000000",
+          "callsite": "0x141a5c363",
+          "callee": "0x1443b3fc0",
+          "receiver": "selected player object",
+          "target": "scaled integer return; no object write in selected path",
+          "conditions": [
+            "player reference valid",
+            "fixed bit35 mask and selected IDs retained"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "does not prove all masks or entire case1 preserve score"
+        },
+        {
+          "source": "player from M team+178 array; ID3f/41/42 and mask800000000",
+          "callsite": "0x141a60c6e",
+          "callee": "0x1443b3fc0",
+          "receiver": "selected player object",
+          "target": "scaled integer return; no object write in selected path",
+          "conditions": [
+            "player reference valid",
+            "fixed bit35 mask and selected IDs retained"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "does not prove all masks or entire case1 preserve score"
+        },
+        {
+          "source": "player from M team+178 array; ID3f/41/42 and mask800000000",
+          "callsite": "0x141a60ca7",
+          "callee": "0x1443b3fc0",
+          "receiver": "selected player object",
+          "target": "scaled integer return; no object write in selected path",
+          "conditions": [
+            "player reference valid",
+            "fixed bit35 mask and selected IDs retained"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "does not prove all masks or entire case1 preserve score"
+        },
+        {
+          "source": "signed DL -> CL attribute ID",
+          "callsite": "0x1443b3fe8",
+          "callee": "0x1419c9ce0",
+          "receiver": "selected native arguments",
+          "target": "read-only classifier return",
+          "conditions": [
+            "selected branch reaches call; valid references"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "public formatter and output growth side effects remain open; no final-score acceptance proof"
+        },
+        {
+          "source": "candidate DWORD0",
+          "callsite": "0x141a43cc2",
+          "callee": "0x141a42d70",
+          "receiver": "selected native arguments",
+          "target": "static mapped WORD code",
+          "conditions": [
+            "selected branch reaches call; valid references"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "public formatter and output growth side effects remain open; no final-score acceptance proof"
+        },
+        {
+          "source": "independent output vector and candidate16 bytes",
+          "callsite": "0x141a43d29",
+          "callee": "0x140290e70",
+          "receiver": "selected native arguments",
+          "target": "append after no matching six-byte history entry",
+          "conditions": [
+            "selected branch reaches call; valid references"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "public formatter and output growth side effects remain open; no final-score acceptance proof"
+        },
+        {
+          "source": "original wrapperR12 and one16-byte generated record",
+          "callsite": "0x141a61630",
+          "callee": "0x141a63a60",
+          "receiver": "selected native arguments",
+          "target": "one output reference",
+          "conditions": [
+            "selected branch reaches call; valid references"
+          ],
+          "evidence": "20261020_payload_player_read_dedup_observations.json",
+          "limit": "public formatter and output growth side effects remain open; no final-score acceptance proof"
         }
       ]
     },

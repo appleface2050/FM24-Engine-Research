@@ -281,6 +281,21 @@ def stage_row_compare_fragment(first, second, rules=(0, 1)):
     return None
 
 
+def payload_player_read(raw_byte):
+    """仅ID3f/41/42、mask800000000的只读路径；无属性足球名称推断。"""
+    value = raw_byte if raw_byte < 128 else raw_byte - 256
+    numerator = value + 3
+    quotient = abs(numerator) // 5 * (-1 if numerator < 0 else 1)
+    return max(1, quotient)
+
+
+def payload_annotation_duplicate(mapped_code, candidate, history):
+    """匹配6字节历史记录的WORD0及字节2/3/4；忽略其字节5。"""
+    key = (mapped_code, candidate[8], candidate[9], candidate[10])
+    return any((int.from_bytes(entry[:2], "little"), *entry[2:5]) == key
+               for entry in history)
+
+
 def payload_growth_capacity(count):
     """141a76b0c..b56的正常小规模容量计算；不建模溢出极限分支。"""
     return max(count + 1, count + count // 2)
@@ -643,6 +658,19 @@ def examples():
               struct.pack("<HHHBBB", code, expected_count, 7, 1, 2, 3))
     for count, expected in ((0, 1), (1, 2), (2, 3), (3, 4), (4, 6)):
         check(f"payload-growth-capacity-{count}", payload_growth_capacity(count), expected)
+    for raw, expected in ((0, 1), (6, 1), (7, 2), (96, 19), (97, 20),
+                          (100, 20), (127, 26), (128, 1), (255, 1)):
+        check(f"payload-player-fixed-mask-{raw}", payload_player_read(raw), expected)
+    candidate = bytes.fromhex("3a000000ffffffff0001ffff00000000")
+    historical = bytes.fromhex("f3030001ff42")
+    check("annotation-history-hit", payload_annotation_duplicate(0x3F3, candidate, [historical]), True)
+    check("annotation-history-empty", payload_annotation_duplicate(0x3F3, candidate, []), False)
+    changed = bytearray(candidate)
+    changed[10] = 0
+    check("annotation-third-key-mismatch", payload_annotation_duplicate(0x3F3, changed, [historical]), False)
+    changed = bytearray(candidate)
+    changed[11] = 0
+    check("annotation-ignored-byte11", payload_annotation_duplicate(0x3F3, changed, [historical]), True)
     print(f"Local worked examples passed: {n}. No game functions executed.", flush=True)
 
 
@@ -745,6 +773,7 @@ def verify_original(exe):
         "20261020_payload_cache_cold_path_observations.json",
         "20261020_payload_event_aggregation_observations.json",
         "20261020_payload_allocator_boundary_observations.json",
+        "20261020_payload_player_read_dedup_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
