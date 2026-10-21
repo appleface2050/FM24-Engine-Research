@@ -908,6 +908,7 @@ def verify_original(exe):
         "20261021_player_state_queue_observations.json",
         "20261021_candidate_nonempty_observations.json",
         "20261021_position_stream_observations.json",
+        "20261021_full_builder_position_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1058,6 +1059,21 @@ def verify_original(exe):
     if raw[0] != 0xE9 or 0x141B3C945 + struct.unpack_from("<i", raw, 1)[0] != 0x151C63300:
         raise AssertionError("MATCH_PLAYER virtual+20 thunk target differs")
     print("Position stream checks passed: 69-byte transfer assertions, 15 signed clamps and callback binding; input direction/provenance remain unbound.", flush=True)
+
+    # 核对实际构建器、源getter与目标偏移，避免把流接口或相同偏移的其他对象混用。
+    for slot, target in ((0x145B10218, 0x14519E490),
+                         (0x145A4EC78, 0x142178F30),
+                         (0x145C7EAB8, 0x142178F30),
+                         (0x145A4F500, 0x1421D5200),
+                         (0x145C7F340, 0x14499B080)):
+        if struct.unpack("<Q", mapped_bytes(slot, 8))[0] != target:
+            raise AssertionError("FULL builder or database-player virtual binding differs")
+    if (mapped_bytes(0x142178F30, 8) != bytes.fromhex("488d8108020000c3")
+            or mapped_bytes(0x1451A9AFA, 7) != bytes.fromhex("4881c680020000")
+            or mapped_bytes(0x14519F794, 8) != bytes.fromhex("498d8c2408010000")
+            or mapped_bytes(0x14519F79C, 6) != bytes.fromhex("41b845000000")):
+        raise AssertionError("FULL position source/destination/length operands differ")
+    print("FULL position source passed: actual slot -> P280 -> 69-byte copy; two conditional database getter bindings. Source predicate remains unproved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

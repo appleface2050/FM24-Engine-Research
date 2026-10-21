@@ -504,7 +504,13 @@
         "0x141c38900",
         "0x151bfe890",
         "0x151c00db0",
-        "0x141a6dfb0"
+        "0x141a6dfb0",
+        "0x14519e490",
+        "0x14519f7a5",
+        "0x1451a9b33",
+        "0x142178f30",
+        "0x1421d5200",
+        "0x14499b080"
       ],
       "evidence": {
         "reports": [
@@ -526,7 +532,8 @@
           "20261021_非零条件查询与收尾保分.md",
           "20261021_球员状态评分与队列应用保分.md",
           "20261021_候选非空条件与标志直接消费.md",
-          "20261021_位置区流传输与上限截断.md"
+          "20261021_位置区流传输与上限截断.md",
+          "20261021_FULL构建器位置输入来源.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -614,7 +621,9 @@
           "20261021_candidate_nonempty_static.txt",
           "20261021_candidate_nonempty_observations.json",
           "20261021_position_stream_static.txt",
-          "20261021_position_stream_observations.json"
+          "20261021_position_stream_observations.json",
+          "20261021_full_builder_position_static.txt",
+          "20261021_full_builder_position_observations.json"
         ]
       },
       "upstream": [
@@ -646,7 +655,7 @@
         "38/3a空槽求值已排除控制虚调用及字符串/池析构；完整资源缓存生命周期与普通存储首次初始化仍有明确条件边界，见空槽专项。",
         "新当前联赛终点直接消费提交输入F，不消费查询副本R；F/K两支同源保持、阶段前后回调及后续修订仍须连接，不能将该限定终点当自然射门闭环",
         "141b2b470与其状态队列已条件保分，但逐次非零查询的自然候选/工厂与A/P/T/M身份、队列存储/索引、1443b04f0其他子树及后续状态消费者仍待证明",
-        "自然位置数据的载入/复制入口、同一P在每次查询前建立并保持至少一项>=10仍未证明；构造前缀先清零，R6c配置非零不能替代。两处低位消费者证据不覆盖其他调用者。"
+        "已接实际FULL球队槽P到GAME_MATCH_BUILDER及69字节复制检查点；两类数据库球员源getter返回D208。人员引用动态绑定、数据库相关位置E建立、复制后同一P在每次查询前的保持仍未证明；构造清零与R6c非零不能替代，两处低位消费者不覆盖其他调用者。"
       ],
       "connections": [
         {
@@ -3068,6 +3077,20 @@
           ],
           "evidence": "20261021_candidate_nonempty_observations.json",
           "limit": "only selected direct consumer; no claim of all consumers"
+        },
+        {
+          "source": "GAME_MATCH_BUILDER actual virtual+a0; Q=P280 for actual team player slot; S=D.virtual320()",
+          "callsite": "0x14519f7a5",
+          "callee": "0x14557e720",
+          "receiver": "CRT memcpy(Q108, S, 69)",
+          "target": "P388..P3cc at checkpoint14519f7aa; source D208 under the two documented database primary vtables",
+          "conditions": [
+            "same actual slot P and builder binding retained",
+            "valid nonoverlapping 69-byte source and destination, normal CRT return",
+            "source E establishment, dynamic personnel binding and later preservation remain unproved"
+          ],
+          "evidence": "20261021_full_builder_position_observations.json",
+          "limit": "copy checkpoint only; natural source predicate, dynamic personnel binding and later preservation remain unproved"
         }
       ]
     },
