@@ -497,3 +497,74 @@ WINDOW [0x1424ea370, 0x1424ea455)
    1424ea44f:	39 c1                                           	cmp    ecx,eax
    1424ea451:	0f 9c c0                                        	setl   al
    1424ea454:	c3                                              	ret
+
+20261021 ACTUAL DATABASE PROVIDER
+DECODE FROM 0x140209f80; ACTUAL PROVIDER PUBLICATION AND CONDITIONAL DIRECT RETURN ONLY
+WINDOW [0x14020b4c7, 0x14020b4d8)
+   14020b4c7:	48 8d 15 32 0b 8a 03                            	lea    rdx,[rip+0x38a0b32]        # 0x143aac000
+   14020b4ce:	48 8d 4c 24 50                                  	lea    rcx,[rsp+0x50]
+   14020b4d3:	e8 d8 2c 83 01                                  	call   0x141a3e1b0
+DECODE FROM 0x141a3e1b0; ACTUAL PROVIDER PUBLICATION AND CONDITIONAL DIRECT RETURN ONLY
+WINDOW [0x141a3e1b0, 0x141a3e205)
+   141a3e1b0:	56                                              	push   rsi
+   141a3e1b1:	57                                              	push   rdi
+   141a3e1b2:	48 83 ec 28                                     	sub    rsp,0x28
+   141a3e1b6:	48 89 c8                                        	mov    rax,rcx
+   141a3e1b9:	48 8d 3d 90 a5 9e 04                            	lea    rdi,[rip+0x49ea590]        # 0x146428750
+   141a3e1c0:	b9 10 00 00 00                                  	mov    ecx,0x10
+   141a3e1c5:	48 89 c6                                        	mov    rsi,rax
+   141a3e1c8:	f3 48 a5                                        	rep movs QWORD PTR es:[rdi],QWORD PTR ds:[rsi]
+   141a3e1cb:	48 8d 3d 9e 9a 9e 04                            	lea    rdi,[rip+0x49e9a9e]        # 0x146427c70
+   141a3e1d2:	b9 0e 00 00 00                                  	mov    ecx,0xe
+   141a3e1d7:	48 89 c6                                        	mov    rsi,rax
+   141a3e1da:	f3 48 a5                                        	rep movs QWORD PTR es:[rdi],QWORD PTR ds:[rsi]
+   141a3e1dd:	48 85 d2                                        	test   rdx,rdx
+   141a3e1e0:	74 07                                           	je     0x141a3e1e9
+   141a3e1e2:	ff d2                                           	call   rdx
+   141a3e1e4:	48 89 c6                                        	mov    rsi,rax
+   141a3e1e7:	eb 15                                           	jmp    0x141a3e1fe
+   141a3e1e9:	b9 48 00 00 00                                  	mov    ecx,0x48
+   141a3e1ee:	e8 59 a8 aa 03                                  	call   0x1454e8a4c
+   141a3e1f3:	48 89 c6                                        	mov    rsi,rax
+   141a3e1f6:	48 89 c1                                        	mov    rcx,rax
+   141a3e1f9:	e8 62 45 93 02                                  	call   0x144372760
+   141a3e1fe:	48 89 35 db 9a 9e 04                            	mov    QWORD PTR [rip+0x49e9adb],rsi        # 0x146427ce0
+DECODE FROM 0x143aac000; ACTUAL PROVIDER PUBLICATION AND CONDITIONAL DIRECT RETURN ONLY
+WINDOW [0x143aac000, 0x143aac005)
+   143aac000:	e9 2b 1a 99 14                                  	jmp    0x15843da30
+DECODE FROM 0x15843da30; ACTUAL PROVIDER PUBLICATION AND CONDITIONAL DIRECT RETURN ONLY
+WINDOW [0x15843da30, 0x15843da5d)
+   15843da30:	56                                              	push   rsi
+   15843da31:	48 83 ec 20                                     	sub    rsp,0x20
+   15843da35:	b9 48 00 00 00                                  	mov    ecx,0x48
+   15843da3a:	e8 0d b0 0a ed                                  	call   0x1454e8a4c
+   15843da3f:	48 89 c6                                        	mov    rsi,rax
+   15843da42:	48 89 c1                                        	mov    rcx,rax
+   15843da45:	e8 16 4d f3 eb                                  	call   0x144372760
+   15843da4a:	48 8d 05 e7 e2 8c ed                            	lea    rax,[rip+0xffffffffed8ce2e7]        # 0x145d0bd38
+   15843da51:	48 89 06                                        	mov    QWORD PTR [rsi],rax
+   15843da54:	48 89 f0                                        	mov    rax,rsi
+   15843da57:	48 83 c4 20                                     	add    rsp,0x20
+   15843da5b:	5e                                              	pop    rsi
+   15843da5c:	c3                                              	ret
+DECODE FROM 0x145180660; ACTUAL PROVIDER PUBLICATION AND CONDITIONAL DIRECT RETURN ONLY
+WINDOW [0x145180660, 0x145180698)
+   145180660:	48 8b 05 c9 e6 2a 01                            	mov    rax,QWORD PTR [rip+0x12ae6c9]        # 0x14642ed30
+   145180667:	48 85 c0                                        	test   rax,rax
+   14518066a:	74 27                                           	je     0x145180693
+   14518066c:	4c 8b 80 80 00 00 00                            	mov    r8,QWORD PTR [rax+0x80]
+   145180673:	49 8b 00                                        	mov    rax,QWORD PTR [r8]
+   145180676:	49 3b 40 08                                     	cmp    rax,QWORD PTR [r8+0x8]
+   14518067a:	74 17                                           	je     0x145180693
+   14518067c:	48 8b 05 3d 81 2b 01                            	mov    rax,QWORD PTR [rip+0x12b813d]        # 0x1464387c0
+   145180683:	48 85 c0                                        	test   rax,rax
+   145180686:	74 06                                           	je     0x14518068e
+   145180688:	80 78 08 00                                     	cmp    BYTE PTR [rax+0x8],0x0
+   14518068c:	74 05                                           	je     0x145180693
+   14518068e:	48 8b 42 18                                     	mov    rax,QWORD PTR [rdx+0x18]
+   145180692:	c3                                              	ret
+   145180693:	e9 88 7a 1f ff                                  	jmp    0x144378120
+DATA 0x145d0bd30 70c0d04501000000 GAME_MATCH_DATABASE_HELPER vtable preceding RTTI pointer
+DATA 0x145d0bf08 6006184501000000 GAME_MATCH_DATABASE_HELPER virtual+1d0 -> 145180660
+DATA 0x145d0c070 01000000000000000000000070d8350688c0d00570c0d005 GAME_MATCH_DATABASE_HELPER RTTI COL
+DATA 0x14635d880 2e3f415647414d455f4d415443485f44415441424153455f48454c504552404000 GAME_MATCH_DATABASE_HELPER native RTTI type name

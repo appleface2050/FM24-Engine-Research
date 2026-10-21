@@ -902,6 +902,7 @@ def verify_original(exe):
         "20261020_payload_null_slot_isolation_observations.json",
         "20261020_stage_dirty_acceptance_observations.json",
         "20261020_finalize_helper_preservation_observations.json",
+        "20261021_current_league_result_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

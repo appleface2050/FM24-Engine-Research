@@ -237,7 +237,7 @@
     {
       "id": "score_consumer_boundary",
       "domain": "detailed_match",
-      "claim": "进球加减条件连接fixture记录；已证展示、条件克隆与结束位的状态3期限/内部时刻超限生产路径。超限会直接改记录第0字节为2/1但不保证清待回退；正式接受与自然保留尚未闭合。",
+      "claim": "进球加减条件连接fixture记录；已证展示、条件克隆与结束位的状态3期限/内部时刻超限生产路径。超限会直接改记录第0字节为2/1但不保证清待回退；正式接受与自然保留尚未闭合。 已条件连接输入F比分、配置规则增量、当前S98队行E+c及默认排序/位置实际读取；自然射门和完整保留仍未闭合。",
       "status": "partial_chain",
       "inputs": [
         "M+778容器构造、工厂注册表、T+b5及模式",
@@ -247,7 +247,8 @@
         "初始化门槛、推进mode/limit、tick/a14及超限前暂停条件",
         "状态2子状态3的块清理检查点及后续期限/子状态重读",
         "一条区域5/6阶段路径中读取的signed byte 24d/24e及构造d470=20的限定",
-        "逐条读取的A+1db0、工厂绑定类型、P+ab0及名称引用在检查点的状态"
+        "逐条读取的A+1db0、工厂绑定类型、P+ab0及名称引用在检查点的状态",
+        "限定当前联赛路径的输入F、S+c8规则配置、空规则回调条件及实际float32尺度1.0"
       ],
       "outputs": [
         "FIXTURE的I+4c+4*side或FIXTURE_RESULT的I+64+4*side记录",
@@ -261,7 +262,8 @@
         "二次副本F入Q+b0结果列表；条件比分描述优先R[1]再R[0]，列表查询/删除由显式全局实参连接；141ac8820返回入口完成位，已绑定+20叶函数只写6e/6f",
         "141a98050先执行列表回调再测完成位；类型9由工厂/复制/入列及HUMAN_FLAG_TACTIC_CHANGE RTTI绑定；空列表和单一类型9/完成位保持路径不改已知计分字段",
         "类型9写入控制后续类型6的资格；P+ab0=5时跳过离场辅助调用；类型8不释放分支仅改名称引用/计数及A+2158，完整混合列表仍未闭合",
-        "结果拥有者由构造/虚表/RTTI绑定为FIXTURE_TO_PLAY_FULL；批量推进器选定分支只检查X+10指针推进B+d0，不检查两侧记录值，仍非正式接受"
+        "结果拥有者由构造/虚表/RTTI绑定为FIXTURE_TO_PLAY_FULL；批量推进器选定分支只检查X+10指针推进B+d0，不检查两侧记录值，仍非正式接受",
+        "同一S98队行的E+c规则累计与默认排序、E+e1位置写入和实际读取；积分名称属行为推断"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -464,7 +466,10 @@
         "0x141a92770",
         "0x141a92786",
         "0x141a927b2",
-        "0x141a927d6"
+        "0x141a927d6",
+        "0x141f7eb10",
+        "0x142014210",
+        "0x14200a470"
       ],
       "evidence": {
         "reports": [
@@ -480,7 +485,8 @@
           "20261020_比赛比分初始化与普通记账起点.md",
           "20261020_空槽文本求值与计分隔离边界.md",
           "20261020_赛事脏标志与阶段正式消费.md",
-          "20261020_收尾只读辅助与球队处理边界.md"
+          "20261020_收尾只读辅助与球队处理边界.md",
+          "20261021_当前联赛比分消费与排序.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -556,7 +562,9 @@
           "20261020_stage_dirty_acceptance_static.txt",
           "20261020_stage_dirty_acceptance_observations.json",
           "20261020_finalize_helper_preservation_static.txt",
-          "20261020_finalize_helper_preservation_observations.json"
+          "20261020_finalize_helper_preservation_observations.json",
+          "20261021_current_league_result_static.txt",
+          "20261021_current_league_result_observations.json"
         ]
       },
       "upstream": [
@@ -585,7 +593,8 @@
         "已核对事件标量转换及目标记录合并；已识别标准库导入，A+34=0保持、正长度malloc首次成功、合法所有权/无计分别名和外部接口假设下可限定聚合器保留；首次零长度空源memmove实现未独立核对。池补充/失败恢复虚回调、case1及公共M消费者仍未闭合。",
         "已排除case1中7处固定mask/ID球员读取的对象写入，已接静态代码映射及6字节历史去重到16字节独立输出。追加增长/1418ff320、其他case1帮助函数及141a61540转交M到141a63a60的副作用仍未闭合。",
         "已条件排除实际空目标字段转移和源清理；已接元素/子对象销毁、共享引用释放及1418ff320。三处virtual+0归零点已定位，匹配计数且原持有者保留可排除归零；渲染期间原持有者释放/引用变化、具体虚调用类型、资源加载及池回收仍未闭合。 子对象构建/销毁池已绑定同一固定146439db0，初始化标签sitranslation::VARIABLE、大小0x58；不据标签直接证明全部回调保分。",
-        "38/3a空槽求值已排除控制虚调用及字符串/池析构；完整资源缓存生命周期与普通存储首次初始化仍有明确条件边界，见空槽专项。"
+        "38/3a空槽求值已排除控制虚调用及字符串/池析构；完整资源缓存生命周期与普通存储首次初始化仍有明确条件边界，见空槽专项。",
+        "新当前联赛终点直接消费提交输入F，不消费查询副本R；F/K两支同源保持、阶段前后回调及后续修订仍须连接，不能将该限定终点当自然射门闭环"
       ],
       "connections": [
         {
@@ -2298,6 +2307,45 @@
           ],
           "evidence": "20261020_result_summary_status_observations.json",
           "limit": "C obtained from optional service; F/K alias isolation and cold creation remain unproved"
+        },
+        {
+          "source": "actual reached history sibling call",
+          "callsite": "0x141af4591",
+          "callee": "0x141b03310",
+          "receiver": "A,history item,P,context values",
+          "target": "history flag/RNG writes through complete shared 02300 subtree",
+          "conditions": [
+            "valid distinct history/player objects with same-match binding",
+            "previously bound readonly and scalar math callees"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "local whole-call footprint; later modified-state consumers and natural final-score lifecycle remain outside proof"
+        },
+        {
+          "source": "actual reached history sibling call",
+          "callsite": "0x141af4e5c",
+          "callee": "0x141b03ae0",
+          "receiver": "A,history item,P,context values",
+          "target": "history flag/RNG writes through complete shared 02300 subtree",
+          "conditions": [
+            "valid distinct history/player objects with same-match binding",
+            "previously bound readonly and scalar math callees"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "local whole-call footprint; later modified-state consumers and natural final-score lifecycle remain outside proof"
+        },
+        {
+          "source": "actual reached history sibling call",
+          "callsite": "0x141af611a",
+          "callee": "0x141b04340",
+          "receiver": "A,history item,P,context values",
+          "target": "history flag/RNG writes through complete shared 02300 subtree",
+          "conditions": [
+            "valid distinct history/player objects with same-match binding",
+            "previously bound readonly and scalar math callees"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "local whole-call footprint; later modified-state consumers and natural final-score lifecycle remain outside proof"
         }
       ]
     },

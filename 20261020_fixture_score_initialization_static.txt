@@ -234,3 +234,65 @@ Registered table index2=0 and separate W-side allocations
    1419da25c:	48 89 c1                                        	mov    rcx,rax
    1419da25f:	e8 2c 4e 01 00                                  	call   0x1419ef090
    1419da264:	48 89 7e 58                                     	mov    QWORD PTR [rsi+0x58],rdi
+
+Actual player-stat record binding and primary-slot input override
+0x141b34cc3 4188bdbb060000 mov    %dil,0x6bb(%r13)
+0x141b34cca 4080ff0b cmp    $0xb,%dil
+0x141b34cce 400fb6cf movzbl %dil,%ecx
+0x141b34cd2 bdff000000 mov    $0xff,%ebp
+0x141b34cd7 0f4ce9 cmovl  %ecx,%ebp
+0x141b34cda 4188adbd060000 mov    %bpl,0x6bd(%r13)
+0x141b34ce1 4188adbc060000 mov    %bpl,0x6bc(%r13)
+0x141b36bd8 490fbe85bb060000 movsbq 0x6bb(%r13),%rax
+0x141b36be0 490fbe8dee010000 movsbq 0x1ee(%r13),%rcx
+0x141b36be8 498b9030090000 mov    0x930(%r8),%rdx
+0x141b36bef 488b6cca50 mov    0x50(%rdx,%rcx,8),%rbp
+0x141b36bf4 488bad40020000 mov    0x240(%rbp),%rbp
+0x141b36bfb 488b44c500 mov    0x0(%rbp,%rax,8),%rax
+0x141b36c00 498985e0160000 mov    %rax,0x16e0(%r13)
+0x141b36c07 488b44ca50 mov    0x50(%rdx,%rcx,8),%rax
+0x141b36c0c 498985e8160000 mov    %rax,0x16e8(%r13)
+0x141b36c13 4c89e9 mov    %r13,%rcx
+0x141b36c16 e8c5080000 call   0x141b374e0
+0x151c4115a 0fb686bc060000 MOVZX EAX,byte ptr [RSI + 0x6bc]
+0x151c41161 4883f80a CMP RAX,0xa
+0x151c41165 0f87b7000000 JA 0x151c41222
+0x151c4116b 488b8ed0010000 MOV RCX,qword ptr [RSI + 0x1d0]
+0x151c41172 488b8938010000 MOV RCX,qword ptr [RCX + 0x138]
+0x151c41179 488d04c0 LEA RAX,[RAX + RAX*0x8]
+0x151c4117d 488b96e0160000 MOV RDX,qword ptr [RSI + 0x16e0]
+0x151c41184 8b84c168140000 MOV EAX,dword ptr [RCX + RAX*0x8 + 0x1468]
+0x151c4118b 894264 MOV dword ptr [RDX + 0x64],EAX
+0x151c4118e 488b86e0160000 MOV RAX,qword ptr [RSI + 0x16e0]
+0x151c41195 8b4864 MOV ECX,dword ptr [RAX + 0x64]
+0x151c41198 894868 MOV dword ptr [RAX + 0x68],ECX
+0x151c4119b 0fb696bb060000 MOVZX EDX,byte ptr [RSI + 0x6bb]
+0x151c411a2 488b86e0160000 MOV RAX,qword ptr [RSI + 0x16e0]
+0x151c411a9 8b4864 MOV ECX,dword ptr [RAX + 0x64]
+0x151c411ac 4531c0 XOR R8D,R8D
+0x151c411af e89c38d9ef CALL 0x1419d4a50
+0x151c411b4 488b8ee0160000 MOV RCX,qword ptr [RSI + 0x16e0]
+0x151c411bb 89415c MOV dword ptr [RCX + 0x5c],EAX
+0x151c411be 488b86d0010000 MOV RAX,qword ptr [RSI + 0x1d0]
+0x151c411c5 488b8038010000 MOV RAX,qword ptr [RAX + 0x138]
+0x151c411cc 480fbe8ebc060000 MOVSX RCX,byte ptr [RSI + 0x6bc]
+0x151c411d4 488d0cc9 LEA RCX,[RCX + RCX*0x8]
+0x151c411d8 488b96e0160000 MOV RDX,qword ptr [RSI + 0x16e0]
+0x151c411df 8b84c868140000 MOV EAX,dword ptr [RAX + RCX*0x8 + 0x1468]
+0x151c411e6 89426c MOV dword ptr [RDX + 0x6c],EAX
+0x151c411e9 488b86d0010000 MOV RAX,qword ptr [RSI + 0x1d0]
+0x151c411f0 488b8038010000 MOV RAX,qword ptr [RAX + 0x138]
+0x151c411f7 480fbe8ebc060000 MOVSX RCX,byte ptr [RSI + 0x6bc]
+0x151c411ff 488d0cc9 LEA RCX,[RCX + RCX*0x8]
+0x151c41203 48baffde1ff9fbff1f00 MOV RDX,0x1ffffbf91fdeff
+0x151c4120d 482394c860140000 AND RDX,qword ptr [RAX + RCX*0x8 + 0x1460]
+0x151c41215 488b86e0160000 MOV RAX,qword ptr [RSI + 0x16e0]
+0x151c4121c 48895008 MOV qword ptr [RAX + 0x8],RDX
+0x151c41220 eb1b JMP 0x151c4123d
+0x151c41222 0fb696bb060000 MOVZX EDX,byte ptr [RSI + 0x6bb]
+0x151c41229 31c9 XOR ECX,ECX
+0x151c4122b 4531c0 XOR R8D,R8D
+0x151c4122e e81d38d9ef CALL 0x1419d4a50
+0x151c41233 488b8ee0160000 MOV RCX,qword ptr [RSI + 0x16e0]
+0x151c4123a 89415c MOV dword ptr [RCX + 0x5c],EAX
+0x141b374e0 e95b9b1010 JMP 0x151c41040
