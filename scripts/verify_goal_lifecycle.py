@@ -909,6 +909,7 @@ def verify_original(exe):
         "20261021_candidate_nonempty_observations.json",
         "20261021_position_stream_observations.json",
         "20261021_full_builder_position_observations.json",
+        "20261021_database_position_establishment_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1074,6 +1075,32 @@ def verify_original(exe):
             or mapped_bytes(0x14519F79C, 6) != bytes.fromhex("41b845000000")):
         raise AssertionError("FULL position source/destination/length operands differ")
     print("FULL position source passed: actual slot -> P280 -> 69-byte copy; two conditional database getter bindings. Source predicate remains unproved.", flush=True)
+
+    # 从限定原生操作数核对建立段，不以构造零值或输入记录存在代替位置门槛。
+    base = struct.unpack_from("<I", mapped_bytes(0x14217B677, 7), 3)[0]
+    even = mapped_bytes(0x14217B8C4, 8)
+    odd = mapped_bytes(0x14217B8D8, 8)
+    bound = mapped_bytes(0x14217B8D2, 4)[3]
+    stride = mapped_bytes(0x14217B8C0, 4)[3]
+    fallback = mapped_bytes(0x14217B8EC, 7)
+    if (base != 0x208 or even[:3] != bytes.fromhex("80bc0f")
+            or odd[:3] != bytes.fromhex("80bc0f") or even[7] != odd[7]
+            or mapped_bytes(0x14217B8AE, 7) != bytes.fromhex("807d000f0f9dc0")
+            or mapped_bytes(0x14217B8CC, 2) != bytes.fromhex("7c04")
+            or mapped_bytes(0x14217B8E0, 2) != bytes.fromhex("7cde")
+            or (bound, stride) != (12, 2) or fallback[:2] != bytes.fromhex("c687")):
+        raise AssertionError("Database position establishment signed scan differs")
+    even_offset = struct.unpack_from("<I", even, 3)[0] - base
+    odd_offset = struct.unpack_from("<I", odd, 3)[0] - base
+    indices = ({0} | {even_offset + i for i in range(0, bound + 1, stride)}
+               | {odd_offset + i for i in range(0, bound, stride)})
+    fallback_index = struct.unpack_from("<I", fallback, 2)[0] - base
+    masks = struct.unpack("<15I", mapped_bytes(0x145A508E0, 60))
+    if (indices != {0, *range(2, 15)} or fallback_index not in indices
+            or not all(masks[i] for i in indices)
+            or not fallback[6] >= even[7] == 15 >= 10):
+        raise AssertionError("Database position establishment no longer implies candidate input predicate")
+    print("Database position establishment passed: 14 signed >=15 tests and in-set fallback=20; checkpoint only, later preservation unresolved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

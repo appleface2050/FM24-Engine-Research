@@ -1,0 +1,332 @@
+{
+  "target": "FM24 24.4.2+2081827 Windows fm.exe",
+  "image_base": "0x140000000",
+  "scope": "Signed >=15 position mask and index12=20 fallback at14217b8f3; actual database-player constructor and two caller sites",
+  "native_assertions": [
+    {
+      "va": "0x14216b56c",
+      "hex": "488d05e5338e03",
+      "instruction": "lea    rax,[rip+0x38e33e5]        # 0x145a4e958"
+    },
+    {
+      "va": "0x14216b573",
+      "hex": "488906",
+      "instruction": "mov    QWORD PTR [rsi],rax"
+    },
+    {
+      "va": "0x14217927e",
+      "hex": "4889cf",
+      "instruction": "mov    rdi,rcx"
+    },
+    {
+      "va": "0x14217b677",
+      "hex": "488daf08020000",
+      "instruction": "lea    rbp,[rdi+0x208]"
+    },
+    {
+      "va": "0x14217b8ac",
+      "hex": "31c0",
+      "instruction": "xor    eax,eax"
+    },
+    {
+      "va": "0x14217b8ae",
+      "hex": "807d000f",
+      "instruction": "cmp    BYTE PTR [rbp+0x0],0xf"
+    },
+    {
+      "va": "0x14217b8b2",
+      "hex": "0f9dc0",
+      "instruction": "setge  al"
+    },
+    {
+      "va": "0x14217b8b5",
+      "hex": "31c9",
+      "instruction": "xor    ecx,ecx"
+    },
+    {
+      "va": "0x14217b8b7",
+      "hex": "488d1522508d03",
+      "instruction": "lea    rdx,[rip+0x38d5022]        # 0x145a508e0"
+    },
+    {
+      "va": "0x14217b8be",
+      "hex": "eb04",
+      "instruction": "jmp    0x14217b8c4"
+    },
+    {
+      "va": "0x14217b8c0",
+      "hex": "4883c102",
+      "instruction": "add    rcx,0x2"
+    },
+    {
+      "va": "0x14217b8c4",
+      "hex": "80bc0f0a0200000f",
+      "instruction": "cmp    BYTE PTR [rdi+rcx*1+0x20a],0xf"
+    },
+    {
+      "va": "0x14217b8cc",
+      "hex": "7c04",
+      "instruction": "jl     0x14217b8d2"
+    },
+    {
+      "va": "0x14217b8ce",
+      "hex": "0b448a08",
+      "instruction": "or     eax,DWORD PTR [rdx+rcx*4+0x8]"
+    },
+    {
+      "va": "0x14217b8d2",
+      "hex": "4883f90c",
+      "instruction": "cmp    rcx,0xc"
+    },
+    {
+      "va": "0x14217b8d6",
+      "hex": "7410",
+      "instruction": "je     0x14217b8e8"
+    },
+    {
+      "va": "0x14217b8d8",
+      "hex": "80bc0f0b0200000f",
+      "instruction": "cmp    BYTE PTR [rdi+rcx*1+0x20b],0xf"
+    },
+    {
+      "va": "0x14217b8e0",
+      "hex": "7cde",
+      "instruction": "jl     0x14217b8c0"
+    },
+    {
+      "va": "0x14217b8e2",
+      "hex": "0b448a0c",
+      "instruction": "or     eax,DWORD PTR [rdx+rcx*4+0xc]"
+    },
+    {
+      "va": "0x14217b8e6",
+      "hex": "ebd8",
+      "instruction": "jmp    0x14217b8c0"
+    },
+    {
+      "va": "0x14217b8e8",
+      "hex": "85c0",
+      "instruction": "test   eax,eax"
+    },
+    {
+      "va": "0x14217b8ea",
+      "hex": "7507",
+      "instruction": "jne    0x14217b8f3"
+    },
+    {
+      "va": "0x14217b8ec",
+      "hex": "c6871402000014",
+      "instruction": "mov    BYTE PTR [rdi+0x214],0x14"
+    },
+    {
+      "va": "0x14217b8f3",
+      "hex": "c744244018020000",
+      "instruction": "mov    DWORD PTR [rsp+0x40],0x218"
+    },
+    {
+      "va": "0x14217b8fb",
+      "hex": "488d542440",
+      "instruction": "lea    rdx,[rsp+0x40]"
+    },
+    {
+      "va": "0x14217b900",
+      "hex": "4889e9",
+      "instruction": "mov    rcx,rbp"
+    },
+    {
+      "va": "0x14217b903",
+      "hex": "4531c0",
+      "instruction": "xor    r8d,r8d"
+    },
+    {
+      "va": "0x14217b906",
+      "hex": "e8c5f684ff",
+      "instruction": "call   0x1419cafd0"
+    },
+    {
+      "va": "0x14217b90b",
+      "hex": "888764020000",
+      "instruction": "mov    BYTE PTR [rdi+0x264],al"
+    },
+    {
+      "va": "0x14217b911",
+      "hex": "4889f9",
+      "instruction": "mov    rcx,rdi"
+    },
+    {
+      "va": "0x14217b914",
+      "hex": "4c89e2",
+      "instruction": "mov    rdx,r12"
+    },
+    {
+      "va": "0x14217b917",
+      "hex": "e874290000",
+      "instruction": "call   0x14217e290"
+    },
+    {
+      "va": "0x1423e914a",
+      "hex": "488b06",
+      "instruction": "mov    rax,QWORD PTR [rsi]"
+    },
+    {
+      "va": "0x1423e914d",
+      "hex": "4889f1",
+      "instruction": "mov    rcx,rsi"
+    },
+    {
+      "va": "0x1423e9150",
+      "hex": "ff90b8060000",
+      "instruction": "call   QWORD PTR [rax+0x6b8]"
+    },
+    {
+      "va": "0x1423e9156",
+      "hex": "4889c7",
+      "instruction": "mov    rdi,rax"
+    },
+    {
+      "va": "0x1423e9159",
+      "hex": "4885c0",
+      "instruction": "test   rax,rax"
+    },
+    {
+      "va": "0x1423e91c4",
+      "hex": "4885ff",
+      "instruction": "test   rdi,rdi"
+    },
+    {
+      "va": "0x1423e91c7",
+      "hex": "0f84aa000000",
+      "instruction": "je     0x1423e9277"
+    },
+    {
+      "va": "0x1423e91cd",
+      "hex": "4889f9",
+      "instruction": "mov    rcx,rdi"
+    },
+    {
+      "va": "0x1423e91d0",
+      "hex": "4c89fa",
+      "instruction": "mov    rdx,r15"
+    },
+    {
+      "va": "0x1423e91d3",
+      "hex": "4d89e8",
+      "instruction": "mov    r8,r13"
+    },
+    {
+      "va": "0x1423e91d6",
+      "hex": "4531c9",
+      "instruction": "xor    r9d,r9d"
+    },
+    {
+      "va": "0x1423e91d9",
+      "hex": "e86200d9ff",
+      "instruction": "call   0x142179240"
+    },
+    {
+      "va": "0x1436236ae",
+      "hex": "e8ddcc2dfe",
+      "instruction": "call   0x141900390"
+    },
+    {
+      "va": "0x1436236b3",
+      "hex": "4989c4",
+      "instruction": "mov    r12,rax"
+    },
+    {
+      "va": "0x1436236b6",
+      "hex": "4889c1",
+      "instruction": "mov    rcx,rax"
+    },
+    {
+      "va": "0x1436236b9",
+      "hex": "ba01000000",
+      "instruction": "mov    edx,0x1"
+    },
+    {
+      "va": "0x1436236be",
+      "hex": "e80d7eb4fe",
+      "instruction": "call   0x14216b4d0"
+    },
+    {
+      "va": "0x143624aad",
+      "hex": "4c8d8660010000",
+      "instruction": "lea    r8,[rsi+0x160]"
+    },
+    {
+      "va": "0x143624ab4",
+      "hex": "488d15018bcf02",
+      "instruction": "lea    rdx,[rip+0x2cf8b01]        # 0x14631d5bc"
+    },
+    {
+      "va": "0x143624abb",
+      "hex": "4c89e1",
+      "instruction": "mov    rcx,r12"
+    },
+    {
+      "va": "0x143624abe",
+      "hex": "4989d9",
+      "instruction": "mov    r9,rbx"
+    },
+    {
+      "va": "0x143624ac1",
+      "hex": "e87a47b5fe",
+      "instruction": "call   0x142179240"
+    }
+  ],
+  "data_assertions": [
+    {
+      "va": "0x145a508e0",
+      "hex": "010000000200000008000000100000000400000080000000000200000004000000010000001000000020000000080000004000004000000020000000",
+      "label": "15 position masks; index1 excluded from establishment loop"
+    }
+  ],
+  "position_establishment": {
+    "entry": "0x14217b8ac",
+    "checkpoint": "0x14217b8f3",
+    "attribute_base": 520,
+    "indices": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "signed_threshold": 15,
+    "fallback_index": 12,
+    "fallback_value": 20,
+    "mask_table": "0x145a508e0",
+    "masks": [
+      1,
+      2,
+      8,
+      16,
+      4,
+      128,
+      512,
+      1024,
+      256,
+      4096,
+      8192,
+      2048,
+      16384,
+      64,
+      32
+    ]
+  },
+  "limitations": [
+    "checkpoint is before later calls; not proof of whole generator return preservation",
+    "constructor/caller relationship does not identify a future match participant",
+    "existing save players and all database load routes are not covered",
+    "no game execution"
+  ]
+}

@@ -510,7 +510,14 @@
         "0x1451a9b33",
         "0x142178f30",
         "0x1421d5200",
-        "0x14499b080"
+        "0x14499b080",
+        "0x142179240",
+        "0x14217b8ac",
+        "0x14217b8f3",
+        "0x14217b8ec",
+        "0x1423e91d9",
+        "0x143624ac1",
+        "0x14217e290"
       ],
       "evidence": {
         "reports": [
@@ -533,7 +540,8 @@
           "20261021_球员状态评分与队列应用保分.md",
           "20261021_候选非空条件与标志直接消费.md",
           "20261021_位置区流传输与上限截断.md",
-          "20261021_FULL构建器位置输入来源.md"
+          "20261021_FULL构建器位置输入来源.md",
+          "20261021_数据库位置非空条件建立.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -623,7 +631,9 @@
           "20261021_position_stream_static.txt",
           "20261021_position_stream_observations.json",
           "20261021_full_builder_position_static.txt",
-          "20261021_full_builder_position_observations.json"
+          "20261021_full_builder_position_observations.json",
+          "20261021_database_position_establishment_static.txt",
+          "20261021_database_position_establishment_observations.json"
         ]
       },
       "upstream": [
@@ -655,7 +665,7 @@
         "38/3a空槽求值已排除控制虚调用及字符串/池析构；完整资源缓存生命周期与普通存储首次初始化仍有明确条件边界，见空槽专项。",
         "新当前联赛终点直接消费提交输入F，不消费查询副本R；F/K两支同源保持、阶段前后回调及后续修订仍须连接，不能将该限定终点当自然射门闭环",
         "141b2b470与其状态队列已条件保分，但逐次非零查询的自然候选/工厂与A/P/T/M身份、队列存储/索引、1443b04f0其他子树及后续状态消费者仍待证明",
-        "已接实际FULL球队槽P到GAME_MATCH_BUILDER及69字节复制检查点；两类数据库球员源getter返回D208。人员引用动态绑定、数据库相关位置E建立、复制后同一P在每次查询前的保持仍未证明；构造清零与R6c非零不能替代，两处低位消费者不覆盖其他调用者。"
+        "已接实际FULL球队槽P到69字节复制检查点；另已接ACTUAL_PLAYER生成调用和14217b8f3主动建立E。建立点至生成返回的尾部调用、D发布/比赛人员引用身份、复制后同一P在每次查询前的保持及全体存档球员覆盖仍未证明。两处低位消费者不覆盖其他调用者。"
       ],
       "connections": [
         {
@@ -3091,6 +3101,32 @@
           ],
           "evidence": "20261021_full_builder_position_observations.json",
           "limit": "copy checkpoint only; natural source predicate, dynamic personnel binding and later preservation remain unproved"
+        },
+        {
+          "source": "non-null D returned by personnel virtual+6b8; fourth argument zero",
+          "callsite": "0x1423e91d9",
+          "callee": "0x142179240",
+          "receiver": "database player D, attributes D208",
+          "target": "checkpoint14217b8f3 establishes at least one signed position>=15 in indices0,2..14",
+          "conditions": [
+            "selected caller reaches actual call and establishment block normally",
+            "valid object and normal ABI/storage, no concurrent mutation"
+          ],
+          "evidence": "20261021_database_position_establishment_observations.json",
+          "limit": "checkpoint before later callbacks; no claim of match participant identity or whole generator return preservation"
+        },
+        {
+          "source": "same R12 D previously passed to ACTUAL_PLAYER constructor14216b4d0",
+          "callsite": "0x143624ac1",
+          "callee": "0x142179240",
+          "receiver": "database player D, attributes D208",
+          "target": "checkpoint14217b8f3 establishes at least one signed position>=15 in indices0,2..14",
+          "conditions": [
+            "selected caller reaches actual call and establishment block normally",
+            "valid object and normal ABI/storage, no concurrent mutation"
+          ],
+          "evidence": "20261021_database_position_establishment_observations.json",
+          "limit": "checkpoint before later callbacks; no claim of match participant identity or whole generator return preservation"
         }
       ]
     },
