@@ -910,6 +910,7 @@ def verify_original(exe):
         "20261021_position_stream_observations.json",
         "20261021_full_builder_position_observations.json",
         "20261021_database_position_establishment_observations.json",
+        "20261021_database_position_tail_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1074,7 +1075,7 @@ def verify_original(exe):
             or mapped_bytes(0x14519F794, 8) != bytes.fromhex("498d8c2408010000")
             or mapped_bytes(0x14519F79C, 6) != bytes.fromhex("41b845000000")):
         raise AssertionError("FULL position source/destination/length operands differ")
-    print("FULL position source passed: actual slot -> P280 -> 69-byte copy; two conditional database getter bindings. Source predicate remains unproved.", flush=True)
+    print("FULL position source passed: actual slot -> P280 -> 69-byte copy; two conditional database getter bindings. Source predicate at copy time remains unproved.", flush=True)
 
     # 从限定原生操作数核对建立段，不以构造零值或输入记录存在代替位置门槛。
     base = struct.unpack_from("<I", mapped_bytes(0x14217B677, 7), 3)[0]
@@ -1100,7 +1101,32 @@ def verify_original(exe):
             or not all(masks[i] for i in indices)
             or not fallback[6] >= even[7] == 15 >= 10):
         raise AssertionError("Database position establishment no longer implies candidate input predicate")
-    print("Database position establishment passed: 14 signed >=15 tests and in-set fallback=20; checkpoint only, later preservation unresolved.", flush=True)
+    print("Database position establishment passed: 14 signed >=15 tests and in-set fallback=20; establishment checkpoint; conditional return preservation checked next.", flush=True)
+
+    # 只复核已绑定类型的有限虚调用，不把无直接位置写入等同于整次调用只读。
+    tail_evidence = json.loads((ROOT / "20261021_database_position_tail_observations.json").read_text())
+    bindings = tail_evidence["virtual_bindings"]
+    if len(bindings) != 19 or len(tail_evidence["contract_types"]) != 7:
+        raise AssertionError("Database tail virtual-binding coverage differs")
+    for binding in bindings:
+        slot = int(binding["slot"], 16)
+        if struct.unpack("<Q", mapped_bytes(slot, 8))[0] != int(binding["target"], 16):
+            raise AssertionError(f"Database tail virtual target differs at {slot:#x}")
+    for site, raw in ((0x14217E34C, "49897608"),
+                      (0x14217E3D9, "41808fbe01000040"),
+                      (0x14217B90B, "888764020000"),
+                      (0x14217BA02, "c3")):
+        expected = bytes.fromhex(raw)
+        if mapped_bytes(site, len(expected)) != expected:
+            raise AssertionError("Database tail non-position write/return differs")
+    date_write = mapped_bytes(0x141E9E6B1, 9)
+    if (date_write[:3] != bytes.fromhex("66c705")
+            or 0x141E9E6BA + struct.unpack_from("<i", date_write, 3)[0] != 0x14631FAF0):
+        raise AssertionError("Date helper global write target differs")
+    vbtable = struct.unpack("<iii", mapped_bytes(0x145A4E944, 12))
+    if vbtable != (-8, 0x270, 0x298) or vbtable[1] + 8 != 0x278:
+        raise AssertionError("Database player successful return interface layout differs")
+    print("Database position tail passed: 19 virtual slots / 7 contract types, non-position writes and personnel return layout. Preservation to generator return remains conditional on stated ownership/type contracts.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
