@@ -953,6 +953,16 @@ def verify_original(exe):
         raise AssertionError("Player refresh switch reaches an uncovered target; reopen its call/write coverage")
     print("Player refresh switch passed: 22 entries, 6 covered code targets; no game execution.", flush=True)
 
+    adjustment_table = 0x141C3A770
+    adjustment_displacements = struct.unpack("<31i", mapped_bytes(adjustment_table, 31 * 4))
+    adjustment_targets = {adjustment_table + displacement for displacement in adjustment_displacements}
+    if adjustment_targets != {
+        0x141C3A2B2, 0x141C3A363, 0x141C3A40F,
+        0x141C3A4BB, 0x141C3A502, 0x141C3A594,
+    }:
+        raise AssertionError("Player adjustment switch reaches an uncovered target; reopen its call/write coverage")
+    print("Player adjustment switch passed: 31 entries, 6 covered code targets; no game execution.", flush=True)
+
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
     for connection in connections:

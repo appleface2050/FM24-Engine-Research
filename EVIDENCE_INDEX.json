@@ -483,7 +483,12 @@
         "0x141b388e0",
         "0x141b377d0",
         "0x1443af3b0",
-        "0x1443af080"
+        "0x1443af080",
+        "0x141c3a2a0",
+        "0x141abbb90",
+        "0x141b410c0",
+        "0x141a9b630",
+        "0x141b2b470"
       ],
       "evidence": {
         "reports": [
@@ -2496,6 +2501,47 @@
           ],
           "evidence": "20261021_finalize_event_storage_observations.json",
           "limit": "selected whole-call footprint;1443b04f0, natural identity/diagnostics and downstream event consumers remain open"
+        },
+        {
+          "source": "C=P16d8, P and same M=P1c8",
+          "callsite": "0x1443b3dc8",
+          "callee": "0x141c3a2a0",
+          "receiver": "same actual P/M per report",
+          "target": "player derived fields and RNG only",
+          "conditions": [
+            "valid bound P/M/C",
+            "all31 table entries covered",
+            "complete scalar RNG leaf"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "selected helper footprint or explicit blocker only; whole shared update and natural score closure unproved"
+        },
+        {
+          "source": "actual P on shared update path",
+          "callsite": "0x1443b3e0e",
+          "callee": "0x141b410c0",
+          "receiver": "same actual P/M per report",
+          "target": "bool from score comparison; established time cache may change",
+          "conditions": [
+            "bound P/T/M",
+            "established math/cache helpers",
+            "whole141a9b630 read-only"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "selected helper footprint or explicit blocker only; whole shared update and natural score closure unproved"
+        },
+        {
+          "source": "A=P1e0, actual same P, M from A1c8",
+          "callsite": "0x141b2b980",
+          "callee": "0x141acdd50",
+          "receiver": "same actual P/M per report",
+          "target": "condition mask using existing nonzero R6c helper path",
+          "conditions": [
+            "valid A/P/M binding",
+            "nonzeroR6c remains explicitly unclosed"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "selected helper footprint or explicit blocker only; whole shared update and natural score closure unproved"
         }
       ]
     },
