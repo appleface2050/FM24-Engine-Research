@@ -905,6 +905,7 @@ def verify_original(exe):
         "20261021_current_league_result_observations.json",
         "20261021_finalize_event_storage_observations.json",
         "20261021_nonzero_player_condition_observations.json",
+        "20261021_player_state_queue_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -979,6 +980,14 @@ def verify_original(exe):
     if mode_table + modes[3] != 0x1419CD085:
         raise AssertionError("Actual nonzero condition mode3 reaches an uncovered branch")
     print("Nonzero condition branches passed: 7 classifier tables / 345 entries and actual mode3; no game execution.", flush=True)
+
+    queue_evidence = json.loads((ROOT / "20261021_player_state_queue_observations.json").read_text())
+    for link in queue_evidence["tail_connections"]:
+        site = int(link["site"], 16)
+        raw = mapped_bytes(site, 5)
+        if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(link["target"], 16):
+            raise AssertionError(f"State queue tail target differs at {site:#x}; reopen its preservation boundary")
+    print(f"State queue E9 checks passed: {len(queue_evidence['tail_connections'])}; kind1/message exclusion remains conditional.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

@@ -263,7 +263,8 @@
         "141a98050先执行列表回调再测完成位；类型9由工厂/复制/入列及HUMAN_FLAG_TACTIC_CHANGE RTTI绑定；空列表和单一类型9/完成位保持路径不改已知计分字段",
         "类型9写入控制后续类型6的资格；P+ab0=5时跳过离场辅助调用；类型8不释放分支仅改名称引用/计数及A+2158，完整混合列表仍未闭合",
         "结果拥有者由构造/虚表/RTTI绑定为FIXTURE_TO_PLAY_FULL；批量推进器选定分支只检查X+10指针推进B+d0，不检查两侧记录值，仍非正式接受",
-        "同一S98队行的E+c规则累计与默认排序、E+e1位置写入和实际读取；积分名称属行为推断"
+        "同一S98队行的E+c规则累计与默认排序、E+e1位置写入和实际读取；积分名称属行为推断",
+        "六种实际高位状态码：有条件连接前置评分、类型1队列、再次评分与P16d8/dc/dd写入；已排除该路径消息尾跳，不升级全收尾"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -362,7 +363,6 @@
         "0x155d65980",
         "0x155ab2110",
         "0x142bff120",
-        "0x144c597a0",
         "0x144c597a0",
         "0x144c59826",
         "0x144c5c0ab",
@@ -498,7 +498,12 @@
         "0x14197e9c0",
         "0x1419816f0",
         "0x1419c7820",
-        "0x1419d39e0"
+        "0x1419d39e0",
+        "0x141b2a230",
+        "0x141c38900",
+        "0x151bfe890",
+        "0x151c00db0",
+        "0x141a6dfb0"
       ],
       "evidence": {
         "reports": [
@@ -517,7 +522,8 @@
           "20261020_收尾只读辅助与球队处理边界.md",
           "20261021_当前联赛比分消费与排序.md",
           "20261021_收尾事件记录与保分边界.md",
-          "20261021_非零条件查询与收尾保分.md"
+          "20261021_非零条件查询与收尾保分.md",
+          "20261021_球员状态评分与队列应用保分.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -599,7 +605,9 @@
           "20261021_finalize_event_storage_static.txt",
           "20261021_finalize_event_storage_observations.json",
           "20261021_nonzero_player_condition_static.txt",
-          "20261021_nonzero_player_condition_observations.json"
+          "20261021_nonzero_player_condition_observations.json",
+          "20261021_player_state_queue_static.txt",
+          "20261021_player_state_queue_observations.json"
         ]
       },
       "upstream": [
@@ -629,7 +637,8 @@
         "已排除case1中7处固定mask/ID球员读取的对象写入，已接静态代码映射及6字节历史去重到16字节独立输出。追加增长/1418ff320、其他case1帮助函数及141a61540转交M到141a63a60的副作用仍未闭合。",
         "已条件排除实际空目标字段转移和源清理；已接元素/子对象销毁、共享引用释放及1418ff320。三处virtual+0归零点已定位，匹配计数且原持有者保留可排除归零；渲染期间原持有者释放/引用变化、具体虚调用类型、资源加载及池回收仍未闭合。 子对象构建/销毁池已绑定同一固定146439db0，初始化标签sitranslation::VARIABLE、大小0x58；不据标签直接证明全部回调保分。",
         "38/3a空槽求值已排除控制虚调用及字符串/池析构；完整资源缓存生命周期与普通存储首次初始化仍有明确条件边界，见空槽专项。",
-        "新当前联赛终点直接消费提交输入F，不消费查询副本R；F/K两支同源保持、阶段前后回调及后续修订仍须连接，不能将该限定终点当自然射门闭环"
+        "新当前联赛终点直接消费提交输入F，不消费查询副本R；F/K两支同源保持、阶段前后回调及后续修订仍须连接，不能将该限定终点当自然射门闭环",
+        "141b2b470与其状态队列已条件保分，但逐次非零查询的自然候选/工厂与A/P/T/M身份、队列存储/索引、1443b04f0其他子树及后续状态消费者仍待证明"
       ],
       "connections": [
         {
@@ -2644,6 +2653,348 @@
           ],
           "evidence": "20261021_nonzero_player_condition_observations.json",
           "limit": "selected nonzero path only; natural nonemptiness/identity and later flag consumers/formal score closure unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b2b70e",
+          "callee": "0x141b2a230",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b2b755",
+          "callee": "0x141b2a230",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b2b863",
+          "callee": "0x141b2a230",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b2b8a5",
+          "callee": "0x141b2a230",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b2b9aa",
+          "callee": "0x141b2a230",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b2ba91",
+          "callee": "0x141b2a230",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b2a4e2",
+          "callee": "0x141c38900",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x151bfe951",
+          "callee": "0x141b86ea0",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x151bfe96d",
+          "callee": "0x141b2a5e0",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x151c00dde",
+          "callee": "0x141c38900",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141c38ac4",
+          "callee": "0x141ae9170",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141c38ad0",
+          "callee": "0x141ae9700",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141c38d9b",
+          "callee": "0x141aa3070",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141c39095",
+          "callee": "0x141acdd50",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141c39650",
+          "callee": "0x141a6dfb0",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b2b872",
+          "callee": "0x141b5a090",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b5a3c1",
+          "callee": "0x140448f20",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "source": "actual six-code query / kind1 queue path; see state queue report",
+          "callsite": "0x141b5a442",
+          "callee": "0x140448f20",
+          "receiver": "A/P or queried P and current M, bound at the listed native callsite",
+          "target": "integer/state output or P1530 byte vector; no score target under listed conditions",
+          "conditions": [
+            "valid independent objects and queue storage",
+            "same M bindings",
+            "all reachable nonzero condition query and normal allocation conditions inherited"
+          ],
+          "evidence": "20261021_player_state_queue_observations.json",
+          "limit": "conditional local preservation; natural reachability and final score chain unproved"
+        },
+        {
+          "callsite": "0x141a6e06f",
+          "callee": "0x141a70ce0",
+          "source": "q ; X=*q ; M=*X ; side=signed8(EDX) ; slot=low8(R8D)",
+          "receiver": "q ; RDX=&caller[RSP+0x38] ; R8D=side ; R9D=slot ; bool5=L+0x9e!=0 ; bool6=derived from L+0xa3 and player age query",
+          "target": "caller stack flags at 0x141a70ef9",
+          "conditions": "valid side/slot, q/X/M, L and P pointer chains; output slot is private stack",
+          "limit": "No final-score mutation in complete body; child 141b4acd0 proof inherited; some branches assign a constant rather than OR previous flags",
+          "evidence": "20261021_player_state_queue_observations.json"
+        },
+        {
+          "callsite": "0x141a6e089",
+          "callee": "0x141a71060",
+          "source": "same q/side/slot and same caller output",
+          "receiver": "E9 at 0x141a71060 -> 0x1519ef230",
+          "target": "caller stack flags at 0x1519ef404; fixed global 0x14954f935 at 0x1519ef348",
+          "conditions": "only when first query AL=0; normal valid objects and static/heap/stack separation",
+          "limit": "Calls 141acdd50 with its full nonzero-query preconditions; not side-effect-free; no interpretation of opaque flags/global",
+          "evidence": "20261021_player_state_queue_observations.json"
+        },
+        {
+          "callsite": "0x141a6e09a",
+          "callee": "0x141a71380",
+          "source": "same q/side/slot and same caller output",
+          "receiver": "E9 at 0x141a71380 -> 0x1519f8b30",
+          "target": "caller flags writes 0x1519f8be1/0x1519f8c47/0x1519f8c9f/0x1519f8d03; fixed global 0x14f9b31b1 at 0x1519f8c04",
+          "conditions": "only after first query AL=0 and preceding query returns; static globals separate from score storage",
+          "limit": "No CALL/indirect jump in complete body; later flags consumers not covered",
+          "evidence": "20261021_player_state_queue_observations.json"
+        },
+        {
+          "callsite": "0x1519ef336",
+          "callee": "0x141acdd50",
+          "source": "M=*(*q); T=*(M+0xcdf8+side*8); P=*(T+0x178+slot*8)",
+          "receiver": "RCX=M; RDX=P",
+          "target": "RAX flags return; inherited child scratch/cache/allocation writes",
+          "conditions": "P+0x1c8=M and valid associated ownership; all existing 141acdd50 nonzero candidate/factory/allocation conditions",
+          "limit": "Do not assume R+0x6c zero or natural nonempty candidates",
+          "evidence": "20261021_player_state_queue_observations.json"
+        },
+        {
+          "callsite": "0x1519ef468",
+          "callee": "0x141acdd50",
+          "source": "M=*(*q); T=*(M+0xcdf8+side*8); P=*(T+0x178+slot*8)",
+          "receiver": "RCX=M; RDX=P",
+          "target": "RAX flags return; inherited child scratch/cache/allocation writes",
+          "conditions": "P+0x1c8=M and valid associated ownership; all existing 141acdd50 nonzero candidate/factory/allocation conditions",
+          "limit": "Do not assume R+0x6c zero or natural nonempty candidates",
+          "evidence": "20261021_player_state_queue_observations.json"
+        },
+        {
+          "callsite": "0x1519ef343",
+          "callee": "0x141a75b50",
+          "source": "X=*q; M=*X; side saved in EBX",
+          "receiver": "RCX=X; EDX=side; E9 at 0x141a75b50 -> 0x151a1deb0",
+          "target": "AL signed comparison of two read-only helper return values",
+          "conditions": "T=*(M+0xcdf8+side*8), A=*(T+0x138); A may be null; if nonnull A+0x1c8=M and existing helper object bindings",
+          "limit": "141ae9170 and 141ae9700 can read score but not write protected fields under existing proof conditions",
+          "evidence": "20261021_player_state_queue_observations.json"
+        },
+        {
+          "callsite": "0x1519ef475",
+          "callee": "0x141a75b50",
+          "source": "X=*q; M=*X; side saved in EBX",
+          "receiver": "RCX=X; EDX=side; E9 at 0x141a75b50 -> 0x151a1deb0",
+          "target": "AL signed comparison of two read-only helper return values",
+          "conditions": "T=*(M+0xcdf8+side*8), A=*(T+0x138); A may be null; if nonnull A+0x1c8=M and existing helper object bindings",
+          "limit": "141ae9170 and 141ae9700 can read score but not write protected fields under existing proof conditions",
+          "evidence": "20261021_player_state_queue_observations.json"
+        },
+        {
+          "callsite": "0x151a1dede",
+          "callee": "0x141ae9170",
+          "source": "A=*(T+0x138); T=*(M+0xcdf8+side*8)",
+          "receiver": "RCX=A; EDX=T+0x80 bit0",
+          "target": "EAX value retained in EDI",
+          "conditions": "A nonnull and A+0x1c8=M, correct existing helper input/target binding",
+          "limit": "Complete helper already covered in 20261020 report; only conditional reuse",
+          "evidence": "20261021_player_state_queue_observations.json"
+        },
+        {
+          "callsite": "0x151a1dee8",
+          "callee": "0x141ae9700",
+          "source": "same A",
+          "receiver": "RCX=A",
+          "target": "EAX compared to retained EDI, signed >= returns AL",
+          "conditions": "same input/target bindings",
+          "limit": "Existing helper includes a data jump table, not extra code; no new full export needed",
+          "evidence": "20261021_player_state_queue_observations.json"
         }
       ]
     },
