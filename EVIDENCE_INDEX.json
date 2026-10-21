@@ -473,7 +473,13 @@
         "0x141b52610",
         "0x1443afc40",
         "0x141b3b060",
-        "0x151950f30"
+        "0x151950f30",
+        "0x141a736e0",
+        "0x141a74230",
+        "0x141a72e30",
+        "0x1443201d0",
+        "0x1443202b0",
+        "0x14431ffa0"
       ],
       "evidence": {
         "reports": [
@@ -490,7 +496,8 @@
           "20261020_空槽文本求值与计分隔离边界.md",
           "20261020_赛事脏标志与阶段正式消费.md",
           "20261020_收尾只读辅助与球队处理边界.md",
-          "20261021_当前联赛比分消费与排序.md"
+          "20261021_当前联赛比分消费与排序.md",
+          "20261021_收尾事件记录与保分边界.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -568,7 +575,9 @@
           "20261020_finalize_helper_preservation_static.txt",
           "20261020_finalize_helper_preservation_observations.json",
           "20261021_current_league_result_static.txt",
-          "20261021_current_league_result_observations.json"
+          "20261021_current_league_result_observations.json",
+          "20261021_finalize_event_storage_static.txt",
+          "20261021_finalize_event_storage_observations.json"
         ]
       },
       "upstream": [
@@ -2391,6 +2400,45 @@
           ],
           "evidence": "20261020_finalize_helper_preservation_observations.json",
           "limit": "public getter only; callers may still mutate other state"
+        },
+        {
+          "source": "actual GAME_MATCH constructor M",
+          "callsite": "0x141a90b53",
+          "callee": "0x141a72e30",
+          "receiver": "0x141a72e30",
+          "target": "allocated/zeroed B returned, then M.d2c0=B",
+          "conditions": [
+            "normal successful B pool allocation",
+            "checkpoint only; later ownership and reference retention unproved"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "event/storage checkpoint only; natural final-score retention and future consumers remain open"
+        },
+        {
+          "source": "B event submission after selection/deduplication",
+          "callsite": "0x141a73ac5",
+          "callee": "0x141a74230",
+          "receiver": "0x141a74230",
+          "target": "10-byte event append or growth; no immediate football-result callback",
+          "conditions": [
+            "valid independent B/vector storage",
+            "capacity path or stated first-success allocation/OS assumptions"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "event/storage checkpoint only; natural final-score retention and future consumers remain open"
+        },
+        {
+          "source": "pool P requiring replenishment",
+          "callsite": "0x14432032b",
+          "callee": "0x14431ffa0",
+          "receiver": "0x14431ffa0",
+          "target": "raw allocation; failure can call global recovery service",
+          "conditions": [
+            "valid pool geometry and stable metadata",
+            "first-success preservation excludes recovery callback"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "event/storage checkpoint only; natural final-score retention and future consumers remain open"
         }
       ]
     },

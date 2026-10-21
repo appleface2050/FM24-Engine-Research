@@ -903,6 +903,7 @@ def verify_original(exe):
         "20261020_stage_dirty_acceptance_observations.json",
         "20261020_finalize_helper_preservation_observations.json",
         "20261021_current_league_result_observations.json",
+        "20261021_finalize_event_storage_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -929,6 +930,18 @@ def verify_original(exe):
         if mapped_bytes(va, len(expected)) != expected:
             raise AssertionError(f"Original bytes differ at {item['va']}; stop using this evidence")
     print(f"Original PE assertions passed: {len(native)} instruction/leaf, {len(static_data)} data.", flush=True)
+    # 从原PE而非手写行为模型检查事件提交switch的完整目标集合。
+    event_table = 0x141A73C98
+    displacements = struct.unpack("<358i", mapped_bytes(event_table, 358 * 4))
+    event_targets = {event_table + displacement for displacement in displacements}
+    covered_targets = {
+        0x141A737BD, 0x141A737EF, 0x141A737FD, 0x141A73808, 0x141A73813,
+        0x141A7381E, 0x141A73829, 0x141A73834, 0x141A73875, 0x141A7387E,
+    }
+    if event_targets != covered_targets:
+        raise AssertionError("Event submission switch reaches an uncovered target; reopen its call/write coverage")
+    print("Event submission switch passed: 358 entries, 10 covered code targets; no game execution.", flush=True)
+
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
     for connection in connections:
