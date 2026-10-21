@@ -2220,6 +2220,84 @@
           ],
           "evidence": "20261020_finalize_helper_preservation_observations.json",
           "limit": "normal local call only; subsequent state consumers and whole historical processor remain outside proof"
+        },
+        {
+          "source": "actual valid history-slot branch",
+          "callsite": "0x151bd807a",
+          "callee": "0x141b6a590",
+          "receiver": "P,input flag",
+          "target": "readonly eligibility and duration reads",
+          "conditions": [
+            "valid independent history/player objects with preserved same-match identity",
+            "for 141acdd50 only: null R or R+6c equals zero"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "local conditional footprint; later history/player state consumers and whole final-score path remain open"
+        },
+        {
+          "source": "actual valid history-slot branch",
+          "callsite": "0x151bd80c6",
+          "callee": "0x141acdd50",
+          "receiver": "M,P",
+          "target": "condition-mask calculation; whole call covered only when R=P16e0 is null or R6c=0",
+          "conditions": [
+            "valid independent history/player objects with preserved same-match identity",
+            "for 141acdd50 only: null R or R+6c equals zero"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "local conditional footprint; later history/player state consumers and whole final-score path remain open"
+        },
+        {
+          "source": "actual valid history-slot branch",
+          "callsite": "0x141af5f2f",
+          "callee": "0x141b016d0",
+          "receiver": "A,history item,P,scalars",
+          "target": "history flags and RNG writes",
+          "conditions": [
+            "valid independent history/player objects with preserved same-match identity",
+            "for 141acdd50 only: null R or R+6c equals zero"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "local conditional footprint; later history/player state consumers and whole final-score path remain open"
+        },
+        {
+          "source": "actual valid history-slot branch",
+          "callsite": "0x141af5f47",
+          "callee": "0x141b010e0",
+          "receiver": "A,history item,P,stack output",
+          "target": "history flags, stack output and RNG writes; actual third-nonzero mode2 subcall",
+          "conditions": [
+            "valid independent history/player objects with preserved same-match identity",
+            "for 141acdd50 only: null R or R+6c equals zero"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "local conditional footprint; later history/player state consumers and whole final-score path remain open"
+        },
+        {
+          "source": "actual valid history-slot branch",
+          "callsite": "0x141af08a2",
+          "callee": "0x141b019d0",
+          "receiver": "A,history item,P,scalars",
+          "target": "expanded mode3/4/5/6, readonly aggregation and RNG subcalls",
+          "conditions": [
+            "valid independent history/player objects with preserved same-match identity",
+            "for 141acdd50 only: null R or R+6c equals zero"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "local conditional footprint; later history/player state consumers and whole final-score path remain open"
+        },
+        {
+          "source": "141e47150 summary helper on input F",
+          "callsite": "0x141e4728a",
+          "callee": "0x14240b870",
+          "receiver": "C,0,0,0,0",
+          "target": "existing reference-cache hit: no creation; at most C+78 write",
+          "conditions": [
+            "C+78 fast hit or existing valid global-cache match",
+            "valid comparison objects and ordinary critical-section semantics"
+          ],
+          "evidence": "20261020_result_summary_status_observations.json",
+          "limit": "C obtained from optional service; F/K alias isolation and cold creation remain unproved"
         }
       ]
     },
