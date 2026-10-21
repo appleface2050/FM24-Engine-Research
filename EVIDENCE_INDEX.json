@@ -524,7 +524,11 @@
         "0x141e9e650",
         "0x143624b03",
         "0x1426bda50",
-        "0x143625810"
+        "0x143625810",
+        "0x14499d020",
+        "0x14499c260",
+        "0x14499cc00",
+        "0x143624b08"
       ],
       "evidence": {
         "reports": [
@@ -549,7 +553,8 @@
           "20261021_位置区流传输与上限截断.md",
           "20261021_FULL构建器位置输入来源.md",
           "20261021_数据库位置非空条件建立.md",
-          "20261021_生成末段位置条件保持.md"
+          "20261021_生成末段位置条件保持.md",
+          "20261021_外层字段处理与位置条件保持.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -643,7 +648,9 @@
           "20261021_database_position_establishment_static.txt",
           "20261021_database_position_establishment_observations.json",
           "20261021_database_position_tail_static.txt",
-          "20261021_database_position_tail_observations.json"
+          "20261021_database_position_tail_observations.json",
+          "20261021_database_outer_fields_static.txt",
+          "20261021_database_outer_fields_observations.json"
         ]
       },
       "upstream": [
@@ -675,7 +682,7 @@
         "38/3a空槽求值已排除控制虚调用及字符串/池析构；完整资源缓存生命周期与普通存储首次初始化仍有明确条件边界，见空槽专项。",
         "新当前联赛终点直接消费提交输入F，不消费查询副本R；F/K两支同源保持、阶段前后回调及后续修订仍须连接，不能将该限定终点当自然射门闭环",
         "141b2b470与其状态队列已条件保分，但逐次非零查询的自然候选/工厂与A/P/T/M身份、队列存储/索引、1443b04f0其他子树及后续状态消费者仍待证明",
-        "已接实际FULL球队槽P到69字节复制检查点；ACTUAL_PLAYER生成路径已主动建立H，并在两类球员/七类合同/正常独立所有权和稳定分配器条件下保持至142179240返回。上述条件的自然覆盖、外层143624b03后处理、返回U的发布和比赛P人员引用身份、复制后逐次查询保持仍待证；不推广到全体存档球员。"
+        "已接实际FULL球队槽P到69字节复制检查点；ACTUAL_PLAYER生成路径建立H并条件保持至142179240返回。下一143624b03→1426bda50调用在实际ACTUAL_PLAYER布局/正常独立存储/稳定分配器条件下保持前15位置字节，允许属性62/66变化；从生成RET连续推进至143624b08还需跳过143624add初始化。其余外层处理、自然条件覆盖、返回U的发布和比赛P人员引用身份、复制后逐次查询保持仍待证；不推广到全体存档球员。"
       ],
       "connections": [
         {
@@ -3155,13 +3162,51 @@
           "source": "same outer factory database player after142179240 returns",
           "callsite": "0x143624b03",
           "callee": "0x1426bda50",
-          "receiver": "D virtual-base-derived subobject and field, TLS random context",
-          "target": "next actual outer-factory processing boundary; input D still supplied through subobject",
+          "receiver": "C=D2a0, B=D2f0 and separate TLS RNG context K",
+          "target": "normal helper return143624b08 retains first15 position bytes and H/E, allows attributes62/66 changes",
           "conditions": [
-            "selected successful factory continuation reached"
+            "ACTUAL_PLAYER layout and helper-entry H; valid disjoint storage and normal runtime contracts",
+            "initialized stable1463634e8 allocator cache; no failed allocation/recovery or concurrent position mutation",
+            "link from preceding generator return additionally requires caller[RSI+3c]!=0 to skip143624add"
           ],
-          "evidence": "20261021_database_position_tail_observations.json",
-          "limit": "callee side effects not analyzed in this report; no preservation claim beyond this boundary"
+          "evidence": "20261021_database_outer_fields_observations.json",
+          "limit": "only this helper boundary; remaining factory processing, publication to P28 and match/query identity unproved"
+        },
+        {
+          "source": "C, read-only context, K and initialized allocator cache",
+          "callsite": "0x1426bdebc",
+          "callee": "0x14499d020",
+          "receiver": "documented actual input and separate local/temporary storage",
+          "target": "temporary template selection, nine total bound outer/selector virtual slots retain positions",
+          "conditions": [
+            "normal completed actual call and documented layout/storage/runtime conditions"
+          ],
+          "evidence": "20261021_database_outer_fields_observations.json",
+          "limit": "static bounded helper proof; does not establish natural match object or final score adoption"
+        },
+        {
+          "source": "actual n=8 distribution loop, local stack RNG state",
+          "callsite": "0x14499c2f3",
+          "callee": "0x14499cc00",
+          "receiver": "documented actual input and separate local/temporary storage",
+          "target": "first local state draw; no database pointer supplied",
+          "conditions": [
+            "normal completed actual call and documented layout/storage/runtime conditions"
+          ],
+          "evidence": "20261021_database_outer_fields_observations.json",
+          "limit": "static bounded helper proof; does not establish natural match object or final score adoption"
+        },
+        {
+          "source": "same actual n=8 loop and local RNG state",
+          "callsite": "0x14499c305",
+          "callee": "0x14499cc00",
+          "receiver": "documented actual input and separate local/temporary storage",
+          "target": "second local state draw; result used for scalar comparison",
+          "conditions": [
+            "normal completed actual call and documented layout/storage/runtime conditions"
+          ],
+          "evidence": "20261021_database_outer_fields_observations.json",
+          "limit": "static bounded helper proof; does not establish natural match object or final score adoption"
         }
       ]
     },

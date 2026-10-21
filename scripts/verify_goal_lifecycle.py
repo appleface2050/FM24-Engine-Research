@@ -911,6 +911,7 @@ def verify_original(exe):
         "20261021_full_builder_position_observations.json",
         "20261021_database_position_establishment_observations.json",
         "20261021_database_position_tail_observations.json",
+        "20261021_database_outer_fields_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1127,6 +1128,43 @@ def verify_original(exe):
     if vbtable != (-8, 0x270, 0x298) or vbtable[1] + 8 != 0x278:
         raise AssertionError("Database player successful return interface layout differs")
     print("Database position tail passed: 19 virtual slots / 7 contract types, non-position writes and personnel return layout. Preservation to generator return remains conditional on stated ownership/type contracts.", flush=True)
+
+    # 外层实际调用：检查虚基调整、全部局部分布调用及两个有限跳表。
+    outer = json.loads((ROOT / "20261021_database_outer_fields_observations.json").read_text())
+    if len(outer["virtual_bindings"]) != 9:
+        raise AssertionError("Outer field-processing virtual coverage differs")
+    for binding in outer["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Outer field-processing virtual target differs")
+    if struct.unpack("<ii", mapped_bytes(0x145A4E93C, 8)) != (-8, -0x30):
+        raise AssertionError("Outer context-to-personnel virtual-base adjustment differs")
+    profiles = outer["distribution_profiles"]
+    if len(profiles) != 14:
+        raise AssertionError("Outer distribution call coverage differs")
+    for profile in profiles:
+        site = int(profile["callsite"], 16)
+        raw = mapped_bytes(site, 5)
+        if (raw[0] != 0xE8 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != 0x14499C260
+                or profile["n"] != 8
+                or mapped_bytes(int(profile["config_store"], 16), 8) != bytes.fromhex("c744243008000000")):
+            raise AssertionError("Actual outer distribution profile no longer has n=8")
+    outer_addresses = {int(row["va"], 16) for row in outer["native_assertions"]}
+    if len(outer["switch_tables"]) != 2:
+        raise AssertionError("Outer field-processing switch coverage differs")
+    for table in outer["switch_tables"]:
+        base = int(table["base"], 16)
+        targets = [base + offset for offset in struct.unpack("<10i", mapped_bytes(base, 40))]
+        if targets != [int(target, 16) for target in table["targets"]] or not set(targets) <= outer_addresses:
+            raise AssertionError("Outer field-processing switch destination lacks native evidence")
+    # 此处允许属性区后部写入；不能把“位置保持”升级成69字节全部保持。
+    for site, raw in ((0x1426BE652, "88884a020000"),
+                      (0x1426BE81C, "888846020000"),
+                      (0x14499C2CA, "83f818"),
+                      (0x1426BEAAF, "c3")):
+        expected = bytes.fromhex(raw)
+        if mapped_bytes(site, len(expected)) != expected:
+            raise AssertionError("Outer field write, actual distribution branch or return differs")
+    print("Database outer fields passed: ACTUAL_PLAYER 9 virtual slots, 14 n=8 distribution sites, 20 switch entries; writes at attributes62/66. First15 preservation is conditional on documented storage/runtime contracts, not a factory-to-match proof.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
