@@ -488,7 +488,17 @@
         "0x141abbb90",
         "0x141b410c0",
         "0x141a9b630",
-        "0x141b2b470"
+        "0x141b2b470",
+        "0x141b57c80",
+        "0x1419cafd0",
+        "0x1419cab00",
+        "0x1419cac70",
+        "0x1419cbcb0",
+        "0x14197d070",
+        "0x14197e9c0",
+        "0x1419816f0",
+        "0x1419c7820",
+        "0x1419d39e0"
       ],
       "evidence": {
         "reports": [
@@ -506,7 +516,8 @@
           "20261020_赛事脏标志与阶段正式消费.md",
           "20261020_收尾只读辅助与球队处理边界.md",
           "20261021_当前联赛比分消费与排序.md",
-          "20261021_收尾事件记录与保分边界.md"
+          "20261021_收尾事件记录与保分边界.md",
+          "20261021_非零条件查询与收尾保分.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -586,7 +597,9 @@
           "20261021_current_league_result_static.txt",
           "20261021_current_league_result_observations.json",
           "20261021_finalize_event_storage_static.txt",
-          "20261021_finalize_event_storage_observations.json"
+          "20261021_finalize_event_storage_observations.json",
+          "20261021_nonzero_player_condition_static.txt",
+          "20261021_nonzero_player_condition_observations.json"
         ]
       },
       "upstream": [
@@ -2542,6 +2555,95 @@
           ],
           "evidence": "20261021_finalize_event_storage_observations.json",
           "limit": "selected helper footprint or explicit blocker only; whole shared update and natural score closure unproved"
+        },
+        {
+          "source": "P and stack+28 flags",
+          "callsite": "0x141ace22a",
+          "callee": "0x141b57c80",
+          "receiver": "actual caller-bound input; see nonzero condition report",
+          "target": "same caller stack flags; selected complete nonzero path target-preserving",
+          "conditions": [
+            "R=P16e0 nonnull andR6c nonzero",
+            "nonempty candidates and stated storage/factory/allocator conditions"
+          ],
+          "evidence": "20261021_nonzero_player_condition_observations.json",
+          "limit": "selected nonzero path only; natural nonemptiness/identity and later flag consumers/formal score closure unproved"
+        },
+        {
+          "source": "P388 andM6a0 context",
+          "callsite": "0x141b57cf0",
+          "callee": "0x1419cafd0",
+          "receiver": "actual caller-bound input; see nonzero condition report",
+          "target": "byte baseline score, static cache only",
+          "conditions": [
+            "bound input regions",
+            "all45 indirect classifiers covered"
+          ],
+          "evidence": "20261021_nonzero_player_condition_observations.json",
+          "limit": "selected nonzero path only; natural nonemptiness/identity and later flag consumers/formal score closure unproved"
+        },
+        {
+          "source": "P388,M6a0,R8,R6c,P2dc,baseline",
+          "callsite": "0x141b57d1b",
+          "callee": "0x1419cab00",
+          "receiver": "actual caller-bound input; see nonzero condition report",
+          "target": "current low-byte score",
+          "conditions": [
+            "bound inputs and complete1419cac70/classifier subtree"
+          ],
+          "evidence": "20261021_nonzero_player_condition_observations.json",
+          "limit": "selected nonzero path only; natural nonemptiness/identity and later flag consumers/formal score closure unproved"
+        },
+        {
+          "source": "actual mode3, nonnull stack vector and stack value pair",
+          "callsite": "0x141b57dc8",
+          "callee": "0x1419cbcb0",
+          "receiver": "actual caller-bound input; see nonzero condition report",
+          "target": "candidate vector and scalar value; other query modes excluded",
+          "conditions": [
+            "valid independent storage",
+            "factory bindings and no allocation recovery/new-handler execution"
+          ],
+          "evidence": "20261021_nonzero_player_condition_observations.json",
+          "limit": "selected nonzero path only; natural nonemptiness/identity and later flag consumers/formal score closure unproved"
+        },
+        {
+          "source": "actual mode3 candidate begin/end/count",
+          "callsite": "0x1419cd0a7",
+          "callee": "0x1419d39e0",
+          "receiver": "actual caller-bound input; see nonzero condition report",
+          "target": "same16-byte records sorted by byte+c",
+          "conditions": [
+            "bound owned candidate vector and stack output",
+            "complete recursive/partition/heap branches and standard memmove"
+          ],
+          "evidence": "20261021_nonzero_player_condition_observations.json",
+          "limit": "selected nonzero path only; natural nonemptiness/identity and later flag consumers/formal score closure unproved"
+        },
+        {
+          "source": "factory global146427890",
+          "callsite": "0x141b57d6f",
+          "callee": "0x14197d070",
+          "receiver": "actual caller-bound input; see nonzero condition report",
+          "target": "Z with default interface at+8 and mode3 interface at+58",
+          "conditions": [
+            "normal CRT initialization and first-success allocation if cold",
+            "factory retained during selected sequence"
+          ],
+          "evidence": "20261021_nonzero_player_condition_observations.json",
+          "limit": "selected nonzero path only; natural nonemptiness/identity and later flag consumers/formal score closure unproved"
+        },
+        {
+          "source": "scalar mask",
+          "callsite": "0x1419caca5",
+          "callee": "0x1419c7820",
+          "receiver": "actual caller-bound input; see nonzero condition report",
+          "target": "one of45 covered classification function pointers",
+          "conditions": [
+            "complete selector code and covered callback/table branches"
+          ],
+          "evidence": "20261021_nonzero_player_condition_observations.json",
+          "limit": "selected nonzero path only; natural nonemptiness/identity and later flag consumers/formal score closure unproved"
         }
       ]
     },
