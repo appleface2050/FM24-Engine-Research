@@ -907,6 +907,7 @@ def verify_original(exe):
         "20261021_nonzero_player_condition_observations.json",
         "20261021_player_state_queue_observations.json",
         "20261021_candidate_nonempty_observations.json",
+        "20261021_position_stream_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1029,6 +1030,34 @@ def verify_original(exe):
         if raw[0] != 0xA9 or mask != expected or mask & (0x200000000 | 0x400000000):
             raise AssertionError("Selected direct flag consumer no longer projects only the proven low bits")
     print("Candidate certificate passed: 14 original-constant zero-threshold witnesses; 2 low-bit consumers. Natural input establishment remains separate.", flush=True)
+
+    position_evidence = json.loads((ROOT / "20261021_position_stream_observations.json").read_text())
+    clamps = position_evidence["position_clamps"]
+    if len(clamps) != 15 or {c["index"] for c in clamps} != set(range(15)):
+        raise AssertionError("Position clamp coverage differs; reopen predicate preservation")
+    for clamp in clamps:
+        i = clamp["index"]
+        compare = int(clamp["compare"], 16)
+        store = int(clamp["store"], 16)
+        if i == 0:
+            comparison = b"\x80\x3e\x15"
+            assignment = b"\xc6\x06\x14"
+        else:
+            displacement = struct.pack("<I", 0x108 + i)
+            comparison = b"\x41\x80\xbd" + displacement + b"\x15"
+            assignment = b"\x41\xc6\x85" + displacement + b"\x14"
+        branch = mapped_bytes(compare + len(comparison), 2)
+        if (mapped_bytes(compare, len(comparison)) != comparison
+                or mapped_bytes(store, len(assignment)) != assignment
+                or not (branch in (b"\x0f\x8c", b"\x0f\x8d") or branch[0] in (0x7C, 0x7D))):
+            raise AssertionError(f"Signed upper clamp differs at position {i}")
+    callbacks = struct.unpack("<QQ", mapped_bytes(0x145A1A060, 16))
+    if callbacks != (0x141B3C6F0, 0x141B3C940):
+        raise AssertionError("MATCH_PLAYER stream callback binding differs")
+    raw = mapped_bytes(0x141B3C940, 5)
+    if raw[0] != 0xE9 or 0x141B3C945 + struct.unpack_from("<i", raw, 1)[0] != 0x151C63300:
+        raise AssertionError("MATCH_PLAYER virtual+20 thunk target differs")
+    print("Position stream checks passed: 69-byte transfer assertions, 15 signed clamps and callback binding; input direction/provenance remain unbound.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
