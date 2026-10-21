@@ -6325,3 +6325,403 @@ Remaining state-calculation families: actual calls, destinations, separate switc
 0x141af97d5 e8c6ef0000 call   0x141b087a0
 0x141af980c e8bff20000 call   0x141b08ad0
 0x141af987f e8dcf80000 call   0x141b09160
+
+
+# 2026-10-21 attribute refresh/query minimal anchors; whole native ranges retained privately
+0x1419c9ce0 0fb6c9 movzx  ecx,cl
+0x1419c9ce3 8d41f1 lea    eax,[rcx-0xf]
+0x1419c9ce6 83f837 cmp    eax,0x37
+0x1419c9ce9 7211 jb     0x1419c9cfc
+0x1419c9ceb b001 mov    al,0x1
+0x1419c9ced 83f90f cmp    ecx,0xf
+0x1419c9cf0 7301 jae    0x1419c9cf3
+0x1419c9cf2 c3 ret
+0x1419c9cf3 81c10cffffff add    ecx,0xffffff0c
+0x1419c9cf9 83f90b cmp    ecx,0xb
+0x1419c9cfc 31c0 xor    eax,eax
+0x1419c9cfe c3 ret
+0x141a23cf0 e93bd2f20f jmp    0x151950f30
+0x141aeaca8 4c89e9 mov rcx,r13
+0x141aeacab 488d9424bf000000 lea rdx,[rsp+0xbf]
+0x141aeacb3 e83890f3ff call 0x141a23cf0
+0x141b3b09a 4489aee8140000 mov    DWORD PTR [rsi+0x14e8],r13d
+0x141b3b0da e8d138a403 call   0x14557e9b0
+0x141b3b0e9 e83239a403 call   0x14557ea20
+0x141b3b12f 450fbe8c241b010000 movsx  r9d,BYTE PTR [r12+0x11b]
+0x141b3b141 410fbea81b010000 movsx  ebp,BYTE PTR [r8+0x11b]
+0x141b3b15f 410fbea81b010000 movsx  ebp,BYTE PTR [r8+0x11b]
+0x141b3b167 450fbe942448020000 movsx  r10d,BYTE PTR [r12+0x248]
+0x141b3b174 410fbe8848020000 movsx  ecx,BYTE PTR [r8+0x248]
+0x141b3b18c 0fbebd48020000 movsx  edi,BYTE PTR [rbp+0x248]
+0x141b3b193 0fbe9d1b010000 movsx  ebx,BYTE PTR [rbp+0x11b]
+0x141b3b1cc 8b9604160000 mov    edx,DWORD PTR [rsi+0x1604]
+0x141b3b2f4 4489aee8140000 mov    DWORD PTR [rsi+0x14e8],r13d
+0x141b3b3b0 4489aee8140000 mov    DWORD PTR [rsi+0x14e8],r13d
+0x141b3b3ed e8de09f8ff call   0x141abbdd0
+0x141b3b4dd 0386e8140000 add    eax,DWORD PTR [rsi+0x14e8]
+0x141b3b54c 8b86e8140000 mov    eax,DWORD PTR [rsi+0x14e8]
+0x141b3b55a 8986e8140000 mov    DWORD PTR [rsi+0x14e8],eax
+0x141b3b5ac e8dfdbf8ff call   0x141ac9190
+0x141b3b5e1 8b8ee8140000 mov    ecx,DWORD PTR [rsi+0x14e8]
+0x141b3b5f0 8986e8140000 mov    DWORD PTR [rsi+0x14e8],eax
+0x141b3b637 e84437f8ff call   0x141abed80
+0x141b3b655 8b8ee8140000 mov    ecx,DWORD PTR [rsi+0x14e8]
+0x141b3b664 8986e8140000 mov    DWORD PTR [rsi+0x14e8],eax
+0x141b3b67e 8b86e8140000 mov    eax,DWORD PTR [rsi+0x14e8]
+0x141b3b753 8996e8140000 mov    DWORD PTR [rsi+0x14e8],edx
+0x141b3b770 898ee8140000 mov    DWORD PTR [rsi+0x14e8],ecx
+0x141b3b782 8b86e8140000 mov    eax,DWORD PTR [rsi+0x14e8]
+0x141b3b7aa 0386e8140000 add    eax,DWORD PTR [rsi+0x14e8]
+0x141b3b7b2 8b86e8140000 mov    eax,DWORD PTR [rsi+0x14e8]
+0x141b3b7ca 8986e8140000 mov    DWORD PTR [rsi+0x14e8],eax
+0x141b3b7e0 c3 ret
+0x141b52442 448b89f4140000 mov    r9d,DWORD PTR [rcx+0x14f4]
+0x141b52472 448b89f4140000 mov    r9d,DWORD PTR [rcx+0x14f4]
+0x141b524a4 8981f4140000 mov    DWORD PTR [rcx+0x14f4],eax
+0x141b524f6 448b89f8140000 mov    r9d,DWORD PTR [rcx+0x14f8]
+0x141b52523 448b89f8140000 mov    r9d,DWORD PTR [rcx+0x14f8]
+0x141b52555 8981f8140000 mov    DWORD PTR [rcx+0x14f8],eax
+0x141b525a7 448b89fc140000 mov    r9d,DWORD PTR [rcx+0x14fc]
+0x141b525d4 448b89fc140000 mov    r9d,DWORD PTR [rcx+0x14fc]
+0x141b52606 8981fc140000 mov    DWORD PTR [rcx+0x14fc],eax
+0x141b5260d c3 ret
+0x14274e900 31c0 xor    eax,eax
+0x14274e902 84c0 test   al,al
+0x14274e904 7515 jne    0x14274e91b
+0x14274e906 b001 mov    al,0x1
+0x14274e908 0fb6c9 movzx  ecx,cl
+0x14274e90b 488d150e000000 lea    rdx,[rip+0xe]        # 0x14274e920
+0x14274e912 48630c8a movsxd rcx,DWORD PTR [rdx+rcx*4]
+0x14274e916 4801d1 add    rcx,rdx
+0x14274e919 ffe1 jmp    rcx
+0x14274e91b 31c0 xor    eax,eax
+0x14274e91d c3 ret
+0x14274ed20 31c0 xor    eax,eax
+0x14274ed22 84c0 test   al,al
+0x14274ed24 7515 jne    0x14274ed3b
+0x14274ed26 b001 mov    al,0x1
+0x14274ed28 0fb6c9 movzx  ecx,cl
+0x14274ed2b 488d150e000000 lea    rdx,[rip+0xe]        # 0x14274ed40
+0x14274ed32 48630c8a movsxd rcx,DWORD PTR [rdx+rcx*4]
+0x14274ed36 4801d1 add    rcx,rdx
+0x14274ed39 ffe1 jmp    rcx
+0x14274ed3b 31c0 xor    eax,eax
+0x14274ed3d c3 ret
+0x14274f140 31c0 xor    eax,eax
+0x14274f142 84c0 test   al,al
+0x14274f144 7515 jne    0x14274f15b
+0x14274f146 b001 mov    al,0x1
+0x14274f148 0fb6c9 movzx  ecx,cl
+0x14274f14b 488d150e000000 lea    rdx,[rip+0xe]        # 0x14274f160
+0x14274f152 48630c8a movsxd rcx,DWORD PTR [rdx+rcx*4]
+0x14274f156 4801d1 add    rcx,rdx
+0x14274f159 ffe1 jmp    rcx
+0x14274f15b 31c0 xor    eax,eax
+0x14274f15d c3 ret
+0x1443af21b 44898108160000 mov    DWORD PTR [rcx+0x1608],r8d
+0x1443af25c 44898904160000 mov    DWORD PTR [rcx+0x1604],r9d
+0x1443af29a 44899910160000 mov    DWORD PTR [rcx+0x1610],r11d
+0x1443af2d5 89810c160000 mov    DWORD PTR [rcx+0x160c],eax
+0x1443af313 44898108160000 mov    DWORD PTR [rcx+0x1608],r8d
+0x1443af31f 44898904160000 mov    DWORD PTR [rcx+0x1604],r9d
+0x1443af32b 44899910160000 mov    DWORD PTR [rcx+0x1610],r11d
+0x1443af336 89810c160000 mov    DWORD PTR [rcx+0x160c],eax
+0x1443af340 899100160000 mov    DWORD PTR [rcx+0x1600],edx
+0x1443af36e 44898108160000 mov    DWORD PTR [rcx+0x1608],r8d
+0x1443af37d 44898904160000 mov    DWORD PTR [rcx+0x1604],r9d
+0x1443af38c 44899910160000 mov    DWORD PTR [rcx+0x1610],r11d
+0x1443af399 89810c160000 mov    DWORD PTR [rcx+0x160c],eax
+0x1443af3a5 89b900160000 mov    DWORD PTR [rcx+0x1600],edi
+0x1443af3ad c3 ret
+0x1443afc52 e869430000 call   0x1443b3fc0
+0x1443afc68 e853430000 call   0x1443b3fc0
+0x1443afc7e e83d430000 call   0x1443b3fc0
+0x1443afc94 e827430000 call   0x1443b3fc0
+0x1443afcaa e811430000 call   0x1443b3fc0
+0x1443afcc0 e8fb420000 call   0x1443b3fc0
+0x1443afcd6 e8e5420000 call   0x1443b3fc0
+0x1443afcec e8cf420000 call   0x1443b3fc0
+0x1443afd02 e8b9420000 call   0x1443b3fc0
+0x1443afd18 e8a3420000 call   0x1443b3fc0
+0x1443afd2e e88d420000 call   0x1443b3fc0
+0x1443afe06 e8b5410000 call   0x1443b3fc0
+0x1443afe19 e8a2410000 call   0x1443b3fc0
+0x1443afe2f e88c410000 call   0x1443b3fc0
+0x1443afe45 e876410000 call   0x1443b3fc0
+0x1443afe5b e860410000 call   0x1443b3fc0
+0x1443afe99 e822410000 call   0x1443b3fc0
+0x1443afeaf e80c410000 call   0x1443b3fc0
+0x1443afec5 e8f6400000 call   0x1443b3fc0
+0x1443afedb e8e0400000 call   0x1443b3fc0
+0x1443afef1 e8ca400000 call   0x1443b3fc0
+0x1443aff07 e8b4400000 call   0x1443b3fc0
+0x1443aff1d e89e400000 call   0x1443b3fc0
+0x1443aff33 e888400000 call   0x1443b3fc0
+0x1443aff49 e872400000 call   0x1443b3fc0
+0x1443aff5f e85c400000 call   0x1443b3fc0
+0x1443aff75 e846400000 call   0x1443b3fc0
+0x1443aff8b e830400000 call   0x1443b3fc0
+0x1443affa1 e81a400000 call   0x1443b3fc0
+0x1443affb7 e804400000 call   0x1443b3fc0
+0x1443affcd e8ee3f0000 call   0x1443b3fc0
+0x1443affe3 e8d83f0000 call   0x1443b3fc0
+0x1443afff9 e8c23f0000 call   0x1443b3fc0
+0x1443b000f e8ac3f0000 call   0x1443b3fc0
+0x1443b0025 e8963f0000 call   0x1443b3fc0
+0x1443b003b e8803f0000 call   0x1443b3fc0
+0x1443b0051 e86a3f0000 call   0x1443b3fc0
+0x1443b0067 e8543f0000 call   0x1443b3fc0
+0x1443b007d e83e3f0000 call   0x1443b3fc0
+0x1443b0090 e82b3f0000 call   0x1443b3fc0
+0x1443b00a3 e8183f0000 call   0x1443b3fc0
+0x1443b00b6 e8053f0000 call   0x1443b3fc0
+0x1443b00c9 e8f23e0000 call   0x1443b3fc0
+0x1443b00df e8dc3e0000 call   0x1443b3fc0
+0x1443b00f5 e8c63e0000 call   0x1443b3fc0
+0x1443b0108 e8b33e0000 call   0x1443b3fc0
+0x1443b011b e8a03e0000 call   0x1443b3fc0
+0x1443b016a e8513e0000 call   0x1443b3fc0
+0x1443b0419 ffc9 dec    ecx
+0x1443b041b 83f91f cmp    ecx,0x1f
+0x1443b041e 7744 ja     0x1443b0464
+0x1443b0420 b850000000 mov    eax,0x50
+0x1443b0425 488d1540000000 lea    rdx,[rip+0x40]        # 0x1443b046c
+0x1443b042c 48630c8a movsxd rcx,DWORD PTR [rdx+rcx*4]
+0x1443b0430 4801d1 add    rcx,rdx
+0x1443b0433 ffe1 jmp    rcx
+0x1443b0435 b85f000000 mov    eax,0x5f
+0x1443b043a eb05 jmp    0x1443b0441
+0x1443b043c b85a000000 mov    eax,0x5a
+0x1443b0441 0faf865c020000 imul   eax,DWORD PTR [rsi+0x25c]
+0x1443b0448 4898 cdqe
+0x1443b044a 4869c01f85eb51 imul   rax,rax,0x51eb851f
+0x1443b0451 4889c1 mov    rcx,rax
+0x1443b0454 48c1e93f shr    rcx,0x3f
+0x1443b0458 48c1f825 sar    rax,0x25
+0x1443b045c 01c8 add    eax,ecx
+0x1443b045e 89865c020000 mov    DWORD PTR [rsi+0x25c],eax
+0x1443b0464 4883c420 add    rsp,0x20
+0x1443b0468 5b pop    rbx
+0x1443b0469 5f pop    rdi
+0x1443b046a 5e pop    rsi
+0x1443b046b c3 ret
+0x1443b3fe8 e8f35c61fd call   0x1419c9ce0
+0x1443b405e e84d770100 call   0x1443cb7b0
+0x1443b4072 e8c9b039fe call   0x14274f140
+0x1443b408c e86fa839fe call   0x14274e900
+0x1443b40c3 e858ac39fe call   0x14274ed20
+0x1443b426d 418b85e8140000 mov    eax,DWORD PTR [r13+0x14e8]
+0x1443b46f4 83f802 cmp    eax,0x2
+0x1443b46f7 bd01000000 mov    ebp,0x1
+0x1443b46fc 0f4de8 cmovge ebp,eax
+0x1443b46ff 41f7c700000008 test   r15d,0x8000000
+0x1443b4706 7476 je     0x1443b477e
+0x1443b4708 498b85e0010000 mov    rax,QWORD PTR [r13+0x1e0]
+0x1443b470f 0fb6801f230000 movzx  eax,BYTE PTR [rax+0x231f]
+0x1443b4716 84c0 test   al,al
+0x1443b4718 7864 js     0x1443b477e
+0x1443b471a 498b8dd0010000 mov    rcx,QWORD PTR [r13+0x1d0]
+0x1443b4721 488bbcc178010000 mov    rdi,QWORD PTR [rcx+rax*8+0x178]
+0x1443b4729 4c39ef cmp    rdi,r13
+0x1443b472c 7450 je     0x1443b477e
+0x1443b472e 4885ff test   rdi,rdi
+0x1443b4731 744b je     0x1443b477e
+0x1443b4733 f687f816000001 test   BYTE PTR [rdi+0x16f8],0x1
+0x1443b473a 7542 jne    0x1443b477e
+0x1443b473c 4981e7fffff7f7 and    r15,0xfffffffff7f7ffff
+0x1443b4743 4889f9 mov    rcx,rdi
+0x1443b4746 488b542428 mov    rdx,QWORD PTR [rsp+0x28]
+0x1443b474b 4d89f8 mov    r8,r15
+0x1443b474e e86df8ffff call   0x1443b3fc0
+0x1443b4753 8b8fec020000 mov    ecx,DWORD PTR [rdi+0x2ec]
+0x1443b4759 ba64000000 mov    edx,0x64
+0x1443b475e 29ca sub    edx,ecx
+0x1443b4760 0fafd5 imul   edx,ebp
+0x1443b4763 0fafc1 imul   eax,ecx
+0x1443b4766 01d0 add    eax,edx
+0x1443b4768 4898 cdqe
+0x1443b476a 4869e81f85eb51 imul   rbp,rax,0x51eb851f
+0x1443b4771 4889e8 mov    rax,rbp
+0x1443b4774 48c1e83f shr    rax,0x3f
+0x1443b4778 48c1fd25 sar    rbp,0x25
+0x1443b477c 01c5 add    ebp,eax
+0x1443b477e 89e8 mov    eax,ebp
+0x1443b4780 4883c448 add    rsp,0x48
+0x1443b4784 5b pop    rbx
+0x1443b4785 5d pop    rbp
+0x1443b4786 5f pop    rdi
+0x1443b4787 5e pop    rsi
+0x1443b4788 415c pop    r12
+0x1443b478a 415d pop    r13
+0x1443b478c 415e pop    r14
+0x1443b478e 415f pop    r15
+0x1443b4790 c3 ret
+0x1443cb7b0 31c0 xor    eax,eax
+0x1443cb7b2 84c0 test   al,al
+0x1443cb7b4 7515 jne    0x1443cb7cb
+0x1443cb7b6 b001 mov    al,0x1
+0x1443cb7b8 0fb6c9 movzx  ecx,cl
+0x1443cb7bb 488d150e000000 lea    rdx,[rip+0xe]        # 0x1443cb7d0
+0x1443cb7c2 48630c8a movsxd rcx,DWORD PTR [rdx+rcx*4]
+0x1443cb7c6 4801d1 add    rcx,rdx
+0x1443cb7c9 ffe1 jmp    rcx
+0x1443cb7cb 31c0 xor    eax,eax
+0x1443cb7cd c3 ret
+0x151950f30 56 push   rsi
+0x151950f31 53 push   rbx
+0x151950f32 4883ec28 sub    rsp,0x28
+0x151950f36 4c8b4140 mov    r8,QWORD PTR [rcx+0x40]
+0x151950f3a 488b4148 mov    rax,QWORD PTR [rcx+0x48]
+0x151950f3e 4c29c0 sub    rax,r8
+0x151950f41 7455 je     0x151950f98
+0x151950f43 48c1f803 sar    rax,0x3
+0x151950f47 440fb60a movzx  r9d,BYTE PTR [rdx]
+0x151950f4b 4883f802 cmp    rax,0x2
+0x151950f4f 41ba01000000 mov    r10d,0x1
+0x151950f55 4c0f43d0 cmovae r10,rax
+0x151950f59 41b37f mov    r11b,0x7f
+0x151950f5c 31f6 xor    esi,esi
+0x151950f5e 6690 xchg   ax,ax
+0x151950f60 498b04f0 mov    rax,QWORD PTR [r8+rsi*8]
+0x151950f64 0fb65837 movzx  ebx,BYTE PTR [rax+0x37]
+0x151950f68 4438cb cmp    bl,r9b
+0x151950f6b 743c je     0x151950fa9
+0x151950f6d 4438db cmp    bl,r11b
+0x151950f70 450fb6db movzx  r11d,r11b
+0x151950f74 0fb6c3 movzx  eax,bl
+0x151950f77 410f4dc3 cmovge eax,r11d
+0x151950f7b 4438cb cmp    bl,r9b
+0x151950f7e 410f4ec3 cmovle eax,r11d
+0x151950f82 4189c3 mov    r11d,eax
+0x151950f85 48ffc6 inc    rsi
+0x151950f88 4939f2 cmp    r10,rsi
+0x151950f8b 75d3 jne    0x151950f60
+0x151950f8d 44885c2427 mov    BYTE PTR [rsp+0x27],r11b
+0x151950f92 4180fb7f cmp    r11b,0x7f
+0x151950f96 7504 jne    0x151950f9c
+0x151950f98 31c0 xor    eax,eax
+0x151950f9a eb0d jmp    0x151950fa9
+0x151950f9c 44881a mov    BYTE PTR [rdx],r11b
+0x151950f9f 488d542427 lea    rdx,[rsp+0x27]
+0x151950fa4 e8472d0df0 call   0x141a23cf0
+0x151950fa9 90 nop
+0x151950faa 4883c428 add    rsp,0x28
+0x151950fae 5b pop    rbx
+0x151950faf 5e pop    rsi
+0x151950fb0 c3 ret
+DATA 0x14274e920 fbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffdfffffffdfffffffdfffffffdfffffffbfffffffbfffffffdfffffffdfffffffdfffffffbfffffffdfffffffbfffffffbfffffffbfffffffdfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffdfffffffdfffffffdfffffffbfffffffdfffffffbfffffffbfffffffdfffffffbfffffffbfffffffbfffffffbfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbffffff 14274e900 all256 table entries
+DATA 0x14274ed40 fbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffdfffffffbfffffffbfffffffbfffffffdfffffffbfffffffbfffffffdfffffffdfffffffbfffffffbfffffffdfffffffdfffffffbfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffbfffffffdfffffffdfffffffbfffffffdfffffffdfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffdfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbffffff 14274ed20 all256 table entries
+DATA 0x14274f160 fbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffbfffffffdfffffffdfffffffdfffffffdfffffffbfffffffbfffffffdfffffffbfffffffbfffffffbfffffffdfffffffbfffffffbfffffffbfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbffffff 14274f140 all256 table entries
+DATA 0x1443cb7d0 fbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffbfffffffdfffffffdfffffffbfffffffdfffffffdfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffdfffffffbfffffffbfffffffbfffffffdfffffffbfffffffbfffffffdfffffffbfffffffdfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbfffffffbffffff 1443cb7b0 all256 table entries
+DATA 0x1443b046c c9ffffffc9fffffff8fffffff8fffffff8fffffff8fffffff8ffffffd0fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8fffffff8ffffffd5ffffff afc40 all32 entries
+
+# 2026-10-21 complete141b52610 subtree anchors; private full native covers all branches
+0x141b52610 4157 push   r15
+0x141b527dc e8af69f7ff call   0x141ac9190
+0x141b52866 450fbeb748020000 movsx  r14d,BYTE PTR [r15+0x248]
+0x141b52876 0fbe9848020000 movsx  ebx,BYTE PTR [rax+0x248]
+0x141b528b2 e8f9c0a203 call   0x14557e9b0
+0x141b528c5 e856c1a203 call   0x14557ea20
+0x141b5294a 440fbe8248020000 movsx  r8d,BYTE PTR [rdx+0x248]
+0x141b529c9 488987d0e30000 mov    QWORD PTR [rdi+0xe3d0],rax
+0x141b52b3f 4889aad0e30000 mov    QWORD PTR [rdx+0xe3d0],rbp
+0x141b52bb5 4889a8d0e30000 mov    QWORD PTR [rax+0xe3d0],rbp
+0x141b52ccb 488987d0e30000 mov    QWORD PTR [rdi+0xe3d0],rax
+0x141b52d14 e897bca203 call   0x14557e9b0
+0x141b52d5c 488985d0e30000 mov    QWORD PTR [rbp+0xe3d0],rax
+0x141b52d9d 488990d0e30000 mov    QWORD PTR [rax+0xe3d0],rdx
+0x141b52dee 4889aad0e30000 mov    QWORD PTR [rdx+0xe3d0],rbp
+0x141b52e46 4889aad0e30000 mov    QWORD PTR [rdx+0xe3d0],rbp
+0x141b52e6e 440fbe8248020000 movsx  r8d,BYTE PTR [rdx+0x248]
+0x141b52e89 440fbe8f48020000 movsx  r9d,BYTE PTR [rdi+0x248]
+0x141b52f05 488990d0e30000 mov    QWORD PTR [rax+0xe3d0],rdx
+0x141b52f62 4889bad0e30000 mov    QWORD PTR [rdx+0xe3d0],rdi
+0x141b52f83 440fbe8248020000 movsx  r8d,BYTE PTR [rdx+0x248]
+0x141b52f9e 440fbe8f48020000 movsx  r9d,BYTE PTR [rdi+0x248]
+0x141b53052 488990d0e30000 mov    QWORD PTR [rax+0xe3d0],rdx
+0x141b530ae 4889bad0e30000 mov    QWORD PTR [rdx+0xe3d0],rdi
+0x141b531c2 e82998f7ff call   0x141acc9f0
+0x141b53265 e8369df7ff call   0x141accfa0
+0x141b5328d e88ea2f7ff call   0x141acd520
+0x141b532c5 e806a7f7ff call   0x141acd9d0
+0x141b533b1 440fbe8248020000 movsx  r8d,BYTE PTR [rdx+0x248]
+0x141b533cc 440fbe8d48020000 movsx  r9d,BYTE PTR [rbp+0x248]
+0x141b5344f e85cb5a203 call   0x14557e9b0
+0x141b534b3 488986d0e30000 mov    QWORD PTR [rsi+0xe3d0],rax
+0x141b5350f e89cb4a203 call   0x14557e9b0
+0x141b5351e e8fdb4a203 call   0x14557ea20
+0x141b53572 4889bad0e30000 mov    QWORD PTR [rdx+0xe3d0],rdi
+0x141b535ba e8f1b3a203 call   0x14557e9b0
+0x141b535e2 e8c9b3a203 call   0x14557e9b0
+0x141b535f1 e82ab4a203 call   0x14557ea20
+0x141b53644 4889bad0e30000 mov    QWORD PTR [rdx+0xe3d0],rdi
+0x141b53691 e81ab3a203 call   0x14557e9b0
+0x141b536b7 440fbe8048020000 movsx  r8d,BYTE PTR [rax+0x248]
+0x141b536d2 440fbe8d48020000 movsx  r9d,BYTE PTR [rbp+0x248]
+0x141b53787 488986d0e30000 mov    QWORD PTR [rsi+0xe3d0],rax
+0x141b537b6 e865b2a203 call   0x14557ea20
+0x141b53800 498980d0e30000 mov    QWORD PTR [r8+0xe3d0],rax
+0x141b53823 e8f8b1a203 call   0x14557ea20
+0x141b5386e 488995d0e30000 mov    QWORD PTR [rbp+0xe3d0],rdx
+0x141b53a45 450fbe9148020000 movsx  r10d,BYTE PTR [r9+0x248]
+0x141b53a60 440fbeaf48020000 movsx  r13d,BYTE PTR [rdi+0x248]
+0x141b53bcf e86c9af7ff call   0x141acd640
+0x141b53c5d 440fbe8248020000 movsx  r8d,BYTE PTR [rdx+0x248]
+0x141b53c78 440fbe8f48020000 movsx  r9d,BYTE PTR [rdi+0x248]
+0x141b53d1c e8ffaca203 call   0x14557ea20
+0x141b53d74 4889aed0e30000 mov    QWORD PTR [rsi+0xe3d0],rbp
+0x141b53dde 488990d0e30000 mov    QWORD PTR [rax+0xe3d0],rdx
+0x141b53e32 488997d0e30000 mov    QWORD PTR [rdi+0xe3d0],rdx
+0x141b53e56 e8c5aba203 call   0x14557ea20
+0x141b53eb6 e855588a02 call   0x1443f9710
+0x141b5404c 498990d0e30000 mov    QWORD PTR [r8+0xe3d0],rdx
+0x141b54126 4889bbd0e30000 mov    QWORD PTR [rbx+0xe3d0],rdi
+0x141b54158 410fbe8a48020000 movsx  ecx,BYTE PTR [r10+0x248]
+0x141b54178 410fbe9d48020000 movsx  ebx,BYTE PTR [r13+0x248]
+0x141b542b3 4989b8d0e30000 mov    QWORD PTR [r8+0xe3d0],rdi
+0x141b5442c 4889b8d0e30000 mov    QWORD PTR [rax+0xe3d0],rdi
+0x141b544a8 440fbe8148020000 movsx  r8d,BYTE PTR [rcx+0x248]
+0x141b544c3 440fbe8b48020000 movsx  r9d,BYTE PTR [rbx+0x248]
+0x141b5463b 418887f4020000 mov    BYTE PTR [r15+0x2f4],al
+0x141b54665 c3 ret
+0x141b54771 e89a4f8a02 call   0x1443f9710
+0x141acc9f0 4157 push   r15
+0x141accad0 410fbe9e48020000 movsx  ebx,BYTE PTR [r14+0x248]
+0x141accaeb 440fbea648020000 movsx  r12d,BYTE PTR [rsi+0x248]
+0x141accd48 e8631cab03 call   0x14557e9b0
+0x141accd56 e8c51cab03 call   0x14557ea20
+0x141accf91 c3 ret
+0x141accfa0 4157 push   r15
+0x141acd07a 410fbe9d48020000 movsx  ebx,BYTE PTR [r13+0x248]
+0x141acd095 440fbea648020000 movsx  r12d,BYTE PTR [rsi+0x248]
+0x141acd168 e84318ab03 call   0x14557e9b0
+0x141acd194 e81718ab03 call   0x14557e9b0
+0x141acd1a0 e87b18ab03 call   0x14557ea20
+0x141acd1cf e84c18ab03 call   0x14557ea20
+0x141acd1e9 e8c217ab03 call   0x14557e9b0
+0x141acd1f8 e82318ab03 call   0x14557ea20
+0x141acd274 e83717ab03 call   0x14557e9b0
+0x141acd280 e89b17ab03 call   0x14557ea20
+0x141acd40b e8b06b8e02 call   0x1443b3fc0
+0x141acd436 e87515ab03 call   0x14557e9b0
+0x141acd470 e8ab15ab03 call   0x14557ea20
+0x141acd510 c3 ret
+0x151b828f0 4156 push   r14
+0x151b8291f 440fbe8148020000 movsx  r8d,BYTE PTR [rcx+0x248]
+0x151b8293a 440fbe9248020000 movsx  r10d,BYTE PTR [rdx+0x248]
+0x151b829c5 c3 ret
+0x141acd9d0 4157 push   r15
+0x141acda50 410fbe8548020000 movsx  eax,BYTE PTR [r13+0x248]
+0x141acda6b 440fbe9648020000 movsx  r10d,BYTE PTR [rsi+0x248]
+0x141acdb2b e8a0e2feff call   0x141abbdd0
+0x141acdc60 e84b0dab03 call   0x14557e9b0
+0x141acdc6e e8ad0dab03 call   0x14557ea20
+0x141acdd49 c3 ret
+0x141acd640 4157 push   r15
+0x141acd653 440fbe8048020000 movsx  r8d,BYTE PTR [rax+0x248]
+0x141acd66e 440fbe9648020000 movsx  r10d,BYTE PTR [rsi+0x248]
+0x141acd742 440fbe9048020000 movsx  r10d,BYTE PTR [rax+0x248]
+0x141acd75d 0fbeb148020000 movsx  esi,BYTE PTR [rcx+0x248]
+0x141acd9c5 c3 ret
+0x141acd520 e9cb530b10 jmp 0x151b828f0
+0x141afbc4a e8c1690500 call 0x141b52610

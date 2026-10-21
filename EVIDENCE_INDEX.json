@@ -469,7 +469,11 @@
         "0x141a927d6",
         "0x141f7eb10",
         "0x142014210",
-        "0x14200a470"
+        "0x14200a470",
+        "0x141b52610",
+        "0x1443afc40",
+        "0x141b3b060",
+        "0x151950f30"
       ],
       "evidence": {
         "reports": [
@@ -2346,6 +2350,47 @@
           ],
           "evidence": "20261020_finalize_helper_preservation_observations.json",
           "limit": "local whole-call footprint; later modified-state consumers and natural final-score lifecycle remain outside proof"
+        },
+        {
+          "source": "P on actual141aea610 history path",
+          "callsite": "0x141afbc4a",
+          "callee": "0x141b52610",
+          "receiver": "same P, M=P1c8, T=P1d0",
+          "target": "P2f4 clamped byte and M.e3d0 RNG; five score targets preserved",
+          "conditions": [
+            "valid independent P/M/T storage",
+            "bound141ac9190 and math API semantics",
+            "complete five candidate-selector subtrees covered"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "whole selected call only; other141aea610 calls and natural final score remain open"
+        },
+        {
+          "source": "H pointer and caller stack selector at RSP+bf",
+          "callsite": "0x141aeacb3",
+          "callee": "0x141a23cf0",
+          "receiver": "E9-bound151950f30 scans H40/H48 original pointer vector",
+          "target": "existing item pointer or0; caller selector byte may increase",
+          "conditions": [
+            "stable valid original pointer list",
+            "second arg bound to caller stack"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "selection is not allocation; H lifetime/fixture independence not proved"
+        },
+        {
+          "source": "P attribute mask with selected other player",
+          "callsite": "0x1443b474e",
+          "callee": "0x1443b3fc0",
+          "receiver": "other P, mask cleared by fffffffff7f7ffff",
+          "target": "integer return; no score target writes",
+          "conditions": [
+            "valid player/team binding",
+            "all four256-entry classifier tables bound",
+            "recursive trigger bit08000000 cleared"
+          ],
+          "evidence": "20261020_finalize_helper_preservation_observations.json",
+          "limit": "public getter only; callers may still mutate other state"
         }
       ]
     },
