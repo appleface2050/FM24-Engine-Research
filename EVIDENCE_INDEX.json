@@ -264,7 +264,8 @@
         "类型9写入控制后续类型6的资格；P+ab0=5时跳过离场辅助调用；类型8不释放分支仅改名称引用/计数及A+2158，完整混合列表仍未闭合",
         "结果拥有者由构造/虚表/RTTI绑定为FIXTURE_TO_PLAY_FULL；批量推进器选定分支只检查X+10指针推进B+d0，不检查两侧记录值，仍非正式接受",
         "同一S98队行的E+c规则累计与默认排序、E+e1位置写入和实际读取；积分名称属行为推断",
-        "六种实际高位状态码：有条件连接前置评分、类型1队列、再次评分与P16d8/dc/dd写入；已排除该路径消息尾跳，不升级全收尾"
+        "六种实际高位状态码：有条件连接前置评分、类型1队列、再次评分与P16d8/dc/dd写入；已排除该路径消息尾跳，不升级全收尾",
+        "实际初始空向量mode3在正常条件下非空等价于attrs[0,2..14]至少一项signed>=10；14类都有零门槛候选；两处直接EAX消费忽略新增位33/34"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -523,7 +524,8 @@
           "20261021_当前联赛比分消费与排序.md",
           "20261021_收尾事件记录与保分边界.md",
           "20261021_非零条件查询与收尾保分.md",
-          "20261021_球员状态评分与队列应用保分.md"
+          "20261021_球员状态评分与队列应用保分.md",
+          "20261021_候选非空条件与标志直接消费.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -607,7 +609,9 @@
           "20261021_nonzero_player_condition_static.txt",
           "20261021_nonzero_player_condition_observations.json",
           "20261021_player_state_queue_static.txt",
-          "20261021_player_state_queue_observations.json"
+          "20261021_player_state_queue_observations.json",
+          "20261021_candidate_nonempty_static.txt",
+          "20261021_candidate_nonempty_observations.json"
         ]
       },
       "upstream": [
@@ -638,7 +642,8 @@
         "已条件排除实际空目标字段转移和源清理；已接元素/子对象销毁、共享引用释放及1418ff320。三处virtual+0归零点已定位，匹配计数且原持有者保留可排除归零；渲染期间原持有者释放/引用变化、具体虚调用类型、资源加载及池回收仍未闭合。 子对象构建/销毁池已绑定同一固定146439db0，初始化标签sitranslation::VARIABLE、大小0x58；不据标签直接证明全部回调保分。",
         "38/3a空槽求值已排除控制虚调用及字符串/池析构；完整资源缓存生命周期与普通存储首次初始化仍有明确条件边界，见空槽专项。",
         "新当前联赛终点直接消费提交输入F，不消费查询副本R；F/K两支同源保持、阶段前后回调及后续修订仍须连接，不能将该限定终点当自然射门闭环",
-        "141b2b470与其状态队列已条件保分，但逐次非零查询的自然候选/工厂与A/P/T/M身份、队列存储/索引、1443b04f0其他子树及后续状态消费者仍待证明"
+        "141b2b470与其状态队列已条件保分，但逐次非零查询的自然候选/工厂与A/P/T/M身份、队列存储/索引、1443b04f0其他子树及后续状态消费者仍待证明",
+        "自然位置数据的载入/复制入口、同一P在每次查询前建立并保持至少一项>=10仍未证明；构造前缀先清零，R6c配置非零不能替代。两处低位消费者证据不覆盖其他调用者。"
       ],
       "connections": [
         {
@@ -2995,6 +3000,71 @@
           "conditions": "same input/target bindings",
           "limit": "Existing helper includes a data jump table, not extra code; no new full export needed",
           "evidence": "20261021_player_state_queue_observations.json"
+        },
+        {
+          "source": "outer single-bit i",
+          "callsite": "0x1419cbe46",
+          "callee": "0x1419c9810",
+          "receiver": "actual native argument registers; see candidate nonempty report",
+          "target": "attrs index a(i)",
+          "conditions": [
+            "same objects and normal valid storage",
+            "nonzero query conditions remain explicit"
+          ],
+          "evidence": "20261021_candidate_nonempty_observations.json",
+          "limit": "signed byte >=10 is checked after index selection"
+        },
+        {
+          "source": "admitted i",
+          "callsite": "0x1419cbe69",
+          "callee": "0x1419cb810",
+          "receiver": "actual native argument registers; see candidate nonempty report",
+          "target": "position/category mask L",
+          "conditions": [
+            "same objects and normal valid storage",
+            "nonzero query conditions remain explicit"
+          ],
+          "evidence": "20261021_candidate_nonempty_observations.json",
+          "limit": "14 covered effective positions; normal retained initialized cache"
+        },
+        {
+          "source": "P+388 in constructor prefix",
+          "callsite": "0x141b315ea",
+          "callee": "0x1419c6b80",
+          "receiver": "actual native argument registers; see candidate nonempty report",
+          "target": "zero-initialized attribute prefix",
+          "conditions": [
+            "same objects and normal valid storage",
+            "nonzero query conditions remain explicit"
+          ],
+          "evidence": "20261021_candidate_nonempty_observations.json",
+          "limit": "does not establish a loaded natural position byte >=10"
+        },
+        {
+          "source": "actual A current M and P",
+          "callsite": "0x141b2b980",
+          "callee": "0x141acdd50",
+          "receiver": "actual native argument registers; see candidate nonempty report",
+          "target": "64-bit returned flags then TEST EAX,2000",
+          "conditions": [
+            "same objects and normal valid storage",
+            "nonzero query conditions remain explicit"
+          ],
+          "evidence": "20261021_candidate_nonempty_observations.json",
+          "limit": "only selected direct consumer; no claim of all consumers"
+        },
+        {
+          "source": "actual A current M and P",
+          "callsite": "0x141b2ba71",
+          "callee": "0x141acdd50",
+          "receiver": "actual native argument registers; see candidate nonempty report",
+          "target": "64-bit returned flags then TEST EAX,4000",
+          "conditions": [
+            "same objects and normal valid storage",
+            "nonzero query conditions remain explicit"
+          ],
+          "evidence": "20261021_candidate_nonempty_observations.json",
+          "limit": "only selected direct consumer; no claim of all consumers"
         }
       ]
     },

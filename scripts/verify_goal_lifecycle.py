@@ -906,6 +906,7 @@ def verify_original(exe):
         "20261021_finalize_event_storage_observations.json",
         "20261021_nonzero_player_condition_observations.json",
         "20261021_player_state_queue_observations.json",
+        "20261021_candidate_nonempty_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -988,6 +989,46 @@ def verify_original(exe):
         if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(link["target"], 16):
             raise AssertionError(f"State queue tail target differs at {site:#x}; reopen its preservation boundary")
     print(f"State queue E9 checks passed: {len(queue_evidence['tail_connections'])}; kind1/message exclusion remains conditional.", flush=True)
+
+    candidate_evidence = json.loads((ROOT / "20261021_candidate_nonempty_observations.json").read_text())
+
+    def native_literal(spec):
+        """读取证据中标明的原生立即数，不使用另行手填的掩码数值。"""
+        return int.from_bytes(mapped_bytes(int(spec["va"], 16) + spec["offset"], spec["size"]), "little")
+
+    threshold_bits = 0
+    for spec in candidate_evidence["zero_threshold_masks"]:
+        threshold_bits |= native_literal(spec)
+    witnesses = candidate_evidence["nonempty_witnesses"]
+    admitted = set(range(15)) - {1}
+    if {w["outer_index"] for w in witnesses} != admitted or len(witnesses) != 14:
+        raise AssertionError("Nonempty certificate does not cover every admitted position")
+    if {w["attribute_index"] for w in witnesses} != admitted:
+        raise AssertionError("Position-to-attribute coverage differs; reopen the nonempty condition")
+    for witness in witnesses:
+        i = witness["outer_index"]
+        leaf = int(witness["attribute_leaf"], 16)
+        if i <= 6:
+            table = 0x1419C98EC
+            target = table + struct.unpack("<i", mapped_bytes(table + ((1 << i) - 1) * 4, 4))[0]
+            if target != leaf:
+                raise AssertionError(f"Attribute index switch changed for position {i}")
+        raw = mapped_bytes(leaf, 3)
+        attribute = 0 if raw == b"\x31\xc0\xc3" else raw[1] if raw[0] == 0xB0 and raw[2] == 0xC3 else None
+        if attribute != witness["attribute_index"]:
+            raise AssertionError(f"Attribute index leaf differs for position {i}")
+        j, k = witness["category_index"], witness["variant_index"]
+        position_mask = native_literal(witness["position_mask_literal"])
+        role_mask = native_literal(witness["role_mask_literal"])
+        if not (0 <= j <= 52 and 0 <= k <= 52 and position_mask & (1 << j)
+                and role_mask & (1 << k) and not threshold_bits & (1 << j)):
+            raise AssertionError(f"No zero-threshold candidate witness for position {i}")
+    for site, expected in ((0x141B2B98F, 0x2000), (0x141B2BA76, 0x4000)):
+        raw = mapped_bytes(site, 5)
+        mask = struct.unpack_from("<I", raw, 1)[0]
+        if raw[0] != 0xA9 or mask != expected or mask & (0x200000000 | 0x400000000):
+            raise AssertionError("Selected direct flag consumer no longer projects only the proven low bits")
+    print("Candidate certificate passed: 14 original-constant zero-threshold witnesses; 2 low-bit consumers. Natural input establishment remains separate.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
