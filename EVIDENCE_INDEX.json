@@ -479,7 +479,11 @@
         "0x141a72e30",
         "0x1443201d0",
         "0x1443202b0",
-        "0x14431ffa0"
+        "0x14431ffa0",
+        "0x141b388e0",
+        "0x141b377d0",
+        "0x1443af3b0",
+        "0x1443af080"
       ],
       "evidence": {
         "reports": [
@@ -2439,6 +2443,59 @@
           ],
           "evidence": "20261021_finalize_event_storage_observations.json",
           "limit": "event/storage checkpoint only; natural final-score retention and future consumers remain open"
+        },
+        {
+          "source": "same P and flag derived from M.e1d8/e1d6/e1dd",
+          "callsite": "0x1443af165",
+          "callee": "0x141b388e0",
+          "receiver": "actual caller-bound P/M/B; see event-storage report",
+          "target": "P14a0/P14a4/P1554, RNG, cache and event storage updates",
+          "conditions": [
+            "bound P/M/T/A/B storage",
+            "all22 switch entries covered",
+            "selected Q diagnostics unreachable",
+            "established event allocation/recovery exclusion"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "selected whole-call footprint;1443b04f0, natural identity/diagnostics and downstream event consumers remain open"
+        },
+        {
+          "source": "actual bool0 path, same P",
+          "callsite": "0x1443af188",
+          "callee": "0x1443af3b0",
+          "receiver": "actual caller-bound P/M/B; see event-storage report",
+          "target": "player derived fields and three Q=0 wrapper calls",
+          "conditions": [
+            "bound objects and established event allocator conditions",
+            "not relying on P6bc=ff early return"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "selected whole-call footprint;1443b04f0, natural identity/diagnostics and downstream event consumers remain open"
+        },
+        {
+          "source": "P, low16code0134, Q selected from A231f/T178",
+          "callsite": "0x141b3abcd",
+          "callee": "0x141b377d0",
+          "receiver": "actual caller-bound P/M/B; see event-storage report",
+          "target": "event submit or admission rejection",
+          "conditions": [
+            "Q=null or Q6bb>=0 or diagnostic flag/level excludes logging",
+            "normal independent event storage; no recovery callback"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "selected whole-call footprint;1443b04f0, natural identity/diagnostics and downstream event consumers remain open"
+        },
+        {
+          "source": "P, code015e/015f, R8D explicitly zero",
+          "callsite": "0x1443afb92",
+          "callee": "0x141b377d0",
+          "receiver": "actual caller-bound P/M/B; see event-storage report",
+          "target": "event submit without second-player diagnostic branch",
+          "conditions": [
+            "normal independent event storage; no recovery callback"
+          ],
+          "evidence": "20261021_finalize_event_storage_observations.json",
+          "limit": "selected whole-call footprint;1443b04f0, natural identity/diagnostics and downstream event consumers remain open"
         }
       ]
     },

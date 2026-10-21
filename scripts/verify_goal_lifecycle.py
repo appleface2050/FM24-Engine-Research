@@ -942,6 +942,17 @@ def verify_original(exe):
         raise AssertionError("Event submission switch reaches an uncovered target; reopen its call/write coverage")
     print("Event submission switch passed: 358 entries, 10 covered code targets; no game execution.", flush=True)
 
+    # 刷新函数尾部为22项数据表，不能当作可执行间接跳转。
+    refresh_table = 0x141B3AFD0
+    refresh_displacements = struct.unpack("<22i", mapped_bytes(refresh_table, 22 * 4))
+    refresh_targets = {refresh_table + displacement for displacement in refresh_displacements}
+    if refresh_targets != {
+        0x141B391F0, 0x141B3920E, 0x141B39376,
+        0x141B39387, 0x141B39398, 0x141B393F6,
+    }:
+        raise AssertionError("Player refresh switch reaches an uncovered target; reopen its call/write coverage")
+    print("Player refresh switch passed: 22 entries, 6 covered code targets; no game execution.", flush=True)
+
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
     for connection in connections:
