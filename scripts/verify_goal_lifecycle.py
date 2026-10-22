@@ -923,6 +923,7 @@ def verify_original(exe):
         "20261022_person_context_queries_observations.json",
         "20261022_context_resolver_boundary_observations.json",
         "20261022_context_existing_lookup_observations.json",
+        "20261022_registry_position_producer_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1367,6 +1368,14 @@ def verify_original(exe):
         if table + struct.unpack("<i", mapped_bytes(table + offset, 4))[0] != int(selector["target"], 16):
             raise AssertionError("Actual categoryaa selector target differs")
     print("Existing context lookup evidence passed: six person210/698 slots and three actualaa selector targets. Existing-record, registry and interface assumptions remain conditional; fallback query and natural score closure remain open.", flush=True)
+
+    registry_producer = json.loads((ROOT / "20261022_registry_position_producer_observations.json").read_text())
+    for binding in registry_producer["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Registry position producer virtual binding differs")
+    if mapped_bytes(0x1423E91D6, 3) != bytes.fromhex("4531c9"):
+        raise AssertionError("Alternate position producer actual argument4 is no longer zero")
+    print("Registry position producer evidence passed: four actual person slots and argument4zero. Entry-to-establishment identity only; full return, natural registry publication and score closure remain open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

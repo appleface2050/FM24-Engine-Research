@@ -602,7 +602,10 @@
         "0x142788140",
         "0x1423eeca0",
         "0x1421d5220",
-        "0x142120930"
+        "0x142120930",
+        "0x1423e8f40",
+        "0x1423e90d9",
+        "0x1423e9120"
       ],
       "evidence": {
         "reports": [
@@ -639,7 +642,8 @@
           "20261022_记录浮点消费者与球员写入隔离.md",
           "20261022_人员状态返回域与上下文分支排除.md",
           "20261022_上下文解析零返回与重定位写入边界.md",
-          "20261022_已有上下文命中与人员接口返回.md"
+          "20261022_已有上下文命中与人员接口返回.md",
+          "20261022_注册表球员到位置生成入口.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -757,7 +761,9 @@
           "20261022_context_resolver_boundary_static.txt",
           "20261022_context_resolver_boundary_observations.json",
           "20261022_context_existing_lookup_static.txt",
-          "20261022_context_existing_lookup_observations.json"
+          "20261022_context_existing_lookup_observations.json",
+          "20261022_registry_position_producer_static.txt",
+          "20261022_registry_position_producer_observations.json"
         ]
       },
       "upstream": [
@@ -797,7 +803,8 @@
         "上层聚合器三类记录消费者现已条件排除D150/D188/A69/当前日期写入；不能推定其浮点输出后续无影响。1439148b0、1438c7810、特定分支1438f6250/1438f0760/144eb1030及动态接收者仍待证；下一优先共用1438c7810。",
         "1438c7810的person400、实际mode1 person598和144eb2770已条件保持，142223940在已绑定稳定状态路径不可达。直接ACTUAL_PLAYER记录分支已由后续证据条件闭合；仍缺其他1438f6250/1438f0760动态接收者、覆盖LOAN所需142133540及上层type3其他调用；不推广返回域到其他模式，不升级自然H或比分闭环。",
         "1438f6250在直接记录X28!=44、X80非空ACTUAL_PLAYER条件下整次返回0，实际调用者跳过1438f0760；可与前序非LOAN条件组成有限保持路径，但自然记录类型仍未知。1438f0760实际传B/P两个参数；14286c520重定位体含148cca7e6的8字节ADD，不得归为整体只读。",
-        "X80为空时，实际aa已有记录/干净注册表命中链已条件保持；三类人员210均常假，698按类型返回空或调整后的非球员基址。自然aa记录及注册表生产、其他检索分支1428c84d0和返回接口规范化仍需补证，不升级自然H或比分闭环。"
+        "X80为空时，实际aa已有记录/干净注册表命中链已条件保持；三类人员210均常假，698按类型返回空或调整后的非球员基址。自然aa记录及注册表生产、其他检索分支1428c84d0和返回接口规范化仍需补证，不升级自然H或比分闭环。",
+        "另一实际注册表入口1423e8f40的V68/S80槽Q已连接1423e9120实际ACTUAL_PLAYER6b8→同D→142179240(arg4=0)建立H。6a8/738实际返回D2a0而非常空，不能跳过其帮助调用；生成后全程、S真实发布和同Q到比赛P28仍未知。原工厂连续检查点不升级。"
       ],
       "connections": [
         {
@@ -3948,6 +3955,30 @@
           ],
           "evidence": "20261022_context_existing_lookup_observations.json",
           "limit": "Selected existing-record path only; excludes fallback1428c84d0, registry sort and other record types; not natural score closure"
+        },
+        {
+          "source": "alternate registry position producer",
+          "callsite": "0x1423e90d9",
+          "callee": "0x1423e9120",
+          "receiver": "RCX=*(V68/S80 span iterator)",
+          "target": "same registry person Q",
+          "conditions": [
+            "Valid stable registry span and ACTUAL_PLAYER interface/layout; prior helpers return normally with D valid; existing generator reachability/storage conditions"
+          ],
+          "evidence": "20261022_registry_position_producer_observations.json",
+          "limit": "Entry/producer identity only, not full postgenerator preservation, registry-to-FULL publication or natural final score closure"
+        },
+        {
+          "source": "alternate registry position producer",
+          "callsite": "0x1423e91d9",
+          "callee": "0x142179240",
+          "receiver": "RCX=saved actual6b8 result D; R9D=0",
+          "target": "sameD reaches existing H establishment path",
+          "conditions": [
+            "Valid stable registry span and ACTUAL_PLAYER interface/layout; prior helpers return normally with D valid; existing generator reachability/storage conditions"
+          ],
+          "evidence": "20261022_registry_position_producer_observations.json",
+          "limit": "Entry/producer identity only, not full postgenerator preservation, registry-to-FULL publication or natural final score closure"
         }
       ]
     },
