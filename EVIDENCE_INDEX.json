@@ -590,7 +590,13 @@
         "0x1426945a0",
         "0x1428ba810",
         "0x144eb2770",
-        "0x1438c794c"
+        "0x1438c794c",
+        "0x1438f6250",
+        "0x14286bca0",
+        "0x14211e8b0",
+        "0x14286c520",
+        "0x15475c470",
+        "0x15475c552"
       ],
       "evidence": {
         "reports": [
@@ -625,7 +631,8 @@
           "20261022_候选包装器返回后段保持.md",
           "20261022_前置查询与整个候选包装器保持.md",
           "20261022_记录浮点消费者与球员写入隔离.md",
-          "20261022_人员状态返回域与上下文分支排除.md"
+          "20261022_人员状态返回域与上下文分支排除.md",
+          "20261022_上下文解析零返回与重定位写入边界.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -739,7 +746,9 @@
           "20261022_record_float_consumers_static.txt",
           "20261022_record_float_consumers_observations.json",
           "20261022_person_context_queries_static.txt",
-          "20261022_person_context_queries_observations.json"
+          "20261022_person_context_queries_observations.json",
+          "20261022_context_resolver_boundary_static.txt",
+          "20261022_context_resolver_boundary_observations.json"
         ]
       },
       "upstream": [
@@ -777,7 +786,8 @@
         "2026-10-22已绑定1438f1d57的GAME_ACTUAL_PLAYER virtual298→144b62b30及实际R8W=1；相同日期时整次调用在D写入前返回。构造器已写D150=当时当前值，但此值与D188空引用到调用点的连续保持、其他日期/掩码及后续调用仍待证；不等于已找到所有修正生产者。",
         "前置14390f9d0已在实际ACTUAL_PLAYER/服务绑定、有效缓存/列表和条件创建路径下保留目标字段；与后段合成整个143913870条件保持。上层143913940及其他生成调用、各条件在同一自然D上的连续性和FULL发布仍未证；不升级连续H检查点或最终比分闭环。",
         "上层聚合器三类记录消费者现已条件排除D150/D188/A69/当前日期写入；不能推定其浮点输出后续无影响。1439148b0、1438c7810、特定分支1438f6250/1438f0760/144eb1030及动态接收者仍待证；下一优先共用1438c7810。",
-        "1438c7810的person400、实际mode1 person598和144eb2770已条件保持，142223940在已绑定稳定状态路径不可达。仍缺1438f6250/1438f0760动态接收者、覆盖LOAN所需142133540及上层type3其他调用；不推广返回域到其他模式，不升级自然H或比分闭环。"
+        "1438c7810的person400、实际mode1 person598和144eb2770已条件保持，142223940在已绑定稳定状态路径不可达。直接ACTUAL_PLAYER记录分支已由后续证据条件闭合；仍缺其他1438f6250/1438f0760动态接收者、覆盖LOAN所需142133540及上层type3其他调用；不推广返回域到其他模式，不升级自然H或比分闭环。",
+        "1438f6250在直接记录X28!=44、X80非空ACTUAL_PLAYER条件下整次返回0，实际调用者跳过1438f0760；可与前序非LOAN条件组成有限保持路径，但自然记录类型仍未知。1438f0760实际传B/P两个参数；14286c520重定位体含148cca7e6的8字节ADD，不得归为整体只读。"
       ],
       "connections": [
         {
@@ -3832,6 +3842,54 @@
           ],
           "evidence": "20261022_person_context_queries_observations.json",
           "limit": "Selected queries/selector only; whole resolver and natural final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual context resolver suffix",
+          "callsite": "0x1438c796a",
+          "callee": "0x1438f6250",
+          "receiver": "RCX=B",
+          "target": "whole parser0 path; subsequent context queries skipped",
+          "conditions": [
+            "direct-record proof requires X28!=44, X80 nonnull documented ACTUAL_PLAYER; valid stable independent storage"
+          ],
+          "evidence": "20261022_context_resolver_boundary_observations.json",
+          "limit": "Conditional direct-record parser0 path only; record dynamic types are not naturally established; natural score closure remains open"
+        },
+        {
+          "source": "parser primary first record",
+          "callsite": "0x1438f6295",
+          "callee": "0x14286bca0",
+          "receiver": "RCX=X",
+          "target": "direct X80 nonnull ACTUAL_PLAYER result",
+          "conditions": [
+            "direct-record proof requires X28!=44, X80 nonnull documented ACTUAL_PLAYER; valid stable independent storage"
+          ],
+          "evidence": "20261022_context_resolver_boundary_observations.json",
+          "limit": "Conditional direct-record parser0 path only; record dynamic types are not naturally established; natural score closure remains open"
+        },
+        {
+          "source": "parser direct or selected relation record",
+          "callsite": "0x1438f632b",
+          "callee": "0x14286bca0",
+          "receiver": "RCX=X",
+          "target": "direct X80 nonnull ACTUAL_PLAYER result",
+          "conditions": [
+            "direct-record proof requires X28!=44, X80 nonnull documented ACTUAL_PLAYER; valid stable independent storage"
+          ],
+          "evidence": "20261022_context_resolver_boundary_observations.json",
+          "limit": "Conditional direct-record parser0 path only; record dynamic types are not naturally established; natural score closure remains open"
+        },
+        {
+          "source": "other nonzero-parser context path",
+          "callsite": "0x1438f08db",
+          "callee": "0x14286c520",
+          "receiver": "RCX=B; RDX=P",
+          "target": "relocated helper with global ADD; preservation unresolved",
+          "conditions": [
+            "1438f0760 reaches its fallback after two manager/tree searches miss; B30 nonnull; P is actual nonzero upstream result; helper reaches global write only after virtual210 true and virtual6d8 returns normally"
+          ],
+          "evidence": "20261022_context_resolver_boundary_observations.json",
+          "limit": "Conditional parser path only; final nonzero-parser helper connection records unresolved write, not a preservation proof; natural score closure remains open"
         }
       ]
     },

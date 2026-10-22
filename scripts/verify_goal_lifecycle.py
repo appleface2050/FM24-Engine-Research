@@ -921,6 +921,7 @@ def verify_original(exe):
         "20261022_query_wrapper_preservation_observations.json",
         "20261022_record_float_consumers_observations.json",
         "20261022_person_context_queries_observations.json",
+        "20261022_context_resolver_boundary_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1337,6 +1338,24 @@ def verify_original(exe):
         if mapped_bytes(site, len(expected)) != expected:
             raise AssertionError("Actual person mode1/excluded2 branch anchor differs")
     print("Person context evidence passed:24 virtual slots,35 cache branches and stable-getter return-domain gates. Mode1 branch exclusion remains conditional on documented types/stability; whole context resolver and natural score closure remain open.", flush=True)
+
+    resolver = json.loads((ROOT / "20261022_context_resolver_boundary_observations.json").read_text())
+    binding = resolver["virtual_binding"]
+    if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+        raise AssertionError("Direct context person210 binding differs")
+    tail = resolver["tail_binding"]
+    entry = int(tail["entry"], 16)
+    raw = mapped_bytes(entry, 5)
+    if raw[0] != 0xE9 or entry + 5 + struct.unpack_from("<i", raw, 1)[0] != int(tail["target"], 16):
+        raise AssertionError("Relocated context helper target differs")
+    write = resolver["relocated_write"]
+    site = int(write["site"], 16)
+    raw = mapped_bytes(site, 11)
+    if (raw[:3] != bytes.fromhex("488105") or
+            site + 11 + struct.unpack_from("<i", raw, 3)[0] != int(write["target"], 16) or
+            struct.unpack_from("<i", raw, 7)[0] != write["immediate_signed"]):
+        raise AssertionError("Relocated context global ADD target/immediate differs")
+    print("Context resolver evidence passed: person210 false leaf binding, relocated E9 and global ADD decoding. Conditional parser0 path only; natural types and other helper effects remain unproved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
