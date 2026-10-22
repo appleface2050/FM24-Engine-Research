@@ -922,6 +922,7 @@ def verify_original(exe):
         "20261022_record_float_consumers_observations.json",
         "20261022_person_context_queries_observations.json",
         "20261022_context_resolver_boundary_observations.json",
+        "20261022_context_existing_lookup_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1356,6 +1357,16 @@ def verify_original(exe):
             struct.unpack_from("<i", raw, 7)[0] != write["immediate_signed"]):
         raise AssertionError("Relocated context global ADD target/immediate differs")
     print("Context resolver evidence passed: person210 false leaf binding, relocated E9 and global ADD decoding. Conditional parser0 path only; natural types and other helper effects remain unproved.", flush=True)
+
+    existing = json.loads((ROOT / "20261022_context_existing_lookup_observations.json").read_text())
+    for binding in existing["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Existing context person210/698 binding differs")
+    for selector in existing["actual_aa_selectors"]:
+        table, offset = int(selector["table"], 16), selector["index"] * 4
+        if table + struct.unpack("<i", mapped_bytes(table + offset, 4))[0] != int(selector["target"], 16):
+            raise AssertionError("Actual categoryaa selector target differs")
+    print("Existing context lookup evidence passed: six person210/698 slots and three actualaa selector targets. Existing-record, registry and interface assumptions remain conditional; fallback query and natural score closure remain open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

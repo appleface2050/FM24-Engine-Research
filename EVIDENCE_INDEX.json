@@ -596,7 +596,13 @@
         "0x14211e8b0",
         "0x14286c520",
         "0x15475c470",
-        "0x15475c552"
+        "0x15475c552",
+        "0x1428c7a00",
+        "0x1428c7640",
+        "0x142788140",
+        "0x1423eeca0",
+        "0x1421d5220",
+        "0x142120930"
       ],
       "evidence": {
         "reports": [
@@ -632,7 +638,8 @@
           "20261022_前置查询与整个候选包装器保持.md",
           "20261022_记录浮点消费者与球员写入隔离.md",
           "20261022_人员状态返回域与上下文分支排除.md",
-          "20261022_上下文解析零返回与重定位写入边界.md"
+          "20261022_上下文解析零返回与重定位写入边界.md",
+          "20261022_已有上下文命中与人员接口返回.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -748,7 +755,9 @@
           "20261022_person_context_queries_static.txt",
           "20261022_person_context_queries_observations.json",
           "20261022_context_resolver_boundary_static.txt",
-          "20261022_context_resolver_boundary_observations.json"
+          "20261022_context_resolver_boundary_observations.json",
+          "20261022_context_existing_lookup_static.txt",
+          "20261022_context_existing_lookup_observations.json"
         ]
       },
       "upstream": [
@@ -787,7 +796,8 @@
         "前置14390f9d0已在实际ACTUAL_PLAYER/服务绑定、有效缓存/列表和条件创建路径下保留目标字段；与后段合成整个143913870条件保持。上层143913940及其他生成调用、各条件在同一自然D上的连续性和FULL发布仍未证；不升级连续H检查点或最终比分闭环。",
         "上层聚合器三类记录消费者现已条件排除D150/D188/A69/当前日期写入；不能推定其浮点输出后续无影响。1439148b0、1438c7810、特定分支1438f6250/1438f0760/144eb1030及动态接收者仍待证；下一优先共用1438c7810。",
         "1438c7810的person400、实际mode1 person598和144eb2770已条件保持，142223940在已绑定稳定状态路径不可达。直接ACTUAL_PLAYER记录分支已由后续证据条件闭合；仍缺其他1438f6250/1438f0760动态接收者、覆盖LOAN所需142133540及上层type3其他调用；不推广返回域到其他模式，不升级自然H或比分闭环。",
-        "1438f6250在直接记录X28!=44、X80非空ACTUAL_PLAYER条件下整次返回0，实际调用者跳过1438f0760；可与前序非LOAN条件组成有限保持路径，但自然记录类型仍未知。1438f0760实际传B/P两个参数；14286c520重定位体含148cca7e6的8字节ADD，不得归为整体只读。"
+        "1438f6250在直接记录X28!=44、X80非空ACTUAL_PLAYER条件下整次返回0，实际调用者跳过1438f0760；可与前序非LOAN条件组成有限保持路径，但自然记录类型仍未知。1438f0760实际传B/P两个参数；14286c520重定位体含148cca7e6的8字节ADD，不得归为整体只读。",
+        "X80为空时，实际aa已有记录/干净注册表命中链已条件保持；三类人员210均常假，698按类型返回空或调整后的非球员基址。自然aa记录及注册表生产、其他检索分支1428c84d0和返回接口规范化仍需补证，不升级自然H或比分闭环。"
       ],
       "connections": [
         {
@@ -3890,6 +3900,54 @@
           ],
           "evidence": "20261022_context_resolver_boundary_observations.json",
           "limit": "Conditional parser path only; final nonzero-parser helper connection records unresolved write, not a preservation proof; natural score closure remains open"
+        },
+        {
+          "source": "direct person reference missing",
+          "callsite": "0x14286be79",
+          "callee": "0x1428c7a00",
+          "receiver": "RCX=C; DL=aa; R8=X; R9B=1; stack fifthbyte1",
+          "target": "selected existing record returns person Q",
+          "conditions": [
+            "Documented existing vector, subtype, actualaa, clean registry and valid stable independent storage conditions; returned person binding/normalization must be established"
+          ],
+          "evidence": "20261022_context_existing_lookup_observations.json",
+          "limit": "Selected existing-record path only; excludes fallback1428c84d0, registry sort and other record types; not natural score closure"
+        },
+        {
+          "source": "actual lookup subtype query",
+          "callsite": "0x1428c7a77",
+          "callee": "0x1428c7640",
+          "receiver": "RCX=C; RDX=X; X30=C",
+          "target": "k=X28 on selected early branch",
+          "conditions": [
+            "Documented existing vector, subtype, actualaa, clean registry and valid stable independent storage conditions; returned person binding/normalization must be established"
+          ],
+          "evidence": "20261022_context_existing_lookup_observations.json",
+          "limit": "Selected existing-record path only; excludes fallback1428c84d0, registry sort and other record types; not natural score closure"
+        },
+        {
+          "source": "existing vector qualification",
+          "callsite": "0x1428c7ed3",
+          "callee": "0x142788140",
+          "receiver": "RDX=C; R8D=aa; R9=own stackbyte; fifthbyte0; sixthnull",
+          "target": "actual aa gates return1 for k!=ff",
+          "conditions": [
+            "Documented existing vector, subtype, actualaa, clean registry and valid stable independent storage conditions; returned person binding/normalization must be established"
+          ],
+          "evidence": "20261022_context_existing_lookup_observations.json",
+          "limit": "Selected existing-record path only; excludes fallback1428c84d0, registry sort and other record types; not natural score closure"
+        },
+        {
+          "source": "first matching stored record9zero",
+          "callsite": "0x1428c8107",
+          "callee": "0x1423eeca0",
+          "receiver": "RCX=global registry; EDX=signed ID",
+          "target": "flags-clean sorted lookup returns Q",
+          "conditions": [
+            "Documented existing vector, subtype, actualaa, clean registry and valid stable independent storage conditions; returned person binding/normalization must be established"
+          ],
+          "evidence": "20261022_context_existing_lookup_observations.json",
+          "limit": "Selected existing-record path only; excludes fallback1428c84d0, registry sort and other record types; not natural score closure"
         }
       ]
     },
