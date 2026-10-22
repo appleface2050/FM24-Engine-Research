@@ -268,7 +268,8 @@
         "实际初始空向量mode3在正常条件下非空等价于attrs[0,2..14]至少一项signed>=10；14类都有零门槛候选；两处直接EAX消费忽略新增位33/34",
         "实际1421983f0(D,mask,0,1,0)选定分支整次条件保持D150/D188/A69；零mask时virtual468只读signed>=15位置并按固定表返回掩码，不等于全包装器或自然输入保持",
         "14390f9d0返回后的1439138ac..14391393b连续后段在明确类型/共享表/向量拥有条件下保持D150/D188/A69；筛选只写自身栈标记，追加允许实际扩容；前置查询未闭合",
-        "实际14390f9d0全程与已证后段合成整个143913870的条件保留；virtual778返回D170地址，D178列表查询只写实际局部mask/payload；仍缺上层143913940及自然生成对象连续性"
+        "实际14390f9d0全程与已证后段合成整个143913870的条件保留；virtual778返回D170地址，D178列表查询只写实际局部mask/payload；仍缺上层143913940及自然生成对象连续性",
+        "143913940三组真实字段调用中的基础/标志/向量关联消费者在局部输出与既有分配条件下保持目标D字段；两张五项跳表已补全；未闭合type3及共用球员上下文查询"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -574,7 +575,13 @@
         "0x1449a8600",
         "0x1419a7940",
         "0x1516df460",
-        "0x1419c9d00"
+        "0x1419c9d00",
+        "0x1438f1d18",
+        "0x143913940",
+        "0x1442d89b0",
+        "0x1442d8870",
+        "0x1442d9500",
+        "0x142906e20"
       ],
       "evidence": {
         "reports": [
@@ -607,7 +614,8 @@
           "20261022_服务前标量与延迟缓存边界.md",
           "20261022_实际零上下文候选回退保持.md",
           "20261022_候选包装器返回后段保持.md",
-          "20261022_前置查询与整个候选包装器保持.md"
+          "20261022_前置查询与整个候选包装器保持.md",
+          "20261022_记录浮点消费者与球员写入隔离.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -717,7 +725,9 @@
           "20261022_candidate_wrapper_tail_static.txt",
           "20261022_candidate_wrapper_tail_observations.json",
           "20261022_query_wrapper_preservation_static.txt",
-          "20261022_query_wrapper_preservation_observations.json"
+          "20261022_query_wrapper_preservation_observations.json",
+          "20261022_record_float_consumers_static.txt",
+          "20261022_record_float_consumers_observations.json"
         ]
       },
       "upstream": [
@@ -753,7 +763,8 @@
         "已限定证明142435270本身保持前15位置；前序14365b210选择器/关系副作用未闭合。1438f1890实际分支把D208交给14274b3b0→1419d1fd0并叠加D188修正；需证明实际权重下H后置条件及修正记录生产/空引用自然条件，不能将局部后重算尾部算例当自然反例。整体H检查点仍143624b08。 2026-10-22已接ACTUAL_PLAYER构造14216b690/69b的重叠清零，D188在14216b6a6为空；之后至重算的保持仍未证。",
         "2026-10-22已证选定位置/非空权重表/param5=0下的前15零权重、short跳过和范围内写回；若x及x-delta在给定范围且同一修正稳定，往返保持H。自然修正生产/范围/稳定或构造空引用保持、此前位置选择与其他工厂调用仍待证；连续检查点仍143624b08。",
         "2026-10-22已绑定1438f1d57的GAME_ACTUAL_PLAYER virtual298→144b62b30及实际R8W=1；相同日期时整次调用在D写入前返回。构造器已写D150=当时当前值，但此值与D188空引用到调用点的连续保持、其他日期/掩码及后续调用仍待证；不等于已找到所有修正生产者。",
-        "前置14390f9d0已在实际ACTUAL_PLAYER/服务绑定、有效缓存/列表和条件创建路径下保留目标字段；与后段合成整个143913870条件保持。上层143913940及其他生成调用、各条件在同一自然D上的连续性和FULL发布仍未证；不升级连续H检查点或最终比分闭环。"
+        "前置14390f9d0已在实际ACTUAL_PLAYER/服务绑定、有效缓存/列表和条件创建路径下保留目标字段；与后段合成整个143913870条件保持。上层143913940及其他生成调用、各条件在同一自然D上的连续性和FULL发布仍未证；不升级连续H检查点或最终比分闭环。",
+        "上层聚合器三类记录消费者现已条件排除D150/D188/A69/当前日期写入；不能推定其浮点输出后续无影响。1439148b0、1438c7810、特定分支1438f6250/1438f0760/144eb1030及动态接收者仍待证；下一优先共用1438c7810。"
       ],
       "connections": [
         {
@@ -3640,6 +3651,150 @@
           ],
           "evidence": "20261022_query_wrapper_preservation_observations.json",
           "limit": "Whole query/wrapper conditional preservation; no upper generator or natural final score closure"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x1438f1d18",
+          "callee": "0x143913940",
+          "receiver": "RDX=same D; R8=caller RBP-30h; arg6=caller local byte vector",
+          "target": "actual parent output identity only; whole parent remains unproved",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x143913b22",
+          "callee": "0x1442d89b0",
+          "receiver": "RCX=record; mode byte; R8=own RSP20h float array",
+          "target": "whole selected record consumer preserves tracked D fields under independent output/storage contracts",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x143913de8",
+          "callee": "0x1442d89b0",
+          "receiver": "RCX=record; mode byte; R8=own RSP20h float array",
+          "target": "whole selected record consumer preserves tracked D fields under independent output/storage contracts",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x1439140a1",
+          "callee": "0x1442d89b0",
+          "receiver": "RCX=record; mode byte; R8=own RSP20h float array",
+          "target": "whole selected record consumer preserves tracked D fields under independent output/storage contracts",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x143913c05",
+          "callee": "0x1442d8870",
+          "receiver": "RCX=record; mode byte; scalar return only",
+          "target": "whole selected record consumer preserves tracked D fields under independent output/storage contracts",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x143913ec5",
+          "callee": "0x1442d8870",
+          "receiver": "RCX=record; mode byte; scalar return only",
+          "target": "whole selected record consumer preserves tracked D fields under independent output/storage contracts",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x143914182",
+          "callee": "0x1442d8870",
+          "receiver": "RCX=record; mode byte; scalar return only",
+          "target": "whole selected record consumer preserves tracked D fields under independent output/storage contracts",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x143913c41",
+          "callee": "0x1442d9500",
+          "receiver": "RCX=record; R8=caller local byte vector; R9=own RSP60h float array",
+          "target": "whole selected record consumer preserves tracked D fields under independent output/storage contracts",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x143913f01",
+          "callee": "0x1442d9500",
+          "receiver": "RCX=record; R8=caller local byte vector; R9=own RSP60h float array",
+          "target": "whole selected record consumer preserves tracked D fields under independent output/storage contracts",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x1439141c3",
+          "callee": "0x1442d9500",
+          "receiver": "RCX=record; R8=caller local byte vector; R9=own RSP60h float array",
+          "target": "whole selected record consumer preserves tracked D fields under independent output/storage contracts",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x1442d954a",
+          "callee": "0x1442d8870",
+          "receiver": "same record and mode",
+          "target": "read-only flag selection",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual upper143913940 record matching path",
+          "callsite": "0x1442d98a8",
+          "callee": "0x142906e20",
+          "receiver": "ECX=input vector byte; EDX=scalar mode",
+          "target": "complete scalar/table mapper returns category without object writes",
+          "conditions": [
+            "valid separate records, D, float outputs, byte vector and tables; initialized stable allocator; normal successful allocation/recycle contracts"
+          ],
+          "evidence": "20261022_record_float_consumers_observations.json",
+          "limit": "Record consumers only; parent player-receiving queries, natural object continuity and final score lifecycle remain unproved"
         }
       ]
     },

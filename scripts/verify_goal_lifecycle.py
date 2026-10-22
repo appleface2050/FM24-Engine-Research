@@ -919,6 +919,7 @@ def verify_original(exe):
         "20261022_actual_fallback_preservation_observations.json",
         "20261022_candidate_wrapper_tail_observations.json",
         "20261022_query_wrapper_preservation_observations.json",
+        "20261022_record_float_consumers_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1289,6 +1290,21 @@ def verify_original(exe):
     if cursor != 0x14390FF98:
         raise AssertionError("Query code evidence does not cover through return")
     print("Query/wrapper preservation evidence passed: complete query instruction coverage, actual getter and scalar helper. Whole wrapper preservation is conditional; upper generator and natural score closure remain open.", flush=True)
+
+    record_consumers = json.loads((ROOT / "20261022_record_float_consumers_observations.json").read_text())
+    record_sites = {int(row["va"], 16) for row in record_consumers["native_assertions"]}
+    code_bounds = {0x1442D8FFC: (0x1442D89B0, 0x1442D8FFB),
+                   0x1442D9A9C: (0x1442D9500, 0x1442D9A32)}
+    for table in record_consumers["branch_tables"]:
+        address = int(table["table"], 16)
+        count = table["entries"]
+        targets = [address + value for value in struct.unpack(
+            f"<{count}i", mapped_bytes(address, count * 4))]
+        low, high = code_bounds[address]
+        if targets != [int(value, 16) for value in table["targets"]] or any(
+                target not in record_sites or not low <= target < high for target in targets):
+            raise AssertionError("Record float consumer switch leaves documented code")
+    print("Record float consumer evidence passed: actual local outputs, two five-entry branch tables and scalar mapper. Three consumer calls preserve tracked player fields under documented storage contracts; whole upper aggregator remains open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
