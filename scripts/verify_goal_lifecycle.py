@@ -916,6 +916,7 @@ def verify_original(exe):
         "20261022_position_weight_roundtrip_observations.json",
         "20261022_player_service_same_day_observations.json",
         "20261022_preservice_cache_boundary_observations.json",
+        "20261022_actual_fallback_preservation_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1235,6 +1236,24 @@ def verify_original(exe):
         if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
             raise AssertionError("Preservice person/cache virtual target differs")
     print("Preservice boundary passed: actual scalar call, same-D virtual218 cache binding and bounded warm free-cell creation instructions. Whole query/generator preservation remains unproved.", flush=True)
+
+    fallback = json.loads((ROOT / "20261022_actual_fallback_preservation_observations.json").read_text())
+    for binding in fallback["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Actual fallback position virtual target differs")
+    branch = mapped_bytes(0x142198460, 6)
+    if branch[:2] != bytes.fromhex("0f84") or 0x142198466 + struct.unpack_from("<i", branch, 2)[0] != 0x142198776:
+        raise AssertionError("Zero-context fallback no longer reaches covered branch")
+    mask_instruction = mapped_bytes(0x142198436, 10)
+    domain = fallback["category_iteration"]
+    mask = struct.unpack_from("<Q", mask_instruction, 2)[0]
+    indices = [i for i in range(64) if mask >> i & 1]
+    table_entries = (int(domain["table_end_exclusive"], 16) - int(domain["table_start"], 16)) // 8
+    if mask_instruction[:2] != bytes.fromhex("48b9") or mask != int(domain["default_mask"], 16):
+        raise AssertionError("Actual fallback default category mask differs")
+    if indices != domain["active_indices"] or max(indices) != domain["highest_active_index"] or max(indices) >= table_entries:
+        raise AssertionError("Actual fallback category indices exceed documented initialized table")
+    print("Actual fallback boundary passed: zero-context branch, bound read-only position slot and category index range. Whole call preservation requires documented table/storage contracts; parent query and natural score closure remain open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

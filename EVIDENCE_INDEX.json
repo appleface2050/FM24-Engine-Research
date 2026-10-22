@@ -265,7 +265,8 @@
         "结果拥有者由构造/虚表/RTTI绑定为FIXTURE_TO_PLAY_FULL；批量推进器选定分支只检查X+10指针推进B+d0，不检查两侧记录值，仍非正式接受",
         "同一S98队行的E+c规则累计与默认排序、E+e1位置写入和实际读取；积分名称属行为推断",
         "六种实际高位状态码：有条件连接前置评分、类型1队列、再次评分与P16d8/dc/dd写入；已排除该路径消息尾跳，不升级全收尾",
-        "实际初始空向量mode3在正常条件下非空等价于attrs[0,2..14]至少一项signed>=10；14类都有零门槛候选；两处直接EAX消费忽略新增位33/34"
+        "实际初始空向量mode3在正常条件下非空等价于attrs[0,2..14]至少一项signed>=10；14类都有零门槛候选；两处直接EAX消费忽略新增位33/34",
+        "实际1421983f0(D,mask,0,1,0)选定分支整次条件保持D150/D188/A69；零mask时virtual468只读signed>=15位置并按固定表返回掩码，不等于全包装器或自然输入保持"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -553,7 +554,12 @@
         "0x144b58430",
         "0x1449b62d0",
         "0x141900390",
-        "0x14297f900"
+        "0x14297f900",
+        "0x1439138ca",
+        "0x1421983f0",
+        "0x142198776",
+        "0x14218e600",
+        "0x1419cba10"
       ],
       "evidence": {
         "reports": [
@@ -583,7 +589,8 @@
           "20261021_工厂后续位置重算与修正边界.md",
           "20261022_位置零权重与修正往返条件.md",
           "20261022_球员服务绑定与同日返回.md",
-          "20261022_服务前标量与延迟缓存边界.md"
+          "20261022_服务前标量与延迟缓存边界.md",
+          "20261022_实际零上下文候选回退保持.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -687,7 +694,9 @@
           "20261022_player_service_same_day_static.txt",
           "20261022_player_service_same_day_observations.json",
           "20261022_preservice_cache_boundary_static.txt",
-          "20261022_preservice_cache_boundary_observations.json"
+          "20261022_preservice_cache_boundary_observations.json",
+          "20261022_actual_fallback_preservation_static.txt",
+          "20261022_actual_fallback_preservation_observations.json"
         ]
       },
       "upstream": [
@@ -723,7 +732,7 @@
         "已限定证明142435270本身保持前15位置；前序14365b210选择器/关系副作用未闭合。1438f1890实际分支把D208交给14274b3b0→1419d1fd0并叠加D188修正；需证明实际权重下H后置条件及修正记录生产/空引用自然条件，不能将局部后重算尾部算例当自然反例。整体H检查点仍143624b08。 2026-10-22已接ACTUAL_PLAYER构造14216b690/69b的重叠清零，D188在14216b6a6为空；之后至重算的保持仍未证。",
         "2026-10-22已证选定位置/非空权重表/param5=0下的前15零权重、short跳过和范围内写回；若x及x-delta在给定范围且同一修正稳定，往返保持H。自然修正生产/范围/稳定或构造空引用保持、此前位置选择与其他工厂调用仍待证；连续检查点仍143624b08。",
         "2026-10-22已绑定1438f1d57的GAME_ACTUAL_PLAYER virtual298→144b62b30及实际R8W=1；相同日期时整次调用在D写入前返回。构造器已写D150=当时当前值，但此值与D188空引用到调用点的连续保持、其他日期/掩码及后续调用仍待证；不等于已找到所有修正生产者。",
-        "服务前143919b30及回写已保留位置/日期/修正；virtual218在已初始化空闲池创建路径只新增D108缓存。整个143913870/14390f9d0、实际1421983f0(D,mask,0,1,0)及143913940子调用仍未闭合；不得将非空D108当E或将局部保留当全程日期连续。"
+        "服务前143919b30及回写已保留位置/日期/修正；virtual218在已初始化空闲池创建路径只新增D108缓存。实际1421983f0(D,mask,0,1,0)现已条件保持；整个143913870/14390f9d0、后续1419cf110/向量存储及143913940子调用仍未闭合；不得将非空D108当E或将局部保留当全程日期连续。"
       ],
       "connections": [
         {
@@ -3454,6 +3463,66 @@
           ],
           "evidence": "20261022_preservice_cache_boundary_observations.json",
           "limit": "Only documented scalar or bounded cache/prefix path; whole generator, natural candidate nonemptiness and final score closure remain unproved"
+        },
+        {
+          "source": "same D from143913870 and local position mask",
+          "callsite": "0x1439138ca",
+          "callee": "0x1421983f0",
+          "receiver": "RCX=D; EDX=mask; R8D=0; R9B=1; stack arg5=0",
+          "target": "selected whole fallback preserves tracked player fields",
+          "conditions": [
+            "ACTUAL_PLAYER virtual binding stable; shared tables completed and stable; valid separate stack/storage; selected call returns normally"
+          ],
+          "evidence": "20261022_actual_fallback_preservation_observations.json",
+          "limit": "Actual zero-context mode1 fallback only; whole parent query/generator and natural final score lifecycle remain unproved"
+        },
+        {
+          "source": "category index admitted by fixed default mask",
+          "callsite": "0x1421987ea",
+          "callee": "0x1419cba10",
+          "receiver": "RCX=category, actual index0..52",
+          "target": "warm helper reads53-entry combination table",
+          "conditions": [
+            "ACTUAL_PLAYER virtual binding stable; shared tables completed and stable; valid separate stack/storage; selected call returns normally"
+          ],
+          "evidence": "20261022_actual_fallback_preservation_observations.json",
+          "limit": "Actual zero-context mode1 fallback only; whole parent query/generator and natural final score lifecycle remain unproved"
+        },
+        {
+          "source": "selected position i in0..14 excluding1",
+          "callsite": "0x142198856",
+          "callee": "0x1419cb810",
+          "receiver": "RCX=i; extra pointers are caller-stack locals",
+          "target": "warm helper reads15-entry position category table",
+          "conditions": [
+            "ACTUAL_PLAYER virtual binding stable; shared tables completed and stable; valid separate stack/storage; selected call returns normally"
+          ],
+          "evidence": "20261022_actual_fallback_preservation_observations.json",
+          "limit": "Actual zero-context mode1 fallback only; whole parent query/generator and natural final score lifecycle remain unproved"
+        },
+        {
+          "source": "one-hot admitted position bit",
+          "callsite": "0x1421988c7",
+          "callee": "0x1419c9810",
+          "receiver": "ECX=1<<i",
+          "target": "read-only mapper returns attribute index",
+          "conditions": [
+            "ACTUAL_PLAYER virtual binding stable; shared tables completed and stable; valid separate stack/storage; selected call returns normally"
+          ],
+          "evidence": "20261022_actual_fallback_preservation_observations.json",
+          "limit": "Actual zero-context mode1 fallback only; whole parent query/generator and natural final score lifecycle remain unproved"
+        },
+        {
+          "source": "same A=D208 and selected scalar payload",
+          "callsite": "0x1421988fd",
+          "callee": "0x1419cac70",
+          "receiver": "RCX=A; RDX=local218h; R8=payload; R9D=0; stack bit/position/1",
+          "target": "score reads attributes and finite previously recovered classifiers without D writes",
+          "conditions": [
+            "ACTUAL_PLAYER virtual binding stable; shared tables completed and stable; valid separate stack/storage; selected call returns normally"
+          ],
+          "evidence": "20261022_actual_fallback_preservation_observations.json",
+          "limit": "Actual zero-context mode1 fallback only; whole parent query/generator and natural final score lifecycle remain unproved"
         }
       ]
     },
