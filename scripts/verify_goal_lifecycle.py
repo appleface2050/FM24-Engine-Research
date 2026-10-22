@@ -914,6 +914,7 @@ def verify_original(exe):
         "20261021_database_outer_fields_observations.json",
         "20261021_database_recalculation_boundary_observations.json",
         "20261022_position_weight_roundtrip_observations.json",
+        "20261022_player_service_same_day_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1207,6 +1208,26 @@ def verify_original(exe):
         if mapped_bytes(site, len(expected)) != expected:
             raise AssertionError("Position zero-weight/short-update branch differs")
     print("Position recalculation passed: selected counter switch15, actual count/clear/param5 and zero-weight skip anchors. Modifier roundtrip still requires documented snapshot, range and stability conditions; no natural score closure.", flush=True)
+
+    service = json.loads((ROOT / "20261022_player_service_same_day_observations.json").read_text())
+    for binding in service["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Player service factory/virtual target differs")
+    jump = mapped_bytes(0x1431D98F0, 5)
+    if jump[0] != 0xE9 or 0x1431D98F5 + struct.unpack_from("<i", jump, 1)[0] != 0x1566F1340:
+        raise AssertionError("Player service factory relocated body differs")
+    for site, raw in ((0x1438F1D52, "6641b80100"),
+                      (0x144B62C67, "41f6c501"),
+                      (0x144B62C6D, "85f6"),
+                      (0x144B65741, "c3"),
+                      (0x14216B63D, "898650010000")):
+        expected = bytes.fromhex(raw)
+        if mapped_bytes(site, len(expected)) != expected:
+            raise AssertionError("Actual player service mask/date/return anchor differs")
+    branch = mapped_bytes(0x144B62C6F, 6)
+    if branch[:2] != bytes.fromhex("0f84") or 0x144B62C75 + struct.unpack_from("<i", branch, 2)[0] != 0x144B656D6:
+        raise AssertionError("Same-day player service branch no longer reaches covered epilogue")
+    print("Player service same-day boundary passed: factory/primary service slots, relocated constructor, actual mask1 and date-zero return. Registry selection and constructor-to-call date continuity remain conditional.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

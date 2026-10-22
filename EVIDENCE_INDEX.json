@@ -537,7 +537,13 @@
         "0x1419cf670",
         "0x1419cf280",
         "0x1419d23cb",
-        "0x1419d2c8d"
+        "0x1419d2c8d",
+        "0x14642dd60",
+        "0x1431d99d0",
+        "0x1566f1340",
+        "0x1438f1d57",
+        "0x144b62b30",
+        "0x144b62c6f"
       ],
       "evidence": {
         "reports": [
@@ -565,7 +571,8 @@
           "20261021_生成末段位置条件保持.md",
           "20261021_外层字段处理与位置条件保持.md",
           "20261021_工厂后续位置重算与修正边界.md",
-          "20261022_位置零权重与修正往返条件.md"
+          "20261022_位置零权重与修正往返条件.md",
+          "20261022_球员服务绑定与同日返回.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -665,7 +672,9 @@
           "20261021_database_recalculation_boundary_static.txt",
           "20261021_database_recalculation_boundary_observations.json",
           "20261022_position_weight_roundtrip_static.txt",
-          "20261022_position_weight_roundtrip_observations.json"
+          "20261022_position_weight_roundtrip_observations.json",
+          "20261022_player_service_same_day_static.txt",
+          "20261022_player_service_same_day_observations.json"
         ]
       },
       "upstream": [
@@ -699,7 +708,8 @@
         "141b2b470与其状态队列已条件保分，但逐次非零查询的自然候选/工厂与A/P/T/M身份、队列存储/索引、1443b04f0其他子树及后续状态消费者仍待证明",
         "已接实际FULL球队槽P到69字节复制检查点；ACTUAL_PLAYER生成路径建立H并条件保持至142179240返回。下一143624b03→1426bda50调用在实际ACTUAL_PLAYER布局/正常独立存储/稳定分配器条件下保持前15位置字节，允许属性62/66变化；从生成RET连续推进至143624b08还需跳过143624add初始化。其余外层处理、自然条件覆盖、返回U的发布和比赛P人员引用身份、复制后逐次查询保持仍待证；不推广到全体存档球员。",
         "已限定证明142435270本身保持前15位置；前序14365b210选择器/关系副作用未闭合。1438f1890实际分支把D208交给14274b3b0→1419d1fd0并叠加D188修正；需证明实际权重下H后置条件及修正记录生产/空引用自然条件，不能将局部后重算尾部算例当自然反例。整体H检查点仍143624b08。 2026-10-22已接ACTUAL_PLAYER构造14216b690/69b的重叠清零，D188在14216b6a6为空；之后至重算的保持仍未证。",
-        "2026-10-22已证选定位置/非空权重表/param5=0下的前15零权重、short跳过和范围内写回；若x及x-delta在给定范围且同一修正稳定，往返保持H。自然修正生产/范围/稳定或构造空引用保持、此前位置选择与其他工厂调用仍待证；连续检查点仍143624b08。"
+        "2026-10-22已证选定位置/非空权重表/param5=0下的前15零权重、short跳过和范围内写回；若x及x-delta在给定范围且同一修正稳定，往返保持H。自然修正生产/范围/稳定或构造空引用保持、此前位置选择与其他工厂调用仍待证；连续检查点仍143624b08。",
+        "2026-10-22已绑定1438f1d57的GAME_ACTUAL_PLAYER virtual298→144b62b30及实际R8W=1；相同日期时整次调用在D写入前返回。构造器已写D150=当时当前值，但此值与D188空引用到调用点的连续保持、其他日期/掩码及后续调用仍待证；不等于已找到所有修正生产者。"
       ],
       "connections": [
         {
@@ -3322,6 +3332,42 @@
           ],
           "evidence": "20261022_position_weight_roundtrip_observations.json",
           "limit": "local weight/recalculation subchain only; no natural match identity or final score adoption proof"
+        },
+        {
+          "source": "factory F with two32-bit keys and GAME_ACTUAL_PLAYER name",
+          "callsite": "0x1431d9a2f",
+          "callee": "0x141906460",
+          "receiver": "documented constructor arguments and valid separated storage",
+          "target": "construct registration header",
+          "conditions": [
+            "normal completed initialization; lookup selects this completed factory; no later service replacement"
+          ],
+          "evidence": "20261022_player_service_same_day_observations.json",
+          "limit": "service binding evidence only; same-day preservation additionally requires actual mask1 and equal cached/current date fields"
+        },
+        {
+          "source": "factory F and preserved two keys",
+          "callsite": "0x1419064a4",
+          "callee": "0x1419064c0",
+          "receiver": "documented constructor arguments and valid separated storage",
+          "target": "write F8/Fc keys; registration lifecycle remains conditional",
+          "conditions": [
+            "normal completed initialization; lookup selects this completed factory; no later service replacement"
+          ],
+          "evidence": "20261022_player_service_same_day_observations.json",
+          "limit": "service binding evidence only; same-day preservation additionally requires actual mask1 and equal cached/current date fields"
+        },
+        {
+          "source": "allocated service S8 interface",
+          "callsite": "0x1566f1372",
+          "callee": "0x141906420",
+          "receiver": "documented constructor arguments and valid separated storage",
+          "target": "single RET keeps assigned primary/secondary service vtables",
+          "conditions": [
+            "normal completed initialization; lookup selects this completed factory; no later service replacement"
+          ],
+          "evidence": "20261022_player_service_same_day_observations.json",
+          "limit": "service binding evidence only; same-day preservation additionally requires actual mask1 and equal cached/current date fields"
         }
       ]
     },
