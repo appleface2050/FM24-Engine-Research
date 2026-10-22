@@ -924,6 +924,8 @@ def verify_original(exe):
         "20261022_context_resolver_boundary_observations.json",
         "20261022_context_existing_lookup_observations.json",
         "20261022_registry_position_producer_observations.json",
+        "20261022_registry_position_tail_observations.json",
+        "20261022_full_person_publication_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1376,6 +1378,28 @@ def verify_original(exe):
     if mapped_bytes(0x1423E91D6, 3) != bytes.fromhex("4531c9"):
         raise AssertionError("Alternate position producer actual argument4 is no longer zero")
     print("Registry position producer evidence passed: four actual person slots and argument4zero. Entry-to-establishment identity only; full return, natural registry publication and score closure remain open.", flush=True)
+
+    registry_tail = json.loads((ROOT / "20261022_registry_position_tail_observations.json").read_text())
+    for binding in registry_tail["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Registry producer suffix virtual binding differs")
+    if struct.unpack("<3i", mapped_bytes(0x145A4E93C, 12)) != (-8, -48, -8):
+        raise AssertionError("D2a0 interface no longer normalizes to same person")
+    for site, raw in ((0x14212BF0A, "3c1b"), (0x14212BF25, "3c1c"),
+                      (0x1423E92FD, "b201"), (0x1423E92FF, "4531c0")):
+        expected = bytes.fromhex(raw)
+        if mapped_bytes(site, len(expected)) != expected:
+            raise AssertionError("Actual cold state age/argument gate differs")
+    print("Registry producer suffix evidence passed:12 virtual slots, D2a0 normalization and actual young-cold gates. First15/H preservation requires documented resolved records, owned buffers and ready no-flush pool; natural score closure remains open.", flush=True)
+
+    publication = json.loads((ROOT / "20261022_full_person_publication_observations.json").read_text())
+    binding = publication["virtual_binding"]
+    if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+        raise AssertionError("FULL actual person publication provider differs")
+    raw = mapped_bytes(0x1451A97FC, 10)
+    if raw[:2] != bytes.fromhex("48bb") or struct.unpack_from("<Q", raw, 2)[0] != 0xFF0000000000:
+        raise AssertionError("FULL actual config first8 bytes differ")
+    print("FULL person publication evidence passed: actual builder88 slot and per-player config constant. Prefix P28 write only; vector producer and provider-return/copy-time preservation remain open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
