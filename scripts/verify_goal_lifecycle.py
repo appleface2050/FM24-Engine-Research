@@ -915,6 +915,7 @@ def verify_original(exe):
         "20261021_database_recalculation_boundary_observations.json",
         "20261022_position_weight_roundtrip_observations.json",
         "20261022_player_service_same_day_observations.json",
+        "20261022_preservice_cache_boundary_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1228,6 +1229,12 @@ def verify_original(exe):
     if branch[:2] != bytes.fromhex("0f84") or 0x144B62C75 + struct.unpack_from("<i", branch, 2)[0] != 0x144B656D6:
         raise AssertionError("Same-day player service branch no longer reaches covered epilogue")
     print("Player service same-day boundary passed: factory/primary service slots, relocated constructor, actual mask1 and date-zero return. Registry selection and constructor-to-call date continuity remain conditional.", flush=True)
+
+    preservice = json.loads((ROOT / "20261022_preservice_cache_boundary_observations.json").read_text())
+    for binding in preservice["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Preservice person/cache virtual target differs")
+    print("Preservice boundary passed: actual scalar call, same-D virtual218 cache binding and bounded warm free-cell creation instructions. Whole query/generator preservation remains unproved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

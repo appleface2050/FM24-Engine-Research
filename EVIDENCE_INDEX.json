@@ -543,7 +543,17 @@
         "0x1566f1340",
         "0x1438f1d57",
         "0x144b62b30",
-        "0x144b62c6f"
+        "0x144b62c6f",
+        "0x1438f1bee",
+        "0x143919b30",
+        "0x1421d4b50",
+        "0x1438f1c90",
+        "0x143913870",
+        "0x14390fa8e",
+        "0x144b58430",
+        "0x1449b62d0",
+        "0x141900390",
+        "0x14297f900"
       ],
       "evidence": {
         "reports": [
@@ -572,7 +582,8 @@
           "20261021_外层字段处理与位置条件保持.md",
           "20261021_工厂后续位置重算与修正边界.md",
           "20261022_位置零权重与修正往返条件.md",
-          "20261022_球员服务绑定与同日返回.md"
+          "20261022_球员服务绑定与同日返回.md",
+          "20261022_服务前标量与延迟缓存边界.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -674,7 +685,9 @@
           "20261022_position_weight_roundtrip_static.txt",
           "20261022_position_weight_roundtrip_observations.json",
           "20261022_player_service_same_day_static.txt",
-          "20261022_player_service_same_day_observations.json"
+          "20261022_player_service_same_day_observations.json",
+          "20261022_preservice_cache_boundary_static.txt",
+          "20261022_preservice_cache_boundary_observations.json"
         ]
       },
       "upstream": [
@@ -709,7 +722,8 @@
         "已接实际FULL球队槽P到69字节复制检查点；ACTUAL_PLAYER生成路径建立H并条件保持至142179240返回。下一143624b03→1426bda50调用在实际ACTUAL_PLAYER布局/正常独立存储/稳定分配器条件下保持前15位置字节，允许属性62/66变化；从生成RET连续推进至143624b08还需跳过143624add初始化。其余外层处理、自然条件覆盖、返回U的发布和比赛P人员引用身份、复制后逐次查询保持仍待证；不推广到全体存档球员。",
         "已限定证明142435270本身保持前15位置；前序14365b210选择器/关系副作用未闭合。1438f1890实际分支把D208交给14274b3b0→1419d1fd0并叠加D188修正；需证明实际权重下H后置条件及修正记录生产/空引用自然条件，不能将局部后重算尾部算例当自然反例。整体H检查点仍143624b08。 2026-10-22已接ACTUAL_PLAYER构造14216b690/69b的重叠清零，D188在14216b6a6为空；之后至重算的保持仍未证。",
         "2026-10-22已证选定位置/非空权重表/param5=0下的前15零权重、short跳过和范围内写回；若x及x-delta在给定范围且同一修正稳定，往返保持H。自然修正生产/范围/稳定或构造空引用保持、此前位置选择与其他工厂调用仍待证；连续检查点仍143624b08。",
-        "2026-10-22已绑定1438f1d57的GAME_ACTUAL_PLAYER virtual298→144b62b30及实际R8W=1；相同日期时整次调用在D写入前返回。构造器已写D150=当时当前值，但此值与D188空引用到调用点的连续保持、其他日期/掩码及后续调用仍待证；不等于已找到所有修正生产者。"
+        "2026-10-22已绑定1438f1d57的GAME_ACTUAL_PLAYER virtual298→144b62b30及实际R8W=1；相同日期时整次调用在D写入前返回。构造器已写D150=当时当前值，但此值与D188空引用到调用点的连续保持、其他日期/掩码及后续调用仍待证；不等于已找到所有修正生产者。",
+        "服务前143919b30及回写已保留位置/日期/修正；virtual218在已初始化空闲池创建路径只新增D108缓存。整个143913870/14390f9d0、实际1421983f0(D,mask,0,1,0)及143913940子调用仍未闭合；不得将非空D108当E或将局部保留当全程日期连续。"
       ],
       "connections": [
         {
@@ -3368,6 +3382,78 @@
           ],
           "evidence": "20261022_player_service_same_day_observations.json",
           "limit": "service binding evidence only; same-day preservation additionally requires actual mask1 and equal cached/current date fields"
+        },
+        {
+          "source": "same D and two float32=1.0 scales",
+          "callsite": "0x1438f1bee",
+          "callee": "0x143919b30",
+          "receiver": "RCX=D",
+          "target": "caller stores AL only into D1c0; tracked position/date/modifier fields preserved",
+          "conditions": [
+            "ACTUAL_PLAYER person vtable stable; date helper normal return; valid separated storage"
+          ],
+          "evidence": "20261022_preservice_cache_boundary_observations.json",
+          "limit": "Only documented scalar or bounded cache/prefix path; whole generator, natural candidate nonemptiness and final score closure remain unproved"
+        },
+        {
+          "source": "same D from1438f1890",
+          "callsite": "0x1438f1c90",
+          "callee": "0x143913870",
+          "receiver": "RDX=D; R8=caller local vector",
+          "target": "query wrapper actual entry; not whole-call preservation",
+          "conditions": [
+            "actual documented branch reached"
+          ],
+          "evidence": "20261022_preservice_cache_boundary_observations.json",
+          "limit": "Only documented scalar or bounded cache/prefix path; whole generator, natural candidate nonemptiness and final score closure remain unproved"
+        },
+        {
+          "source": "person U obtained by documented virtual-base adjustment from D",
+          "callsite": "0x1439138a7",
+          "callee": "0x14390f9d0",
+          "receiver": "RDX=U; R8D=0; R9=local output slot",
+          "target": "prefix virtual6c0 returns D and invokes service218 with R8B=1",
+          "conditions": [
+            "ACTUAL_PLAYER layout/vtable unchanged; prefix only"
+          ],
+          "evidence": "20261022_preservice_cache_boundary_observations.json",
+          "limit": "Only documented scalar or bounded cache/prefix path; whole generator, natural candidate nonemptiness and final score closure remain unproved"
+        },
+        {
+          "source": "service218 receives same D",
+          "callsite": "0x144b58482",
+          "callee": "0x1449b62d0",
+          "receiver": "RCX=D",
+          "target": "conditional lazy cache creation preserves tracked D fields",
+          "conditions": [
+            "valid ID, null D108, matching thread, creation enabled; initialized allocator and free-cell conditions documented"
+          ],
+          "evidence": "20261022_preservice_cache_boundary_observations.json",
+          "limit": "Only documented scalar or bounded cache/prefix path; whole generator, natural candidate nonemptiness and final score closure remain unproved"
+        },
+        {
+          "source": "initialized pool14642c000",
+          "callsite": "0x1449b6314",
+          "callee": "0x141900390",
+          "receiver": "RCX=pool; EDX=a8h",
+          "target": "take free cell C; only pool metadata writes on selected path",
+          "conditions": [
+            "pool28 nonnull valid independent cell of size at least a8h; pool48=0; no cold init"
+          ],
+          "evidence": "20261022_preservice_cache_boundary_observations.json",
+          "limit": "Only documented scalar or bounded cache/prefix path; whole generator, natural candidate nonemptiness and final score closure remain unproved"
+        },
+        {
+          "source": "allocated cache C and same D",
+          "callsite": "0x1449b6322",
+          "callee": "0x14297f900",
+          "receiver": "RCX=C; RDX=D",
+          "target": "initialize C, copy person ID to C60; caller writes D108=C",
+          "conditions": [
+            "general allocator cache1463634e8 nonnull; valid disjoint storage and normal return"
+          ],
+          "evidence": "20261022_preservice_cache_boundary_observations.json",
+          "limit": "Only documented scalar or bounded cache/prefix path; whole generator, natural candidate nonemptiness and final score closure remain unproved"
         }
       ]
     },
