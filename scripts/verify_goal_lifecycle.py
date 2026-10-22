@@ -920,6 +920,7 @@ def verify_original(exe):
         "20261022_candidate_wrapper_tail_observations.json",
         "20261022_query_wrapper_preservation_observations.json",
         "20261022_record_float_consumers_observations.json",
+        "20261022_person_context_queries_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1305,6 +1306,37 @@ def verify_original(exe):
                 target not in record_sites or not low <= target < high for target in targets):
             raise AssertionError("Record float consumer switch leaves documented code")
     print("Record float consumer evidence passed: actual local outputs, two five-entry branch tables and scalar mapper. Three consumer calls preserve tracked player fields under documented storage contracts; whole upper aggregator remains open.", flush=True)
+
+    person_context = json.loads((ROOT / "20261022_person_context_queries_observations.json").read_text())
+    for binding in person_context["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Person/contract context virtual binding differs")
+    for binding in person_context["tail_bindings"]:
+        entry = int(binding["entry"], 16)
+        raw = mapped_bytes(entry, 5)
+        if raw[0] != 0xE9 or entry + 5 + struct.unpack_from("<i", raw, 1)[0] != int(binding["target"], 16):
+            raise AssertionError("Person context query tail target differs")
+    table = person_context["cache_switch"]
+    address, count = int(table["table"], 16), table["entries"]
+    targets = [address + value for value in struct.unpack(f"<{count}i", mapped_bytes(address, count * 4))]
+    sites = {int(row["va"], 16) for row in person_context["native_assertions"]}
+    if targets != [int(value, 16) for value in table["targets"]] or any(
+            target not in sites or not 0x1428BA810 <= target < 0x1428BA8F3 for target in targets):
+        raise AssertionError("Context cache switch leaves covered code")
+    mask_instruction = mapped_bytes(0x142694746, 5)
+    if mask_instruction[0] != 0xB8:
+        raise AssertionError("Mode1 repeated-getter gate is no longer an immediate bitset")
+    tail_mask = struct.unpack_from("<I", mask_instruction, 1)[0]
+    direct_gate = {value for value in range(256) if value <= 3 and value != 2}
+    bitmap_gate = {value for value in range(21) if tail_mask >> value & 1}
+    if direct_gate != bitmap_gate or sorted(direct_gate | {0, 1, 3}) != person_context["mode1_result_domain"]:
+        raise AssertionError("Mode1 stable-getter return-domain certificate differs")
+    for site, raw in ((0x1438C7941, "ba01000000"), (0x1438C794C, "3c02"),
+                      (0x1426946DB, "3c03"), (0x1426946E2, "83f802")):
+        expected = bytes.fromhex(raw)
+        if mapped_bytes(site, len(expected)) != expected:
+            raise AssertionError("Actual person mode1/excluded2 branch anchor differs")
+    print("Person context evidence passed:24 virtual slots,35 cache branches and stable-getter return-domain gates. Mode1 branch exclusion remains conditional on documented types/stability; whole context resolver and natural score closure remain open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
