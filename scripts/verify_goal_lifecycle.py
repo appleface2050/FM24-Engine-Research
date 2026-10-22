@@ -926,6 +926,7 @@ def verify_original(exe):
         "20261022_registry_position_producer_observations.json",
         "20261022_registry_position_tail_observations.json",
         "20261022_full_person_publication_observations.json",
+        "20261022_full_lineup_production_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1400,6 +1401,12 @@ def verify_original(exe):
     if raw[:2] != bytes.fromhex("48bb") or struct.unpack_from("<Q", raw, 2)[0] != 0xFF0000000000:
         raise AssertionError("FULL actual config first8 bytes differ")
     print("FULL person publication evidence passed: actual builder88 slot and per-player config constant. Prefix P28 write only; vector producer and provider-return/copy-time preservation remain open.", flush=True)
+
+    lineup = json.loads((ROOT / "20261022_full_lineup_production_observations.json").read_text())
+    for binding in lineup["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("FULL roster producer/filter binding differs")
+    print("FULL roster evidence passed: builder70/78 and ACTUAL_PLAYER3f8 bindings. Bounded pointer stores only; selection, service preservation and natural registry identity remain open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

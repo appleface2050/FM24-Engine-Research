@@ -615,7 +615,13 @@
         "0x1451a9a3e",
         "0x145184470",
         "0x14518552c",
-        "0x1451844b8"
+        "0x1451844b8",
+        "0x145193a50",
+        "0x144c3e950",
+        "0x143ab43d0",
+        "0x143ab6ef0",
+        "0x1421a3fe0",
+        "0x14519d520"
       ],
       "evidence": {
         "reports": [
@@ -655,7 +661,8 @@
           "20261022_已有上下文命中与人员接口返回.md",
           "20261022_注册表球员到位置生成入口.md",
           "20261022_注册表生成后段的位置保持.md",
-          "20261022_FULL人员引用发布与名单槽.md"
+          "20261022_FULL人员引用发布与名单槽.md",
+          "20261022_FULL名单生产与过滤服务边界.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -779,7 +786,9 @@
           "20261022_registry_position_tail_static.txt",
           "20261022_registry_position_tail_observations.json",
           "20261022_full_person_publication_static.txt",
-          "20261022_full_person_publication_observations.json"
+          "20261022_full_person_publication_observations.json",
+          "20261022_full_lineup_production_static.txt",
+          "20261022_full_lineup_production_observations.json"
         ]
       },
       "upstream": [
@@ -822,7 +831,8 @@
         "X80为空时，实际aa已有记录/干净注册表命中链已条件保持；三类人员210均常假，698按类型返回空或调整后的非球员基址。自然aa记录及注册表生产、其他检索分支1428c84d0和返回接口规范化仍需补证，不升级自然H或比分闭环。",
         "另一实际注册表入口1423e8f40的V68/S80槽Q已连接1423e9120实际ACTUAL_PLAYER6b8→同D→142179240(arg4=0)建立H。6a8/738实际返回D2a0而非常空，不能跳过其帮助调用；生成后段已在后续列明条件下保留；这些条件的自然建立、S真实发布和同Q到比赛P28仍未知。原工厂连续检查点不升级。",
         "注册表入口1423e9120的生成后段已在ACTUAL_PLAYER、已有独立缓存或冷年龄<28、已解析关联记录、ready/no-flush回收及非B_CLUB末端合同条件下保持前15位置到正常返回。含真实关联累计/删除及合同状态写；这些自然条件和同Q→FULL/P28身份仍待证明，不升级原工厂连续检查点或比分闭环。",
-        "实际FULL球员循环1451a9a3e的B.virtual88→145184470在真实CFG前缀下，从B90+side*b0名单槽Dprime规范化Qprime并于1451844b8写同P28；首写前无CALL。名单生产/与已生成D同一性、provider首写后至返回以及到69字节复制的保持仍未知；不能将首次发布当复制时或自然查询条件。"
+        "实际FULL球员循环1451a9a3e的B.virtual88→145184470在真实CFG前缀下，从B90+side*b0名单槽Dprime规范化Qprime并于1451844b8写同P28；首写前无CALL。生产者已定位；完整名单生产保持、与已生成D同一性、provider首写后至返回以及到69字节复制的保持仍未知；不能将首次发布当复制时或自然查询条件。",
+        "FULL名单生产已定位到145193a50/144c3e950，仍缺注册表D→T48上下文候选的同一性、过滤virtual3f8服务的日期/位置保持、完整选人及14519d520/virtual88后段保持；flags3允许缺项替代。"
       ],
       "connections": [
         {
@@ -4081,6 +4091,58 @@
           ],
           "evidence": "20261022_registry_position_tail_observations.json",
           "limit": "Conditional first15 preservation to1423e9120 return; natural registry types/conditions and sameQ-to-FULL identity not yet proven"
+        },
+        {
+          "callsite": "0x1451940be",
+          "callee": "0x143ab43d0",
+          "source": "current T48 context and actual caller buffers",
+          "receiver": "collector output ownRBP7c0",
+          "target": "source pointer vector; full filtering/registry identity unproved",
+          "conditions": [
+            "Actual builder70 path and documented valid own buffers; normal ABI",
+            "Bounded segments only; do not compose across unproved calls"
+          ],
+          "evidence": "20261022_full_lineup_production_observations.json",
+          "limit": "No same natural registryD proof, no full roster/accessor service preservation or final score closure"
+        },
+        {
+          "callsite": "0x145194284",
+          "callee": "0x143ab6ef0",
+          "source": "ownRBP7c0 vector",
+          "receiver": "ownRBP840 candidate vector",
+          "target": "qualified original pointer append; filter accessor can invoke service",
+          "conditions": [
+            "Actual builder70 path and documented valid own buffers; normal ABI",
+            "Bounded segments only; do not compose across unproved calls"
+          ],
+          "evidence": "20261022_full_lineup_production_observations.json",
+          "limit": "No same natural registryD proof, no full roster/accessor service preservation or final score closure"
+        },
+        {
+          "callsite": "0x145197c8f",
+          "callee": "0x144c3e950",
+          "source": "ownRBP840 candidates and existing formation",
+          "receiver": "OUT=&B90+side*b0 fifth parameter",
+          "target": "selected pointer or registry fallback; whole return identity unproved",
+          "conditions": [
+            "Actual builder70 path and documented valid own buffers; normal ABI",
+            "Bounded segments only; do not compose across unproved calls"
+          ],
+          "evidence": "20261022_full_lineup_production_observations.json",
+          "limit": "No same natural registryD proof, no full roster/accessor service preservation or final score closure"
+        },
+        {
+          "callsite": "0x14519a6b7",
+          "callee": "0x144c3e950",
+          "source": "ownRBP840 candidates and calculated formation",
+          "receiver": "same OUT fifth parameter",
+          "target": "selected pointer or registry fallback; whole return identity unproved",
+          "conditions": [
+            "Actual builder70 path and documented valid own buffers; normal ABI",
+            "Bounded segments only; do not compose across unproved calls"
+          ],
+          "evidence": "20261022_full_lineup_production_observations.json",
+          "limit": "No same natural registryD proof, no full roster/accessor service preservation or final score closure"
         }
       ]
     },
