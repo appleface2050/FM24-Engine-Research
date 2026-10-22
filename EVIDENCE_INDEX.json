@@ -533,7 +533,11 @@
         "0x142435270",
         "0x1438f1890",
         "0x14274b3b0",
-        "0x1419d1fd0"
+        "0x1419d1fd0",
+        "0x1419cf670",
+        "0x1419cf280",
+        "0x1419d23cb",
+        "0x1419d2c8d"
       ],
       "evidence": {
         "reports": [
@@ -560,7 +564,8 @@
           "20261021_数据库位置非空条件建立.md",
           "20261021_生成末段位置条件保持.md",
           "20261021_外层字段处理与位置条件保持.md",
-          "20261021_工厂后续位置重算与修正边界.md"
+          "20261021_工厂后续位置重算与修正边界.md",
+          "20261022_位置零权重与修正往返条件.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -658,7 +663,9 @@
           "20261021_database_outer_fields_static.txt",
           "20261021_database_outer_fields_observations.json",
           "20261021_database_recalculation_boundary_static.txt",
-          "20261021_database_recalculation_boundary_observations.json"
+          "20261021_database_recalculation_boundary_observations.json",
+          "20261022_position_weight_roundtrip_static.txt",
+          "20261022_position_weight_roundtrip_observations.json"
         ]
       },
       "upstream": [
@@ -691,7 +698,8 @@
         "新当前联赛终点直接消费提交输入F，不消费查询副本R；F/K两支同源保持、阶段前后回调及后续修订仍须连接，不能将该限定终点当自然射门闭环",
         "141b2b470与其状态队列已条件保分，但逐次非零查询的自然候选/工厂与A/P/T/M身份、队列存储/索引、1443b04f0其他子树及后续状态消费者仍待证明",
         "已接实际FULL球队槽P到69字节复制检查点；ACTUAL_PLAYER生成路径建立H并条件保持至142179240返回。下一143624b03→1426bda50调用在实际ACTUAL_PLAYER布局/正常独立存储/稳定分配器条件下保持前15位置字节，允许属性62/66变化；从生成RET连续推进至143624b08还需跳过143624add初始化。其余外层处理、自然条件覆盖、返回U的发布和比赛P人员引用身份、复制后逐次查询保持仍待证；不推广到全体存档球员。",
-        "已限定证明142435270本身保持前15位置；前序14365b210选择器/关系副作用未闭合。1438f1890实际分支把D208交给14274b3b0→1419d1fd0并叠加D188修正；需证明实际权重下H后置条件及修正记录生产/空引用自然条件，不能将局部后重算尾部算例当自然反例。整体H检查点仍143624b08。 2026-10-22已接ACTUAL_PLAYER构造14216b690/69b的重叠清零，D188在14216b6a6为空；之后至重算的保持仍未证。"
+        "已限定证明142435270本身保持前15位置；前序14365b210选择器/关系副作用未闭合。1438f1890实际分支把D208交给14274b3b0→1419d1fd0并叠加D188修正；需证明实际权重下H后置条件及修正记录生产/空引用自然条件，不能将局部后重算尾部算例当自然反例。整体H检查点仍143624b08。 2026-10-22已接ACTUAL_PLAYER构造14216b690/69b的重叠清零，D188在14216b6a6为空；之后至重算的保持仍未证。",
+        "2026-10-22已证选定位置/非空权重表/param5=0下的前15零权重、short跳过和范围内写回；若x及x-delta在给定范围且同一修正稳定，往返保持H。自然修正生产/范围/稳定或构造空引用保持、此前位置选择与其他工厂调用仍待证；连续检查点仍143624b08。"
       ],
       "connections": [
         {
@@ -3270,12 +3278,50 @@
           "callsite": "0x14274b502",
           "callee": "0x1419d1fd0",
           "receiver": "A, D200, personnel scalar, flags and temporary input",
-          "target": "writes back attribute block including first16 byte output window",
+          "target": "conditional first15 short preservation and in-range byte output; same-modifier roundtrip retains an H witness",
           "conditions": [
-            "normal selected calculation path and valid separated storage"
+            "nonnull weight table, selected j in0,2..14 and actual weight param5=0",
+            "nonnull separate snapshot S; normal calls and valid disjoint storage",
+            "qualifying x in15..100 and1<=x-delta<=100, same effective modifier before/after inner call"
           ],
-          "evidence": "20261021_database_recalculation_boundary_observations.json",
-          "limit": "inner H postcondition and modifier producer unproved; tail example starts after this call"
+          "evidence": "20261022_position_weight_roundtrip_observations.json",
+          "limit": "conditional snapshot-to-return subchain, not whole factory proof; natural modifier range/stability and preceding selection still open"
+        },
+        {
+          "source": "A, stack weight buffer, nonnull weight table, selected j, fifth arg0",
+          "callsite": "0x1419d23cb",
+          "callee": "0x1419cf670",
+          "receiver": "documented actual arguments and separate valid live storage",
+          "target": "zero weights at positions0..14 on actual selected path",
+          "conditions": [
+            "selected j in0,2..14, nonnull weight table, actual param5=0, normal completed calls"
+          ],
+          "evidence": "20261022_position_weight_roundtrip_observations.json",
+          "limit": "local weight/recalculation subchain only; no natural match identity or final score adoption proof"
+        },
+        {
+          "source": "A and two separate local counters with selected j",
+          "callsite": "0x1419cf6d2",
+          "callee": "0x1419cf280",
+          "receiver": "documented actual arguments and separate valid live storage",
+          "target": "count10 for j in0,2..14; no external calls",
+          "conditions": [
+            "selected j in0,2..14, nonnull weight table, actual param5=0, normal completed calls"
+          ],
+          "evidence": "20261022_position_weight_roundtrip_observations.json",
+          "limit": "local weight/recalculation subchain only; no natural match identity or final score adoption proof"
+        },
+        {
+          "source": "stack W pointer, zero fill, size33ch",
+          "callsite": "0x1419cf6ad",
+          "callee": "0x14557e740",
+          "receiver": "documented actual arguments and separate valid live storage",
+          "target": "initialize full weight scratch including first15 floats",
+          "conditions": [
+            "selected j in0,2..14, nonnull weight table, actual param5=0, normal completed calls"
+          ],
+          "evidence": "20261022_position_weight_roundtrip_observations.json",
+          "limit": "local weight/recalculation subchain only; no natural match identity or final score adoption proof"
         }
       ]
     },

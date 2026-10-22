@@ -913,6 +913,7 @@ def verify_original(exe):
         "20261021_database_position_tail_observations.json",
         "20261021_database_outer_fields_observations.json",
         "20261021_database_recalculation_boundary_observations.json",
+        "20261022_position_weight_roundtrip_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1186,6 +1187,26 @@ def verify_original(exe):
         if mapped_bytes(site, len(expected)) != expected:
             raise AssertionError("Constructor modifier-pointer zeroing differs")
     print("Database recalculation boundary passed: next helper non-position writes, first16 attribute writeback and modifier-tail writes. No whole-factory preservation or natural-input counterexample proved.", flush=True)
+
+    weights = json.loads((ROOT / "20261022_position_weight_roundtrip_observations.json").read_text())
+    table = weights["selected_position_switch"]
+    base = int(table["base"], 16)
+    targets = [base + offset for offset in struct.unpack("<15i", mapped_bytes(base, 60))]
+    addresses = {int(row["va"], 16) for row in weights["native_assertions"]}
+    if targets != [int(target, 16) for target in table["targets"]] or not set(targets) <= addresses:
+        raise AssertionError("Selected-position counter switch lacks native targets")
+    for site, raw in ((0x1419CF39C, "83020a"),
+                      (0x1419CF6A2, "41b83c030000"),
+                      (0x1419CFA11, "83f80a"),
+                      (0x1419D23B4, "48c744242000000000"),
+                      (0x1419D2500, "480f45da"),
+                      (0x1419D2C88, "0f2ec3"),
+                      (0x1419D2C8D, "7be1"),
+                      (0x1419D2C69, "6689146b")):
+        expected = bytes.fromhex(raw)
+        if mapped_bytes(site, len(expected)) != expected:
+            raise AssertionError("Position zero-weight/short-update branch differs")
+    print("Position recalculation passed: selected counter switch15, actual count/clear/param5 and zero-weight skip anchors. Modifier roundtrip still requires documented snapshot, range and stability conditions; no natural score closure.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
