@@ -927,6 +927,7 @@ def verify_original(exe):
         "20261022_registry_position_tail_observations.json",
         "20261022_full_person_publication_observations.json",
         "20261022_full_lineup_production_observations.json",
+        "20261022_registry_selection_identity_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1407,6 +1408,20 @@ def verify_original(exe):
         if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
             raise AssertionError("FULL roster producer/filter binding differs")
     print("FULL roster evidence passed: builder70/78 and ACTUAL_PLAYER3f8 bindings. Bounded pointer stores only; selection, service preservation and natural registry identity remain open.", flush=True)
+
+    registry_identity = json.loads((ROOT / "20261022_registry_selection_identity_observations.json").read_text())
+    owner = registry_identity["owner_binding"]
+    owner_site = int(owner["lea_site"], 16)
+    fallback_site = int(owner["fallback_load_site"], 16)
+    actual_owner = owner_site + 7 + struct.unpack("<i", mapped_bytes(owner_site + 3, 4))[0]
+    actual_cell = fallback_site + 7 + struct.unpack("<i", mapped_bytes(fallback_site + 3, 4))[0]
+    if actual_owner + int(owner["member_offset"], 16) != actual_cell:
+        raise AssertionError("Generation owner member and FULL fallback global no longer share a pointer cell")
+    dispatch = registry_identity["dispatch"]
+    case_target = int(dispatch["table"], 16) + struct.unpack("<i", mapped_bytes(int(dispatch["entry"], 16), 4))[0]
+    if case_target != int(dispatch["target"], 16):
+        raise AssertionError("Registry generation selected dispatcher case differs")
+    print("Registry identity evidence passed: original RIP-relative owner+68 equals FULL global pointer cell and dispatcher case7 target. Runtime registry/slot stability and preservedH remain unproved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

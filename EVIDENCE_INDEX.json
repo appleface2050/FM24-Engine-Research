@@ -621,7 +621,15 @@
         "0x143ab43d0",
         "0x143ab6ef0",
         "0x1421a3fe0",
-        "0x14519d520"
+        "0x14519d520",
+        "0x143188320",
+        "0x143189752",
+        "0x1448dd860",
+        "0x1448d7a30",
+        "0x1448dd270",
+        "0x1423db840",
+        "0x144984d30",
+        "0x1448de620"
       ],
       "evidence": {
         "reports": [
@@ -662,7 +670,8 @@
           "20261022_注册表球员到位置生成入口.md",
           "20261022_注册表生成后段的位置保持.md",
           "20261022_FULL人员引用发布与名单槽.md",
-          "20261022_FULL名单生产与过滤服务边界.md"
+          "20261022_FULL名单生产与过滤服务边界.md",
+          "20261022_注册表拥有者绑定与回退索引边界.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -788,7 +797,9 @@
           "20261022_full_person_publication_static.txt",
           "20261022_full_person_publication_observations.json",
           "20261022_full_lineup_production_static.txt",
-          "20261022_full_lineup_production_observations.json"
+          "20261022_full_lineup_production_observations.json",
+          "20261022_registry_selection_identity_static.txt",
+          "20261022_registry_selection_identity_observations.json"
         ]
       },
       "upstream": [
@@ -829,10 +840,12 @@
         "1438c7810的person400、实际mode1 person598和144eb2770已条件保持，142223940在已绑定稳定状态路径不可达。直接ACTUAL_PLAYER记录分支已由后续证据条件闭合；仍缺其他1438f6250/1438f0760动态接收者、覆盖LOAN所需142133540及上层type3其他调用；不推广返回域到其他模式，不升级自然H或比分闭环。",
         "1438f6250在直接记录X28!=44、X80非空ACTUAL_PLAYER条件下整次返回0，实际调用者跳过1438f0760；可与前序非LOAN条件组成有限保持路径，但自然记录类型仍未知。1438f0760实际传B/P两个参数；14286c520重定位体含148cca7e6的8字节ADD，不得归为整体只读。",
         "X80为空时，实际aa已有记录/干净注册表命中链已条件保持；三类人员210均常假，698按类型返回空或调整后的非球员基址。自然aa记录及注册表生产、其他检索分支1428c84d0和返回接口规范化仍需补证，不升级自然H或比分闭环。",
-        "另一实际注册表入口1423e8f40的V68/S80槽Q已连接1423e9120实际ACTUAL_PLAYER6b8→同D→142179240(arg4=0)建立H。6a8/738实际返回D2a0而非常空，不能跳过其帮助调用；生成后段已在后续列明条件下保留；这些条件的自然建立、S真实发布和同Q到比赛P28仍未知。原工厂连续检查点不升级。",
+        "另一实际注册表入口1423e8f40的V68/S80槽Q已连接1423e9120实际ACTUAL_PLAYER6b8→同D→142179240(arg4=0)建立H。6a8/738实际返回D2a0而非常空，不能跳过其帮助调用；生成后段已在后续列明条件下保留；这些条件的自然建立、S的跨时间稳定/发布和同Q到比赛P28仍未知。原工厂连续检查点不升级。",
         "注册表入口1423e9120的生成后段已在ACTUAL_PLAYER、已有独立缓存或冷年龄<28、已解析关联记录、ready/no-flush回收及非B_CLUB末端合同条件下保持前15位置到正常返回。含真实关联累计/删除及合同状态写；这些自然条件和同Q→FULL/P28身份仍待证明，不升级原工厂连续检查点或比分闭环。",
         "实际FULL球员循环1451a9a3e的B.virtual88→145184470在真实CFG前缀下，从B90+side*b0名单槽Dprime规范化Qprime并于1451844b8写同P28；首写前无CALL。生产者已定位；完整名单生产保持、与已生成D同一性、provider首写后至返回以及到69字节复制的保持仍未知；不能将首次发布当复制时或自然查询条件。",
-        "FULL名单生产已定位到145193a50/144c3e950，仍缺注册表D→T48上下文候选的同一性、过滤virtual3f8服务的日期/位置保持、完整选人及14519d520/virtual88后段保持；flags3允许缺项替代。"
+        "FULL名单生产已定位到145193a50/144c3e950，S80回退的静态全局来源已绑定；正常候选仍缺注册表D→T48上下文候选的同一性、过滤virtual3f8服务的日期/位置保持、完整选人及14519d520/virtual88后段保持；flags3允许缺项替代。",
+        "143189752实参V=14642ecd0使V68与FULL全局槽14642ed38同址；在稳定S80/所选槽及有效k条件下可读同一Q/D，但1448dd860经1448d7a30取result38或ffffffff，成功/范围、注册替换及跨生成到比赛H保持未证。",
+        "FULL回退记录新增分支构造50h的VIRTUAL_PLAYER并以U30注册，ACTUAL人员728常空不能直接进入复用列表；VIRTUAL主320经1448de620返回另一对象+208作为属性源。U38注册索引及该解析对象类型/位置后置条件未证，不能沿用旧ACTUAL的H。"
       ],
       "connections": [
         {
@@ -4143,6 +4156,81 @@
           ],
           "evidence": "20261022_full_lineup_production_observations.json",
           "limit": "No same natural registryD proof, no full roster/accessor service preservation or final score closure"
+        },
+        {
+          "callsite": "0x143189752",
+          "callee": "0x1423e8f40",
+          "source": "dispatcher selected case7",
+          "receiver": "V=address14642ecd0; arg2=caller local context+12c; arg3=TLS160",
+          "target": "V68 pointer cell equals14642ed38; natural scheduling/stability unproved",
+          "conditions": [
+            "Selected documented branch; valid storage and normal ABI",
+            "Same global cell does not establish same runtime S/Q or preservedH"
+          ],
+          "evidence": "20261022_registry_selection_identity_observations.json",
+          "limit": "Bounded parameter/return and address identity only; no whole helper or final-score proof"
+        },
+        {
+          "callsite": "0x144c3f987",
+          "callee": "0x1448dd860",
+          "source": "actual FULL missing selected candidate",
+          "receiver": "service/context/formation and actual stack arguments",
+          "target": "EAX unsigned slot index used after reloading globalS; success/range unproved",
+          "conditions": [
+            "Selected documented branch; valid storage and normal ABI",
+            "Same global cell does not establish same runtime S/Q or preservedH"
+          ],
+          "evidence": "20261022_registry_selection_identity_observations.json",
+          "limit": "Bounded parameter/return and address identity only; no whole helper or final-score proof"
+        },
+        {
+          "callsite": "0x1448ddb30",
+          "callee": "0x1448d7a30",
+          "source": "actual fallback selector setup",
+          "receiver": "documented context/list, stack word100 and final byte1",
+          "target": "nonnull result38 or ffffffff; result producer and side effects unproved",
+          "conditions": [
+            "Selected documented branch; valid storage and normal ABI",
+            "Same global cell does not establish same runtime S/Q or preservedH"
+          ],
+          "evidence": "20261022_registry_selection_identity_observations.json",
+          "limit": "Bounded parameter/return and address identity only; no whole helper or final-score proof"
+        },
+        {
+          "callsite": "0x1448d7d34",
+          "callee": "0x1448dd270",
+          "source": "record provider exhausted reuse branch",
+          "receiver": "service and key from actual fallback",
+          "target": "may construct50h VIRTUAL_PLAYER; whole provider not proven",
+          "conditions": [
+            "Selected documented type/branch, valid storage, normal ABI"
+          ],
+          "evidence": "20261022_registry_selection_identity_observations.json",
+          "limit": "Bounded argument/type connection only; no whole helper or natural score closure"
+        },
+        {
+          "callsite": "0x1448dd4e5",
+          "callee": "0x1423db840",
+          "source": "newVIRTUAL_PLAYER U",
+          "receiver": "globalS, U30 person, lowbyte1",
+          "target": "registration call boundary; U38 production and effects unproved",
+          "conditions": [
+            "Selected documented type/branch, valid storage, normal ABI"
+          ],
+          "evidence": "20261022_registry_selection_identity_observations.json",
+          "limit": "Bounded argument/type connection only; no whole helper or natural score closure"
+        },
+        {
+          "callsite": "0x144984d46",
+          "callee": "0x1448de620",
+          "source": "VIRTUAL_PLAYER primary320",
+          "receiver": "service, U, lowbyte1",
+          "target": "return object+208 supplies attributes; type/H not yet bound",
+          "conditions": [
+            "Selected documented type/branch, valid storage, normal ABI"
+          ],
+          "evidence": "20261022_registry_selection_identity_observations.json",
+          "limit": "Bounded argument/type connection only; no whole helper or natural score closure"
         }
       ]
     },
