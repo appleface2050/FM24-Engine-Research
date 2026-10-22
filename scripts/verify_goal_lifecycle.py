@@ -912,6 +912,7 @@ def verify_original(exe):
         "20261021_database_position_establishment_observations.json",
         "20261021_database_position_tail_observations.json",
         "20261021_database_outer_fields_observations.json",
+        "20261021_database_recalculation_boundary_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1165,6 +1166,26 @@ def verify_original(exe):
         if mapped_bytes(site, len(expected)) != expected:
             raise AssertionError("Outer field write, actual distribution branch or return differs")
     print("Database outer fields passed: ACTUAL_PLAYER 9 virtual slots, 14 n=8 distribution sites, 20 switch entries; writes at attributes62/66. First15 preservation is conditional on documented storage/runtime contracts, not a factory-to-match proof.", flush=True)
+
+    # 重算边界只核对真实写点，不将“存在写回”自动解释为H变化或保持。
+    if struct.unpack("<Q", mapped_bytes(0x145A4F530, 8))[0] != 0x1421D5280:
+        raise AssertionError("Following helper personnel virtual+6b8 differs")
+    for site, raw in ((0x142435499, "42884c2e5c"),
+                      (0x14243552A, "884c2e59"),
+                      (0x1424355B3, "888e4a020000"),
+                      (0x1419D2DA1, "660fd627"),
+                      (0x1419D2DDA, "660fd65f08"),
+                      (0x14274B525, "41002c14"),
+                      (0x14274B53E, "41882c14")):
+        expected = bytes.fromhex(raw)
+        if mapped_bytes(site, len(expected)) != expected:
+            raise AssertionError("Following helper or attribute recalculation write differs")
+    for site, raw in ((0x14216B690, "48c7868f01000000000000"),
+                      (0x14216B69B, "48c7868701000000000000")):
+        expected = bytes.fromhex(raw)
+        if mapped_bytes(site, len(expected)) != expected:
+            raise AssertionError("Constructor modifier-pointer zeroing differs")
+    print("Database recalculation boundary passed: next helper non-position writes, first16 attribute writeback and modifier-tail writes. No whole-factory preservation or natural-input counterexample proved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
