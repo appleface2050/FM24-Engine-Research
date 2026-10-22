@@ -917,6 +917,7 @@ def verify_original(exe):
         "20261022_player_service_same_day_observations.json",
         "20261022_preservice_cache_boundary_observations.json",
         "20261022_actual_fallback_preservation_observations.json",
+        "20261022_candidate_wrapper_tail_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1254,6 +1255,14 @@ def verify_original(exe):
     if indices != domain["active_indices"] or max(indices) != domain["highest_active_index"] or max(indices) >= table_entries:
         raise AssertionError("Actual fallback category indices exceed documented initialized table")
     print("Actual fallback boundary passed: zero-context branch, bound read-only position slot and category index range. Whole call preservation requires documented table/storage contracts; parent query and natural score closure remain open.", flush=True)
+
+    wrapper_tail = json.loads((ROOT / "20261022_candidate_wrapper_tail_observations.json").read_text())
+    for helper in wrapper_tail["relocated_helpers"]:
+        entry = int(helper["entry"], 16)
+        raw = mapped_bytes(entry, 5)
+        if raw[0] != 0xE9 or entry + 5 + struct.unpack_from("<i", raw, 1)[0] != int(helper["target"], 16):
+            raise AssertionError("Membership relocated bit-mask helper differs")
+    print("Candidate wrapper tail passed: actual local outputs, complete membership code and relocated helper. Preservation begins after the preceding query returns; whole wrapper remains unproved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

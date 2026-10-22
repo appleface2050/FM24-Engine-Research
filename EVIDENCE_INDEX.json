@@ -266,7 +266,8 @@
         "同一S98队行的E+c规则累计与默认排序、E+e1位置写入和实际读取；积分名称属行为推断",
         "六种实际高位状态码：有条件连接前置评分、类型1队列、再次评分与P16d8/dc/dd写入；已排除该路径消息尾跳，不升级全收尾",
         "实际初始空向量mode3在正常条件下非空等价于attrs[0,2..14]至少一项signed>=10；14类都有零门槛候选；两处直接EAX消费忽略新增位33/34",
-        "实际1421983f0(D,mask,0,1,0)选定分支整次条件保持D150/D188/A69；零mask时virtual468只读signed>=15位置并按固定表返回掩码，不等于全包装器或自然输入保持"
+        "实际1421983f0(D,mask,0,1,0)选定分支整次条件保持D150/D188/A69；零mask时virtual468只读signed>=15位置并按固定表返回掩码，不等于全包装器或自然输入保持",
+        "14390f9d0返回后的1439138ac..14391393b连续后段在明确类型/共享表/向量拥有条件下保持D150/D188/A69；筛选只写自身栈标记，追加允许实际扩容；前置查询未闭合"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -559,7 +560,13 @@
         "0x1421983f0",
         "0x142198776",
         "0x14218e600",
-        "0x1419cba10"
+        "0x1419cba10",
+        "0x1439138ac",
+        "0x14391391a",
+        "0x143913929",
+        "0x1419cf110",
+        "0x1419c7660",
+        "0x151789340"
       ],
       "evidence": {
         "reports": [
@@ -590,7 +597,8 @@
           "20261022_位置零权重与修正往返条件.md",
           "20261022_球员服务绑定与同日返回.md",
           "20261022_服务前标量与延迟缓存边界.md",
-          "20261022_实际零上下文候选回退保持.md"
+          "20261022_实际零上下文候选回退保持.md",
+          "20261022_候选包装器返回后段保持.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -696,7 +704,9 @@
           "20261022_preservice_cache_boundary_static.txt",
           "20261022_preservice_cache_boundary_observations.json",
           "20261022_actual_fallback_preservation_static.txt",
-          "20261022_actual_fallback_preservation_observations.json"
+          "20261022_actual_fallback_preservation_observations.json",
+          "20261022_candidate_wrapper_tail_static.txt",
+          "20261022_candidate_wrapper_tail_observations.json"
         ]
       },
       "upstream": [
@@ -732,7 +742,7 @@
         "已限定证明142435270本身保持前15位置；前序14365b210选择器/关系副作用未闭合。1438f1890实际分支把D208交给14274b3b0→1419d1fd0并叠加D188修正；需证明实际权重下H后置条件及修正记录生产/空引用自然条件，不能将局部后重算尾部算例当自然反例。整体H检查点仍143624b08。 2026-10-22已接ACTUAL_PLAYER构造14216b690/69b的重叠清零，D188在14216b6a6为空；之后至重算的保持仍未证。",
         "2026-10-22已证选定位置/非空权重表/param5=0下的前15零权重、short跳过和范围内写回；若x及x-delta在给定范围且同一修正稳定，往返保持H。自然修正生产/范围/稳定或构造空引用保持、此前位置选择与其他工厂调用仍待证；连续检查点仍143624b08。",
         "2026-10-22已绑定1438f1d57的GAME_ACTUAL_PLAYER virtual298→144b62b30及实际R8W=1；相同日期时整次调用在D写入前返回。构造器已写D150=当时当前值，但此值与D188空引用到调用点的连续保持、其他日期/掩码及后续调用仍待证；不等于已找到所有修正生产者。",
-        "服务前143919b30及回写已保留位置/日期/修正；virtual218在已初始化空闲池创建路径只新增D108缓存。实际1421983f0(D,mask,0,1,0)现已条件保持；整个143913870/14390f9d0、后续1419cf110/向量存储及143913940子调用仍未闭合；不得将非空D108当E或将局部保留当全程日期连续。"
+        "服务前标量、条件D108创建、实际fallback及查询返回后至143913870 RET的后段现已条件保持。要闭合整个包装器仍缺14390f9d0实际前置查询全程；上层143913940子调用及自然日期/修正连续性仍独立未证。"
       ],
       "connections": [
         {
@@ -3523,6 +3533,66 @@
           ],
           "evidence": "20261022_actual_fallback_preservation_observations.json",
           "limit": "Actual zero-context mode1 fallback only; whole parent query/generator and natural final score lifecycle remain unproved"
+        },
+        {
+          "source": "actual wrapper continuation after14390f9d0 return",
+          "callsite": "0x14391391a",
+          "callee": "0x1419cf110",
+          "receiver": "ECX=manager byte; RDX=local payload; R8D=0; R9=own stack byte",
+          "target": "membership returns AL; only conditional external write is own stack byte",
+          "conditions": [
+            "ACTUAL_PLAYER/shared-table conditions from fallback; global146427f60 nonnull stable; valid separated storage and vector ownership; normal completed allocation/CRT contracts"
+          ],
+          "evidence": "20261022_candidate_wrapper_tail_observations.json",
+          "limit": "Continuation after1439138ac only; preceding query and whole generator/natural score lifecycle remain open"
+        },
+        {
+          "source": "actual wrapper continuation after14390f9d0 return",
+          "callsite": "0x143913929",
+          "callee": "0x140448f20",
+          "receiver": "RCX=actual caller local vector; RDX=own stack byte",
+          "target": "append manager byte, including known allocation/growth path",
+          "conditions": [
+            "ACTUAL_PLAYER/shared-table conditions from fallback; global146427f60 nonnull stable; valid separated storage and vector ownership; normal completed allocation/CRT contracts"
+          ],
+          "evidence": "20261022_candidate_wrapper_tail_observations.json",
+          "limit": "Continuation after1439138ac only; preceding query and whole generator/natural score lifecycle remain open"
+        },
+        {
+          "source": "actual wrapper continuation after14390f9d0 return",
+          "callsite": "0x1419cf171",
+          "callee": "0x1419c7660",
+          "receiver": "RCX=scalar combination mask",
+          "target": "E9 target151789340 is complete register-only helper",
+          "conditions": [
+            "ACTUAL_PLAYER/shared-table conditions from fallback; global146427f60 nonnull stable; valid separated storage and vector ownership; normal completed allocation/CRT contracts"
+          ],
+          "evidence": "20261022_candidate_wrapper_tail_observations.json",
+          "limit": "Continuation after1439138ac only; preceding query and whole generator/natural score lifecycle remain open"
+        },
+        {
+          "source": "actual wrapper continuation after14390f9d0 return",
+          "callsite": "0x1419cf1cd",
+          "callee": "0x1419c6b80",
+          "receiver": "RCX=own temporary69-byte stack area",
+          "target": "warm146427f60 branch clears only own scratch",
+          "conditions": [
+            "ACTUAL_PLAYER/shared-table conditions from fallback; global146427f60 nonnull stable; valid separated storage and vector ownership; normal completed allocation/CRT contracts"
+          ],
+          "evidence": "20261022_candidate_wrapper_tail_observations.json",
+          "limit": "Continuation after1439138ac only; preceding query and whole generator/natural score lifecycle remain open"
+        },
+        {
+          "source": "actual wrapper continuation after14390f9d0 return",
+          "callsite": "0x1419cf20b",
+          "callee": "0x1419c6b80",
+          "receiver": "RCX=own temporary69-byte stack area",
+          "target": "warm146427f60 branch clears only own scratch",
+          "conditions": [
+            "ACTUAL_PLAYER/shared-table conditions from fallback; global146427f60 nonnull stable; valid separated storage and vector ownership; normal completed allocation/CRT contracts"
+          ],
+          "evidence": "20261022_candidate_wrapper_tail_observations.json",
+          "limit": "Continuation after1439138ac only; preceding query and whole generator/natural score lifecycle remain open"
         }
       ]
     },
