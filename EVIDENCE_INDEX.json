@@ -267,7 +267,8 @@
         "六种实际高位状态码：有条件连接前置评分、类型1队列、再次评分与P16d8/dc/dd写入；已排除该路径消息尾跳，不升级全收尾",
         "实际初始空向量mode3在正常条件下非空等价于attrs[0,2..14]至少一项signed>=10；14类都有零门槛候选；两处直接EAX消费忽略新增位33/34",
         "实际1421983f0(D,mask,0,1,0)选定分支整次条件保持D150/D188/A69；零mask时virtual468只读signed>=15位置并按固定表返回掩码，不等于全包装器或自然输入保持",
-        "14390f9d0返回后的1439138ac..14391393b连续后段在明确类型/共享表/向量拥有条件下保持D150/D188/A69；筛选只写自身栈标记，追加允许实际扩容；前置查询未闭合"
+        "14390f9d0返回后的1439138ac..14391393b连续后段在明确类型/共享表/向量拥有条件下保持D150/D188/A69；筛选只写自身栈标记，追加允许实际扩容；前置查询未闭合",
+        "实际14390f9d0全程与已证后段合成整个143913870的条件保留；virtual778返回D170地址，D178列表查询只写实际局部mask/payload；仍缺上层143913940及自然生成对象连续性"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -566,7 +567,14 @@
         "0x143913929",
         "0x1419cf110",
         "0x1419c7660",
-        "0x151789340"
+        "0x151789340",
+        "0x14390f9d0",
+        "0x14390fecb",
+        "0x1421d5420",
+        "0x1449a8600",
+        "0x1419a7940",
+        "0x1516df460",
+        "0x1419c9d00"
       ],
       "evidence": {
         "reports": [
@@ -598,7 +606,8 @@
           "20261022_球员服务绑定与同日返回.md",
           "20261022_服务前标量与延迟缓存边界.md",
           "20261022_实际零上下文候选回退保持.md",
-          "20261022_候选包装器返回后段保持.md"
+          "20261022_候选包装器返回后段保持.md",
+          "20261022_前置查询与整个候选包装器保持.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -706,7 +715,9 @@
           "20261022_actual_fallback_preservation_static.txt",
           "20261022_actual_fallback_preservation_observations.json",
           "20261022_candidate_wrapper_tail_static.txt",
-          "20261022_candidate_wrapper_tail_observations.json"
+          "20261022_candidate_wrapper_tail_observations.json",
+          "20261022_query_wrapper_preservation_static.txt",
+          "20261022_query_wrapper_preservation_observations.json"
         ]
       },
       "upstream": [
@@ -742,7 +753,7 @@
         "已限定证明142435270本身保持前15位置；前序14365b210选择器/关系副作用未闭合。1438f1890实际分支把D208交给14274b3b0→1419d1fd0并叠加D188修正；需证明实际权重下H后置条件及修正记录生产/空引用自然条件，不能将局部后重算尾部算例当自然反例。整体H检查点仍143624b08。 2026-10-22已接ACTUAL_PLAYER构造14216b690/69b的重叠清零，D188在14216b6a6为空；之后至重算的保持仍未证。",
         "2026-10-22已证选定位置/非空权重表/param5=0下的前15零权重、short跳过和范围内写回；若x及x-delta在给定范围且同一修正稳定，往返保持H。自然修正生产/范围/稳定或构造空引用保持、此前位置选择与其他工厂调用仍待证；连续检查点仍143624b08。",
         "2026-10-22已绑定1438f1d57的GAME_ACTUAL_PLAYER virtual298→144b62b30及实际R8W=1；相同日期时整次调用在D写入前返回。构造器已写D150=当时当前值，但此值与D188空引用到调用点的连续保持、其他日期/掩码及后续调用仍待证；不等于已找到所有修正生产者。",
-        "服务前标量、条件D108创建、实际fallback及查询返回后至143913870 RET的后段现已条件保持。要闭合整个包装器仍缺14390f9d0实际前置查询全程；上层143913940子调用及自然日期/修正连续性仍独立未证。"
+        "前置14390f9d0已在实际ACTUAL_PLAYER/服务绑定、有效缓存/列表和条件创建路径下保留目标字段；与后段合成整个143913870条件保持。上层143913940及其他生成调用、各条件在同一自然D上的连续性和FULL发布仍未证；不升级连续H检查点或最终比分闭环。"
       ],
       "connections": [
         {
@@ -3419,12 +3430,12 @@
           "callsite": "0x1438f1c90",
           "callee": "0x143913870",
           "receiver": "RDX=D; R8=caller local vector",
-          "target": "query wrapper actual entry; not whole-call preservation",
+          "target": "whole actual143913870 conditionally preserves D150/D188/A69/current packed date; see query plus tail evidence",
           "conditions": [
-            "actual documented branch reached"
+            "combined actual-player/service binding, valid query cache/list, documented cache creation path, shared table and independent vector/allocation conditions"
           ],
-          "evidence": "20261022_preservice_cache_boundary_observations.json",
-          "limit": "Only documented scalar or bounded cache/prefix path; whole generator, natural candidate nonemptiness and final score closure remain unproved"
+          "evidence": "20261022_query_wrapper_preservation_observations.json",
+          "limit": "Whole wrapper conditional preservation only; upper generator, natural object continuity and final score closure remain unproved"
         },
         {
           "source": "person U obtained by documented virtual-base adjustment from D",
@@ -3593,6 +3604,42 @@
           ],
           "evidence": "20261022_candidate_wrapper_tail_observations.json",
           "limit": "Continuation after1439138ac only; preceding query and whole generator/natural score lifecycle remain open"
+        },
+        {
+          "source": "actual1439138a7 query on same ACTUAL_PLAYER D",
+          "callsite": "0x14390fa79",
+          "callee": "0x1419c9d00",
+          "receiver": "RCX=A=D208; RDX=query own mask slot; R8B=1",
+          "target": "complete leaf reads positions and writes only actual local mask",
+          "conditions": [
+            "documented stable types/services; valid independent list/cache/outputs; normal completion; prior cache creation contracts when applicable"
+          ],
+          "evidence": "20261022_query_wrapper_preservation_observations.json",
+          "limit": "Whole query/wrapper conditional preservation; no upper generator or natural final score closure"
+        },
+        {
+          "source": "actual1439138a7 query on same ACTUAL_PLAYER D",
+          "callsite": "0x14390ff0e",
+          "callee": "0x1449a8600",
+          "receiver": "RCX=D178 list; RDX=wrapper mask slot; R8=query payload slot; R9D=0; four optional pointers=0",
+          "target": "whole list query writes only two actual independent stack outputs",
+          "conditions": [
+            "documented stable types/services; valid independent list/cache/outputs; normal completion; prior cache creation contracts when applicable"
+          ],
+          "evidence": "20261022_query_wrapper_preservation_observations.json",
+          "limit": "Whole query/wrapper conditional preservation; no upper generator or natural final score closure"
+        },
+        {
+          "source": "actual1439138a7 query on same ACTUAL_PLAYER D",
+          "callsite": "0x1449a86d8",
+          "callee": "0x1419a7940",
+          "receiver": "ECX=scalar extracted from record word",
+          "target": "relocated complete leaf reads bounded47-entry table without object writes",
+          "conditions": [
+            "documented stable types/services; valid independent list/cache/outputs; normal completion; prior cache creation contracts when applicable"
+          ],
+          "evidence": "20261022_query_wrapper_preservation_observations.json",
+          "limit": "Whole query/wrapper conditional preservation; no upper generator or natural final score closure"
         }
       ]
     },

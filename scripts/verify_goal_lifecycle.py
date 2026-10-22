@@ -918,6 +918,7 @@ def verify_original(exe):
         "20261022_preservice_cache_boundary_observations.json",
         "20261022_actual_fallback_preservation_observations.json",
         "20261022_candidate_wrapper_tail_observations.json",
+        "20261022_query_wrapper_preservation_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1236,7 +1237,7 @@ def verify_original(exe):
     for binding in preservice["virtual_bindings"]:
         if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
             raise AssertionError("Preservice person/cache virtual target differs")
-    print("Preservice boundary passed: actual scalar call, same-D virtual218 cache binding and bounded warm free-cell creation instructions. Whole query/generator preservation remains unproved.", flush=True)
+    print("Preservice boundary passed: actual scalar call, same-D virtual218 cache binding and bounded warm free-cell creation instructions. Whole query coverage is checked separately below.", flush=True)
 
     fallback = json.loads((ROOT / "20261022_actual_fallback_preservation_observations.json").read_text())
     for binding in fallback["virtual_bindings"]:
@@ -1254,7 +1255,7 @@ def verify_original(exe):
         raise AssertionError("Actual fallback default category mask differs")
     if indices != domain["active_indices"] or max(indices) != domain["highest_active_index"] or max(indices) >= table_entries:
         raise AssertionError("Actual fallback category indices exceed documented initialized table")
-    print("Actual fallback boundary passed: zero-context branch, bound read-only position slot and category index range. Whole call preservation requires documented table/storage contracts; parent query and natural score closure remain open.", flush=True)
+    print("Actual fallback boundary passed: zero-context branch, bound read-only position slot and category index range. Whole call preservation requires documented table/storage contracts; parent query is checked separately below.", flush=True)
 
     wrapper_tail = json.loads((ROOT / "20261022_candidate_wrapper_tail_observations.json").read_text())
     for helper in wrapper_tail["relocated_helpers"]:
@@ -1262,7 +1263,32 @@ def verify_original(exe):
         raw = mapped_bytes(entry, 5)
         if raw[0] != 0xE9 or entry + 5 + struct.unpack_from("<i", raw, 1)[0] != int(helper["target"], 16):
             raise AssertionError("Membership relocated bit-mask helper differs")
-    print("Candidate wrapper tail passed: actual local outputs, complete membership code and relocated helper. Preservation begins after the preceding query returns; whole wrapper remains unproved.", flush=True)
+    print("Candidate wrapper tail passed: actual local outputs, complete membership code and relocated helper. This check starts after query return; query coverage for whole-wrapper composition follows.", flush=True)
+
+    query = json.loads((ROOT / "20261022_query_wrapper_preservation_observations.json").read_text())
+    for binding in query["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Personnel query subobject getter differs")
+    for helper in query["relocated_helpers"]:
+        entry = int(helper["entry"], 16)
+        raw = mapped_bytes(entry, 5)
+        if raw[0] != 0xE9 or entry + 5 + struct.unpack_from("<i", raw, 1)[0] != int(helper["target"], 16):
+            raise AssertionError("Record scalar table helper relocated target differs")
+    query_rows = {int(row["va"], 16): len(bytes.fromhex(row["hex"]))
+                  for item in evidences for row in item.get("native_assertions", [])}
+    cursor = 0x14390F9D0
+    for span in query["query_coverage"]:
+        if cursor != int(span["start"], 16):
+            raise AssertionError("Query code evidence fragments are not adjacent")
+        end = int(span["end_exclusive"], 16)
+        while cursor < end:
+            size = query_rows.get(cursor)
+            if not size or cursor + size > end:
+                raise AssertionError(f"Query instruction evidence gap at {cursor:#x}")
+            cursor += size
+    if cursor != 0x14390FF98:
+        raise AssertionError("Query code evidence does not cover through return")
+    print("Query/wrapper preservation evidence passed: complete query instruction coverage, actual getter and scalar helper. Whole wrapper preservation is conditional; upper generator and natural score closure remain open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
