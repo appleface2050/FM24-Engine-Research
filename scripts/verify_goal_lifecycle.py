@@ -929,6 +929,7 @@ def verify_original(exe):
         "20261022_full_lineup_production_observations.json",
         "20261022_registry_selection_identity_observations.json",
         "20261023_virtual_position_establishment_observations.json",
+        "20261023_virtual_precopy_preservation_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1438,6 +1439,34 @@ def verify_original(exe):
     if struct.unpack("<10H", mapped_bytes(0x145C7A086, 20)) != (0, 4, 9, 11, 10, 13, 15, 14, 16, 0):
         raise AssertionError("Virtual position category table differs")
     print("Virtual position evidence passed: complete no-CALL setter and category table. Warm registration/cache paths and actual H establishment are conditional; materializer suffix and final score remain open.", flush=True)
+
+    suffix = json.loads((ROOT / "20261023_virtual_precopy_preservation_observations.json").read_text())
+    for binding in suffix["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Materializer suffix virtual binding differs")
+    transfer = suffix["tail_transfer"]
+    site = int(transfer["site"], 16)
+    raw = mapped_bytes(site, 5)
+    if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+        raise AssertionError("Materializer query tail target differs")
+    for start, end in ((0x1447DB5C0, 0x1447DB77F), (0x1454673E0, 0x145467686),
+                       (0x1421D2840, 0x1421D287F), (0x1421D30A0, 0x1421D30C0),
+                       (0x142620DF0, 0x142620F7A)):
+        cursor = start
+        for row in sorted((row for row in suffix["native_assertions"]
+                           if start <= int(row["va"], 16) < end),
+                          key=lambda row: int(row["va"], 16)):
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("Materializer suffix helper has uncovered instructions")
+            if row["instruction"].lower().startswith("call"):
+                raw = mapped_bytes(cursor, 5)
+                if (start != 0x1454673E0 or raw[0] != 0xE8
+                        or cursor + 5 + struct.unpack_from("<i", raw, 1)[0] != 0x1454E8E38):
+                    raise AssertionError("Materializer suffix has an unclassified helper call")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != end:
+            raise AssertionError("Materializer suffix helper body is incomplete")
+    print("Materializer pre-recompute evidence passed: five complete helper bodies, query tail and two virtual slots. TLS-ready/owned-storage preservation to actual recompute only; ordinary return remains open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
