@@ -930,6 +930,7 @@ def verify_original(exe):
         "20261022_registry_selection_identity_observations.json",
         "20261023_virtual_position_establishment_observations.json",
         "20261023_virtual_precopy_preservation_observations.json",
+        "20261023_virtual_goalkeeper_copy_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1467,6 +1468,26 @@ def verify_original(exe):
         if cursor != end:
             raise AssertionError("Materializer suffix helper body is incomplete")
     print("Materializer pre-recompute evidence passed: five complete helper bodies, query tail and two virtual slots. TLS-ready/owned-storage preservation to actual recompute only; ordinary return remains open.", flush=True)
+
+    goalkeeper = json.loads((ROOT / "20261023_virtual_goalkeeper_copy_observations.json").read_text())
+    if struct.unpack("<H", mapped_bytes(0x145C7A088, 2))[0] != 4:
+        raise AssertionError("Virtual category0 no longer supplies goalkeeper mask4")
+    switch = goalkeeper["prefix_switch"]
+    table = int(switch["table"], 16)
+    targets = [table + value for value in struct.unpack("<15i", mapped_bytes(table, 60))]
+    covered = {int(row["va"], 16) for row in goalkeeper["native_assertions"]}
+    if targets != [int(value, 16) for value in switch["targets"]] or any(value not in covered for value in targets):
+        raise AssertionError("Recompute prefix switch target is changed or uncovered")
+    cursor = 0x1419CF510
+    for row in sorted((row for row in goalkeeper["native_assertions"]
+                       if 0x1419CF510 <= int(row["va"], 16) < 0x1419CF66B),
+                      key=lambda row: int(row["va"], 16)):
+        if int(row["va"], 16) != cursor or row["instruction"].lower().startswith("call"):
+            raise AssertionError("Recompute prefix scalar helper is incomplete or has an external call")
+        cursor += len(bytes.fromhex(row["hex"]))
+    if cursor != 0x1419CF66B:
+        raise AssertionError("Recompute prefix scalar helper body is incomplete")
+    print("GK ordinary recompute/copy evidence passed: category0 mask4, complete prefix scalar helper and15 switch targets. Position20 reaches FULL copy only under documented null-modifier/weight/cache conditions; natural lifecycle remains open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

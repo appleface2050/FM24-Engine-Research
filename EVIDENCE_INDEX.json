@@ -638,7 +638,11 @@
         "0x1454673e0",
         "0x1421d2840",
         "0x142620df0",
-        "0x1448e0a94"
+        "0x1448e0a94",
+        "0x1419d2081",
+        "0x1419d23a1",
+        "0x1448e0aaa",
+        "0x14519f7aa"
       ],
       "evidence": {
         "reports": [
@@ -682,7 +686,8 @@
           "20261022_FULL名单生产与过滤服务边界.md",
           "20261022_注册表拥有者绑定与回退索引边界.md",
           "20261023_虚拟球员注册索引与位置建立.md",
-          "20261023_虚拟属性解析器重算前的位置保持.md"
+          "20261023_虚拟属性解析器重算前的位置保持.md",
+          "20261023_门将位置重算到FULL复制的条件链.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -814,7 +819,9 @@
           "20261023_virtual_position_establishment_static.txt",
           "20261023_virtual_position_establishment_observations.json",
           "20261023_virtual_precopy_preservation_static.txt",
-          "20261023_virtual_precopy_preservation_observations.json"
+          "20261023_virtual_precopy_preservation_observations.json",
+          "20261023_virtual_goalkeeper_copy_static.txt",
+          "20261023_virtual_goalkeeper_copy_observations.json"
         ]
       },
       "upstream": [
@@ -861,8 +868,9 @@
         "FULL名单生产已定位到145193a50/144c3e950，S80回退的静态全局来源已绑定；正常候选仍缺注册表D→T48上下文候选的同一性、过滤virtual3f8服务的日期/位置保持、完整选人及14519d520/virtual88后段保持；flags3允许缺项替代。",
         "143189752实参V=14642ecd0使V68与FULL全局槽14642ed38同址；在稳定S80/所选槽及有效k条件下可读同一Q/D，但1448dd860经1448d7a30取result38或ffffffff，成功/范围、注册替换及跨生成到比赛H保持未证。",
         "FULL回退记录新增分支构造50h的VIRTUAL_PLAYER并以U30注册，ACTUAL人员728常空不能直接进入复用列表；VIRTUAL主320经1448de620返回另一对象+208作为属性源。U38已接限定无扩容注册写者，缓存未命中可构造ACTUAL_PLAYER；实际位置建立已到1448e09e7但返回后置条件未证，不能沿用旧ACTUAL的H。",
-        "虚拟球员解析路线在(U1e&1f)==10h、服务30返回0且实际1448e09e2完成时主动建立A12=20/H/E；已在后续TLS-ready/实际类型条件下保持至1448e0a94调用前；普通后段14274b3b0(A,D,D,0,ff,0)和1419cafd0的整次保持及自然条件尚未闭合。缓存命中只保持已有H，不能作为建立证明。",
-        "虚拟解析器09e7至实际重算前的查询/条件virtual40/person230/随机辅助已连续条件保持A69；U20h置位可条件直返同一D，但该标志的实际来源未证，不能替代普通重算路径。"
+        "虚拟球员解析路线在(U1e&1f)==10h、服务30返回0且实际1448e09e2完成时主动建立A12=20/H/E；已在后续TLS-ready/实际类型条件下保持至1448e0a94调用前；门将A0=20/空D188的普通后段已另接条件保持至FULL复制；非门将选择、非空修正及自然条件仍未闭合。缓存命中只保持已有H，不能作为建立证明。",
+        "虚拟解析器09e7至实际重算前的查询/条件virtual40/person230/随机辅助已连续条件保持A69；U20h置位可条件直返同一D，但该标志的实际来源未证，不能替代普通重算路径；其门将/空修正子路径已在后续连接至复制。",
+        "门将mask4、服务30零返回、A0=20/空D188及有效权重/缓存条件下，普通重算j0绕过两层位置重选，接只读1419cafd0和同D返回，经VIRTUAL320及FULL memcpy到14519f7aa的P388[0]=20。D188自然保持空、实际U码/名单身份、复制到查询期间保持及最终比分未证。"
       ],
       "connections": [
         {
@@ -4310,6 +4318,42 @@
           ],
           "evidence": "20261023_virtual_precopy_preservation_observations.json",
           "limit": "Continuous suffix before14274b3b0; no ordinary full materializer or natural score closure"
+        },
+        {
+          "callsite": "0x1419d2081",
+          "callee": "0x1419c9ce0",
+          "source": "actual inner selected position0",
+          "receiver": "scalar0",
+          "target": "returns1; A0=20 immediately retains selectedj0",
+          "conditions": [
+            "Documented GK/null-modifier/initialized weight and classifier conditions; valid disjoint buffers and normal ABI"
+          ],
+          "evidence": "20261023_virtual_goalkeeper_copy_observations.json",
+          "limit": "Conditional ordinary suffix and copy checkpoint, not natural roster/query/score lifecycle"
+        },
+        {
+          "callsite": "0x1419d23a1",
+          "callee": "0x1419cf510",
+          "source": "inner position-mask aggregation",
+          "receiver": "scalars and own-stack outputs",
+          "target": "complete no-CALL scalar prefix; subsequent weights overwritten by existing valid-table proof",
+          "conditions": [
+            "Documented GK/null-modifier/initialized weight and classifier conditions; valid disjoint buffers and normal ABI"
+          ],
+          "evidence": "20261023_virtual_goalkeeper_copy_observations.json",
+          "limit": "Conditional ordinary suffix and copy checkpoint, not natural roster/query/score lifecycle"
+        },
+        {
+          "callsite": "0x1448e0aaa",
+          "callee": "0x1419cafd0",
+          "source": "materializer ordinary branch after recompute",
+          "receiver": "sameA, ownDWORD218, R8D0",
+          "target": "reuse existing readonly scorer proof; caller onlywritesD264",
+          "conditions": [
+            "Documented GK/null-modifier/initialized weight and classifier conditions; valid disjoint buffers and normal ABI"
+          ],
+          "evidence": "20261023_virtual_goalkeeper_copy_observations.json",
+          "limit": "Conditional ordinary suffix and copy checkpoint, not natural roster/query/score lifecycle"
         }
       ]
     },
