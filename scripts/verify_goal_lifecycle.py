@@ -931,6 +931,7 @@ def verify_original(exe):
         "20261023_virtual_position_establishment_observations.json",
         "20261023_virtual_precopy_preservation_observations.json",
         "20261023_virtual_goalkeeper_copy_observations.json",
+        "20261023_regeneration_binding_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1488,6 +1489,39 @@ def verify_original(exe):
     if cursor != 0x1419CF66B:
         raise AssertionError("Recompute prefix scalar helper body is incomplete")
     print("GK ordinary recompute/copy evidence passed: category0 mask4, complete prefix scalar helper and15 switch targets. Position20 reaches FULL copy only under documented null-modifier/weight/cache conditions; natural lifecycle remains open.", flush=True)
+
+    regeneration = json.loads((ROOT / "20261023_regeneration_binding_observations.json").read_text())
+    for transfer in regeneration["tail_transfers"]:
+        site = int(transfer["site"], 16)
+        raw = mapped_bytes(site, 5)
+        if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+            raise AssertionError("Regeneration binding/helper tail target differs")
+    binding = regeneration["service_binding"]
+    if struct.unpack("<Q", mapped_bytes(int(binding["virtual30_slot"], 16), 8))[0] != int(binding["virtual30_target"], 16):
+        raise AssertionError("Derived regeneration virtual30 target differs")
+    if struct.unpack("<I", mapped_bytes(0x145AF9C14, 4))[0] != int(binding["subobject_offset"], 16):
+        raise AssertionError("Derived regeneration COL subobject offset differs")
+    for site, expected in ((0x15AB9A059, 0x14642B720), (0x14360CD87, 0x145AF9A08),
+                           (0x1448E07C1, 0x14642B720)):
+        if site + 7 + struct.unpack("<i", mapped_bytes(site + 3, 4))[0] != expected:
+            raise AssertionError("Regeneration global/derived-vtable RIP binding differs")
+    for function in regeneration["complete_functions"]:
+        start, end = int(function["start"], 16), int(function["end_exclusive"], 16)
+        allowed = {int(value, 16) for value in function["allowed_callees"]}
+        cursor = start
+        for row in sorted((row for row in regeneration["native_assertions"]
+                           if start <= int(row["va"], 16) < end),
+                          key=lambda row: int(row["va"], 16)):
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("Feet/helper complete body has uncovered instructions")
+            if row["instruction"].lower().startswith("call"):
+                raw = mapped_bytes(cursor, 5)
+                if raw[0] != 0xE8 or cursor + 5 + struct.unpack_from("<i", raw, 1)[0] not in allowed:
+                    raise AssertionError("Feet/helper body has an unclassified call")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != end:
+            raise AssertionError("Feet/helper body is incomplete")
+    print("Regeneration binding/feet evidence passed: derived +18 interface, actual virtual30, two E9 transfers and three complete bodies. Service-zero/null-modifier natural lifecycle remains unproved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
