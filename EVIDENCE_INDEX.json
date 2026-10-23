@@ -629,7 +629,11 @@
         "0x1448dd270",
         "0x1423db840",
         "0x144984d30",
-        "0x1448de620"
+        "0x1448de620",
+        "0x1423dba7d",
+        "0x144986210",
+        "0x1448e09e2",
+        "0x1448e09e7"
       ],
       "evidence": {
         "reports": [
@@ -671,7 +675,8 @@
           "20261022_注册表生成后段的位置保持.md",
           "20261022_FULL人员引用发布与名单槽.md",
           "20261022_FULL名单生产与过滤服务边界.md",
-          "20261022_注册表拥有者绑定与回退索引边界.md"
+          "20261022_注册表拥有者绑定与回退索引边界.md",
+          "20261023_虚拟球员注册索引与位置建立.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -799,7 +804,9 @@
           "20261022_full_lineup_production_static.txt",
           "20261022_full_lineup_production_observations.json",
           "20261022_registry_selection_identity_static.txt",
-          "20261022_registry_selection_identity_observations.json"
+          "20261022_registry_selection_identity_observations.json",
+          "20261023_virtual_position_establishment_static.txt",
+          "20261023_virtual_position_establishment_observations.json"
         ]
       },
       "upstream": [
@@ -845,7 +852,8 @@
         "实际FULL球员循环1451a9a3e的B.virtual88→145184470在真实CFG前缀下，从B90+side*b0名单槽Dprime规范化Qprime并于1451844b8写同P28；首写前无CALL。生产者已定位；完整名单生产保持、与已生成D同一性、provider首写后至返回以及到69字节复制的保持仍未知；不能将首次发布当复制时或自然查询条件。",
         "FULL名单生产已定位到145193a50/144c3e950，S80回退的静态全局来源已绑定；正常候选仍缺注册表D→T48上下文候选的同一性、过滤virtual3f8服务的日期/位置保持、完整选人及14519d520/virtual88后段保持；flags3允许缺项替代。",
         "143189752实参V=14642ecd0使V68与FULL全局槽14642ed38同址；在稳定S80/所选槽及有效k条件下可读同一Q/D，但1448dd860经1448d7a30取result38或ffffffff，成功/范围、注册替换及跨生成到比赛H保持未证。",
-        "FULL回退记录新增分支构造50h的VIRTUAL_PLAYER并以U30注册，ACTUAL人员728常空不能直接进入复用列表；VIRTUAL主320经1448de620返回另一对象+208作为属性源。U38注册索引及该解析对象类型/位置后置条件未证，不能沿用旧ACTUAL的H。"
+        "FULL回退记录新增分支构造50h的VIRTUAL_PLAYER并以U30注册，ACTUAL人员728常空不能直接进入复用列表；VIRTUAL主320经1448de620返回另一对象+208作为属性源。U38已接限定无扩容注册写者，缓存未命中可构造ACTUAL_PLAYER；实际位置建立已到1448e09e7但返回后置条件未证，不能沿用旧ACTUAL的H。",
+        "虚拟球员解析路线在(U1e&1f)==10h、服务30返回0且实际1448e09e2完成时主动建立A12=20/H/E；全解析器后段含14274b3b0(A,D,D,0,ff,0)，其保持及自然条件尚未闭合。缓存命中只保持已有H，不能作为建立证明。"
       ],
       "connections": [
         {
@@ -4231,6 +4239,42 @@
           ],
           "evidence": "20261022_registry_selection_identity_observations.json",
           "limit": "Bounded argument/type connection only; no whole helper or natural score closure"
+        },
+        {
+          "callsite": "0x1448de712",
+          "callee": "0x14216b4d0",
+          "source": "materializer empty service cache slot",
+          "receiver": "new1000byte D, arg2=1",
+          "target": "ACTUAL_PLAYER construction",
+          "conditions": [
+            "Selected documented branch, valid owned storage and normal ABI"
+          ],
+          "evidence": "20261023_virtual_position_establishment_observations.json",
+          "limit": "Not the reused slot path or whole materializer return"
+        },
+        {
+          "callsite": "0x1448e09e2",
+          "callee": "0x144986210",
+          "source": "actual zero service30 branch after attribute generation",
+          "receiver": "U and A=D208",
+          "target": "A12=20 if low5 position mask10h; H/E checkpoint1448e09e7",
+          "conditions": [
+            "Selected documented branch, valid owned storage and normal ABI"
+          ],
+          "evidence": "20261023_virtual_position_establishment_observations.json",
+          "limit": "Suffix preservation and natural branch conditions remain unproved"
+        },
+        {
+          "callsite": "0x1448e0a94",
+          "callee": "0x14274b3b0",
+          "source": "post-establishment materializer suffix",
+          "receiver": "A,D,D,0,ff,0",
+          "target": "possible attribute/position writeback",
+          "conditions": [
+            "Selected documented branch, valid owned storage and normal ABI"
+          ],
+          "evidence": "20261023_virtual_position_establishment_observations.json",
+          "limit": "New actual argument binding only; no suffix preservation claim"
         }
       ]
     },

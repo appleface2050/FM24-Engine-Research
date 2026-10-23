@@ -928,6 +928,7 @@ def verify_original(exe):
         "20261022_full_person_publication_observations.json",
         "20261022_full_lineup_production_observations.json",
         "20261022_registry_selection_identity_observations.json",
+        "20261023_virtual_position_establishment_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1422,6 +1423,21 @@ def verify_original(exe):
     if case_target != int(dispatch["target"], 16):
         raise AssertionError("Registry generation selected dispatcher case differs")
     print("Registry identity evidence passed: original RIP-relative owner+68 equals FULL global pointer cell and dispatcher case7 target. Runtime registry/slot stability and preservedH remain unproved.", flush=True)
+
+    virtual_positions = json.loads((ROOT / "20261023_virtual_position_establishment_observations.json").read_text())
+    mask_rows = sorted((row for row in virtual_positions["native_assertions"]
+                        if 0x144986210 <= int(row["va"], 16) < 0x1449863EE),
+                       key=lambda row: int(row["va"], 16))
+    cursor = 0x144986210
+    for row in mask_rows:
+        if int(row["va"], 16) != cursor or row["instruction"].lower().startswith("call"):
+            raise AssertionError("Virtual position setter has an uncovered instruction or external call")
+        cursor += len(bytes.fromhex(row["hex"]))
+    if cursor != 0x1449863EE:
+        raise AssertionError("Virtual position setter coverage is incomplete")
+    if struct.unpack("<10H", mapped_bytes(0x145C7A086, 20)) != (0, 4, 9, 11, 10, 13, 15, 14, 16, 0):
+        raise AssertionError("Virtual position category table differs")
+    print("Virtual position evidence passed: complete no-CALL setter and category table. Warm registration/cache paths and actual H establishment are conditional; materializer suffix and final score remain open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
