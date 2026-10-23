@@ -932,6 +932,7 @@ def verify_original(exe):
         "20261023_virtual_precopy_preservation_observations.json",
         "20261023_virtual_goalkeeper_copy_observations.json",
         "20261023_regeneration_binding_observations.json",
+        "20261023_regeneration_query_preservation_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1522,6 +1523,36 @@ def verify_original(exe):
         if cursor != end:
             raise AssertionError("Feet/helper body is incomplete")
     print("Regeneration binding/feet evidence passed: derived +18 interface, actual virtual30, two E9 transfers and three complete bodies. Service-zero/null-modifier natural lifecycle remains unproved.", flush=True)
+
+    query = json.loads((ROOT / "20261023_regeneration_query_preservation_observations.json").read_text())
+    for binding in query["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Regeneration query actual-person getter binding differs")
+    for body in query["complete_bodies"]:
+        start, end = int(body["start"], 16), int(body["end_exclusive"], 16)
+        cursor = start
+        for row in sorted((row for row in query["native_assertions"]
+                           if start <= int(row["va"], 16) < end),
+                          key=lambda row: int(row["va"], 16)):
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("Regeneration query/helper body has uncovered instructions")
+            if start == 0x14362D030 and row["instruction"].lower().startswith("call"):
+                raw = mapped_bytes(cursor, len(bytes.fromhex(row["hex"])))
+                if raw[0] == 0xE8:
+                    target = cursor + 5 + struct.unpack_from("<i", raw, 1)[0]
+                    allowed = query["service_calls"]["actual"] + query["service_calls"]["excluded_ready_or_explicit_rng"]
+                    if target not in {int(value, 16) for value in allowed}:
+                        raise AssertionError("Regeneration query has an unclassified direct call")
+                elif (raw[:2] != b"\xff\x90" or len(raw) != 6
+                      or struct.unpack_from("<I", raw, 2)[0] not in (0x230, 0x2B8)):
+                    raise AssertionError("Regeneration query has an unclassified virtual call")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != end:
+            raise AssertionError("Regeneration query/helper body is incomplete")
+    free_tail = mapped_bytes(0x141900FE7, 7)
+    if free_tail[:3] != b"\x48\xff\x25" or 0x141900FEE + struct.unpack_from("<i", free_tail, 3)[0] != 0x145D50E90:
+        raise AssertionError("Regeneration no-pool cleanup no longer tails to the declared CRTfree slot")
+    print("Regeneration query/GK branches passed: full query/helper coverage, actual getter slots and no-pool free tail. Both template-return paths preserve position20 only under stated storage/type conditions; earlier natural lifecycle remains open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
