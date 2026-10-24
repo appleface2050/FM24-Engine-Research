@@ -272,7 +272,8 @@
         "143913940三组真实字段调用中的基础/标志/向量关联消费者在局部输出与既有分配条件下保持目标D字段；两张五项跳表已补全；未闭合type3及共用球员上下文查询",
         "ACTUAL_PLAYER person400及mode1 person598条件保持目标D字段；允许上下文R2c缓存写。稳定d0返回条件下AL域{0,1,3}，排除1438c79a3的142223940分支；七类合同中仅LOAN的90允许142133540。末段选择器只写实际栈标记。",
         "全局再生服务在已定位构造路径为T+18派生子接口，virtual30为14362d030而非基础常零；零返回分支1448e0942至1448e09e7条件保持D188并在mask4建立A0=20",
-        "实际14362d030(S,D,0,0,1,rng)在就绪无池/首次分配成功及人员/上下文条件下保持D188/A69；零/非零模板门将路径共同至09e7的A0=20/D188不变，起点前移到1448e074c，移除服务必返回0前提"
+        "实际14362d030(S,D,0,0,1,rng)在就绪无池/首次分配成功及人员/上下文条件下保持D188/A69；零/非零模板门将路径共同至09e7的A0=20/D188不变，起点前移到1448e074c，移除服务必返回0前提",
+        "再生virtual40实际传上下文RDI，已覆盖第一条无CALL成功分支；关联setter经this+78和help-20定位D2f8，在池/CRT就绪及独立存储条件下覆盖空容器创建和首条追加并保持D188/A69"
       ],
       "addresses": [
         "0x141a8feb7",
@@ -655,7 +656,14 @@
         "0x14216ef60",
         "0x1448e074c",
         "0x1448e0bd9",
-        "0x1448e0c00"
+        "0x1448e0c00",
+        "0x14362c6e0",
+        "0x143660a40",
+        "0x142129980",
+        "0x152b5bad0",
+        "0x14215bcb0",
+        "0x1447d1420",
+        "0x142164170"
       ],
       "evidence": {
         "reports": [
@@ -702,7 +710,8 @@
           "20261023_虚拟属性解析器重算前的位置保持.md",
           "20261023_门将位置重算到FULL复制的条件链.md",
           "20261023_再生服务派生绑定与左右脚写入边界.md",
-          "20261023_再生查询保持与门将模板双分支.md"
+          "20261023_再生查询保持与门将模板双分支.md",
+          "20261024_上游上下文调用与关联容器写入边界.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -840,7 +849,9 @@
           "20261023_regeneration_binding_static.txt",
           "20261023_regeneration_binding_observations.json",
           "20261023_regeneration_query_preservation_static.txt",
-          "20261023_regeneration_query_preservation_observations.json"
+          "20261023_regeneration_query_preservation_observations.json",
+          "20261024_virtual_association_boundary_static.txt",
+          "20261024_virtual_association_boundary_observations.json"
         ]
       },
       "upstream": [
@@ -891,7 +902,8 @@
         "虚拟解析器09e7至实际重算前的查询/条件virtual40/person230/随机辅助已连续条件保持A69；U20h置位可条件直返同一D，但该标志的实际来源未证，不能替代普通重算路径；其门将/空修正子路径已在后续连接至复制。",
         "门将mask4、服务30零返回、A0=20/空D188及有效权重/缓存条件下，普通重算j0绕过两层位置重选，接只读1419cafd0和同D返回，经VIRTUAL320及FULL memcpy到14519f7aa的P388[0]=20。D188自然保持空、实际U码/名单身份、复制到查询期间保持及最终比分未证。",
         "14362d030整次查询已在就绪无池/首次分配成功及实际类型/关联记录条件下保持D188/A69，双返回门将路径不再依赖自然零返回；存储条件自然建立、更早D接收调用和D188空值连续性仍待证。构造模板向量为空不能代替比赛时为空。",
-        "双分支合成未证明1448e074c前D188为空、实际无池/首次分配成功和关联记录自然有效；应继续服务virtual40→143660a40及关联写入，不能将其余位置或整个冷解析器升级为保留"
+        "双分支合成未证明1448e074c前D188为空、实际无池/首次分配成功和关联记录自然有效；应继续服务virtual40→143660a40及关联写入，不能将其余位置或整个冷解析器升级为保留",
+        "143660a40除第一无CALL成功分支外的间接副作用仍未知；144983df0的14240d540/registry6b8/142218290/1424200f0尚未闭合；D2f8关联写入保持只覆盖空容器首次追加和已有匹配，不证明整个构造到重算的D188空值连续性"
       ],
       "connections": [
         {
@@ -4466,6 +4478,84 @@
           ],
           "evidence": "20261023_regeneration_query_preservation_observations.json",
           "limit": "Conditional query/caller preservation only; no final-score closure"
+        },
+        {
+          "callsite": "0x14362c714",
+          "callee": "0x143660a40",
+          "source": "actual service40 adapter",
+          "receiver": "contextRDI, own outputs, byte0, explicitRNG, finalnull",
+          "target": "first success branch only is no-CALL; context is not a directD argument",
+          "conditions": [
+            "Documented actual ACTUAL_PLAYER secondary layout and distinct owned storage",
+            "Ready fixed-pool freecell; ready no-pool first-malloc-success for firstappend; full upstream and natural conditions remain unproved"
+          ],
+          "evidence": "20261024_virtual_association_boundary_observations.json",
+          "limit": "Selected context/association subpath only; no full144983df0 or final-score proof"
+        },
+        {
+          "callsite": "0x144984065",
+          "callee": "0x142129980",
+          "source": "conditional actual association update",
+          "receiver": "D2a0,ref,9,0f,8,0",
+          "target": "E9->152b5bad0; actual container slotD2f8",
+          "conditions": [
+            "Documented actual ACTUAL_PLAYER secondary layout and distinct owned storage",
+            "Ready fixed-pool freecell; ready no-pool first-malloc-success for firstappend; full upstream and natural conditions remain unproved"
+          ],
+          "evidence": "20261024_virtual_association_boundary_observations.json",
+          "limit": "Selected context/association subpath only; no full144983df0 or final-score proof"
+        },
+        {
+          "callsite": "0x152b5baf0",
+          "callee": "0x14215bcb0",
+          "source": "association setter",
+          "receiver": "D2a0+78, helper reads/writesreceiver-20",
+          "target": "D2f8 existing or newly published50hC",
+          "conditions": [
+            "Documented actual ACTUAL_PLAYER secondary layout and distinct owned storage",
+            "Ready fixed-pool freecell; ready no-pool first-malloc-success for firstappend; full upstream and natural conditions remain unproved"
+          ],
+          "evidence": "20261024_virtual_association_boundary_observations.json",
+          "limit": "Selected context/association subpath only; no full144983df0 or final-score proof"
+        },
+        {
+          "callsite": "0x14215bcfa",
+          "callee": "0x1447cea00",
+          "source": "ready fixed-pool successful empty-container allocation",
+          "receiver": "new independent50hC",
+          "target": "ready constructor clearsC and returns; lazy initialization excluded",
+          "conditions": [
+            "Documented actual ACTUAL_PLAYER secondary layout and distinct owned storage",
+            "Ready fixed-pool freecell; ready no-pool first-malloc-success for firstappend; full upstream and natural conditions remain unproved"
+          ],
+          "evidence": "20261024_virtual_association_boundary_observations.json",
+          "limit": "Selected context/association subpath only; no full144983df0 or final-score proof"
+        },
+        {
+          "callsite": "0x152b5bb79",
+          "callee": "0x1447d1420",
+          "source": "no existing matching association",
+          "receiver": "ownedC",
+          "target": "complete no-CALL normalizer; emptyC performsno listwrites",
+          "conditions": [
+            "Documented actual ACTUAL_PLAYER secondary layout and distinct owned storage",
+            "Ready fixed-pool freecell; ready no-pool first-malloc-success for firstappend; full upstream and natural conditions remain unproved"
+          ],
+          "evidence": "20261024_virtual_association_boundary_observations.json",
+          "limit": "Selected context/association subpath only; no full144983df0 or final-score proof"
+        },
+        {
+          "callsite": "0x152b5bb86",
+          "callee": "0x142164170",
+          "source": "first actual association record append",
+          "receiver": "ownedemptyC, own16byte record",
+          "target": "first-success no-pool16byte buffer; C triple updated, D188/A69 unchanged",
+          "conditions": [
+            "Documented actual ACTUAL_PLAYER secondary layout and distinct owned storage",
+            "Ready fixed-pool freecell; ready no-pool first-malloc-success for firstappend; full upstream and natural conditions remain unproved"
+          ],
+          "evidence": "20261024_virtual_association_boundary_observations.json",
+          "limit": "Selected context/association subpath only; no full144983df0 or final-score proof"
         }
       ]
     },

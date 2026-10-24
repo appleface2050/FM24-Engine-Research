@@ -933,6 +933,7 @@ def verify_original(exe):
         "20261023_virtual_goalkeeper_copy_observations.json",
         "20261023_regeneration_binding_observations.json",
         "20261023_regeneration_query_preservation_observations.json",
+        "20261024_virtual_association_boundary_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1553,6 +1554,42 @@ def verify_original(exe):
     if free_tail[:3] != b"\x48\xff\x25" or 0x141900FEE + struct.unpack_from("<i", free_tail, 3)[0] != 0x145D50E90:
         raise AssertionError("Regeneration no-pool cleanup no longer tails to the declared CRTfree slot")
     print("Regeneration query/GK branches passed: full query/helper coverage, actual getter slots and no-pool free tail. Both template-return paths preserve position20 only under stated storage/type conditions; earlier natural lifecycle remains open.", flush=True)
+
+    association = json.loads((ROOT / "20261024_virtual_association_boundary_observations.json").read_text())
+    service = association["service40"]
+    if struct.unpack("<Q", mapped_bytes(int(service["slot"], 16), 8))[0] != int(service["target"], 16):
+        raise AssertionError("Actual regeneration context-service slot differs")
+    link = association["association"]
+    site = int(link["entry"], 16)
+    raw = mapped_bytes(site, 5)
+    if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(link["tail_target"], 16):
+        raise AssertionError("Association setter relocation target differs")
+    caller_adjust = struct.unpack("<b", mapped_bytes(0x152B5BAEF, 1))[0]
+    helper_adjust = struct.unpack("<b", mapped_bytes(0x14215BCB9, 1))[0]
+    if (caller_adjust != int(link["ensure_argument_offset"], 16)
+            or helper_adjust != int(link["ensure_slot_offset"], 16)
+            or int(link["secondary_offset"], 16) + caller_adjust + helper_adjust
+            != int(link["published_slot_offset"], 16)):
+        raise AssertionError("Association slot is not the documented D2f8 after both pointer adjustments")
+    for body in association["complete_bodies"]:
+        start, end = int(body["start"], 16), int(body["end_exclusive"], 16)
+        cursor = start
+        for row in sorted((row for row in association["native_assertions"]
+                           if start <= int(row["va"], 16) < end),
+                          key=lambda row: int(row["va"], 16)):
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("Association helper body has uncovered instructions")
+            if start == 0x1447D1420 and row["instruction"].lower().startswith("call"):
+                raise AssertionError("Association container normalizer has an external call")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != end:
+            raise AssertionError("Association helper body is incomplete")
+    for start, end in ((0x143660A40, 0x143660AEE), (0x143660E65, 0x143660E73),
+                       (0x143664375, 0x143664389)):
+        if any(row["instruction"].lower().startswith("call")
+               for row in association["native_assertions"] if start <= int(row["va"], 16) < end):
+            raise AssertionError("Selected context fastpath has an unclassified call")
+    print("Upstream context/association boundary passed: actual virtual40, relocated setter, both original pointer displacements toD2f8 and four complete helper bodies. Empty-container/first-append preservation is conditional; whole upstream/null-modifier lifecycle remains open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
