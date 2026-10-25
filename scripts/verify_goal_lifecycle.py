@@ -998,6 +998,7 @@ def verify_original(exe):
         "20261025_empty_association_reuse_observations.json",
         "20261025_context_candidate_inputs_observations.json",
         "20261025_client_reference_lifecycle_observations.json",
+        "20261025_server_candidate_inputs_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1766,6 +1767,25 @@ def verify_original(exe):
         raise AssertionError("Ordinary CLUB reference-pass virtual slot differs")
     print("Actual database lifecycle call/slot evidence passed: client/full mode and reset remain separate object lifetimes; no whole-loader preservation proved.", flush=True)
 
+    server_inputs = json.loads((ROOT / "20261025_server_candidate_inputs_observations.json").read_text())
+    for transfer in server_inputs["wire_transfers"]:
+        site = int(transfer["site"], 16)
+        raw = mapped_bytes(site, 5)
+        if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+            raise AssertionError("Server wire-reader relocated entry differs")
+    slot = server_inputs["finance_slot"]
+    if struct.unpack("<Q", mapped_bytes(int(slot["va"], 16), 8))[0] != int(slot["target"], 16):
+        raise AssertionError("Server simplified finance virtual slot differs")
+    if ((struct.unpack("<I", mapped_bytes(0x148E30318, 4))[0] + 0x7DB9B77) & 0xFFFFFFFF) != 4:
+        raise AssertionError("Server NATION string-item wire length differs")
+    if ((struct.unpack("<I", mapped_bytes(0x157D538EC, 4))[0] - 0x48240C88) & 0xFFFFFFFF) != 1:
+        raise AssertionError("Server NATION R78 version wire length differs")
+    if struct.unpack("<I", mapped_bytes(0x1517098AC, 4))[0] ^ 0x48242C83 != 8:
+        raise AssertionError("Server NATION R78 destination byte offset differs")
+    if ((struct.unpack("<I", mapped_bytes(0x14CB78DF0, 4))[0] - 0xF4C0001) & 0xFFFFFFFF) != 0:
+        raise AssertionError("Server NATION R78 success status differs")
+    print("Server wire-schema evidence passed: finance0=45 bytes, NATION relocated readers and original constants; runtime retention remains unproved.", flush=True)
+
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
     for connection in connections:
@@ -1779,11 +1799,14 @@ def verify_original(exe):
     print(f"Direct-call displacement checks passed: {len(connections)}. Object-flow semantics remain conditional.", flush=True)
 
 
-def verify_candidate_database(source):
+def verify_candidate_database(source, mode="client"):
     """复核本机数据库候选记录；不把解析一致升级为运行时对象采用。"""
-    from inspect_client_club_candidate import read_candidate
+    if mode == "server":
+        from inspect_server_club_candidate import read_candidate
+    else:
+        from inspect_client_club_candidate import read_candidate
 
-    expected = json.loads((ROOT / "20261025_client_club_candidate_214eb.json").read_text())
+    expected = json.loads((ROOT / f"20261025_{mode}_club_candidate_214eb.json").read_text())
     actual = read_candidate(source, expected["serialized_identity_fields"]["C+c"])
 
     def portable(value):
@@ -1797,13 +1820,14 @@ def verify_candidate_database(source):
 
     if portable(actual) != portable(expected):
         raise AssertionError("Database candidate differs; do not reuse its selected input contract")
-    print("Database candidate parse matches the frozen observation: CLUB row4321 C+c=214ebh; nation slot80 candidate R+c=135. No runtime identity, mapping phase or score closure proved.", flush=True)
+    print(f"{mode} database candidate parse matches the frozen observation: CLUB row4321 C+c=214ebh; nation slot80 candidate R+c=135. No runtime identity, mapping phase or score closure proved.", flush=True)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", type=Path, help="可选：核对完整目标身份、字节和关键调用目标；不会执行游戏")
     parser.add_argument("--client-db", type=Path, help="可选：复核2430 client_db中的候选输入；不会加载游戏")
+    parser.add_argument("--server-db", type=Path, help="可选：复核2430 server_db的普通CLUB候选与NATION槽；不会加载游戏")
     args = parser.parse_args()
     verify_index()
     examples()
@@ -1811,4 +1835,6 @@ if __name__ == "__main__":
         verify_original(args.exe)
     if args.client_db:
         verify_candidate_database(args.client_db)
+    if args.server_db:
+        verify_candidate_database(args.server_db, "server")
     print("Coverage: local frozen branches only; final valid-goal/score lifecycle remains open.", flush=True)
