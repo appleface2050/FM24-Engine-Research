@@ -996,6 +996,7 @@ def verify_original(exe):
         "20261025_team_cache_zero_boundary_observations.json",
         "20261025_middle_typed_query_observations.json",
         "20261025_empty_association_reuse_observations.json",
+        "20261025_context_candidate_inputs_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1739,6 +1740,20 @@ def verify_original(exe):
             raise AssertionError("Middle helper body coverage differs")
     verify_middle_cfg(exe, middle["cfg"])
 
+    context_inputs = json.loads((ROOT / "20261025_context_candidate_inputs_observations.json").read_text())
+    membership = context_inputs["membership"]
+    base = int(membership["table"], 16)
+    offsets = struct.unpack("<" + "i" * membership["count"],
+                            mapped_bytes(base, membership["count"] * 4))
+    if [base + offset for offset in offsets] != [int(target, 16) for target in membership["targets"]]:
+        raise AssertionError("Context ID membership table differs")
+    for transfer in context_inputs["wire_transfers"]:
+        site = int(transfer["site"], 16)
+        raw = mapped_bytes(site, 5)
+        if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+            raise AssertionError("Database wire reader relocated entry differs")
+    print("Context ID membership table passed: selected getter/boolean branches remain conditional on actual object inputs; ordinary CLUB type alone does not imply early return.", flush=True)
+
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
     for connection in connections:
@@ -1752,12 +1767,36 @@ def verify_original(exe):
     print(f"Direct-call displacement checks passed: {len(connections)}. Object-flow semantics remain conditional.", flush=True)
 
 
+def verify_candidate_database(source):
+    """复核本机数据库候选记录；不把解析一致升级为运行时对象采用。"""
+    from inspect_client_club_candidate import read_candidate
+
+    expected = json.loads((ROOT / "20261025_client_club_candidate_214eb.json").read_text())
+    actual = read_candidate(source, expected["serialized_identity_fields"]["C+c"])
+
+    def portable(value):
+        """允许原数据根目录不同，其他记录和成员位置仍须相同。"""
+        if isinstance(value, dict):
+            return {key: portable(item) for key, item in value.items()
+                    if key not in {"source", "limitation", "limitations"}}
+        if isinstance(value, list):
+            return [portable(item) for item in value]
+        return value
+
+    if portable(actual) != portable(expected):
+        raise AssertionError("Database candidate differs; do not reuse its selected input contract")
+    print("Database candidate parse matches the frozen observation: CLUB row4321 C+c=214ebh; nation slot80 candidate R+c=135. No runtime identity, mapping phase or score closure proved.", flush=True)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", type=Path, help="可选：核对完整目标身份、字节和关键调用目标；不会执行游戏")
+    parser.add_argument("--client-db", type=Path, help="可选：复核2430 client_db中的候选输入；不会加载游戏")
     args = parser.parse_args()
     verify_index()
     examples()
     if args.exe:
         verify_original(args.exe)
+    if args.client_db:
+        verify_candidate_database(args.client_db)
     print("Coverage: local frozen branches only; final valid-goal/score lifecycle remains open.", flush=True)
