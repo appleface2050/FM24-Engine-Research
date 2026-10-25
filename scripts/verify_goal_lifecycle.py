@@ -993,6 +993,8 @@ def verify_original(exe):
         "20261025_context_association_preservation_observations.json",
         "20261025_materializer_late_suffix_observations.json",
         "20261025_materializer_middle_boundary_observations.json",
+        "20261025_team_cache_zero_boundary_observations.json",
+        "20261025_middle_typed_query_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):

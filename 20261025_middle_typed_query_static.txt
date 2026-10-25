@@ -1,0 +1,625 @@
+Original PE typed queries/producer excerpts and conditional successful initializer; not natural lifecycle closure.
+
+0x141cc6ba0 4157 push   r15
+0x141cc6ba2 4156 push   r14
+0x141cc6ba4 4154 push   r12
+0x141cc6ba6 56 push   rsi
+0x141cc6ba7 57 push   rdi
+0x141cc6ba8 55 push   rbp
+0x141cc6ba9 53 push   rbx
+0x141cc6baa 4883ec30 sub    rsp,0x30
+0x141cc6bae 4889d6 mov    rsi,rdx
+0x141cc6bb1 4989cc mov    r12,rcx
+0x141cc6bb4 4885d2 test   rdx,rdx
+0x141cc6bb7 0f84c1010000 je     0x141cc6d7e
+0x141cc6bbd 80beba00000000 cmp    BYTE PTR [rsi+0xba],0x0
+0x141cc6bc4 0f85b4010000 jne    0x141cc6d7e
+0x141cc6bca 488b86d8000000 mov    rax,QWORD PTR [rsi+0xd8]
+0x141cc6bd1 4885c0 test   rax,rax
+0x141cc6bd4 0f84ea010000 je     0x141cc6dc4
+0x141cc6bda 4589cf mov    r15d,r9d
+0x141cc6bdd 4589c6 mov    r14d,r8d
+0x141cc6be0 80beb900000000 cmp    BYTE PTR [rsi+0xb9],0x0
+0x141cc6be7 740c je     0x141cc6bf5
+0x141cc6be9 488ba810010000 mov    rbp,QWORD PTR [rax+0x110]
+0x141cc6bf0 4885ed test   rbp,rbp
+0x141cc6bf3 7510 jne    0x141cc6c05
+0x141cc6bf5 488ba808010000 mov    rbp,QWORD PTR [rax+0x108]
+0x141cc6bfc 4885ed test   rbp,rbp
+0x141cc6bff 0f84b0000000 je     0x141cc6cb5
+0x141cc6c05 803d3c86760400 cmp    BYTE PTR [rip+0x476863c],0x0        # 0x14642f248
+0x141cc6c0c 0f84a3000000 je     0x141cc6cb5
+0x141cc6c12 488b8570010000 mov    rax,QWORD PTR [rbp+0x170]
+0x141cc6c19 488b8820010000 mov    rcx,QWORD PTR [rax+0x120]
+0x141cc6c20 4885c9 test   rcx,rcx
+0x141cc6c23 741d je     0x141cc6c42
+0x141cc6c25 80bdb900000000 cmp    BYTE PTR [rbp+0xb9],0x0
+0x141cc6c2c 0f84e2010000 je     0x141cc6e14
+0x141cc6c32 488b8970020000 mov    rcx,QWORD PTR [rcx+0x270]
+0x141cc6c39 4885c9 test   rcx,rcx
+0x141cc6c3c 0f85d6010000 jne    0x141cc6e18
+0x141cc6c42 488b8008010000 mov    rax,QWORD PTR [rax+0x108]
+0x141cc6c49 0fb690b9000000 movzx  edx,BYTE PTR [rax+0xb9]
+0x141cc6c50 488b8870010000 mov    rcx,QWORD PTR [rax+0x170]
+0x141cc6c57 48c744242000000000 mov    QWORD PTR [rsp+0x20],0x0
+0x141cc6c60 4531c0 xor    r8d,r8d
+0x141cc6c63 4531c9 xor    r9d,r9d
+0x141cc6c66 e815c01000 call   0x141dd2c80
+0x141cc6c6b 488b0d662e7604 mov    rcx,QWORD PTR [rip+0x4762e66]        # 0x146429ad8
+0x141cc6c72 488b5110 mov    rdx,QWORD PTR [rcx+0x10]
+0x141cc6c76 488b4918 mov    rcx,QWORD PTR [rcx+0x18]
+0x141cc6c7a 4829d1 sub    rcx,rdx
+0x141cc6c7d 7436 je     0x141cc6cb5
+0x141cc6c7f 340b xor    al,0xb
+0x141cc6c81 48c1f903 sar    rcx,0x3
+0x141cc6c85 4883f902 cmp    rcx,0x2
+0x141cc6c89 bf01000000 mov    edi,0x1
+0x141cc6c8e 480f43f9 cmovae rdi,rcx
+0x141cc6c92 31db xor    ebx,ebx
+0x141cc6c94 662e0f1f840000000000 cs nop WORD PTR [rax+rax*1+0x0]
+0x141cc6c9e 6690 xchg   ax,ax
+0x141cc6ca0 488b0cda mov    rcx,QWORD PTR [rdx+rbx*8]
+0x141cc6ca4 384145 cmp    BYTE PTR [rcx+0x45],al
+0x141cc6ca7 0f844d010000 je     0x141cc6dfa
+0x141cc6cad 48ffc3 inc    rbx
+0x141cc6cb0 4839df cmp    rdi,rbx
+0x141cc6cb3 75eb jne    0x141cc6ca0
+0x141cc6cb5 4584ff test   r15b,r15b
+0x141cc6cb8 0f8406010000 je     0x141cc6dc4
+0x141cc6cbe 498b442418 mov    rax,QWORD PTR [r12+0x18]
+0x141cc6cc3 492b442410 sub    rax,QWORD PTR [r12+0x10]
+0x141cc6cc8 0f84f6000000 je     0x141cc6dc4
+0x141cc6cce 4c8db6b9000000 lea    r14,[rsi+0xb9]
+0x141cc6cd5 48c1f803 sar    rax,0x3
+0x141cc6cd9 4883f802 cmp    rax,0x2
+0x141cc6cdd 41bf01000000 mov    r15d,0x1
+0x141cc6ce3 4c0f43f8 cmovae r15,rax
+0x141cc6ce7 31ed xor    ebp,ebp
+0x141cc6ce9 31ff xor    edi,edi
+0x141cc6ceb eb0f jmp    0x141cc6cfc
+0x141cc6ced 0f1f00 nop    DWORD PTR [rax]
+0x141cc6cf0 48ffc7 inc    rdi
+0x141cc6cf3 4939ff cmp    r15,rdi
+0x141cc6cf6 0f84ca000000 je     0x141cc6dc6
+0x141cc6cfc 498b442410 mov    rax,QWORD PTR [r12+0x10]
+0x141cc6d01 488b1cf8 mov    rbx,QWORD PTR [rax+rdi*8]
+0x141cc6d05 0fb64345 movzx  eax,BYTE PTR [rbx+0x45]
+0x141cc6d09 83f80b cmp    eax,0xb
+0x141cc6d0c 7412 je     0x141cc6d20
+0x141cc6d0e 83f801 cmp    eax,0x1
+0x141cc6d11 0f84cb000000 je     0x141cc6de2
+0x141cc6d17 3c0a cmp    al,0xa
+0x141cc6d19 75d5 jne    0x141cc6cf0
+0x141cc6d1b eb35 jmp    0x141cc6d52
+0x141cc6d1d 0f1f00 nop    DWORD PTR [rax]
+0x141cc6d20 0fb696b9000000 movzx  edx,BYTE PTR [rsi+0xb9]
+0x141cc6d27 488b8ed8000000 mov    rcx,QWORD PTR [rsi+0xd8]
+0x141cc6d2e 48c744242000000000 mov    QWORD PTR [rsp+0x20],0x0
+0x141cc6d37 4531c0 xor    r8d,r8d
+0x141cc6d3a 4531c9 xor    r9d,r9d
+0x141cc6d3d e83ebf1000 call   0x141dd2c80
+0x141cc6d42 84c0 test   al,al
+0x141cc6d44 0f8498000000 je     0x141cc6de2
+0x141cc6d4a 0fb64345 movzx  eax,BYTE PTR [rbx+0x45]
+0x141cc6d4e 3c0a cmp    al,0xa
+0x141cc6d50 759e jne    0x141cc6cf0
+0x141cc6d52 0fb696b9000000 movzx  edx,BYTE PTR [rsi+0xb9]
+0x141cc6d59 488b8ed8000000 mov    rcx,QWORD PTR [rsi+0xd8]
+0x141cc6d60 48c744242000000000 mov    QWORD PTR [rsp+0x20],0x0
+0x141cc6d69 4531c0 xor    r8d,r8d
+0x141cc6d6c 4531c9 xor    r9d,r9d
+0x141cc6d6f e80cbf1000 call   0x141dd2c80
+0x141cc6d74 84c0 test   al,al
+0x141cc6d76 0f8474ffffff je     0x141cc6cf0
+0x141cc6d7c eb64 jmp    0x141cc6de2
+0x141cc6d7e 498b442410 mov    rax,QWORD PTR [r12+0x10]
+0x141cc6d83 498b542418 mov    rdx,QWORD PTR [r12+0x18]
+0x141cc6d88 4829c2 sub    rdx,rax
+0x141cc6d8b 7437 je     0x141cc6dc4
+0x141cc6d8d 48c1fa03 sar    rdx,0x3
+0x141cc6d91 4883fa02 cmp    rdx,0x2
+0x141cc6d95 b901000000 mov    ecx,0x1
+0x141cc6d9a 480f43ca cmovae rcx,rdx
+0x141cc6d9e 31ed xor    ebp,ebp
+0x141cc6da0 31d2 xor    edx,edx
+0x141cc6da2 662e0f1f840000000000 cs nop WORD PTR [rax+rax*1+0x0]
+0x141cc6dac 0f1f4000 nop    DWORD PTR [rax+0x0]
+0x141cc6db0 488b1cd0 mov    rbx,QWORD PTR [rax+rdx*8]
+0x141cc6db4 807b4500 cmp    BYTE PTR [rbx+0x45],0x0
+0x141cc6db8 741e je     0x141cc6dd8
+0x141cc6dba 48ffc2 inc    rdx
+0x141cc6dbd 4839d1 cmp    rcx,rdx
+0x141cc6dc0 75ee jne    0x141cc6db0
+0x141cc6dc2 eb02 jmp    0x141cc6dc6
+0x141cc6dc4 31ed xor    ebp,ebp
+0x141cc6dc6 4889e8 mov    rax,rbp
+0x141cc6dc9 4883c430 add    rsp,0x30
+0x141cc6dcd 5b pop    rbx
+0x141cc6dce 5d pop    rbp
+0x141cc6dcf 5f pop    rdi
+0x141cc6dd0 5e pop    rsi
+0x141cc6dd1 415c pop    r12
+0x141cc6dd3 415e pop    r14
+0x141cc6dd5 415f pop    r15
+0x141cc6dd7 c3 ret
+0x141cc6dd8 4881c6b9000000 add    rsi,0xb9
+0x141cc6ddf 4989f6 mov    r14,rsi
+0x141cc6de2 41803e00 cmp    BYTE PTR [r14],0x0
+0x141cc6de6 7409 je     0x141cc6df1
+0x141cc6de8 488bab70020000 mov    rbp,QWORD PTR [rbx+0x270]
+0x141cc6def ebd5 jmp    0x141cc6dc6
+0x141cc6df1 4883c358 add    rbx,0x58
+0x141cc6df5 4889dd mov    rbp,rbx
+0x141cc6df8 ebcc jmp    0x141cc6dc6
+0x141cc6dfa 80bdb900000000 cmp    BYTE PTR [rbp+0xb9],0x0
+0x141cc6e01 7411 je     0x141cc6e14
+0x141cc6e03 488b8970020000 mov    rcx,QWORD PTR [rcx+0x270]
+0x141cc6e0a 4885c9 test   rcx,rcx
+0x141cc6e0d 7509 jne    0x141cc6e18
+0x141cc6e0f e9a1feffff jmp    0x141cc6cb5
+0x141cc6e14 4883c158 add    rcx,0x58
+0x141cc6e18 4584f6 test   r14b,r14b
+0x141cc6e1b 741a je     0x141cc6e37
+0x141cc6e1d 488b01 mov    rax,QWORD PTR [rcx]
+0x141cc6e20 31ed xor    ebp,ebp
+0x141cc6e22 80784400 cmp    BYTE PTR [rax+0x44],0x0
+0x141cc6e26 480f45e9 cmovne rbp,rcx
+0x141cc6e2a 759a jne    0x141cc6dc6
+0x141cc6e2c 4584ff test   r15b,r15b
+0x141cc6e2f 0f8589feffff jne    0x141cc6cbe
+0x141cc6e35 eb8f jmp    0x141cc6dc6
+0x141cc6e37 4889cd mov    rbp,rcx
+0x141cc6e3a eb8a jmp    0x141cc6dc6
+0x141e15d10 b001 mov    al,0x1
+0x141e15d12 c3 ret
+0x141ef9890 4157 push   r15
+0x141ef9892 4156 push   r14
+0x141ef9894 4155 push   r13
+0x141ef9896 4154 push   r12
+0x141ef9898 56 push   rsi
+0x141ef9899 57 push   rdi
+0x141ef989a 55 push   rbp
+0x141ef989b 53 push   rbx
+0x141ef989c 4883ec28 sub    rsp,0x28
+0x141ef98a0 4589cd mov    r13d,r9d
+0x141ef98a3 4589c6 mov    r14d,r8d
+0x141ef98a6 4889cf mov    rdi,rcx
+0x141ef98a9 4c8ba42498000000 mov    r12,QWORD PTR [rsp+0x98]
+0x141ef98b1 440fb7bc2490000000 movzx  r15d,WORD PTR [rsp+0x90]
+0x141ef98ba 83faff cmp    edx,0xffffffff
+0x141ef98bd 741b je     0x141ef98da
+0x141ef98bf 488b0d22545304 mov    rcx,QWORD PTR [rip+0x4535422]        # 0x14642ece8
+0x141ef98c6 e815514b00 call   0x1423ae9e0
+0x141ef98cb 48894708 mov    QWORD PTR [rdi+0x8],rax
+0x141ef98cf 4885c0 test   rax,rax
+0x141ef98d2 0f85be000000 jne    0x141ef9996
+0x141ef98d8 eb08 jmp    0x141ef98e2
+0x141ef98da 48c7470800000000 mov    QWORD PTR [rdi+0x8],0x0
+0x141ef98e2 488b35ef015304 mov    rsi,QWORD PTR [rip+0x45301ef]        # 0x146429ad8
+0x141ef98e9 48c744242000000000 mov    QWORD PTR [rsp+0x20],0x0
+0x141ef98f2 b908010000 mov    ecx,0x108
+0x141ef98f7 ba13000000 mov    edx,0x13
+0x141ef98fc e81fbc4302 call   0x144335520
+0x141ef9901 4889c3 mov    rbx,rax
+0x141ef9904 48b80000000013000000 movabs rax,0x1300000000
+0x141ef990e 488903 mov    QWORD PTR [rbx],rax
+0x141ef9911 488d6b04 lea    rbp,[rbx+0x4]
+0x141ef9915 48b8696e76616c696420 movabs rax,0x2064696c61766e69
+0x141ef991f 48894308 mov    QWORD PTR [rbx+0x8],rax
+0x141ef9923 48b8636f6d7065746974 movabs rax,0x74697465706d6f63
+0x141ef992d 48894310 mov    QWORD PTR [rbx+0x10],rax
+0x141ef9931 c7431774696f6e mov    DWORD PTR [rbx+0x17],0x6e6f6974
+0x141ef9938 c6431b00 mov    BYTE PTR [rbx+0x1b],0x0
+0x141ef993c 488b4c2420 mov    rcx,QWORD PTR [rsp+0x20]
+0x141ef9941 488d41fc lea    rax,[rcx-0x4]
+0x141ef9945 4885c9 test   rcx,rcx
+0x141ef9948 480f45c8 cmovne rcx,rax
+0x141ef994c 740a je     0x141ef9958
+0x141ef994e f0ff09 lock dec DWORD PTR [rcx]
+0x141ef9951 7505 jne    0x141ef9958
+0x141ef9953 e858bd4302 call   0x1443356b0
+0x141ef9958 48c744242000000000 mov    QWORD PTR [rsp+0x20],0x0
+0x141ef9961 f0ff03 lock inc DWORD PTR [rbx]
+0x141ef9964 48896c2420 mov    QWORD PTR [rsp+0x20],rbp
+0x141ef9969 488b06 mov    rax,QWORD PTR [rsi]
+0x141ef996c 488d542420 lea    rdx,[rsp+0x20]
+0x141ef9971 4889f1 mov    rcx,rsi
+0x141ef9974 41b001 mov    r8b,0x1
+0x141ef9977 4531c9 xor    r9d,r9d
+0x141ef997a ff5078 call   QWORD PTR [rax+0x78]
+0x141ef997d 488b4c2420 mov    rcx,QWORD PTR [rsp+0x20]
+0x141ef9982 4885c9 test   rcx,rcx
+0x141ef9985 740f je     0x141ef9996
+0x141ef9987 f0ff49fc lock dec DWORD PTR [rcx-0x4]
+0x141ef998b 7509 jne    0x141ef9996
+0x141ef998d 4883c1fc add    rcx,0xfffffffffffffffc
+0x141ef9991 e81abd4302 call   0x1443356b0
+0x141ef9996 4c896710 mov    QWORD PTR [rdi+0x10],r12
+0x141ef999a 44886f18 mov    BYTE PTR [rdi+0x18],r13b
+0x141ef999e 44887719 mov    BYTE PTR [rdi+0x19],r14b
+0x141ef99a2 6644897f1a mov    WORD PTR [rdi+0x1a],r15w
+0x141ef99a7 4883c428 add    rsp,0x28
+0x141ef99ab 5b pop    rbx
+0x141ef99ac 5d pop    rbp
+0x141ef99ad 5f pop    rdi
+0x141ef99ae 5e pop    rsi
+0x141ef99af 415c pop    r12
+0x141ef99b1 415d pop    r13
+0x141ef99b3 415e pop    r14
+0x141ef99b5 415f pop    r15
+0x141ef99b7 c3 ret
+0x141f327be 488d05236aaf03 lea    rax,[rip+0x3af6a23]        # 0x145a291e8
+0x141f327c5 488901 mov    QWORD PTR [rcx],rax
+0x141f32846 488d056b06b103 lea    rax,[rip+0x3b1066b]        # 0x145a42eb8
+0x141f3284d 488906 mov    QWORD PTR [rsi],rax
+0x141f32b24 488d8680000000 lea    rax,[rsi+0x80]
+0x141f32b2b 488d8eb0010000 lea    rcx,[rsi+0x1b0]
+0x141f32b32 c7466c00000200 mov    DWORD PTR [rsi+0x6c],0x20000
+0x141f32b39 48c7869802000000000000 mov    QWORD PTR [rsi+0x298],0x0
+0x141f32b44 48c786a002000000000000 mov    QWORD PTR [rsi+0x2a0],0x0
+0x141f32b4f 48c786a802000000000000 mov    QWORD PTR [rsi+0x2a8],0x0
+0x141f4f5c0 4157 push   r15
+0x141f4f5c2 4156 push   r14
+0x141f4f5c4 4155 push   r13
+0x141f4f5c6 4154 push   r12
+0x141f4f5c8 56 push   rsi
+0x141f4f5c9 57 push   rdi
+0x141f4f5ca 55 push   rbp
+0x141f4f5cb 53 push   rbx
+0x141f4f5cc 4881ec88050000 sub    rsp,0x588
+0x141f4f5d3 4589cf mov    r15d,r9d
+0x141f4f5d6 4d89c6 mov    r14,r8
+0x141f4f5d9 4889d5 mov    rbp,rdx
+0x141f4f5dc 4989cd mov    r13,rcx
+0x141f4f5df b9d0020000 mov    ecx,0x2d0
+0x141f4f5e4 e887f8e4ff call   0x141d9ee70
+0x141f4f5e9 4889c6 mov    rsi,rax
+0x141f4f5ec 4889c1 mov    rcx,rax
+0x141f4f5ef e87c31feff call   0x141f32770
+0x141f4f5f4 4989b5c8000000 mov    QWORD PTR [r13+0xc8],rsi
+0x141f7edd0 4157 push   r15
+0x141f7edd2 4156 push   r14
+0x141f7edd4 4155 push   r13
+0x141f7edd6 4154 push   r12
+0x141f7edd8 56 push   rsi
+0x141f7edd9 57 push   rdi
+0x141f7edda 55 push   rbp
+0x141f7eddb 53 push   rbx
+0x141f7eddc 4881ec98000000 sub    rsp,0x98
+0x141f7ede3 4489cb mov    ebx,r9d
+0x141f7ede6 4489c7 mov    edi,r8d
+0x141f7ede9 4989d6 mov    r14,rdx
+0x141f7edec 4889ce mov    rsi,rcx
+0x141f7f27e 488b06 mov    rax,QWORD PTR [rsi]
+0x141f7f281 4889f1 mov    rcx,rsi
+0x141f7f284 4c89f2 mov    rdx,r14
+0x141f7f287 ff90e8030000 call   QWORD PTR [rax+0x3e8]
+0x141f7f28d 40b501 mov    bpl,0x1
+0x141f7f290 488b942410010000 mov    rdx,QWORD PTR [rsp+0x110]
+0x141f7f298 4839d0 cmp    rax,rdx
+0x141f7f29b 7431 je     0x141f7f2ce
+0x141f7f29d 488b8ec8000000 mov    rcx,QWORD PTR [rsi+0xc8]
+0x141f7f2a4 8b520c mov    edx,DWORD PTR [rdx+0xc]
+0x141f7f2a7 4c89742428 mov    QWORD PTR [rsp+0x28],r14
+0x141f7f2ac 66c74424200000 mov    WORD PTR [rsp+0x20],0x0
+0x141f7f2b3 4531c0 xor    r8d,r8d
+0x141f7f2b6 4531c9 xor    r9d,r9d
+0x141f7f2b9 e822460000 call   0x141f838e0
+0x141f7f2be eb0e jmp    0x141f7f2ce
+0x141f7f2c0 488b5c2468 mov    rbx,QWORD PTR [rsp+0x68]
+0x141f7f2c5 eb07 jmp    0x141f7f2ce
+0x141f7f2c7 31ed xor    ebp,ebp
+0x141f7f2c9 eb03 jmp    0x141f7f2ce
+0x141f7f2cb 40b501 mov    bpl,0x1
+0x141f838e0 4157 push   r15
+0x141f838e2 4156 push   r14
+0x141f838e4 4154 push   r12
+0x141f838e6 56 push   rsi
+0x141f838e7 57 push   rdi
+0x141f838e8 55 push   rbp
+0x141f838e9 53 push   rbx
+0x141f838ea 4883ec30 sub    rsp,0x30
+0x141f838ee 89d6 mov    esi,edx
+0x141f838f0 4989cf mov    r15,rcx
+0x141f838f3 440fb7b42490000000 movzx  r14d,WORD PTR [rsp+0x90]
+0x141f838fc 4c8ba42498000000 mov    r12,QWORD PTR [rsp+0x98]
+0x141f83904 4180f9ff cmp    r9b,0xff
+0x141f83908 410fb6d8 movzx  ebx,r8b
+0x141f8390c 410fb6e9 movzx  ebp,r9b
+0x141f83910 0f44eb cmove  ebp,ebx
+0x141f83913 b920000000 mov    ecx,0x20
+0x141f83918 e82f515603 call   0x1454e8a4c
+0x141f8391d 4889c7 mov    rdi,rax
+0x141f83920 488d056102ac03 lea    rax,[rip+0x3ac0261]        # 0x145a43b88
+0x141f83927 488907 mov    QWORD PTR [rdi],rax
+0x141f8392a 48c7470800000000 mov    QWORD PTR [rdi+0x8],0x0
+0x141f83932 48c7471000000000 mov    QWORD PTR [rdi+0x10],0x0
+0x141f8393a c7471800000000 mov    DWORD PTR [rdi+0x18],0x0
+0x141f83941 4c89642428 mov    QWORD PTR [rsp+0x28],r12
+0x141f83946 664489742420 mov    WORD PTR [rsp+0x20],r14w
+0x141f8394c 4889f9 mov    rcx,rdi
+0x141f8394f 89f2 mov    edx,esi
+0x141f83951 4189d8 mov    r8d,ebx
+0x141f83954 4189e9 mov    r9d,ebp
+0x141f83957 e8345ff7ff call   0x141ef9890
+0x141f8395c 498b9fa0020000 mov    rbx,QWORD PTR [r15+0x2a0]
+0x141f83963 493b9fa8020000 cmp    rbx,QWORD PTR [r15+0x2a8]
+0x141f8396a 7410 je     0x141f8397c
+0x141f8396c 48893b mov    QWORD PTR [rbx],rdi
+0x141f8396f 498387a002000008 add    QWORD PTR [r15+0x2a0],0x8
+0x141f83977 e93b010000 jmp    0x141f83ab7
+0x141fdd0b0 4157 push   r15
+0x141fdd0b2 4156 push   r14
+0x141fdd0b4 56 push   rsi
+0x141fdd0b5 57 push   rdi
+0x141fdd0b6 53 push   rbx
+0x141fdd0b7 4883ec20 sub    rsp,0x20
+0x141fdd0bb 4989d6 mov    r14,rdx
+0x141fdd0be 4c8bb9c8000000 mov    r15,QWORD PTR [rcx+0xc8]
+0x141fdd0c5 498b87a0020000 mov    rax,QWORD PTR [r15+0x2a0]
+0x141fdd0cc 492b8798020000 sub    rax,QWORD PTR [r15+0x298]
+0x141fdd0d3 744f je     0x141fdd124
+0x141fdd0d5 48c1f803 sar    rax,0x3
+0x141fdd0d9 4883f802 cmp    rax,0x2
+0x141fdd0dd be01000000 mov    esi,0x1
+0x141fdd0e2 480f43f0 cmovae rsi,rax
+0x141fdd0e6 31db xor    ebx,ebx
+0x141fdd0e8 4d85f6 test   r14,r14
+0x141fdd0eb 0f85a7000000 jne    0x141fdd198
+0x141fdd0f1 662e0f1f840000000000 cs nop WORD PTR [rax+rax*1+0x0]
+0x141fdd0fb 0f1f440000 nop    DWORD PTR [rax+rax*1+0x0]
+0x141fdd100 498b8798020000 mov    rax,QWORD PTR [r15+0x298]
+0x141fdd107 488b3cd8 mov    rdi,QWORD PTR [rax+rbx*8]
+0x141fdd10b 488b07 mov    rax,QWORD PTR [rdi]
+0x141fdd10e 4889f9 mov    rcx,rdi
+0x141fdd111 ff5008 call   QWORD PTR [rax+0x8]
+0x141fdd114 3c01 cmp    al,0x1
+0x141fdd116 0f849a000000 je     0x141fdd1b6
+0x141fdd11c 48ffc3 inc    rbx
+0x141fdd11f 4839de cmp    rsi,rbx
+0x141fdd122 75dc jne    0x141fdd100
+0x141fdd124 4d85f6 test   r14,r14
+0x141fdd127 0f848f000000 je     0x141fdd1bc
+0x141fdd12d 498b87a0020000 mov    rax,QWORD PTR [r15+0x2a0]
+0x141fdd134 492b8798020000 sub    rax,QWORD PTR [r15+0x298]
+0x141fdd13b 747f je     0x141fdd1bc
+0x141fdd13d 48c1f803 sar    rax,0x3
+0x141fdd141 4883f802 cmp    rax,0x2
+0x141fdd145 bb01000000 mov    ebx,0x1
+0x141fdd14a 480f43d8 cmovae rbx,rax
+0x141fdd14e 4531f6 xor    r14d,r14d
+0x141fdd151 31f6 xor    esi,esi
+0x141fdd153 662e0f1f840000000000 cs nop WORD PTR [rax+rax*1+0x0]
+0x141fdd15d 0f1f00 nop    DWORD PTR [rax]
+0x141fdd160 498b8798020000 mov    rax,QWORD PTR [r15+0x298]
+0x141fdd167 488b3cf0 mov    rdi,QWORD PTR [rax+rsi*8]
+0x141fdd16b 488b07 mov    rax,QWORD PTR [rdi]
+0x141fdd16e 4889f9 mov    rcx,rdi
+0x141fdd171 ff5008 call   QWORD PTR [rax+0x8]
+0x141fdd174 3c01 cmp    al,0x1
+0x141fdd176 743e je     0x141fdd1b6
+0x141fdd178 48ffc6 inc    rsi
+0x141fdd17b 4839f3 cmp    rbx,rsi
+0x141fdd17e 75e0 jne    0x141fdd160
+0x141fdd180 eb3d jmp    0x141fdd1bf
+0x141fdd182 662e0f1f840000000000 cs nop WORD PTR [rax+rax*1+0x0]
+0x141fdd18c 0f1f4000 nop    DWORD PTR [rax+0x0]
+0x141fdd190 48ffc3 inc    rbx
+0x141fdd193 4839de cmp    rsi,rbx
+0x141fdd196 748c je     0x141fdd124
+0x141fdd198 498b8798020000 mov    rax,QWORD PTR [r15+0x298]
+0x141fdd19f 488b3cd8 mov    rdi,QWORD PTR [rax+rbx*8]
+0x141fdd1a3 488b07 mov    rax,QWORD PTR [rdi]
+0x141fdd1a6 4889f9 mov    rcx,rdi
+0x141fdd1a9 ff5008 call   QWORD PTR [rax+0x8]
+0x141fdd1ac 3c01 cmp    al,0x1
+0x141fdd1ae 75e0 jne    0x141fdd190
+0x141fdd1b0 4c397710 cmp    QWORD PTR [rdi+0x10],r14
+0x141fdd1b4 75da jne    0x141fdd190
+0x141fdd1b6 4c8b7708 mov    r14,QWORD PTR [rdi+0x8]
+0x141fdd1ba eb03 jmp    0x141fdd1bf
+0x141fdd1bc 4531f6 xor    r14d,r14d
+0x141fdd1bf 4c89f0 mov    rax,r14
+0x141fdd1c2 4883c420 add    rsp,0x20
+0x141fdd1c6 5b pop    rbx
+0x141fdd1c7 5f pop    rdi
+0x141fdd1c8 5e pop    rsi
+0x141fdd1c9 415e pop    r14
+0x141fdd1cb 415f pop    r15
+0x141fdd1cd c3 ret
+0x141fe1260 b001 mov    al,0x1
+0x141fe1262 c3 ret
+0x142209793 4889ce mov    rsi,rcx
+0x142209796 31d2 xor    edx,edx
+0x142209798 e8c3396b00 call   0x1428bd160
+0x14220979d 488d0594878403 lea    rax,[rip+0x3848794]        # 0x145a51f38
+0x1422097a4 488906 mov    QWORD PTR [rsi],rax
+0x1423ae9e0 56 push   rsi
+0x1423ae9e1 57 push   rdi
+0x1423ae9e2 53 push   rbx
+0x1423ae9e3 4883ec20 sub    rsp,0x20
+0x1423ae9e7 4889cf mov    rdi,rcx
+0x1423ae9ea 488b8180000000 mov    rax,QWORD PTR [rcx+0x80]
+0x1423ae9f1 488b08 mov    rcx,QWORD PTR [rax]
+0x1423ae9f4 488b7008 mov    rsi,QWORD PTR [rax+0x8]
+0x1423ae9f8 4839f1 cmp    rcx,rsi
+0x1423ae9fb 0f84bf000000 je     0x1423aeac0
+0x1423aea01 89d3 mov    ebx,edx
+0x1423aea03 f6475c01 test   BYTE PTR [rdi+0x5c],0x1
+0x1423aea07 753d jne    0x1423aea46
+0x1423aea09 4829ce sub    rsi,rcx
+0x1423aea0c 48c1ee03 shr    rsi,0x3
+0x1423aea10 85f6 test   esi,esi
+0x1423aea12 0f8ea8000000 jle    0x1423aeac0
+0x1423aea18 ffce dec    esi
+0x1423aea1a 31ff xor    edi,edi
+0x1423aea1c eb0e jmp    0x1423aea2c
+0x1423aea1e 6690 xchg   ax,ax
+0x1423aea20 ffca dec    edx
+0x1423aea22 89d6 mov    esi,edx
+0x1423aea24 39f7 cmp    edi,esi
+0x1423aea26 0f8f94000000 jg     0x1423aeac0
+0x1423aea2c 8d1437 lea    edx,[rdi+rsi*1]
+0x1423aea2f d1ea shr    edx,1
+0x1423aea31 488b04d1 mov    rax,QWORD PTR [rcx+rdx*8]
+0x1423aea35 39580c cmp    DWORD PTR [rax+0xc],ebx
+0x1423aea38 7fe6 jg     0x1423aea20
+0x1423aea3a 0f8d82000000 jge    0x1423aeac2
+0x1423aea40 ffc2 inc    edx
+0x1423aea42 89d7 mov    edi,edx
+0x1423aea44 ebde jmp    0x1423aea24
+0x1423aea46 80bfa000000000 cmp    BYTE PTR [rdi+0xa0],0x0
+0x1423aea4d 742b je     0x1423aea7a
+0x1423aea4f 488b8f88000000 mov    rcx,QWORD PTR [rdi+0x88]
+0x1423aea56 488b9790000000 mov    rdx,QWORD PTR [rdi+0x90]
+0x1423aea5d 4989d0 mov    r8,rdx
+0x1423aea60 4929c8 sub    r8,rcx
+0x1423aea63 49c1f803 sar    r8,0x3
+0x1423aea67 4c8d0de2e40a00 lea    r9,[rip+0xae4e2]        # 0x14245cf50
+0x1423aea6e e84dc192ff call   0x141cdabc0
+0x1423aea73 c687a000000000 mov    BYTE PTR [rdi+0xa0],0x0
+0x1423aea7a 488b8f88000000 mov    rcx,QWORD PTR [rdi+0x88]
+0x1423aea81 488bb790000000 mov    rsi,QWORD PTR [rdi+0x90]
+0x1423aea88 4829ce sub    rsi,rcx
+0x1423aea8b 48c1ee03 shr    rsi,0x3
+0x1423aea8f 85f6 test   esi,esi
+0x1423aea91 7e2d jle    0x1423aeac0
+0x1423aea93 ffce dec    esi
+0x1423aea95 31ff xor    edi,edi
+0x1423aea97 eb0f jmp    0x1423aeaa8
+0x1423aea99 0f1f8000000000 nop    DWORD PTR [rax+0x0]
+0x1423aeaa0 ffca dec    edx
+0x1423aeaa2 89d6 mov    esi,edx
+0x1423aeaa4 39f7 cmp    edi,esi
+0x1423aeaa6 7f18 jg     0x1423aeac0
+0x1423aeaa8 8d1437 lea    edx,[rdi+rsi*1]
+0x1423aeaab d1ea shr    edx,1
+0x1423aeaad 488b04d1 mov    rax,QWORD PTR [rcx+rdx*8]
+0x1423aeab1 39580c cmp    DWORD PTR [rax+0xc],ebx
+0x1423aeab4 7fea jg     0x1423aeaa0
+0x1423aeab6 7d0a jge    0x1423aeac2
+0x1423aeab8 ffc2 inc    edx
+0x1423aeaba 89d7 mov    edi,edx
+0x1423aeabc 39f7 cmp    edi,esi
+0x1423aeabe 7ee8 jle    0x1423aeaa8
+0x1423aeac0 31c0 xor    eax,eax
+0x1423aeac2 4883c420 add    rsp,0x20
+0x1423aeac6 5b pop    rbx
+0x1423aeac7 5f pop    rdi
+0x1423aeac8 5e pop    rsi
+0x1423aeac9 c3 ret
+0x142867d70 55 push   rbp
+0x142867d71 56 push   rsi
+0x142867d72 4883ec28 sub    rsp,0x28
+0x142867d76 488d6c2420 lea    rbp,[rsp+0x20]
+0x142867d7b 48c74500feffffff mov    QWORD PTR [rbp+0x0],0xfffffffffffffffe
+0x142867d83 4889ce mov    rsi,rcx
+0x142867d86 48c74108ffffffff mov    QWORD PTR [rcx+0x8],0xffffffffffffffff
+0x142867d8e c7411000000000 mov    DWORD PTR [rcx+0x10],0x0
+0x142867d95 48b800000000ffff0000 movabs rax,0xffff00000000
+0x142867d9f 48894128 mov    QWORD PTR [rcx+0x28],rax
+0x142867da3 48c7412000000000 mov    QWORD PTR [rcx+0x20],0x0
+0x142867dab 48c7411800000000 mov    QWORD PTR [rcx+0x18],0x0
+0x142867db3 48c7413000000000 mov    QWORD PTR [rcx+0x30],0x0
+0x142867dbb 488d05860a2103 lea    rax,[rip+0x3210a86]        # 0x145a78848
+0x142867dc2 488901 mov    QWORD PTR [rcx],rax
+0x142867dc5 48833d1bb7af0300 cmp    QWORD PTR [rip+0x3afb71b],0x0        # 0x1463634e8
+0x14286a42e 4589cf mov    r15d,r9d
+0x14286a431 4589c4 mov    r12d,r8d
+0x14286a434 4889d7 mov    rdi,rdx
+0x14286a437 4889ce mov    rsi,rcx
+0x14286a4b8 8b470c mov    eax,DWORD PTR [rdi+0xc]
+0x14286a4bb 89460c mov    DWORD PTR [rsi+0xc],eax
+0x14286a4be 8b4710 mov    eax,DWORD PTR [rdi+0x10]
+0x14286a4c1 85c0 test   eax,eax
+0x14286a4c3 7503 jne    0x14286a4c8
+0x14286a4c5 8b470c mov    eax,DWORD PTR [rdi+0xc]
+0x14286a4c8 894610 mov    DWORD PTR [rsi+0x10],eax
+0x14286a4cb 803dbbadbc0300 cmp    BYTE PTR [rip+0x3bcadbb],0x0        # 0x14643528d
+0x14286a4d2 740d je     0x14286a4e1
+0x14286a4d4 80bfba00000000 cmp    BYTE PTR [rdi+0xba],0x0
+0x14286a4db 0f84c8010000 je     0x14286a6a9
+0x14286a4e1 48897e30 mov    QWORD PTR [rsi+0x30],rdi
+0x14286a4e5 eb7d jmp    0x14286a564
+0x14286a55b 48897e30 mov    QWORD PTR [rsi+0x30],rdi
+0x14286a55f 4885ff test   rdi,rdi
+0x14286a562 7415 je     0x14286a579
+0x14286a564 80bfba00000000 cmp    BYTE PTR [rdi+0xba],0x0
+0x14286a56b 7406 je     0x14286a573
+0x14286a56d c6462f01 mov    BYTE PTR [rsi+0x2f],0x1
+0x14286a571 eb0a jmp    0x14286a57d
+0x14286a573 c6462f00 mov    BYTE PTR [rsi+0x2f],0x0
+0x14286a577 eb04 jmp    0x14286a57d
+0x14286a579 c6462fff mov    BYTE PTR [rsi+0x2f],0xff
+0x1428c353b 488b7c2438 mov    rdi,QWORD PTR [rsp+0x38]
+0x1428c3540 48897730 mov    QWORD PTR [rdi+0x30],rsi
+0x1428c3544 80beba00000000 cmp    BYTE PTR [rsi+0xba],0x0
+0x1428c354b 0f95472f setne  BYTE PTR [rdi+0x2f]
+0x1428c354f 44887f28 mov    BYTE PTR [rdi+0x28],r15b
+0x1428c3553 eb7f jmp    0x1428c35d4
+0x1428c3555 b9b8000000 mov    ecx,0xb8
+0x1428c355a e84104b2ff call   0x1423e39a0
+0x1428c355f 4889c7 mov    rdi,rax
+0x1428c3562 4889c1 mov    rcx,rax
+0x1428c3565 e80648faff call   0x142867d70
+0x1428c356a 48897c2438 mov    QWORD PTR [rsp+0x38],rdi
+0x1428c356f 41b101 mov    r9b,0x1
+0x1428c3572 4584ff test   r15b,r15b
+0x1428c3575 7514 jne    0x1428c358b
+0x1428c3577 488b0d5a65b603 mov    rcx,QWORD PTR [rip+0x3b6655a]        # 0x146429ad8
+0x1428c357e 488b01 mov    rax,QWORD PTR [rcx]
+0x1428c3581 ff5020 call   QWORD PTR [rax+0x20]
+0x1428c3584 4189c1 mov    r9d,eax
+0x1428c3587 4180f101 xor    r9b,0x1
+0x1428c358b 4488642420 mov    BYTE PTR [rsp+0x20],r12b
+0x1428c3590 4889f9 mov    rcx,rdi
+0x1428c3593 4889f2 mov    rdx,rsi
+0x1428c3596 4589f8 mov    r8d,r15d
+0x1428c3599 e8826efaff call   0x14286a420
+0x1428c359e 488b0dc3b7b603 mov    rcx,QWORD PTR [rip+0x3b6b7c3]        # 0x14642ed68
+0x1428c35a5 4889fa mov    rdx,rdi
+0x1428c35a8 41b001 mov    r8b,0x1
+0x1428c35ab e830d0b1ff call   0x1423e05e0
+0x1428c35b0 488b0d2165b603 mov    rcx,QWORD PTR [rip+0x3b66521]        # 0x146429ad8
+0x1428c35b7 488b01 mov    rax,QWORD PTR [rcx]
+0x1428c35ba 4889fa mov    rdx,rdi
+0x1428c35bd ff9048020000 call   QWORD PTR [rax+0x248]
+0x1428c35c3 488d0dd6b9b603 lea    rcx,[rip+0x3b6b9d6]        # 0x14642efa0
+0x1428c35ca 488d542438 lea    rdx,[rsp+0x38]
+0x1428c35cf e86cca0000 call   0x1428d0040
+0x1428cc620 4883ec28 sub    rsp,0x28
+0x1428cc624 488b01 mov    rax,QWORD PTR [rcx]
+0x1428cc627 ff90b8010000 call   QWORD PTR [rax+0x1b8]
+0x1428cc62d 4885c0 test   rax,rax
+0x1428cc630 7405 je     0x1428cc637
+0x1428cc632 488b00 mov    rax,QWORD PTR [rax]
+0x1428cc635 eb02 jmp    0x1428cc639
+0x1428cc637 31c0 xor    eax,eax
+0x1428cc639 4883c428 add    rsp,0x28
+0x1428cc63d c3 ret
+0x1428cc640 80b9ba00000000 cmp    BYTE PTR [rcx+0xba],0x0
+0x1428cc647 7403 je     0x1428cc64c
+0x1428cc649 31c0 xor    eax,eax
+0x1428cc64b c3 ret
+0x1428cc64c 4189d1 mov    r9d,edx
+0x1428cc64f 4889ca mov    rdx,rcx
+0x1428cc652 488b0d7fd4b503 mov    rcx,QWORD PTR [rip+0x3b5d47f]        # 0x146429ad8
+0x1428cc659 41b001 mov    r8b,0x1
+0x1428cc65c e93fa53fff jmp    0x141cc6ba0
+0x1428cc661 cc int3
+
+0x145a520e8 20c68c420100000040c68c4201000000 binding/type bytes
+0x145a78840 608aa74501000000 binding/type bytes
+0x145a78a60 01000000000000000000000050003206c0cca605608aa705 binding/type bytes
+0x146320050 a0ff83450100000000000000000000002e3f41565445414d4064624040 binding/type bytes
+0x145a51f30 7021a54501000000 binding/type bytes
+0x145a52170 01000000000000000000000040532a068821a5057021a505 binding/type bytes
+0x1462a5340 a0ff83450100000000000000000000002e3f4156434c55424064624040 binding/type bytes
+0x145a41d58 105de14101000000 LEAGUE_STAGE270
+0x145a41ed0 b0d0fd4101000000 LEAGUE_STAGE3e8
+0x145a43b90 6012fe4101000000 PROMOTION8
+0x145a43b80 7041a44501000000 PROMOTIONCOL
+0x145a43450 010000000000000000000000b0b231066834a4055034a405 LEAGUE_SETTINGS COL
+0x14631b2b0 a0ff83450100000000000000000000002e3f41564c45414755455f53455454494e4753407369636f6d70734040000000a0ff83450100000000000000000000002e3f41564c45414755455f504f534954 LEAGUE_SETTINGS TypeDescriptor
+0x145a44170 01000000000000000000000020b331068841a4057041a405 PROMOTION COL
+0x14631b320 a0ff83450100000000000000000000002e3f41564c45414755455f464154455f414354494f4e5f50524f4d4f54494f4e407369636f6d70734040000000000000a0ff8345010000000000000000000000 PROMOTION TypeDescriptor
