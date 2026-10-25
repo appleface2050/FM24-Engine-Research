@@ -934,6 +934,8 @@ def verify_original(exe):
         "20261023_regeneration_binding_observations.json",
         "20261023_regeneration_query_preservation_observations.json",
         "20261024_virtual_association_boundary_observations.json",
+        "20261025_context_association_preservation_observations.json",
+        "20261025_materializer_late_suffix_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1590,6 +1592,74 @@ def verify_original(exe):
                for row in association["native_assertions"] if start <= int(row["va"], 16) < end):
             raise AssertionError("Selected context fastpath has an unclassified call")
     print("Upstream context/association boundary passed: actual virtual40, relocated setter, both original pointer displacements toD2f8 and four complete helper bodies. Empty-container/first-append preservation is conditional; whole upstream/null-modifier lifecycle remains open.", flush=True)
+
+    context = json.loads((ROOT / "20261025_context_association_preservation_observations.json").read_text())
+    for binding in context["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Association prefix ACTUAL/VIRTUAL person6b8 binding differs")
+    for body in context["complete_code_bodies"]:
+        start, end = int(body["start"], 16), int(body["end_exclusive"], 16)
+        cursor = start
+        for row in sorted((row for row in context["native_assertions"]
+                           if start <= int(row["va"], 16) < end),
+                          key=lambda row: int(row["va"], 16)):
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("Context/association complete code body has uncovered instructions")
+            if (start in (0x142218290, 0x1421D5280, 0x144987190)
+                    and row["instruction"].lower().startswith("call")):
+                raise AssertionError("Context ID/getter leaf has an external call")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != end:
+            raise AssertionError("Context/association code body is incomplete")
+    table = int(context["context_switch"]["table"], 16)
+    targets = [table + offset for offset in struct.unpack("<20i", mapped_bytes(table, 80))]
+    covered = {int(row["va"], 16) for row in context["native_assertions"]}
+    if targets != [int(value, 16) for value in context["context_switch"]["targets"]] or any(value not in covered for value in targets):
+        raise AssertionError("Context converter switch differs or has an uncovered target")
+    transfer = context["tail_transfer"]
+    site = int(transfer["site"], 16)
+    raw = mapped_bytes(site, 5)
+    if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+        raise AssertionError("Context converter registry lookup tail differs")
+    print("Whole association processor evidence passed: six complete code bodies, ACTUAL/VIRTUAL6b8 slots,20 switch targets and lookup tail. Preservation requires ready no-sort registry/cold-association storage conditions; natural modifier/score lifecycle remains open.", flush=True)
+
+    late = json.loads((ROOT / "20261025_materializer_late_suffix_observations.json").read_text())
+    for binding in late["virtual_bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Late actual count query person520 binding differs")
+    body = late["complete_query_body"]
+    cursor, end = int(body["start"], 16), int(body["end_exclusive"], 16)
+    for row in sorted((row for row in late["native_assertions"]
+                       if cursor <= int(row["va"], 16) < end), key=lambda row: int(row["va"], 16)):
+        if int(row["va"], 16) != cursor:
+            raise AssertionError("Late count query has uncovered instructions")
+        cursor += len(bytes.fromhex(row["hex"]))
+    if cursor != end:
+        raise AssertionError("Late count query body is incomplete")
+    suffix_rows = [row for row in late["native_assertions"]
+                   if any(int(start, 16) <= int(row["va"], 16) < int(end, 16)
+                          for start, end in late["suffix"]["ranges"])]
+    for start, end in late["suffix"]["ranges"]:
+        cursor, stop = int(start, 16), int(end, 16)
+        for row in sorted((row for row in suffix_rows if cursor <= int(row["va"], 16) < stop),
+                          key=lambda row: int(row["va"], 16)):
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("Materializer late suffix has uncovered instructions")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != stop:
+            raise AssertionError("Materializer late suffix coverage is incomplete")
+    covered = {int(row["va"], 16) for row in suffix_rows}
+    for row in suffix_rows:
+        parts = row["instruction"].lower().split()
+        if parts[0].startswith("call"):
+            raise AssertionError("Materializer late suffix has an unclassified external call")
+        if parts[0].startswith("j"):
+            if not parts[1].startswith("0x"):
+                raise AssertionError("Materializer late suffix has an unclassified indirect jump")
+            target = int(parts[1], 16)
+            if target not in covered and target != 0x1448E074C:
+                raise AssertionError("Materializer late suffix has an uncovered branch target")
+    print("Materializer late interval passed: actual person520 bindings, complete query and closed no-CALL suffix branches to074c. Null-modifier premise moves to0264 under explicit identity conditions; earlier interval gap and final score remain open.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
