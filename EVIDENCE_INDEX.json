@@ -675,7 +675,14 @@
         "0x142879710",
         "0x1448e0264",
         "0x1448e027d",
-        "0x144986e90"
+        "0x144986e90",
+        "0x1423bb2c0",
+        "0x1423952c0",
+        "0x1423972c0",
+        "0x1423a6110",
+        "0x14238aa50",
+        "0x14238c850",
+        "0x14238cd10"
       ],
       "evidence": {
         "reports": [
@@ -726,7 +733,8 @@
           "20261024_上游上下文调用与关联容器写入边界.md",
           "20261025_上下文转换与关联处理整段保持.md",
           "20261025_中段控制流与实际查询边界.md",
-          "20261025_上下文早返与数据库候选输入.md"
+          "20261025_上下文早返与数据库候选输入.md",
+          "20261025_客户端引用修复与完整载入生命周期.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -881,7 +889,9 @@
           "20261025_empty_association_reuse_static.txt",
           "20261025_context_candidate_inputs_observations.json",
           "20261025_context_candidate_inputs_static.txt",
-          "20261025_client_club_candidate_214eb.json"
+          "20261025_client_club_candidate_214eb.json",
+          "20261025_client_reference_lifecycle_observations.json",
+          "20261025_client_reference_lifecycle_static.txt"
         ]
       },
       "upstream": [
@@ -934,7 +944,8 @@
         "14362d030整次查询已在就绪无池/首次分配成功及实际类型/关联记录条件下保持D188/A69，双返回门将路径不再依赖自然零返回；存储条件自然建立、更早D接收调用和D188空值连续性仍待证。构造模板向量为空不能代替比赛时为空。",
         "双分支合成未证明1448e074c前D188为空、实际无池/首次分配成功和关联记录自然有效；应继续服务virtual40→143660a40及关联写入，不能将其余位置或整个冷解析器升级为保留",
         "143660a40除第一无CALL成功分支外的间接副作用仍未知；144983df0已在就绪无整理索引/已绑定人员和空D2f8条件下整次保持，未知人员、脏索引整理、非空不匹配关联增长和自然条件仍未证；整个构造到1448e074c的D188空值连续性未闭合",
-        "已收敛144983df0整次调用及后段e0264至e074c；df088至e0264仍有未分类调用/写入，两个区间不能自动拼接；构造后D188/D2f8空值、名单和自然比分连续性未证"
+        "已收敛144983df0整次调用及后段e0264至e074c；df088至e0264仍有未分类调用/写入，两个区间不能自动拼接；构造后D188/D2f8空值、名单和自然比分连续性未证",
+        "Actual core load/reset/reference-pass entry connected; client C/R lifetime cannot cross full reset by stable ID alone. Server record/schema, phase preservation and current materializer adoption still unproved (20261025_client_reference_lifecycle)."
       ],
       "connections": [
         {
@@ -4678,6 +4689,110 @@
           ],
           "evidence": "20261025_materializer_late_suffix_observations.json",
           "limit": "Selected actual query parameters and late interval only; no whole coldparser or final-score proof"
+        },
+        {
+          "callsite": "0x1431a827d",
+          "callee": "0x1423bb2c0",
+          "source": "1431a80d0 normal client branch",
+          "receiver": "M=14642ecd0, &archive, mode0, scan0",
+          "target": "1423bb2c0 receives selected M and mode",
+          "conditions": [
+            "Upper archive identity/current-game adoption not proved",
+            "Selected native call/field flow only; mapping retention and same-match adoption not certified"
+          ],
+          "evidence": "20261025_client_reference_lifecycle_observations.json",
+          "limit": "Call provenance, not whole-loader semantic preservation or natural score closure"
+        },
+        {
+          "callsite": "0x1431870f8",
+          "callee": "0x1423bb2c0",
+          "source": "143186e60 normal full branch",
+          "receiver": "M=14642ecd0, &archive, mode1, scan0",
+          "target": "1423bb2c0 receives selected M and mode",
+          "conditions": [
+            "No inference client object lifetime survives reload",
+            "Selected native call/field flow only; mapping retention and same-match adoption not certified"
+          ],
+          "evidence": "20261025_client_reference_lifecycle_observations.json",
+          "limit": "Call provenance, not whole-loader semantic preservation or natural score closure"
+        },
+        {
+          "callsite": "0x1423bb436",
+          "callee": "0x14238aa50",
+          "source": "1423bb2c0 parameter4=0",
+          "receiver": "RCX=R13=M",
+          "target": "14238aa50 resets old table entries before mode write",
+          "conditions": [
+            "Requires entry branch1423bb2fa to1423bb433",
+            "Selected native call/field flow only; mapping retention and same-match adoption not certified"
+          ],
+          "evidence": "20261025_client_reference_lifecycle_observations.json",
+          "limit": "Call provenance, not whole-loader semantic preservation or natural score closure"
+        },
+        {
+          "callsite": "0x14238aab0",
+          "callee": "0x14238c850",
+          "source": "14238aa50 existing-table branch",
+          "receiver": "RCX=*(M+10), CLUB table",
+          "target": "14238c850 clears old CLUB entries/ready state",
+          "conditions": [
+            "Valid constructed tables; no whole-reset preservation inferred",
+            "Selected native call/field flow only; mapping retention and same-match adoption not certified"
+          ],
+          "evidence": "20261025_client_reference_lifecycle_observations.json",
+          "limit": "Call provenance, not whole-loader semantic preservation or natural score closure"
+        },
+        {
+          "callsite": "0x14238aace",
+          "callee": "0x14238cd10",
+          "source": "14238aa50 existing-table branch",
+          "receiver": "RCX=*(M+28), NATION table",
+          "target": "14238cd10 clears old NATION entries/ready state",
+          "conditions": [
+            "Valid constructed tables; no whole-reset preservation inferred",
+            "Selected native call/field flow only; mapping retention and same-match adoption not certified"
+          ],
+          "evidence": "20261025_client_reference_lifecycle_observations.json",
+          "limit": "Call provenance, not whole-loader semantic preservation or natural score closure"
+        },
+        {
+          "callsite": "0x1423bb686",
+          "callee": "0x1423952c0",
+          "source": "1423bb5e2 obtainsT=*(M+10)",
+          "receiver": "T, openedstream, M, mode",
+          "target": "1423952c0 uses T54/tag factory and objectvirtual98; successful tail sets WORD[T59]=1",
+          "conditions": [
+            "Normal read, T5c bit1 clear, valid member stream",
+            "Selected native call/field flow only; mapping retention and same-match adoption not certified"
+          ],
+          "evidence": "20261025_client_reference_lifecycle_observations.json",
+          "limit": "Call provenance, not whole-loader semantic preservation or natural score closure"
+        },
+        {
+          "callsite": "0x1423bba3c",
+          "callee": "0x1423972c0",
+          "source": "1423bb998 obtainsT=*(M+28)",
+          "receiver": "T, openedstream, M, mode",
+          "target": "1423972c0 uses T54/tag factory and objectvirtual98; successful tail sets WORD[T59]=1",
+          "conditions": [
+            "Normal read, format>=dc4, T5c bit1 clear, valid member stream",
+            "Selected native call/field flow only; mapping retention and same-match adoption not certified"
+          ],
+          "evidence": "20261025_client_reference_lifecycle_observations.json",
+          "limit": "Call provenance, not whole-loader semantic preservation or natural score closure"
+        },
+        {
+          "callsite": "0x1423bb787",
+          "callee": "0x1423a6110",
+          "source": "1423bb771 normal post-read branch",
+          "receiver": "RCX=M, EDX=0",
+          "target": "1423a6110 reads M578; actual CLUB loop passes C,1,M,mode,T5a tovirtuala0",
+          "conditions": [
+            "Scan flag0; earlier table callbacks and later core suffix remain unproved",
+            "Selected native call/field flow only; mapping retention and same-match adoption not certified"
+          ],
+          "evidence": "20261025_client_reference_lifecycle_observations.json",
+          "limit": "Call provenance, not whole-loader semantic preservation or natural score closure"
         }
       ]
     },

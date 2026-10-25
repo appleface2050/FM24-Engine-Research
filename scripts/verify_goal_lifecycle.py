@@ -997,6 +997,7 @@ def verify_original(exe):
         "20261025_middle_typed_query_observations.json",
         "20261025_empty_association_reuse_observations.json",
         "20261025_context_candidate_inputs_observations.json",
+        "20261025_client_reference_lifecycle_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1753,6 +1754,17 @@ def verify_original(exe):
         if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
             raise AssertionError("Database wire reader relocated entry differs")
     print("Context ID membership table passed: selected getter/boolean branches remain conditional on actual object inputs; ordinary CLUB type alone does not imply early return.", flush=True)
+
+    lifecycle = json.loads((ROOT / "20261025_client_reference_lifecycle_observations.json").read_text())
+    transfer = lifecycle["archive_entry_transfer"]
+    site = int(transfer["site"], 16)
+    raw = mapped_bytes(site, 5)
+    if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+        raise AssertionError("Core database archive selector entry differs; reopen mode/source binding")
+    slot = lifecycle["club_fixup_slot"]
+    if struct.unpack("<Q", mapped_bytes(int(slot["va"], 16), 8))[0] != int(slot["target"], 16):
+        raise AssertionError("Ordinary CLUB reference-pass virtual slot differs")
+    print("Actual database lifecycle call/slot evidence passed: client/full mode and reset remain separate object lifetimes; no whole-loader preservation proved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
