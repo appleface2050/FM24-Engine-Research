@@ -999,6 +999,7 @@ def verify_original(exe):
         "20261025_context_candidate_inputs_observations.json",
         "20261025_client_reference_lifecycle_observations.json",
         "20261025_server_candidate_inputs_observations.json",
+        "20261025_server_registration_fixup_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1785,6 +1786,50 @@ def verify_original(exe):
     if ((struct.unpack("<I", mapped_bytes(0x14CB78DF0, 4))[0] - 0xF4C0001) & 0xFFFFFFFF) != 0:
         raise AssertionError("Server NATION R78 success status differs")
     print("Server wire-schema evidence passed: finance0=45 bytes, NATION relocated readers and original constants; runtime retention remains unproved.", flush=True)
+
+    registration = json.loads((ROOT / "20261025_server_registration_fixup_observations.json").read_text())
+    for binding in registration["bindings"]:
+        slot = int(binding["slot"], 16)
+        if struct.unpack("<Q", mapped_bytes(slot, 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Server registration/fixup type binding differs")
+    for body in registration["complete_bodies"]:
+        start, end = int(body["start"], 16), int(body["end_exclusive"], 16)
+        cursor = start
+        rows = sorted((row for row in registration["native_assertions"]
+                       if start <= int(row["va"], 16) < end), key=lambda row: int(row["va"], 16))
+        for row in rows:
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("Server registration/fixup body coverage has a gap")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != end:
+            raise AssertionError("Server registration/fixup body coverage is incomplete")
+    transfer = registration["vector_entry"]
+    site = int(transfer["site"], 16)
+    raw = mapped_bytes(site, 5)
+    if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+        raise AssertionError("NATION registration vector entry differs")
+    for site, target in ((0x14245CDBD, 0x14245CF13), (0x1537471AD, 0x15374730B)):
+        raw = mapped_bytes(site, 6)
+        if raw[:2] != b"\x0f\x87" or site + 6 + struct.unpack_from("<i", raw, 2)[0] != target:
+            raise AssertionError("Existing-capacity vector store branch differs")
+    cast = registration["dynamic_cast"]
+    thunk, iat = int(cast["thunk"], 16), int(cast["iat"], 16)
+    raw = mapped_bytes(thunk, 6)
+    if raw[:2] != b"\xff\x25" or thunk + 6 + struct.unpack_from("<i", raw, 2)[0] != iat:
+        raise AssertionError("Dynamic cast import thunk differs")
+    descriptor = int(cast["import_descriptor"], 16)
+    original, _, _, name, first = struct.unpack("<5I", mapped_bytes(descriptor, 20))
+    if mapped_bytes(image_base + name, len(cast["dll"]) + 1) != cast["dll"].encode() + b"\x00":
+        raise AssertionError("Dynamic cast runtime DLL binding differs")
+    position = (iat - image_base - first) // 8
+    for index_in_table in range(position):
+        if struct.unpack("<Q", mapped_bytes(image_base + original + index_in_table * 8, 8))[0] == 0:
+            raise AssertionError("Dynamic cast lookup crossed the import-table terminator")
+    lookup = struct.unpack("<Q", mapped_bytes(image_base + original + position * 8, 8))[0]
+    symbol = cast["symbol"].encode() + b"\x00"
+    if mapped_bytes(image_base + lookup + 2, len(symbol)) != symbol:
+        raise AssertionError("Dynamic cast import symbol differs")
+    print("Typed registration and server CLUB fixup evidence passed: bounded slot stores, actual runtime import and complete helper bodies; uninterrupted load/match adoption remains unproved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]

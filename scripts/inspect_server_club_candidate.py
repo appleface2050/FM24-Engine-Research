@@ -117,7 +117,8 @@ def read_candidate(source: Path, target_id: int = 0x214EB) -> dict:
         own_scalars = cursor.take(6).hex()
         names = [cursor.text(), cursor.text()]
         scalar_start = cursor.position
-        cursor.take(8)  # C16a:1、C166:2、C148:4、C16b:1。
+        server_scalars = dict(zip(["C+16a", "C+166", "C+148", "C+16b"],
+                                  struct.unpack("<BhiB", cursor.take(8))))
         people = cursor.count("b")
         cursor.take(people * 4)
         finance_selector_offset = cursor.position
@@ -131,14 +132,14 @@ def read_candidate(source: Path, target_id: int = 0x214EB) -> dict:
         cursor.take(periods * 24)
         extra = cursor.count("b")
         cursor.take(extra * 12)
-        cursor.take(2 + 4)  # C168、C140。
+        server_tail = dict(zip(["C+168", "C+140"], struct.unpack("<hi", cursor.take(6))))
         base_start = cursor.position
         base_scalars = cursor.take(3).hex()
-        reference_counts = []
+        reference_counts, reference_values = [], []
         for field in range(5):  # C18/C30无符号计数，C60/C78/C90有符号计数。
             size = cursor.count("B" if field < 2 else "b")
             reference_counts.append(size)
-            cursor.take(size * 4)
+            reference_values.append([cursor.integer() for _ in range(size)])
         group_count = cursor.count("B")
         cursor.take(group_count * 16)
         history_count = cursor.count("h")
@@ -158,10 +159,13 @@ def read_candidate(source: Path, target_id: int = 0x214EB) -> dict:
                 "names": names, "own_scalar_bytes_C160": own_scalars,
                 "serialized_reference_values": dict(zip(
                     ["C+d8", "C+e0", "C+e8", "C+f0", "C+f8"], references)),
-                "server_scalar_start": scalar_start, "finance_selector_offset": finance_selector_offset,
+                "server_scalar_start": scalar_start, "server_scalar_fields": server_scalars,
+                "server_tail_fields": server_tail, "finance_selector_offset": finance_selector_offset,
                 "finance_payload_range": [finance_start, finance_start + 45],
                 "own_array_counts": [people, periods, extra], "base_start": base_start,
                 "base_scalar_bytes": base_scalars, "base_reference_counts": reference_counts,
+                "base_reference_values": dict(zip(["C+18", "C+30", "C+60", "C+78", "C+90"],
+                                                  reference_values)),
                 "base_group_count": group_count, "base_history_count": history_count,
                 "identity_block_range": [identity_start, cursor.position],
                 "serialized_identity_fields": dict(zip(["C+8", "C+c", "C+10"], identity)),

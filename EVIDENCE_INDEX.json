@@ -735,7 +735,8 @@
           "20261025_中段控制流与实际查询边界.md",
           "20261025_上下文早返与数据库候选输入.md",
           "20261025_客户端引用修复与完整载入生命周期.md",
-          "20261025_完整数据库候选记录与国家引用输入.md"
+          "20261025_完整数据库候选记录与国家引用输入.md",
+          "20261025_注册槽写入与完整模式引用修复边界.md"
         ],
         "raw": [
           "20261016_analysis_score_consumers_static.txt",
@@ -895,7 +896,9 @@
           "20261025_client_reference_lifecycle_static.txt",
           "20261025_server_candidate_inputs_observations.json",
           "20261025_server_candidate_inputs_static.txt",
-          "20261025_server_club_candidate_214eb.json"
+          "20261025_server_club_candidate_214eb.json",
+          "20261025_server_registration_fixup_observations.json",
+          "20261025_server_registration_fixup_static.txt"
         ]
       },
       "upstream": [
@@ -950,7 +953,8 @@
         "143660a40除第一无CALL成功分支外的间接副作用仍未知；144983df0已在就绪无整理索引/已绑定人员和空D2f8条件下整次保持，未知人员、脏索引整理、非空不匹配关联增长和自然条件仍未证；整个构造到1448e074c的D188空值连续性未闭合",
         "已收敛144983df0整次调用及后段e0264至e074c；df088至e0264仍有未分类调用/写入，两个区间不能自动拼接；构造后D188/D2f8空值、名单和自然比分连续性未证",
         "Actual core load/reset/reference-pass entry connected; client C/R lifetime cannot cross full reset by stable ID alone. Server record/schema, phase preservation and current materializer adoption still unproved (20261025_client_reference_lifecycle).",
-        "Server source candidate boundaries now parsed: CLUB row4321 ID214ebh refs80, NATION row80 ID135. Runtime registration/mapping, mode1 reference-fixup effects, post-load edits and current materializer adoption still unproved; client-to-server object persistence is not assumed."
+        "Server source candidate boundaries now parsed: CLUB row4321 ID214ebh refs80, NATION row80 ID135. Runtime registration/mapping, mode1 reference-fixup effects, post-load edits and current materializer adoption still unproved; client-to-server object persistence is not assumed.",
+        "Ordinary CLUB/NATION registration in zero-flags empty-slot capacity path is connected; selected server CLUB fixup now conditionally returns with stable C+c and converted d8/e8. Runtime empty-container establishment, TEAM4533 parent condition, all-table/post-load retention and current-match adoption remain unproved."
       ],
       "connections": [
         {
@@ -4798,6 +4802,126 @@
           ],
           "evidence": "20261025_client_reference_lifecycle_observations.json",
           "limit": "Call provenance, not whole-loader semantic preservation or natural score closure"
+        },
+        {
+          "callsite": "0x142437477",
+          "callee": "0x14557e630",
+          "source": "CLUB type conversion",
+          "receiver": "C,0,DATABASE_RECORD type,CLUB type,0",
+          "target": "Normal runtime cast returns same ordinary primary C",
+          "conditions": [
+            "Constructed ordinary C/R; successful normal runtime cast returns the same primary object",
+            "Current T5c=0, old target slotnull, primary vector length greater than serialized row",
+            "Valid independent objects/buffers, normal CALL return"
+          ],
+          "evidence": "20261025_server_registration_fixup_observations.json",
+          "limit": "Separate conditional call boundaries; no uninterrupted registration-to-fixup or same-match chain proved"
+        },
+        {
+          "callsite": "0x142438f97",
+          "callee": "0x14557e630",
+          "source": "NATION type conversion",
+          "receiver": "R,0,DATABASE_RECORD type,NATION type,0",
+          "target": "Normal runtime cast returns same primary R",
+          "conditions": [
+            "Constructed ordinary C/R; successful normal runtime cast returns the same primary object",
+            "Current T5c=0, old target slotnull, primary vector length greater than serialized row",
+            "Valid independent objects/buffers, normal CALL return"
+          ],
+          "evidence": "20261025_server_registration_fixup_observations.json",
+          "limit": "Separate conditional call boundaries; no uninterrupted registration-to-fixup or same-match chain proved"
+        },
+        {
+          "callsite": "0x142437600",
+          "callee": "0x14245cd90",
+          "source": "CLUB primary slot store",
+          "receiver": "CLUB T80 vector,&localC,serialized row",
+          "target": "Capacity path storesC in primary slot; caller then writesC8=row",
+          "conditions": [
+            "Constructed ordinary C/R; successful normal runtime cast returns the same primary object",
+            "Current T5c=0, old target slotnull, primary vector length greater than serialized row",
+            "Valid independent objects/buffers, normal CALL return"
+          ],
+          "evidence": "20261025_server_registration_fixup_observations.json",
+          "limit": "Separate conditional call boundaries; no uninterrupted registration-to-fixup or same-match chain proved"
+        },
+        {
+          "callsite": "0x142439128",
+          "callee": "0x14245e8d0",
+          "source": "NATION primary slot store",
+          "receiver": "NATION T80 vector,&localR,serialized row",
+          "target": "Capacity path storesR in primary slot; caller then writesR8=row",
+          "conditions": [
+            "Constructed ordinary C/R; successful normal runtime cast returns the same primary object",
+            "Current T5c=0, old target slotnull, primary vector length greater than serialized row",
+            "Valid independent objects/buffers, normal CALL return"
+          ],
+          "evidence": "20261025_server_registration_fixup_observations.json",
+          "limit": "Separate conditional call boundaries; no uninterrupted registration-to-fixup or same-match chain proved"
+        },
+        {
+          "callsite": "0x14220c373",
+          "callee": "0x1424061f0",
+          "source": "CLUB server negative link",
+          "receiver": "M,&C140,flags0; selected low32=-1",
+          "target": "Negative-reference branch skips positive index/tree calls; skip or write null",
+          "conditions": [
+            "Actual mode1 and flags0; same candidate fields retained on entry",
+            "NATION ready/direct mapping selects sameR fromslot80; R+c=135; valid independent CITY/person/TEAM tables",
+            "C140 and C148 low32=-1; C110/C130/C138 empty; simplifiedfinance0 object; base C18=[4533], other base reference/groups/history lists empty",
+            "TEAM table direct mapping T+28=0 with bound count leaf; conversion returnsnull or a valid distinct TEAM with TEAM+30!=-1",
+            "All referenced records/containers remain valid and do not alias C stable-ID/nation fields"
+          ],
+          "evidence": "20261025_server_registration_fixup_observations.json",
+          "limit": "Separate conditional call boundaries; no uninterrupted registration-to-fixup or same-match chain proved"
+        },
+        {
+          "callsite": "0x14220c3b5",
+          "callee": "0x142406730",
+          "source": "CLUB server person link",
+          "receiver": "M,&local(C148),flags0,0; selected low32=-1",
+          "target": "Fallback1424a0e80 returns unhandled or null; no caller virtual698",
+          "conditions": [
+            "Actual mode1 and flags0; same candidate fields retained on entry",
+            "NATION ready/direct mapping selects sameR fromslot80; R+c=135; valid independent CITY/person/TEAM tables",
+            "C140 and C148 low32=-1; C110/C130/C138 empty; simplifiedfinance0 object; base C18=[4533], other base reference/groups/history lists empty",
+            "TEAM table direct mapping T+28=0 with bound count leaf; conversion returnsnull or a valid distinct TEAM with TEAM+30!=-1",
+            "All referenced records/containers remain valid and do not alias C stable-ID/nation fields"
+          ],
+          "evidence": "20261025_server_registration_fixup_observations.json",
+          "limit": "Separate conditional call boundaries; no uninterrupted registration-to-fixup or same-match chain proved"
+        },
+        {
+          "callsite": "0x14220c6b9",
+          "callee": "0x1428bf520",
+          "source": "CLUB server base fixup",
+          "receiver": "SameC,0,M,mode1,flags0",
+          "target": "Conditional complete base fixup return; TEAM4533 path remains explicit",
+          "conditions": [
+            "Actual mode1 and flags0; same candidate fields retained on entry",
+            "NATION ready/direct mapping selects sameR fromslot80; R+c=135; valid independent CITY/person/TEAM tables",
+            "C140 and C148 low32=-1; C110/C130/C138 empty; simplifiedfinance0 object; base C18=[4533], other base reference/groups/history lists empty",
+            "TEAM table direct mapping T+28=0 with bound count leaf; conversion returnsnull or a valid distinct TEAM with TEAM+30!=-1",
+            "All referenced records/containers remain valid and do not alias C stable-ID/nation fields"
+          ],
+          "evidence": "20261025_server_registration_fixup_observations.json",
+          "limit": "Separate conditional call boundaries; no uninterrupted registration-to-fixup or same-match chain proved"
+        },
+        {
+          "callsite": "0x1428bf5ab",
+          "callee": "0x1424063f0",
+          "source": "CLUB nonempty TEAM link",
+          "receiver": "M,&localTEAM,*(M+98),flags0,1,0; reference4533",
+          "target": "Selected direct-map TEAM reference conversion; valid count leaf; caller parent guard still required",
+          "conditions": [
+            "Actual mode1 and flags0; same candidate fields retained on entry",
+            "NATION ready/direct mapping selects sameR fromslot80; R+c=135; valid independent CITY/person/TEAM tables",
+            "C140 and C148 low32=-1; C110/C130/C138 empty; simplifiedfinance0 object; base C18=[4533], other base reference/groups/history lists empty",
+            "TEAM table direct mapping T+28=0 with bound count leaf; conversion returnsnull or a valid distinct TEAM with TEAM+30!=-1",
+            "All referenced records/containers remain valid and do not alias C stable-ID/nation fields"
+          ],
+          "evidence": "20261025_server_registration_fixup_observations.json",
+          "limit": "Separate conditional call boundaries; no uninterrupted registration-to-fixup or same-match chain proved"
         }
       ]
     },
