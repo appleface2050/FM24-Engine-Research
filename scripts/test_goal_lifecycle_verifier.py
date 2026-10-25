@@ -98,5 +98,31 @@ class EvidenceIndexTests(unittest.TestCase):
             verifier.verify_index()
 
 
+class MiddleControlFlowTests(unittest.TestCase):
+    """用微型反汇编检测误认JMP后继和RIP注释目标；不是游戏行为实验。"""
+
+    def setUp(self):
+        self.cfg = {"window_start": "0x1000", "window_end": "0x1008",
+                    "entry": "0x1000", "stop": "0x1007", "reachable_count": 2,
+                    "call_sites": [], "excluded": ["0x1002"]}
+
+    def test_jump_does_not_fall_through(self):
+        text = "1000: eb 05 jmp 0x1007\n1002: c3 ret\n1007: c3 ret\n"
+        with patch.object(verifier.subprocess, "check_output", return_value=text):
+            verifier.verify_middle_cfg(Path("unused.exe"), self.cfg)
+
+    def test_indirect_jump_comment_is_not_direct_target(self):
+        text = "1000: ff 25 01 00 00 00 jmp QWORD PTR [rip+0x1] # 0x1007\n"
+        with patch.object(verifier.subprocess, "check_output", return_value=text):
+            with self.assertRaisesRegex(AssertionError, "indirect jump"):
+                verifier.verify_middle_cfg(Path("unused.exe"), self.cfg)
+
+    def test_missing_target_is_rejected(self):
+        text = "1000: eb 01 jmp 0x1003\n"
+        with patch.object(verifier.subprocess, "check_output", return_value=text):
+            with self.assertRaisesRegex(AssertionError, "uncovered target"):
+                verifier.verify_middle_cfg(Path("unused.exe"), self.cfg)
+
+
 if __name__ == "__main__":
     unittest.main()

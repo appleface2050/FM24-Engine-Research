@@ -5,6 +5,7 @@ import hashlib
 import json
 import re
 import struct
+import subprocess
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -850,6 +851,61 @@ def verify_target_identity(data: bytes, expected: dict) -> None:
         raise ValueError("Target PE identity differs from the recorded input")
 
 
+def verify_middle_cfg(exe, cfg):
+    """从原PE重新解码并遍历中段；CALL只按正常返回处理，不证明被调者语义。"""
+    output = subprocess.check_output([
+        "objdump", "-d", "-Mintel", "--insn-width=16",
+        "--start-address=" + cfg["window_start"],
+        "--stop-address=" + cfg["window_end"], str(exe),
+    ], text=True)
+    rows = {}
+    for line in output.splitlines():
+        match = re.match(r"^\s*([0-9a-f]+):\s*([0-9a-f]{2}(?: [0-9a-f]{2})*)\s+(.+)$", line)
+        if match:
+            rows[int(match[1], 16)] = (len(bytes.fromhex(match[2])), match[3].strip())
+    stop = int(cfg["stop"], 16)
+    pending = [int(cfg["entry"], 16)]
+    seen, calls = set(), set()
+    while pending:
+        address = pending.pop()
+        if address in seen:
+            continue
+        seen.add(address)
+        if address == stop:
+            continue
+        if address not in rows:
+            raise AssertionError(f"Middle CFG has an uncovered target {address:#x}")
+        length, instruction = rows[address]
+        if "(bad)" in instruction or ".byte" in instruction:
+            raise AssertionError(f"Middle CFG reached undecoded bytes at {address:#x}")
+        parts = instruction.split()
+        if parts[0].startswith("rex."):
+            parts = parts[1:]
+        op = parts[0]
+        if op.startswith("ret") or op in {"ud2", "int3", "hlt"}:
+            raise AssertionError(f"Middle CFG exits before the selected boundary at {address:#x}")
+        following = address + length
+        if op.startswith("j") or op.startswith("loop"):
+            # 只接受直接操作数；注释中的RIP绝对地址不能冒充直接跳转目标。
+            target = re.fullmatch(r"0x([0-9a-f]+)", parts[1])
+            if not target:
+                raise AssertionError(f"Middle CFG has an unclassified indirect jump at {address:#x}")
+            pending.append(int(target[1], 16))
+            if op != "jmp":
+                pending.append(following)
+        else:
+            if op == "call":
+                calls.add(address)
+            pending.append(following)
+    if stop not in seen or len(seen) != cfg["reachable_count"]:
+        raise AssertionError("Middle CFG boundary or reachable instruction count differs")
+    if calls != {int(site, 16) for site in cfg["call_sites"]}:
+        raise AssertionError("Middle CFG actual call-site set differs")
+    if seen.intersection(int(site, 16) for site in cfg["excluded"]):
+        raise AssertionError("Previously excluded sorting branch is reachable")
+    print(f"Original-PE middle CFG rebuilt: {len(seen)} instructions, {len(calls)} calls; sorting branch excluded. Normal CALL return only; no callee preservation, termination or natural-state proof.", flush=True)
+
+
 def verify_original(exe):
     """只读原PE并复核证据中的指令字节；不加载或执行目标程序。"""
     print(f"Checking target identity and original bytes: {exe}", flush=True)
@@ -936,6 +992,7 @@ def verify_original(exe):
         "20261024_virtual_association_boundary_observations.json",
         "20261025_context_association_preservation_observations.json",
         "20261025_materializer_late_suffix_observations.json",
+        "20261025_materializer_middle_boundary_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1660,6 +1717,24 @@ def verify_original(exe):
             if target not in covered and target != 0x1448E074C:
                 raise AssertionError("Materializer late suffix has an uncovered branch target")
     print("Materializer late interval passed: actual person520 bindings, complete query and closed no-CALL suffix branches to074c. Null-modifier premise moves to0264 under explicit identity conditions; earlier interval gap and final score remain open.", flush=True)
+
+    middle = json.loads((ROOT / "20261025_materializer_middle_boundary_observations.json").read_text())
+    for table in middle["tables"]:
+        base = int(table["table"], 16)
+        values = struct.unpack("<" + "i" * table["count"], mapped_bytes(base, table["count"] * 4))
+        if [base + value for value in values] != [int(target, 16) for target in table["targets"]]:
+            raise AssertionError("Middle helper relative jump table differs")
+    for start, end in middle["no_call_bodies"]:
+        cursor, stop = int(start, 16), int(end, 16)
+        for row in middle["native_assertions"]:
+            address = int(row["va"], 16)
+            if int(start, 16) <= address < stop:
+                if address != cursor or row["instruction"].split()[0].startswith("call"):
+                    raise AssertionError("Middle helper body has a gap or unclassified CALL")
+                cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != stop:
+            raise AssertionError("Middle helper body coverage differs")
+    verify_middle_cfg(exe, middle["cfg"])
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
