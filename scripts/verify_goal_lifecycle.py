@@ -1001,6 +1001,7 @@ def verify_original(exe):
         "20261025_server_candidate_inputs_observations.json",
         "20261025_server_registration_fixup_observations.json",
         "20261025_team_parent_production_observations.json",
+        "20261026_full_type_default_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1859,6 +1860,19 @@ def verify_original(exe):
     if raw[:2] != b"\x0f\x87" or 0x1423E08AD + 6 + struct.unpack_from("<i", raw, 2)[0] != 0x1423E0A03:
         raise AssertionError("TEAM primary-slot capacity branch differs")
     print("TEAM parent source/producer evidence passed: selected reader, constructor and registration; preservation through intervening loader calls remains unproved.", flush=True)
+
+    default_flag = json.loads((ROOT / "20261026_full_type_default_observations.json").read_text())
+    writer = default_flag["writer"]
+    site = int(writer["site"], 16)
+    raw = mapped_bytes(site, 9)
+    if (raw[:3] != b"\x66\xc7\x05"
+            or site + 9 + struct.unpack_from("<i", raw, 3)[0] != int(writer["target"], 16)
+            or struct.unpack_from("<H", raw, 7)[0] != int(writer["word_value"], 16)):
+        raise AssertionError("TEAM full-type default store differs")
+    carrier = int(default_flag["function_pointer_carrier"], 16)
+    if struct.unpack("<Q", mapped_bytes(carrier, 8))[0] != int(writer["function"], 16):
+        raise AssertionError("TEAM flag default producer pointer carrier differs")
+    print("TEAM full-type local default store passed: byte1 at selected write; execution/order and later flag retention are unproved.", flush=True)
 
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
