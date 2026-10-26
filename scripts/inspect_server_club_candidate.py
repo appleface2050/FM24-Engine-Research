@@ -1,4 +1,4 @@
-"""只读解析FM24 2430完整数据库的普通CLUB前缀及NATION记录。
+"""只读解析FM24 2430完整数据库的CLUB、NATION及TEAM候选记录。
 
 按原生mode=1布局推进；只支持前缀中已恢复的简化财务类型0。
 输出是资源记录证据，不证明运行时注册、引用保持或比赛采用。
@@ -103,6 +103,60 @@ def read_nation_slot(source: Path, slot: int) -> dict:
             "opaque_tail_hex": table[cursor.position:].hex()}
 
 
+def read_team_slot(source: Path, slot: int) -> dict:
+    """按NATIONAL_TEAM/TEAM完整读取链顺序定位球队槽，不用ID搜索定位。"""
+    metadata, table = read_table(source, "server_db/table_24.dat")
+    cursor = Cursor(table)
+    total = struct.unpack_from("<I", table, 8)[0]
+    tags = Counter()
+    national_items = 0
+    for row in range(total):
+        start = cursor.position
+        tag = cursor.integer("B")
+        tags[tag] += 1
+        if tag == 0x0B:
+            cursor.take(48)  # NATIONAL_TEAM的10个DWORD和8个BYTE。
+            items = cursor.count("b")
+            national_items += items
+            cursor.take(items * 10)  # 1425fc750：版本BYTE、两个DWORD、BYTE。
+        elif tag != 0x0A:
+            raise ValueError(f"Unsupported TEAM record tag {tag:#x} at row {row}")
+        cursor.take(1 + 1 + 2 + 6 * 4 + 1 + 4)
+        roster_count = cursor.count("H")
+        cursor.take(roster_count * 4)
+        cursor.take(8 + 5 + 4 + 1)
+        base_start = cursor.position
+        scalar_fields = dict(zip(["T+28", "T+2f", "T+29", "T+2c", "T+2d", "T+2e"],
+                                 cursor.take(6)))
+        parent_start = cursor.position
+        parent = cursor.integer()
+        name = cursor.text()
+        scalar_fields["T+2a"] = cursor.integer("B")
+        short_name = cursor.text()
+        scalar_fields["T+2b"] = cursor.integer("B")
+        identity_start = cursor.position
+        identity = [cursor.integer() for _ in range(3)]
+        if identity[0] != row:
+            raise ValueError(f"TEAM serialized row identity differs at row {row}: {identity}")
+        if row == slot:
+            return {**metadata, "table_flags": table[12], "declared_record_count": total,
+                    "prefix_records_parsed": row + 1, "record_index": row, "record_tag": tag,
+                    "record_range": [start, cursor.position], "base_start": base_start,
+                    "prefix_tag_counts": {hex(key): value for key, value in sorted(tags.items())},
+                    "prefix_national_item_count": national_items,
+                    "roster_count": roster_count, "base_scalar_fields": scalar_fields,
+                    "serialized_parent_range": [parent_start, parent_start + 4],
+                    "serialized_parent_value_T30": parent, "names": [name, short_name],
+                    "identity_block_range": [identity_start, cursor.position],
+                    "serialized_identity_fields": dict(zip(["T+8", "T+c", "T+10"], identity)),
+                    "all_serialized_row_indices_match": True,
+                    "remaining_table_bytes_unparsed": len(table) - cursor.position,
+                    "limitations": ["Source prefix in mode1 TEAM/NATIONAL_TEAM schemas only",
+                                    "Serialized T30 is a CLUB slot value, not a runtime pointer",
+                                    "No uninterrupted preservation to CLUB fixup or match adoption"]}
+    raise ValueError("Requested TEAM slot is outside the supported prefix")
+
+
 def read_candidate(source: Path, target_id: int = 0x214EB) -> dict:
     """从首条连续推进至指定普通CLUB；任何未恢复布局立即拒绝。"""
     metadata, table = read_table(source, "server_db/table_3.dat")
@@ -181,5 +235,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path)
     parser.add_argument("--club-id", type=lambda value: int(value, 0), default=0x214EB)
+    parser.add_argument("--team-slot", type=int, help="按完整TEAM表布局定位指定槽，替代CLUB候选输出")
     args = parser.parse_args()
-    print(json.dumps(read_candidate(args.source, args.club_id), ensure_ascii=False, indent=2))
+    result = (read_team_slot(args.source, args.team_slot) if args.team_slot is not None
+              else read_candidate(args.source, args.club_id))
+    print(json.dumps(result, ensure_ascii=False, indent=2))

@@ -1000,6 +1000,7 @@ def verify_original(exe):
         "20261025_client_reference_lifecycle_observations.json",
         "20261025_server_candidate_inputs_observations.json",
         "20261025_server_registration_fixup_observations.json",
+        "20261025_team_parent_production_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1831,6 +1832,34 @@ def verify_original(exe):
         raise AssertionError("Dynamic cast import symbol differs")
     print("Typed registration and server CLUB fixup evidence passed: bounded slot stores, actual runtime import and complete helper bodies; uninterrupted load/match adoption remains unproved.", flush=True)
 
+    team_parent = json.loads((ROOT / "20261025_team_parent_production_observations.json").read_text())
+    for binding in team_parent["bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("TEAM/NATIONAL_TEAM reader or registration binding differs")
+    transfer = team_parent["member_entry"]
+    site = int(transfer["site"], 16)
+    raw = mapped_bytes(site, 5)
+    if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+        raise AssertionError("TEAM member loader relocated entry differs")
+    table = team_parent["factory_table"]
+    base = int(table["base"], 16)
+    target = base + struct.unpack("<i", mapped_bytes(int(table["entry"], 16), 4))[0]
+    if target != int(table["target"], 16):
+        raise AssertionError("TEAM_BASE factory case24 differs")
+    for body in team_parent["complete_bodies"]:
+        cursor, end = int(body["start"], 16), int(body["end_exclusive"], 16)
+        for row in sorted((row for row in team_parent["native_assertions"]
+                           if cursor <= int(row["va"], 16) < end), key=lambda row: int(row["va"], 16)):
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("TEAM parent producer has an uncovered instruction")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != end:
+            raise AssertionError("TEAM parent producer body is incomplete")
+    raw = mapped_bytes(0x1423E08AD, 6)
+    if raw[:2] != b"\x0f\x87" or 0x1423E08AD + 6 + struct.unpack_from("<i", raw, 2)[0] != 0x1423E0A03:
+        raise AssertionError("TEAM primary-slot capacity branch differs")
+    print("TEAM parent source/producer evidence passed: selected reader, constructor and registration; preservation through intervening loader calls remains unproved.", flush=True)
+
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
     for connection in connections:
@@ -1865,6 +1894,17 @@ def verify_candidate_database(source, mode="client"):
 
     if portable(actual) != portable(expected):
         raise AssertionError("Database candidate differs; do not reuse its selected input contract")
+    if mode == "server":
+        from inspect_server_club_candidate import read_team_slot
+
+        expected_team = json.loads((ROOT / "20261025_server_team_4533.json").read_text())
+        team = read_team_slot(source, expected_team["record_index"])
+        if portable(team) != portable(expected_team):
+            raise AssertionError("Server TEAM candidate differs; reopen the parent-reference input")
+        if (actual["base_reference_values"]["C+18"] != [team["record_index"]]
+                or team["serialized_parent_value_T30"] != actual["serialized_identity_fields"]["C+8"]):
+            raise AssertionError("Server CLUB/TEAM reciprocal slot references differ")
+        print("Server reciprocal source references passed: CLUB4321 -> TEAM4533 -> CLUB4321. Runtime parent retention is separate.", flush=True)
     print(f"{mode} database candidate parse matches the frozen observation: CLUB row4321 C+c=214ebh; nation slot80 candidate R+c=135. No runtime identity, mapping phase or score closure proved.", flush=True)
 
 
