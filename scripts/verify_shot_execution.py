@@ -18,6 +18,7 @@ EVIDENCE = (
     "20261026_shot_synchronous_event_static.txt",
     "20261026_shot_postcopy_sampling_static.txt",
     "20261026_shot_prediction_stop_static.txt",
+    "20261026_shot_record_model_static.txt",
 )
 
 
@@ -177,6 +178,16 @@ def verify(exe: Path) -> None:
           "Cached sample fractional threshold")
     encoded = struct.unpack_from("<I", data, offset(0x1546EEAD4))[0]
     check(encoded ^ 0x24048968 == 0x20, "Second team sample stack output")
+    kind_target = struct.unpack_from("<i", data, offset(0x14452AEA4))[0]
+    check(0x14452AE90 + kind_target == 0x144529D7E, "Action 3f model kind branch")
+    check(struct.unpack_from("<Q", data, offset(0x145A19548))[0] == 0x141AD36A0,
+          "Model payload type vtable slot")
+    check(struct.unpack_from("<f", data, offset(0x145643730))[0] == 0.699999988079071,
+          "Model kind upper threshold")
+    check(struct.unpack_from("<f", data, offset(0x1456B08C4))[0] == 0.15000000596046448,
+          "Model kind lower threshold")
+    check(struct.unpack_from("<f", data, offset(0x145582410))[0] == 1.0,
+          "Payload accumulation unit constant")
 
     # 对本次真正依赖的短叶函数，额外检查控制流和写入域；不扩展为通用模拟器。
     leaf = {a: ins for a, ins in instructions.items() if 0x141B50E00 <= a < 0x141B50EE8}
@@ -314,6 +325,19 @@ def verify(exe: Path) -> None:
         0x1443EC449: "mov rsi,r11",
         0x1443EC505: "mov r11,rsi",
         0x1443EC699: "mov r11,r12",
+        0x144528CC5: "je 0x144528d7d",
+        0x144528D7D: "movaps xmm0,XMMWORD PTR [r12+0x8e10]",
+        0x144529C2D: "je 0x144529c68",
+        0x144529D40: "mov eax,DWORD PTR [r12+0x8e80]",
+        0x144529D87: "mov BYTE PTR [r15+0x34],0x7",
+        0x144529D9E: "mov BYTE PTR [r15+0x34],0xa",
+        0x144529DA8: "mov BYTE PTR [r15+0x34],0x2",
+        0x141AD36A0: "mov al,0x2",
+        0x141AD36A2: "ret",
+        0x1443D613E: "movss DWORD PTR [rax+0x30],xmm1",
+        0x1443D614D: "movss DWORD PTR [r12+0x1c8],xmm1",
+        0x1443D574B: "mov ecx,0x203008",
+        0x1443D5A85: "mov DWORD PTR [rbx+0x1c8],0x0",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
