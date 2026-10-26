@@ -125,6 +125,12 @@ def verify(exe: Path) -> None:
         0x141B5E68D: 0x141AD19D0,
         0x141AAC391: 0x1443D4E90,
         0x1454E8A66: 0x14557E810,
+        0x141ABCD38: 0x1443EA8F0,
+        0x141ABCD98: 0x1443EA8F0,
+        0x141ABCDF8: 0x1443EA8F0,
+        0x141ABCE58: 0x1443EA8F0,
+        0x141ABD12B: 0x1454E8A4C,
+        0x141ABD170: 0x1443D5FA0,
     }
     jumps = {
         0x15A11E653: 0x144450B80,
@@ -221,6 +227,17 @@ def verify(exe: Path) -> None:
           "Model malloc IAT binding")
     target = struct.unpack_from("<i", data, offset(0x1443D5F88))[0]
     check(0x1443D5F54 + target == 0x1443D5C0D, "Native event type15 association slot")
+
+    check(struct.unpack_from("<I", data, offset(0x1456B08C4))[0] == 0x3E19999A,
+          "Record threshold float32 .15")
+    check(struct.unpack_from("<Q", data, offset(0x1456B11C8))[0] == 0x14052D5F0,
+          "Classification payload virtual10 binding")
+    check(data[offset(0x14052D5F0):offset(0x14052D5F0) + 3] == b"\xb0\x01\xc3",
+          "Classification payload AL=1 leaf")
+    start = offset(0x141A0165E)
+    check(data[start:start + 2] == b"\xff\x15", "Second growth free call")
+    check(0x141A01664 + struct.unpack_from("<i", data, start + 2)[0] == 0x145D50E90,
+          "Second growth CRT free IAT")
 
     # 对本次真正依赖的短叶函数，额外检查控制流和写入域；不扩展为通用模拟器。
     leaf = {a: ins for a, ins in instructions.items() if 0x141B50E00 <= a < 0x141B50EE8}
@@ -386,6 +403,15 @@ def verify(exe: Path) -> None:
         0x1418FEF30: "je 0x1418fefb9",
         0x1452ED774: "jne 0x1452ed820",
         0x1454E8A6E: "je 0x1454e8a57",
+        0x141ABCB31: "jb 0x141abcc88",
+        0x141ABCD23: "jne 0x141abcd70",
+        0x141ABCD82: "jne 0x141abcdc9",
+        0x141ABCDDF: "jne 0x141abce1a",
+        0x141ABCE45: "jne 0x141abce82",
+        0x141ABD09B: "jne 0x141abd0d4",
+        0x141ABD0A1: "jne 0x141abd0ea",
+        0x141A01602: "jmp 0x141a01655",
+        0x141ABD180: "je 0x141abd187",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
