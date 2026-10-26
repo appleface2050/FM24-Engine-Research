@@ -17,6 +17,7 @@ EVIDENCE = (
     "20261026_shot_ball_handoff_static.txt",
     "20261026_shot_synchronous_event_static.txt",
     "20261026_shot_postcopy_sampling_static.txt",
+    "20261026_shot_prediction_stop_static.txt",
 )
 
 
@@ -106,6 +107,12 @@ def verify(exe: Path) -> None:
         0x144454445: 0x141ACB310,
         0x151B724CA: 0x144408CC0,
         0x151B72553: 0x144408CC0,
+        0x144454696: 0x1443EA8F0,
+        0x1444546D6: 0x1443EA8F0,
+        0x144454718: 0x1443EA8F0,
+        0x141ABCAD4: 0x141AAC200,
+        0x141ABCAE7: 0x144528BB0,
+        0x141ABCB25: 0x1443D5FA0,
     }
     jumps = {
         0x15A11E653: 0x144450B80,
@@ -288,6 +295,25 @@ def verify(exe: Path) -> None:
         0x144408D28: "jge 0x144408d3c",
         0x151B724D3: "mov DWORD PTR [rbp+0x1464],eax",
         0x151B7255C: "mov DWORD PTR [rbp+0x1464],eax",
+        0x1443EAAE5: "lea ecx,[r11+rdi*1]",
+        0x1443EAAF4: "cmovne eax,ecx",
+        0x1443EC777: "mov ecx,DWORD PTR [rsp+0x60]",
+        0x1443EC786: "add ecx,0x4",
+        0x1443EC78D: "jg 0x1443ec797",
+        0x1443EC78F: "movzx eax,BYTE PTR [r13+0x85]",
+        0x1443EC797: "mov BYTE PTR [r15+0xd62],al",
+        0x1443EA969: "jne 0x1443ec921",
+        0x145302BE9: "shr cl,0x7",
+        0x145302BEC: "mov BYTE PTR [rsi+0x85],cl",
+        0x145302BFC: "mov BYTE PTR [rsi+0x85],0x1",
+        0x1443EAC50: "mov QWORD PTR [rsp+0x58],rcx",
+        0x1443EAD70: "lea r11,[r8+0x1]",
+        0x1443EAE64: "mov QWORD PTR [rsp+0x78],r11",
+        0x1443EB931: "mov r11,QWORD PTR [rsp+0x78]",
+        0x1443EC395: "mov r12,r11",
+        0x1443EC449: "mov rsi,r11",
+        0x1443EC505: "mov r11,rsi",
+        0x1443EC699: "mov r11,r12",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
