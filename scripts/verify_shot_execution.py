@@ -15,6 +15,7 @@ EVIDENCE = (
     "20261026_shot_dispatch_continuity_static.txt",
     "20261026_shot3f_submission_static.txt",
     "20261026_shot_ball_handoff_static.txt",
+    "20261026_shot_synchronous_event_static.txt",
 )
 
 
@@ -96,6 +97,10 @@ def verify(exe: Path) -> None:
         0x144454546: 0x1443FA490,
         0x1444545A6: 0x1443FA490,
         0x1443944D4: 0x144395230,
+        0x1444543D3: 0x144485880,
+        0x1444543FD: 0x144482710,
+        0x14439838B: 0x141AD3400,
+        0x144398537: 0x14439D690,
     }
     jumps = {
         0x15A11E653: 0x144450B80,
@@ -106,6 +111,7 @@ def verify(exe: Path) -> None:
         0x1443D7F50: 0x159F8CEA0,
         0x1443F1EC5: 0x141B6C7E0,
         0x141B7FFC0: 0x151D37610,
+        0x141AD3400: 0x151BB13E0,
     }
     for opcode, edges in ((0xE8, calls), (0xE9, jumps)):
         for address, target in edges.items():
@@ -128,11 +134,32 @@ def verify(exe: Path) -> None:
     check(data[name_start:data.index(b"\0", name_start)] == b"free", "CRT symbol")
     check(data[dll_start:data.index(b"\0", dll_start)] == b"api-ms-win-crt-heap-l1-1-0.dll", "CRT DLL")
 
+    descriptor = struct.unpack_from("<IIIII", data, offset(0x15CF4A03C))
+    index = (0x145D4FAB8 - 0x140000000 - descriptor[4]) // 8
+    lookup = 0x140000000 + descriptor[0] + 8 * index
+    check(lookup == 0x145D4DBD0, "Pool pop lookup slot")
+    name_rva = struct.unpack_from("<Q", data, offset(lookup))[0]
+    name_start = offset(0x140000000 + name_rva) + 2
+    dll_start = offset(0x140000000 + descriptor[3])
+    check(data[name_start:data.index(b"\0", name_start)] == b"InterlockedPopEntrySList",
+          "Pool pop import symbol")
+    check(data[dll_start:data.index(b"\0", dll_start)] == b"KERNEL32.dll", "Pool pop DLL")
+
     for action in (0x36, 0x3F):
         table = struct.unpack_from("<i", data, offset(0x144455704 + (action - 1) * 4))[0]
         check(0x144455704 + table == 0x1444535FF, f"Action {action:x} table")
     start = offset(0x145C405FC)
     check(data[start:start + 4] == bytes.fromhex("6f12033a"), "Submission fractional threshold")
+    table = struct.unpack_from("<i", data, offset(0x144486B98))[0]
+    check(0x144486B80 + table == 0x1444858AE, "Action 3f event producer")
+    for code in (0x1FAA, 0x1FAE):
+        slot = 0x144399384 + (code - 0x1F42) * 4
+        relative = struct.unpack_from("<i", data, offset(slot))[0]
+        check(0x144399384 + relative == 0x144398103, f"Event {code:x} return table")
+    check(struct.unpack_from("<f", data, offset(0x145A1D534))[0] == 25.0,
+          "Event distance coefficient")
+    check(struct.unpack_from("<f", data, offset(0x145A1D5A0))[0] == 0.9150000214576721,
+          "Event distance scale")
 
     # 对本次真正依赖的短叶函数，额外检查控制流和写入域；不扩展为通用模拟器。
     leaf = {a: ins for a, ins in instructions.items() if 0x141B50E00 <= a < 0x141B50EE8}
@@ -206,10 +233,21 @@ def verify(exe: Path) -> None:
         0x1444545AE: "je 0x1444545f2",
         0x1443943C5: "cmp ebp,r12d",
         0x1443943C8: "jle 0x1443944c3",
+        0x1443955E9: "je 0x144397fe7",
+        0x14439814B: "jg 0x144398383",
+        0x14439847C: "ja 0x144398492",
+        0x1443984C9: "jne 0x1443984e7",
+        0x144398522: "je 0x144398529",
+        0x14439D6BD: "ja 0x14439d813",
+        0x14439D816: "mov QWORD PTR [rdi+r15*8],rax",
+        0x151BB1432: "jne 0x151bb1466",
+        0x144398753: "mov bpl,0x1",
+        0x144398103: "mov eax,ebp",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
-          f"{len(jumps)} JMPs; CRT import; action table; height/clone leaf write domains; release branch.")
+          f"{len(jumps)} JMPs; CRT/pool imports; action/event tables; "
+          "height/clone leaf write domains; release/event branches.")
     print("Not verified: natural simultaneous preconditions, intervening defense, full shot-to-goal path.")
 
 
