@@ -21,6 +21,7 @@ EVIDENCE = (
     "20261026_shot_record_model_static.txt",
     "20261026_shot_record_attachment_static.txt",
     "20261020_payload_allocator_boundary_static.txt",
+    "20261026_shot_clock_gate_static.txt",
 )
 
 
@@ -131,6 +132,11 @@ def verify(exe: Path) -> None:
         0x141ABCE58: 0x1443EA8F0,
         0x141ABD12B: 0x1454E8A4C,
         0x141ABD170: 0x1443D5FA0,
+        0x14440515C: 0x141A9B6B0,
+        0x141A9B6E2: 0x1443F2870,
+        0x144405199: 0x1444A1AA0,
+        0x1444051A1: 0x1444A2D70,
+        0x1444051D1: 0x1443F0420,
     }
     jumps = {
         0x15A11E653: 0x144450B80,
@@ -412,6 +418,18 @@ def verify(exe: Path) -> None:
         0x141ABD0A1: "jne 0x141abd0ea",
         0x141A01602: "jmp 0x141a01655",
         0x141ABD180: "je 0x141abd187",
+        0x144405163: "je 0x144405185",
+        0x141A9B6CB: "je 0x141a9b6d9",
+        0x1443F288C: "je 0x1443f29d7",
+        0x1443F29EB: "jns 0x1443f2a0c",
+        0x141A9B709: "jne 0x141a9b734",
+        0x141A9B73C: "je 0x141a9ba8d",
+        0x141A9BA8D: "xor edi,edi",
+        0x14440518C: "je 0x144405196",
+        0x1443F0542: "cmp BYTE PTR [rdi+0xd66],0x0",
+        0x1443F0557: "jl 0x1443f0482",
+        0x1443F0590: "jle 0x1443f0484",
+        0x1443F05B1: "jle 0x1443f0484",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
