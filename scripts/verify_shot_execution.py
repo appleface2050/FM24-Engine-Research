@@ -22,6 +22,7 @@ EVIDENCE = (
     "20261026_shot_record_attachment_static.txt",
     "20261020_payload_allocator_boundary_static.txt",
     "20261026_shot_clock_gate_static.txt",
+    "20261026_shot_postregion_static.txt",
 )
 
 
@@ -137,8 +138,22 @@ def verify(exe: Path) -> None:
         0x144405199: 0x1444A1AA0,
         0x1444051A1: 0x1444A2D70,
         0x1444051D1: 0x1443F0420,
+        0x144405212: 0x141AA4050,
+        0x14440521C: 0x141A9BAA0,
+        0x144405224: 0x1445191C0,
+        0x141AA418E: 0x1443F56D0,
+        0x141AA423D: 0x1444912F0,
+        0x1443F5800: 0x1443EA8F0,
+        0x1443F5910: 0x1443EF8F0,
+        0x1443F5A1F: 0x1443EA8F0,
+        0x141A9BB49: 0x141B3E640,
+        0x141A9BB7D: 0x144415F90,
+        0x141A9BC04: 0x141B3E640,
+        0x141A9BC38: 0x144415F90,
+        0x141B3EBF6: 0x1443BF120,
     }
     jumps = {
+        0x1444912F0: 0x15A170F40,
         0x15A11E653: 0x144450B80,
         0x1454E8A90: 0x1454E8A88,
         0x1454E8A88: 0x14557E7E0,
@@ -244,6 +259,22 @@ def verify(exe: Path) -> None:
     check(data[start:start + 2] == b"\xff\x15", "Second growth free call")
     check(0x141A01664 + struct.unpack_from("<i", data, start + 2)[0] == 0x145D50E90,
           "Second growth CRT free IAT")
+
+    check(data[offset(0x151525812)] == 0x0F, "Post-region opaque branch constant")
+    check(struct.unpack_from("<Q", data, offset(0x157D1CD51))[0] == 0x15A171031,
+          "Post-region opaque nonzero target")
+    check(struct.unpack_from("<Q", data, offset(0x157D1CD59))[0] == 0x158177F24,
+          "Post-region opaque zero target")
+    query = {a: ins for a, ins in instructions.items() if 0x1443F56D0 <= a < 0x1443F5C3A}
+    check({a for a, ins in query.items() if ins.startswith("call ")} ==
+          {0x1443F5800, 0x1443F5910, 0x1443F5A1F}, "Post-region query call domain")
+    stores = set()
+    for ins in query.values():
+        match = re.match(r"(?:mov|movss|movd|movdqa) (?:DWORD|XMMWORD) PTR \[rdi\+0x([0-9a-f]+)\],", ins)
+        if match:
+            stores.add(int(match[1], 16))
+    check(stores == {0xDB0, 0xDB4, 0xDC0, 0xDC4, 0xDC8, 0xDCC},
+          "Post-region query direct B store domain")
 
     # 对本次真正依赖的短叶函数，额外检查控制流和写入域；不扩展为通用模拟器。
     leaf = {a: ins for a, ins in instructions.items() if 0x141B50E00 <= a < 0x141B50EE8}
@@ -430,6 +461,15 @@ def verify(exe: Path) -> None:
         0x1443F0557: "jl 0x1443f0482",
         0x1443F0590: "jle 0x1443f0484",
         0x1443F05B1: "jle 0x1443f0484",
+        0x1443F58C8: "jae 0x1443f58d1",
+        0x1443F58E3: "jle 0x1443f59a2",
+        0x1443F59A8: "jne 0x1443f5b60",
+        0x1443F5A15: "jne 0x1443f5a30",
+        0x141AA4256: "jne 0x141aa43ec",
+        0x141A9BAAD: "je 0x141a9badb",
+        0x141B3E6D6: "je 0x141b3ebe0",
+        0x15A170F6B: "sub r9,QWORD PTR [rcx+0x560]",
+        0x15A170FF0: "add r13b,BYTE PTR [rax-0x3c155e2]",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
