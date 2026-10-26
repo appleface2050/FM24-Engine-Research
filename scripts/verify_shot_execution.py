@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
     "20261026_shot_submission_flight_static.txt",
     "20261026_shot_dispatch_continuity_static.txt",
+    "20261026_shot3f_submission_static.txt",
 )
 
 
@@ -43,6 +44,7 @@ def verify(exe: Path) -> None:
             raise AssertionError(message)
 
     lines = 0
+    instructions = {}
     for filename in EVIDENCE:
         text = (ROOT / filename).read_text()
         check("(bad)" not in text and ".byte" not in text, filename)
@@ -54,6 +56,9 @@ def verify(exe: Path) -> None:
                 start = offset(address)
                 check(data[start:start + len(expected)] == expected, f"Bytes {address:x}")
                 lines += 1
+                fields = line.split("\t", 2)
+                if len(fields) == 3 and fields[2].strip():
+                    instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
     calls = {
         0x144420076: 0x1444290E0,
@@ -66,6 +71,22 @@ def verify(exe: Path) -> None:
         0x14445430D: 0x1443F1070,
         0x14445474E: 0x141ABCA90,
         0x15A0CA1B1: 0x1444482E0,
+        0x14442958A: 0x14444ACC0,
+        0x14442959A: 0x14444A4E0,
+        0x14444AB53: 0x14443E9D0,
+        0x14444B643: 0x14443E9D0,
+        0x1443EDC82: 0x14557E720,
+        0x1443EDCEA: 0x14557E740,
+        0x1443EDEA2: 0x145300B10,
+        0x1443EDED9: 0x14557E720,
+        0x1443EE1B1: 0x14557E720,
+        0x1443EE2C3: 0x1443EA8F0,
+        0x1445298FA: 0x14452AEB0,
+        0x144529912: 0x14452AEB0,
+        0x14452ABAE: 0x144386FA0,
+        0x14444A5B2: 0x141B50E00,
+        0x14444B0EF: 0x141B50E00,
+        0x1443EAC9F: 0x1453017D0,
     }
     jumps = {
         0x15A11E653: 0x144450B80,
@@ -98,8 +119,31 @@ def verify(exe: Path) -> None:
     for action in (0x36, 0x3F):
         table = struct.unpack_from("<i", data, offset(0x144455704 + (action - 1) * 4))[0]
         check(0x144455704 + table == 0x1444535FF, f"Action {action:x} table")
+    start = offset(0x145C405FC)
+    check(data[start:start + 4] == bytes.fromhex("6f12033a"), "Submission fractional threshold")
+
+    # 对本次真正依赖的短叶函数，额外检查控制流和写入域；不扩展为通用模拟器。
+    leaf = {a: ins for a, ins in instructions.items() if 0x141B50E00 <= a < 0x141B50EE8}
+    check(leaf.get(0x141B50E00) == "mov rax,rdx", "Height leaf output binding")
+    writes = {}
+    for address, instruction in leaf.items():
+        parts = instruction.split(" ", 1)
+        mnemonic = parts[0]
+        operands = parts[1] if len(parts) == 2 else ""
+        destination = operands.split(",", 1)[0]
+        check(mnemonic not in {"call", "push", "pop", "stos", "stosb", "stosd", "stosq"},
+              f"Height leaf unexpected effect at {address:x}")
+        if destination in {"rax", "eax", "ax", "al", "ah"}:
+            check(address == 0x141B50E00, f"Height leaf output pointer changed {address:x}")
+        if "[" in destination and mnemonic not in {"cmp", "test", "ucomiss", "comiss"}:
+            writes[address] = instruction
+        if mnemonic.startswith("j"):
+            check(0x141B50E00 <= int(operands, 16) < 0x141B50EE8,
+                  f"Height leaf external branch {address:x}")
+    check(writes == {0x141B50EE3: "movss DWORD PTR [rax],xmm1"}, "Height leaf write domain")
+    check(leaf.get(0x141B50EE7) == "ret", "Height leaf return")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
-          f"{len(jumps)} JMPs; CRT import; action table.")
+          f"{len(jumps)} JMPs; CRT import; action table; height-leaf write domain.")
     print("Not verified: natural simultaneous preconditions, intervening defense, full shot-to-goal path.")
 
 

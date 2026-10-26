@@ -1,8 +1,58 @@
 {
   "target": "FM24 24.4.2+2081827 Windows fm.exe, base 0x140000000",
-  "scope": "薄索引：只覆盖当前P0核心机制及后续方向入口，不是全仓库结论清单。",
+  "scope": "薄索引：覆盖当前射门到进球的条件连接，并保留此前比分生命周期与后续方向入口；不是全仓库结论清单。",
   "status_semantics": "status描述列明边界；局部字节核对不自动升级为完整因果闭合。无本条目宣称最终比分闭环。",
   "mechanisms": [
+    {
+      "id": "shot_execution",
+      "domain": "detailed_match",
+      "claim": "已连接限定候选后缀、实际3f目标准备、行动速度到试算球轨迹初始化及必要预测；射门处理器另有正式球复制后的控制释放点。尚不是同一自然射门进球闭环。",
+      "status": "conditional_connections",
+      "inputs": [
+        "内部属性/上下文、候选动作、行动块速度/旋转、历史和有效模式",
+        "已列时刻/记录、区间容器及对象存储条件"
+      ],
+      "outputs": [
+        "实际动作3f的目标和求解参数",
+        "A速度/旋转成为T初始输入，进入试算球预测",
+        "射门处理器清M+e378并写M+e360=P的检查点"
+      ],
+      "addresses": [
+        "0x15a0ca1b8",
+        "0x14442957a",
+        "0x141b50e00",
+        "0x1443f3653",
+        "0x1444536ed",
+        "0x1443ee248",
+        "0x1443ee2c3",
+        "0x14445430d",
+        "0x1444545f9"
+      ],
+      "evidence": {
+        "reports": [
+          "20261026_射门到进球机制研究.md"
+        ],
+        "raw": [
+          "20261026_shot_submission_flight_static.txt",
+          "20261026_shot_dispatch_continuity_static.txt",
+          "20261026_shot3f_submission_static.txt"
+        ],
+        "scripts": [
+          "scripts/verify_shot_execution.py"
+        ]
+      },
+      "upstream": [
+        "attribute_execution"
+      ],
+      "downstream": [
+        "goal_region"
+      ],
+      "unproved": [
+        "自然上游同时建立候选选择、C+578和记录/时刻前提。",
+        "完整公共生成器、S到B结构复制及前后辅助/虚调用的同路径连续性。",
+        "同一新轨迹的防守/碰撞、释放保持、门线和规则处理到进球。"
+      ]
+    },
     {
       "id": "goal_region",
       "domain": "detailed_match",
