@@ -16,6 +16,7 @@ EVIDENCE = (
     "20261026_shot3f_submission_static.txt",
     "20261026_shot_ball_handoff_static.txt",
     "20261026_shot_synchronous_event_static.txt",
+    "20261026_shot_postcopy_sampling_static.txt",
 )
 
 
@@ -101,6 +102,10 @@ def verify(exe: Path) -> None:
         0x1444543FD: 0x144482710,
         0x14439838B: 0x141AD3400,
         0x144398537: 0x14439D690,
+        0x14445442C: 0x141ABEF60,
+        0x144454445: 0x141ACB310,
+        0x151B724CA: 0x144408CC0,
+        0x151B72553: 0x144408CC0,
     }
     jumps = {
         0x15A11E653: 0x144450B80,
@@ -112,6 +117,7 @@ def verify(exe: Path) -> None:
         0x1443F1EC5: 0x141B6C7E0,
         0x141B7FFC0: 0x151D37610,
         0x141AD3400: 0x151BB13E0,
+        0x141ACB310: 0x151B72450,
     }
     for opcode, edges in ((0xE8, calls), (0xE9, jumps)):
         for address, target in edges.items():
@@ -160,6 +166,10 @@ def verify(exe: Path) -> None:
           "Event distance coefficient")
     check(struct.unpack_from("<f", data, offset(0x145A1D5A0))[0] == 0.9150000214576721,
           "Event distance scale")
+    check(struct.unpack_from("<f", data, offset(0x145A1D45C))[0] == 0.0,
+          "Cached sample fractional threshold")
+    encoded = struct.unpack_from("<I", data, offset(0x1546EEAD4))[0]
+    check(encoded ^ 0x24048968 == 0x20, "Second team sample stack output")
 
     # 对本次真正依赖的短叶函数，额外检查控制流和写入域；不扩展为通用模拟器。
     leaf = {a: ins for a, ins in instructions.items() if 0x141B50E00 <= a < 0x141B50EE8}
@@ -219,6 +229,35 @@ def verify(exe: Path) -> None:
     check(instructions.get(0x141B6C7F3) == "jne 0x141b6c87d",
           "Reference release nonzero branch")
     check(instructions.get(0x141B6C88D) == "ret", "Reference release early return")
+
+    # 完整载荷 writer：检查除栈之外的显式写入及唯一调用，条件仍由报告限定。
+    writer = {a: ins for a, ins in instructions.items() if 0x141ABEF60 <= a < 0x141ABF233}
+    writes = {}
+    writer_calls = []
+    for address, instruction in writer.items():
+        mnemonic, _, operands = instruction.partition(" ")
+        destination = operands.split(",", 1)[0]
+        if mnemonic == "call":
+            writer_calls.append((address, operands))
+        if mnemonic.startswith("j"):
+            check(0x141ABEF60 <= int(operands, 16) < 0x141ABF233,
+                  f"Payload writer external branch {address:x}")
+        if "[" in destination and mnemonic not in {"cmp", "test", "nop", "cs"}:
+            if "[rsp+" not in destination:
+                writes[address] = instruction
+    check(writer_calls == [(0x141ABF224, "0x141ad2c20")], "Payload writer sole growth call")
+    check(writes == {
+        0x141ABF17D: "movaps XMMWORD PTR [r10],xmm0",
+        0x141ABF188: "movaps XMMWORD PTR [r10+0x10],xmm0",
+        0x141ABF1FF: "movaps XMMWORD PTR [rdx+0x30],xmm3",
+        0x141ABF203: "movaps XMMWORD PTR [rdx+0x20],xmm2",
+        0x141ABF207: "movaps XMMWORD PTR [rdx+0x10],xmm1",
+        0x141ABF20B: "movaps XMMWORD PTR [rdx],xmm0",
+        0x141ABF20E: "add QWORD PTR [rcx+0xe228],0x40",
+    }, "Payload writer explicit non-RSP stores")
+    check(writer.get(0x141ABF115) == "lea r10,[rsp+0x30]", "Payload stack alias")
+    check(writer.get(0x141ABF1DB) == "mov rdx,QWORD PTR [rcx+0xe228]", "Payload end alias")
+    check(writer.get(0x141ABF232) == "ret", "Payload writer complete return")
     # 只核对实际空列表分支与调用者对输出/返回值的使用，不推断列表自然为空。
     for address, expected in {
         0x151D3763B: "je 0x151d37833",
@@ -243,11 +282,17 @@ def verify(exe: Path) -> None:
         0x151BB1432: "jne 0x151bb1466",
         0x144398753: "mov bpl,0x1",
         0x144398103: "mov eax,ebp",
+        0x141ABF1E9: "je 0x141abf218",
+        0x144408CDB: "jbe 0x144408d10",
+        0x144408D20: "jne 0x144408d3c",
+        0x144408D28: "jge 0x144408d3c",
+        0x151B724D3: "mov DWORD PTR [rbp+0x1464],eax",
+        0x151B7255C: "mov DWORD PTR [rbp+0x1464],eax",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
           f"{len(jumps)} JMPs; CRT/pool imports; action/event tables; "
-          "height/clone leaf write domains; release/event branches.")
+          "height/clone/payload write domains; release/event/sample branches.")
     print("Not verified: natural simultaneous preconditions, intervening defense, full shot-to-goal path.")
 
 
