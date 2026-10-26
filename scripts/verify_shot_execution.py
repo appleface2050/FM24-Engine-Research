@@ -65,11 +65,14 @@ def verify(exe: Path) -> None:
         0x1444536ED: 0x1443ECC70,
         0x14445430D: 0x1443F1070,
         0x14445474E: 0x141ABCA90,
+        0x15A0CA1B1: 0x1444482E0,
     }
     jumps = {
         0x15A11E653: 0x144450B80,
         0x1454E8A90: 0x1454E8A88,
         0x1454E8A88: 0x14557E7E0,
+        0x144425674: 0x144445EA0,
+        0x144445EA0: 0x15A0C9F80,
     }
     for opcode, edges in ((0xE8, calls), (0xE9, jumps)):
         for address, target in edges.items():
@@ -92,8 +95,9 @@ def verify(exe: Path) -> None:
     check(data[name_start:data.index(b"\0", name_start)] == b"free", "CRT symbol")
     check(data[dll_start:data.index(b"\0", dll_start)] == b"api-ms-win-crt-heap-l1-1-0.dll", "CRT DLL")
 
-    table = struct.unpack_from("<i", data, offset(0x1444557D8))[0]
-    check(0x144455704 + table == 0x1444535FF, "Action 0x36 table")
+    for action in (0x36, 0x3F):
+        table = struct.unpack_from("<i", data, offset(0x144455704 + (action - 1) * 4))[0]
+        check(0x144455704 + table == 0x1444535FF, f"Action {action:x} table")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
           f"{len(jumps)} JMPs; CRT import; action table.")
     print("Not verified: natural simultaneous preconditions, intervening defense, full shot-to-goal path.")
