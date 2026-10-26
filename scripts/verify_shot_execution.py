@@ -19,6 +19,8 @@ EVIDENCE = (
     "20261026_shot_postcopy_sampling_static.txt",
     "20261026_shot_prediction_stop_static.txt",
     "20261026_shot_record_model_static.txt",
+    "20261026_shot_record_attachment_static.txt",
+    "20261020_payload_allocator_boundary_static.txt",
 )
 
 
@@ -114,6 +116,15 @@ def verify(exe: Path) -> None:
         0x141ABCAD4: 0x141AAC200,
         0x141ABCAE7: 0x144528BB0,
         0x141ABCB25: 0x1443D5FA0,
+        0x141A0159F: 0x1418FEF20,
+        0x141A015BC: 0x14557E730,
+        0x1418FEFC4: 0x1452ED750,
+        0x141A001DA: 0x141A00660,
+        0x141A001F7: 0x141A01200,
+        0x141A012A2: 0x141A012C0,
+        0x141B5E68D: 0x141AD19D0,
+        0x141AAC391: 0x1443D4E90,
+        0x1454E8A66: 0x14557E810,
     }
     jumps = {
         0x15A11E653: 0x144450B80,
@@ -158,6 +169,22 @@ def verify(exe: Path) -> None:
     check(data[name_start:data.index(b"\0", name_start)] == b"InterlockedPopEntrySList",
           "Pool pop import symbol")
     check(data[dll_start:data.index(b"\0", dll_start)] == b"KERNEL32.dll", "Pool pop DLL")
+    # 复用已有分配边界的原PE导入身份，不把导入名称当成DLL实现验证。
+    allocator = json.loads((ROOT / "20261020_payload_allocator_boundary_observations.json").read_text())
+    for binding in allocator["import_bindings"]:
+        if binding["symbol"] not in {"malloc", "memmove"}:
+            continue
+        descriptor = struct.unpack_from("<IIIII", data, offset(int(binding["descriptor"], 16)))
+        slot = int(binding["iat"], 16)
+        index = (slot - 0x140000000 - descriptor[4]) // 8
+        lookup = 0x140000000 + descriptor[0] + 8 * index
+        check(lookup == int(binding["lookup"], 16), f"Allocator lookup {binding['symbol']}")
+        hint = 0x140000000 + struct.unpack_from("<Q", data, offset(lookup))[0]
+        check(hint == int(binding["hint_name"], 16), f"Allocator name pointer {binding['symbol']}")
+        start = offset(hint) + 2
+        check(data[start:data.index(b"\0", start)].decode() == binding["symbol"], "Allocator symbol")
+        start = offset(0x140000000 + descriptor[3])
+        check(data[start:data.index(b"\0", start)].decode() == binding["dll"], "Allocator DLL")
 
     for action in (0x36, 0x3F):
         table = struct.unpack_from("<i", data, offset(0x144455704 + (action - 1) * 4))[0]
@@ -188,6 +215,12 @@ def verify(exe: Path) -> None:
           "Model kind lower threshold")
     check(struct.unpack_from("<f", data, offset(0x145582410))[0] == 1.0,
           "Payload accumulation unit constant")
+    start = offset(0x14557E810)
+    check(data[start:start + 2] == b"\xff\x25", "Model malloc thunk")
+    check(0x14557E816 + struct.unpack_from("<i", data, start + 2)[0] == 0x145D50E98,
+          "Model malloc IAT binding")
+    target = struct.unpack_from("<i", data, offset(0x1443D5F88))[0]
+    check(0x1443D5F54 + target == 0x1443D5C0D, "Native event type15 association slot")
 
     # 对本次真正依赖的短叶函数，额外检查控制流和写入域；不扩展为通用模拟器。
     leaf = {a: ins for a, ins in instructions.items() if 0x141B50E00 <= a < 0x141B50EE8}
@@ -338,6 +371,21 @@ def verify(exe: Path) -> None:
         0x1443D614D: "movss DWORD PTR [r12+0x1c8],xmm1",
         0x1443D574B: "mov ecx,0x203008",
         0x1443D5A85: "mov DWORD PTR [rbx+0x1c8],0x0",
+        0x141A00016: "mov QWORD PTR [r12+0x48],0x0",
+        0x141A0001F: "mov QWORD PTR [r12+0x50],0x0",
+        0x141A00028: "mov QWORD PTR [r12+0x58],0x0",
+        0x141AD1A92: "jne 0x141ad1aca",
+        0x141AD1A97: "jne 0x141ad1ade",
+        0x1443D57BF: "je 0x1443d5a7e",
+        0x1443D5C16: "je 0x1443d5ec0",
+        0x141AAC3A3: "jne 0x141aac3de",
+        0x141A01548: "je 0x141a01557",
+        0x141A015C4: "je 0x141a015df",
+        0x141A015E6: "je 0x141a01664",
+        0x141A0167E: "je 0x141a0169e",
+        0x1418FEF30: "je 0x1418fefb9",
+        0x1452ED774: "jne 0x1452ed820",
+        0x1454E8A6E: "je 0x1454e8a57",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
