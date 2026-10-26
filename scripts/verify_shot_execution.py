@@ -14,6 +14,7 @@ EVIDENCE = (
     "20261026_shot_submission_flight_static.txt",
     "20261026_shot_dispatch_continuity_static.txt",
     "20261026_shot3f_submission_static.txt",
+    "20261026_shot_ball_handoff_static.txt",
 )
 
 
@@ -87,6 +88,14 @@ def verify(exe: Path) -> None:
         0x14444A5B2: 0x141B50E00,
         0x14444B0EF: 0x141B50E00,
         0x1443EAC9F: 0x1453017D0,
+        0x1443F1613: 0x1443D7F50,
+        0x1443F1B8A: 0x141B6C7E0,
+        0x1443F1E81: 0x141B6C7E0,
+        0x1443F1E89: 0x141B6C7E0,
+        0x144454474: 0x141B7FFC0,
+        0x144454546: 0x1443FA490,
+        0x1444545A6: 0x1443FA490,
+        0x1443944D4: 0x144395230,
     }
     jumps = {
         0x15A11E653: 0x144450B80,
@@ -94,6 +103,9 @@ def verify(exe: Path) -> None:
         0x1454E8A88: 0x14557E7E0,
         0x144425674: 0x144445EA0,
         0x144445EA0: 0x15A0C9F80,
+        0x1443D7F50: 0x159F8CEA0,
+        0x1443F1EC5: 0x141B6C7E0,
+        0x141B7FFC0: 0x151D37610,
     }
     for opcode, edges in ((0xE8, calls), (0xE9, jumps)):
         for address, target in edges.items():
@@ -142,8 +154,62 @@ def verify(exe: Path) -> None:
                   f"Height leaf external branch {address:x}")
     check(writes == {0x141B50EE3: "movss DWORD PTR [rax],xmm1"}, "Height leaf write domain")
     check(leaf.get(0x141B50EE7) == "ret", "Height leaf return")
+
+    # 延迟行动复制叶：限定 RCX 输出区，并保留真实存在的固定全局写入。
+    leaf = {a: ins for a, ins in instructions.items() if 0x159F8CEA0 <= a < 0x159F8D07D}
+    stores = 0
+    for address, instruction in leaf.items():
+        parts = instruction.split(" ", 1)
+        mnemonic = parts[0]
+        operands = parts[1] if len(parts) == 2 else ""
+        destination = operands.split(",", 1)[0]
+        check(mnemonic in {"mov", "movaps", "movsx", "movzx", "test", "je", "jmp",
+                           "xor", "lea", "sub", "ret"}, f"Clone leaf effect {address:x}")
+        check(destination not in {"rcx", "ecx", "cx", "cl", "ch"},
+              f"Clone leaf output pointer changed {address:x}")
+        if mnemonic.startswith("j"):
+            check(0x159F8CEA0 <= int(operands, 16) < 0x159F8D07D,
+                  f"Clone leaf external branch {address:x}")
+        if "[" in destination and mnemonic not in {"test"}:
+            if address == 0x159F8CF2E:
+                check(instruction == "sub QWORD PTR [rax],0xffffffff90a20f90",
+                      "Clone leaf fixed global operation")
+                continue
+            match = re.fullmatch(r"(XMMWORD|QWORD|DWORD|WORD|BYTE) PTR \[rcx(?:\+0x([0-9a-f]+))?\]",
+                                 destination)
+            check(match is not None and mnemonic in {"mov", "movaps"},
+                  f"Clone leaf unexpected store {address:x}")
+            width = {"XMMWORD": 16, "QWORD": 8, "DWORD": 4, "WORD": 2, "BYTE": 1}[match[1]]
+            displacement = int(match[2] or "0", 16)
+            check(displacement + width <= 0xC2, f"Clone leaf output extent {address:x}")
+            stores += 1
+    check(stores > 0 and leaf.get(0x159F8D07C) == "ret", "Complete clone leaf")
+    check(leaf.get(0x159F8CF27, "").startswith("lea rax,[rip+0x1eead92]"),
+          "Clone leaf fixed global pointer")
+    check(0x159F8CF2E + 0x1EEAD92 == 0x15BE77CC0, "Clone leaf global address")
+    check(instructions.get(0x141B6C7F0) == "lock dec DWORD PTR [rcx]",
+          "Reference release decrement")
+    check(instructions.get(0x141B6C7F3) == "jne 0x141b6c87d",
+          "Reference release nonzero branch")
+    check(instructions.get(0x141B6C88D) == "ret", "Reference release early return")
+    # 只核对实际空列表分支与调用者对输出/返回值的使用，不推断列表自然为空。
+    for address, expected in {
+        0x151D3763B: "je 0x151d37833",
+        0x151D37835: "mov BYTE PTR [r15+0x2],al",
+        0x144454479: "cmp BYTE PTR [rsp+0xfa],0x0",
+        0x144454481: "je 0x144454532",
+        0x1443FA4B3: "je 0x1443faa94",
+        0x1443FAA94: "xor eax,eax",
+        0x14445454B: "test rax,rax",
+        0x14445454E: "je 0x14445458b",
+        0x1444545AB: "test rax,rax",
+        0x1444545AE: "je 0x1444545f2",
+        0x1443943C5: "cmp ebp,r12d",
+        0x1443943C8: "jle 0x1443944c3",
+    }.items():
+        check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
-          f"{len(jumps)} JMPs; CRT import; action table; height-leaf write domain.")
+          f"{len(jumps)} JMPs; CRT import; action table; height/clone leaf write domains; release branch.")
     print("Not verified: natural simultaneous preconditions, intervening defense, full shot-to-goal path.")
 
 
