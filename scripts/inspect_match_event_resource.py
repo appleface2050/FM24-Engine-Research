@@ -1,4 +1,4 @@
-"""只读提取 FM24 比赛事件资源中的两个记录；不执行游戏。"""
+"""只读提取 FM24 比赛事件资源中的指定记录；不执行游戏。"""
 
 import argparse
 import struct
@@ -50,7 +50,7 @@ def find_member(data: bytes, wanted: str) -> tuple[int, int, int]:
 
 
 def inspect(source: Path):
-    """读取事件110和1151的变体数与权重，不推断运行时实际加载。"""
+    """读取事件110、192和1151的变体数与权重，不推断运行时实际加载。"""
     data = source.read_bytes()
     start, stored, plain = find_member(data, 'simatch/events/match_events.xml')
     end = start + stored
@@ -70,7 +70,7 @@ def inspect(source: Path):
     ids = [int(event.find("integer[@id='id']").get('value')) for event in events]
     print(f'events={len(ids)} unique={len(set(ids))} min={min(ids)} max={max(ids)} '
           f'ordered_contiguous={ids == list(range(len(ids)))}')
-    for event_id in (110, 1151):
+    for event_id in (110, 192, 1151):
         records = [event for event in events
                    if event.find("integer[@id='id']") is not None
                    and event.find("integer[@id='id']").get('value') == str(event_id)]

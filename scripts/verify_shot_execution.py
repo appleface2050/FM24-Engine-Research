@@ -41,6 +41,7 @@ EVIDENCE = (
     "20261027_goal_after_score_event_static.txt",
     "20261027_goal_event2000_timing_static.txt",
     "20261027_goal_event2000_history_static.txt",
+    "20261027_goal_event_vector_append_static.txt",
 )
 
 
@@ -81,6 +82,10 @@ def verify(exe: Path) -> None:
     displacement = struct.unpack_from("<i", data, offset(classifier_table + 2 * 4))[0]
     check(classifier_table + displacement == 0x14439451F, "Event 0x2000 classification")
 
+    final_table = 0x144399384
+    displacement = struct.unpack_from("<i", data, offset(final_table + (0x2000 - 0x1F42) * 4))[0]
+    check(final_table + displacement == 0x144398103, "Event 0x2000 final dispatch")
+
     lines = 0
     instructions = {}
     for filename in EVIDENCE:
@@ -99,6 +104,7 @@ def verify(exe: Path) -> None:
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
     calls = {
+        0x14439D7E3: 0x14557E740,
         0x144394274: 0x1443944F0,
         0x1443944D4: 0x144395230,
         0x141A9C9DD: 0x14557EA20,
