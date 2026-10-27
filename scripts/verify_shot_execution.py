@@ -40,6 +40,7 @@ EVIDENCE = (
     "20261027_goal_score_record_write_static.txt",
     "20261027_goal_after_score_event_static.txt",
     "20261027_goal_event2000_timing_static.txt",
+    "20261027_goal_event2000_history_static.txt",
 )
 
 
