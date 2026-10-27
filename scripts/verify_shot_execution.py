@@ -29,6 +29,7 @@ EVIDENCE = (
     "20261027_shot_goal_time_static.txt",
     "20261027_shot_event_history_static.txt",
     "20261027_shot_event_history_rules_static.txt",
+    "20261027_event_resource_loading_static.txt",
 )
 
 
@@ -353,6 +354,8 @@ def verify(exe: Path) -> None:
     check(data[start:start + 2] == b"\xff\x15" and
           0x144398354 + struct.unpack_from("<i", data, start + 2)[0] == 0x145D50E90,
           "Second event old vector free IAT")
+    check([((r * 30) >> 32) for r in (0, 1 << 31, (1 << 32) - 1)] == [0, 15, 29],
+          "Three-variant weighted-selection example")
     motion_ranges = ((0x144415F90, 0x144416190), (0x144416228, 0x14441626C),
                      (0x1444162EE, 0x144416336), (0x144416640, 0x144416689))
     check(not any(ins.startswith("call ") for address, ins in instructions.items()
@@ -591,6 +594,13 @@ def verify(exe: Path) -> None:
         0x1443EBA10: "mov DWORD PTR [r15+0x1030],eax",
         0x1443EBA60: "mov DWORD PTR [r15+0xd24],esi",
         0x1443EBA67: "mov DWORD PTR [r15+0x1030],esi",
+        0x144390A70: "cmp DWORD PTR [rax],0x65767473",
+        0x1443913D4: "mov rbx,QWORD PTR [rax+rcx*8]",
+        0x144391B50: "cmp DWORD PTR [rdx],0x65766172",
+        0x1443920A0: "cmp DWORD PTR [rax],0x70726f62",
+        0x1443920D2: "mov WORD PTR [r15+0x34],ax",
+        0x1443927D3: "movsx ebx,WORD PTR [rbx+0x34]",
+        0x1443927D9: "mov DWORD PTR [rsi+0x38],edx",
         0x144395718: "js 0x144395730",
         0x14439573F: "jb 0x144395760",
         0x144395796: "js 0x1443958c0",
