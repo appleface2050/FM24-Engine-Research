@@ -28,6 +28,7 @@ EVIDENCE = (
     "20261027_shot_opaque_23bf_static.txt",
     "20261027_shot_goal_time_static.txt",
     "20261027_shot_event_history_static.txt",
+    "20261027_shot_event_history_rules_static.txt",
 )
 
 
@@ -590,6 +591,20 @@ def verify(exe: Path) -> None:
         0x1443EBA10: "mov DWORD PTR [r15+0x1030],eax",
         0x1443EBA60: "mov DWORD PTR [r15+0xd24],esi",
         0x1443EBA67: "mov DWORD PTR [r15+0x1030],esi",
+        0x144395718: "js 0x144395730",
+        0x14439573F: "jb 0x144395760",
+        0x144395796: "js 0x1443958c0",
+        0x1443958C3: "jne 0x144397f8d",
+        0x14439591F: "jne 0x144395a10",
+        0x1443962E9: "ja 0x144396469",
+        0x14439634D: "ja 0x14439675d",
+        0x144396878: "jne 0x1443969d4",
+        0x144396C15: "jne 0x1443968b9",
+        0x144396F13: "jne 0x144396f73",
+        0x144396F86: "je 0x144397054",
+        0x144397086: "ja 0x144397eba",
+        0x144397F1A: "jne 0x144397f51",
+        0x144397F5D: "jne 0x144398838",
         0x144397FCD: "jne 0x144397fe7",
         0x144398009: "mov BYTE PTR [rcx+rax*1+0xd848],0x1",
         0x144398040: "jge 0x144398101",
