@@ -23,6 +23,8 @@ EVIDENCE = (
     "20261020_payload_allocator_boundary_static.txt",
     "20261026_shot_clock_gate_static.txt",
     "20261026_shot_postregion_static.txt",
+    "20261027_shot_motion_record_static.txt",
+    "20261027_shot_opaque_event_static.txt",
 )
 
 
@@ -151,6 +153,7 @@ def verify(exe: Path) -> None:
         0x141A9BC04: 0x141B3E640,
         0x141A9BC38: 0x144415F90,
         0x141B3EBF6: 0x1443BF120,
+        0x15A172FFE: 0x1443941A0,
     }
     jumps = {
         0x1444912F0: 0x15A170F40,
@@ -275,6 +278,34 @@ def verify(exe: Path) -> None:
             stores.add(int(match[1], 16))
     check(stores == {0xDB0, 0xDB4, 0xDC0, 0xDC4, 0xDC8, 0xDCC},
           "Post-region query direct B store domain")
+
+    # TLS模板只证明文件中的初始化输入，不声称运行期槽值一直未变。
+    tls_rva, tls_size = struct.unpack_from("<II", data, optional + 112 + 9 * 8)
+    check(tls_rva == 0x5D46470 and tls_size == 40, "TLS directory binding")
+    tls_start, tls_end, tls_index, _, tls_zero, _ = struct.unpack_from(
+        "<QQQQII", data, offset(0x140000000 + tls_rva))
+    check((tls_start, tls_end, tls_index, tls_zero) ==
+          (0x15CF4B018, 0x15D6197A0, 0x14638EEC0, 0), "TLS template identity")
+    check(tls_end - tls_start == 0x6CE788, "TLS initialized extent")
+    check(struct.unpack_from("<Q", data, offset(tls_start + 0x6CCC88))[0] ==
+          0xFFFFFFFFC3A20F43, "Opaque TLS template slot")
+    for address, expected in ((0x153F65EEB, 0x15A171BD8),
+                              (0x153F65EF3, 0x15A173003),
+                              (0x156FCE5BE, 0x15A995CE0)):
+        check(struct.unpack_from("<Q", data, offset(address))[0] == expected,
+              f"Opaque event data pointer {address:x}")
+    event_word = struct.unpack_from("<H", data, offset(0x15323BF20))[0]
+    check(event_word == 0xF461, "Opaque event word input")
+    check(((0x04F7 ^ 0x2A06) + event_word) & 0xFFFF == 0x2352,
+          "Event low word under equal shared-page reads")
+    motion_ranges = ((0x144415F90, 0x144416190), (0x144416228, 0x14441626C),
+                     (0x1444162EE, 0x144416336), (0x144416640, 0x144416689))
+    check(not any(ins.startswith("call ") for address, ins in instructions.items()
+                  if any(lo <= address < hi for lo, hi in motion_ranges)),
+          "Selected motion-record blocks have no CALL")
+    for kind in (3, 6):
+        check(struct.unpack_from("<i", data, offset(0x145C4AD10 + (kind - 1) * 4))[0] == 20,
+              f"Motion-record kind {kind} extension duration")
 
     # 对本次真正依赖的短叶函数，额外检查控制流和写入域；不扩展为通用模拟器。
     leaf = {a: ins for a, ins in instructions.items() if 0x141B50E00 <= a < 0x141B50EE8}
@@ -470,6 +501,21 @@ def verify(exe: Path) -> None:
         0x141B3E6D6: "je 0x141b3ebe0",
         0x15A170F6B: "sub r9,QWORD PTR [rcx+0x560]",
         0x15A170FF0: "add r13b,BYTE PTR [rax-0x3c155e2]",
+        0x144415FD5: "mov QWORD PTR [rdx],r13",
+        0x144416018: "jle 0x144416228",
+        0x144416267: "jmp 0x144415fcc",
+        0x144416163: "je 0x144416190",
+        0x14441632A: "je 0x144416340",
+        0x14441632F: "je 0x14441637c",
+        0x144416331: "jmp 0x144416640",
+        0x144416684: "jmp 0x144416300",
+        0x15A171BAB: "mov rbx,QWORD PTR [rbp+0x73c98725]",
+        0x15A171BB2: "lea rbx,[rbx+0x3c5df0bd]",
+        0x15A171BBE: "sete bpl",
+        0x15A171BCC: "mov rbp,QWORD PTR [r8+rbp*8]",
+        0x15A173004: "add rsp,0xb8",
+        0x15A172F76: "mov bp,0x4f7",
+        0x15A172F7A: "xor bp,0x2a06",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
