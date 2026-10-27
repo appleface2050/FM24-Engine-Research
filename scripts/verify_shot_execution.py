@@ -35,6 +35,7 @@ EVIDENCE = (
     "20261027_goal_region_admission_static.txt",
     "20261027_goal_team_roster_static.txt",
     "20261027_goal_team_roster_continuation_static.txt",
+    "20261027_goal_team_update_return_static.txt",
 )
 
 
@@ -82,6 +83,7 @@ def verify(exe: Path) -> None:
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
     calls = {
+        0x141B729A1: 0x141B8B8D0,
         0x141B70CEF: 0x141B3CB50,
         0x144420076: 0x1444290E0,
         0x14441A2D6: 0x14441FFF0,
