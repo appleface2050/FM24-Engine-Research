@@ -693,6 +693,14 @@ def verify(exe: Path) -> None:
         0x1443987C7: "ja 0x1443988e0",
         0x1443988EA: "ja 0x1443989da",
         0x1443989E1: "jne 0x144398103",
+        0x141B716E2: "setne al",
+        0x141B716FE: "jne 0x141b71712",
+        0x141B7171B: "ja 0x141b711b0",
+        0x141B711E5: "je 0x141b71230",
+        0x141B711F6: "jbe 0x141b71280",
+        0x141B71558: "je 0x141b7157d",
+        0x141B7155D: "je 0x141b71570",
+        0x141B715CC: "je 0x141b70ab0",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
