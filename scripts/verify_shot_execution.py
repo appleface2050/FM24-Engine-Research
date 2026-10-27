@@ -25,6 +25,8 @@ EVIDENCE = (
     "20261026_shot_postregion_static.txt",
     "20261027_shot_motion_record_static.txt",
     "20261027_shot_opaque_event_static.txt",
+    "20261027_shot_opaque_23bf_static.txt",
+    "20261027_shot_goal_time_static.txt",
 )
 
 
@@ -154,6 +156,7 @@ def verify(exe: Path) -> None:
         0x141A9BC38: 0x144415F90,
         0x141B3EBF6: 0x1443BF120,
         0x15A172FFE: 0x1443941A0,
+        0x144394274: 0x1443944F0,
     }
     jumps = {
         0x1444912F0: 0x15A170F40,
@@ -298,6 +301,43 @@ def verify(exe: Path) -> None:
     check(event_word == 0xF461, "Opaque event word input")
     check(((0x04F7 ^ 0x2A06) + event_word) & 0xFFFF == 0x2352,
           "Event low word under equal shared-page reads")
+    # 选定 DL=1/C非空分支；不把另一尾部的2352参数套到此路径。
+    for address, expected in ((0x1595B942F, 0x15A17140B),
+                              (0x1595B9437, 0x1585FC9FD),
+                              (0x1482DA874, 0x1437E87BF),
+                              (0x149C0FD29, 0x154E5D153)):
+        check(struct.unpack_from("<Q", data, offset(address))[0] == expected,
+              f"Selected opaque table {address:x}")
+    for displacement, fmt, expected in (
+        (0x6CC200, "<Q", 0x775E2D6E), (0x6CC768, "<H", 0xEB65),
+        (0x6CCA00, "<B", 0x5E), (0x6CCA40, "<B", 0x44),
+        (0x6CCBF0, "<B", 0x57), (0x6CCD08, "<Q", 0x1460CE200),
+        (0x6CCA18, "<B", 0xE0), (0x6CCB28, "<I", 0x50618C78),
+        (0x6CC618, "<I", 0xDD3B196A),
+    ):
+        check(struct.unpack_from(fmt, data, offset(tls_start + displacement))[0] == expected,
+              f"Selected opaque TLS template {displacement:x}")
+    for address, expected in ((0x1492949ED, 0x48), (0x14F09880D, 0x35),
+                              (0x157B52FA6, 0x6E)):
+        check(data[offset(address)] == expected, f"Selected opaque byte input {address:x}")
+    check((0xEB65 + 0x385A) & 0xFFFF == 0x23BF, "Selected event word")
+    check((0x775E2D6E & 0xB455F79F) - 0x34542506 == 8,
+          "Selected opaque stack adjustment under template")
+    check(0x1437E87BF + 0x069F394E == 0x14A1DC10D,
+          "Selected opaque indirect target")
+    check(0x15E638200 - 0x044C6DF2 == 0x15A17140E,
+          "Selected opaque return target")
+    check(0x154E5D153 - 0x05EF216B + 0x040B9929 == 0x153024911,
+          "Selected opaque second indirect target")
+    check(0x15536738D + (0xA6EFFE6F & 0x55F0BC4F) == 0x15A172FDC,
+          "Selected opaque final return target")
+    check(0x23BF - 0x2248 >= 0x31 and 0x23BF - 0x2002 > 0x342,
+          "Selected event classifier AL=0")
+    check(struct.unpack_from("<I", data, offset(0x14565294C))[0] == 0x3F733333,
+          "Goal substep float32 upper cap .95")
+    # 仅核对人工浮点界证明用到的常数；不模拟游戏或替代自然下界证明。
+    cap = struct.unpack_from("<f", data, offset(0x14565294C))[0]
+    check(cap + 1 / 32 < 1, "Goal-time bounded rounding margin")
     motion_ranges = ((0x144415F90, 0x144416190), (0x144416228, 0x14441626C),
                      (0x1444162EE, 0x144416336), (0x144416640, 0x144416689))
     check(not any(ins.startswith("call ") for address, ins in instructions.items()
@@ -516,6 +556,26 @@ def verify(exe: Path) -> None:
         0x15A173004: "add rsp,0xb8",
         0x15A172F76: "mov bp,0x4f7",
         0x15A172F7A: "xor bp,0x2a06",
+        0x15A1713D2: "js 0x1542c1661",
+        0x15A1713FC: "setne r13b",
+        0x15857C553: "lea rsp,[rcx-0x34542506]",
+        0x15857C6BF: "jmp r10",
+        0x15A171869: "cmovge r14,r9",
+        0x15A171874: "jmp r14",
+        0x14439450D: "ja 0x144394520",
+        0x144394520: "xor eax,eax",
+        0x1443942A5: "je 0x1443942e8",
+        0x1443942EF: "cmp ebp,0xffffffff",
+        0x1443943C0: "mov DWORD PTR [rsp+0x38],r13d",
+        0x1443952A3: "mov QWORD PTR [r12+0x13a0],rcx",
+        0x1443955FE: "jne 0x144397fa7",
+        0x1443EB27D: "minss xmm2,xmm1",
+        0x1443EB285: "cvtsi2ss xmm9,esi",
+        0x1443EB28A: "addss xmm9,xmm2",
+        0x1443EBA0B: "cvttss2si eax,xmm9",
+        0x1443EBA10: "mov DWORD PTR [r15+0x1030],eax",
+        0x1443EBA60: "mov DWORD PTR [r15+0xd24],esi",
+        0x1443EBA67: "mov DWORD PTR [r15+0x1030],esi",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
