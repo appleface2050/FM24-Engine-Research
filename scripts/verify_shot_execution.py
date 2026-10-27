@@ -27,6 +27,7 @@ EVIDENCE = (
     "20261027_shot_opaque_event_static.txt",
     "20261027_shot_opaque_23bf_static.txt",
     "20261027_shot_goal_time_static.txt",
+    "20261027_shot_event_history_static.txt",
 )
 
 
@@ -157,6 +158,9 @@ def verify(exe: Path) -> None:
         0x141B3EBF6: 0x1443BF120,
         0x15A172FFE: 0x1443941A0,
         0x144394274: 0x1443944F0,
+        0x144398279: 0x1418FEF20,
+        0x14439828E: 0x14557E740,
+        0x1443982A3: 0x14557E730,
     }
     jumps = {
         0x1444912F0: 0x15A170F40,
@@ -205,7 +209,7 @@ def verify(exe: Path) -> None:
     # 复用已有分配边界的原PE导入身份，不把导入名称当成DLL实现验证。
     allocator = json.loads((ROOT / "20261020_payload_allocator_boundary_observations.json").read_text())
     for binding in allocator["import_bindings"]:
-        if binding["symbol"] not in {"malloc", "memmove"}:
+        if binding["symbol"] not in {"malloc", "memmove", "memset", "free"}:
             continue
         descriptor = struct.unpack_from("<IIIII", data, offset(int(binding["descriptor"], 16)))
         slot = int(binding["iat"], 16)
@@ -338,6 +342,16 @@ def verify(exe: Path) -> None:
     # 仅核对人工浮点界证明用到的常数；不模拟游戏或替代自然下界证明。
     cap = struct.unpack_from("<f", data, offset(0x14565294C))[0]
     check(cap + 1 / 32 < 1, "Goal-time bounded rounding margin")
+    check(0x23BF - 0x1F40 == 0x47F and 0x68 + 4 * 0x47F == 0x1264,
+          "Second event resource index and time slot")
+    check(0xD848 + 0x47F == 0xDCC7 and 0xDCC7 + 0x4C4 == 0xE18B,
+          "Second event side flags")
+    check(max(1 + 1 // 2, 1 + 0x32) * 8 == 408,
+          "Second event vector allocation size")
+    start = offset(0x14439834E)
+    check(data[start:start + 2] == b"\xff\x15" and
+          0x144398354 + struct.unpack_from("<i", data, start + 2)[0] == 0x145D50E90,
+          "Second event old vector free IAT")
     motion_ranges = ((0x144415F90, 0x144416190), (0x144416228, 0x14441626C),
                      (0x1444162EE, 0x144416336), (0x144416640, 0x144416689))
     check(not any(ins.startswith("call ") for address, ins in instructions.items()
@@ -576,6 +590,23 @@ def verify(exe: Path) -> None:
         0x1443EBA10: "mov DWORD PTR [r15+0x1030],eax",
         0x1443EBA60: "mov DWORD PTR [r15+0xd24],esi",
         0x1443EBA67: "mov DWORD PTR [r15+0x1030],esi",
+        0x144397FCD: "jne 0x144397fe7",
+        0x144398009: "mov BYTE PTR [rcx+rax*1+0xd848],0x1",
+        0x144398040: "jge 0x144398101",
+        0x14439804F: "je 0x144398101",
+        0x144398070: "jb 0x144398121",
+        0x14439814B: "jg 0x144398383",
+        0x144398154: "add rsi,0x32",
+        0x144398220: "jae 0x144398323",
+        0x1443982DA: "je 0x144398345",
+        0x144398445: "mov DWORD PTR [rax+0x8],ecx",
+        0x14439846E: "jne 0x144398492",
+        0x14439854B: "mov DWORD PTR [r12+rcx*4+0x68],eax",
+        0x144398550: "inc WORD PTR [r12+0x38]",
+        0x1443985BE: "jne 0x144398753",
+        0x1443987C7: "ja 0x1443988e0",
+        0x1443988EA: "ja 0x1443989da",
+        0x1443989E1: "jne 0x144398103",
     }.items():
         check(instructions.get(address) == expected, f"Handoff branch {address:x}")
     print(f"PASS: target identity; {lines} byte lines; {len(calls)} CALLs; "
