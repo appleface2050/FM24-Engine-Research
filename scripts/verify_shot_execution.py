@@ -37,6 +37,7 @@ EVIDENCE = (
     "20261027_goal_team_roster_continuation_static.txt",
     "20261027_goal_team_update_return_static.txt",
     "20261027_goal_pending_score_entry_static.txt",
+    "20261027_goal_score_record_write_static.txt",
 )
 
 
@@ -65,6 +66,9 @@ def verify(exe: Path) -> None:
         """不依赖可被 python -O 禁用的 assert。"""
         if not condition:
             raise AssertionError(message)
+
+    check(struct.unpack_from("<Q", data, offset(0x145608078 + 0x28))[0]
+          == 0x140269570, "FIXTURE_RESULT +28 getter binding")
 
     lines = 0
     instructions = {}
