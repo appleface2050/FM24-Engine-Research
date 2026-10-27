@@ -67,6 +67,9 @@ def inspect(source: Path):
     events = root.find("list[@id='evts']")
     if events is None:
         raise ValueError('missing evts')
+    ids = [int(event.find("integer[@id='id']").get('value')) for event in events]
+    print(f'events={len(ids)} unique={len(set(ids))} min={min(ids)} max={max(ids)} '
+          f'ordered_contiguous={ids == list(range(len(ids)))}')
     for event_id in (110, 1151):
         records = [event for event in events
                    if event.find("integer[@id='id']") is not None

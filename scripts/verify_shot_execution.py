@@ -30,6 +30,7 @@ EVIDENCE = (
     "20261027_shot_event_history_static.txt",
     "20261027_shot_event_history_rules_static.txt",
     "20261027_event_resource_loading_static.txt",
+    "20261027_event_resource_cache_static.txt",
 )
 
 
@@ -160,6 +161,9 @@ def verify(exe: Path) -> None:
         0x141B3EBF6: 0x1443BF120,
         0x15A172FFE: 0x1443941A0,
         0x144394274: 0x1443944F0,
+        0x144390D7D: 0x144525B70,
+        0x141995355: 0x144365BA0,
+        0x1419954E5: 0x144365BA0,
         0x144398279: 0x1418FEF20,
         0x14439828E: 0x14557E740,
         0x1443982A3: 0x14557E730,
@@ -594,6 +598,14 @@ def verify(exe: Path) -> None:
         0x1443EBA10: "mov DWORD PTR [r15+0x1030],eax",
         0x1443EBA60: "mov DWORD PTR [r15+0xd24],esi",
         0x1443EBA67: "mov DWORD PTR [r15+0x1030],esi",
+        0x144390D3C: "cmp DWORD PTR [rbp+0x570],0x4c4",
+        0x144390D46: "jne 0x144392926",
+        0x144390DB6: "cmp rax,0x4c4",
+        0x14199538C: "mov DWORD PTR [rcx+0x10],eax",
+        0x144525BCF: "lea rdx,[rsi+0x38]",
+        0x14452601B: "lea rdx,[rbx+0x34]",
+        0x14452652F: "lea rdx,[r14+0x38]",
+        0x1445266D7: "lea rdx,[rdi+0x34]",
         0x144390A70: "cmp DWORD PTR [rax],0x65767473",
         0x1443913D4: "mov rbx,QWORD PTR [rax+rcx*8]",
         0x144391B50: "cmp DWORD PTR [rdx],0x65766172",
