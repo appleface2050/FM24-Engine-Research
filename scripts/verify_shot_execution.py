@@ -34,6 +34,7 @@ EVIDENCE = (
     "20261027_shot_region_event_entry_static.txt",
     "20261027_goal_region_admission_static.txt",
     "20261027_goal_team_roster_static.txt",
+    "20261027_goal_team_roster_continuation_static.txt",
 )
 
 
