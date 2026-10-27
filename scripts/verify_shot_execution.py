@@ -32,6 +32,7 @@ EVIDENCE = (
     "20261027_event_resource_loading_static.txt",
     "20261027_event_resource_cache_static.txt",
     "20261027_shot_region_event_entry_static.txt",
+    "20261027_goal_region_admission_static.txt",
 )
 
 
@@ -164,6 +165,12 @@ def verify(exe: Path) -> None:
         0x144394274: 0x1443944F0,
         0x144405291: 0x1444A3410,
         0x1444A3465: 0x141A9BD20,
+        0x1444A36B3: 0x141A8F6F0,
+        0x1444A3894: 0x144519C40,
+        0x1444A41AA: 0x141A9C120,
+        0x151AF75AF: 0x141B70800,
+        0x151AF75BB: 0x141B70800,
+        0x151AF75DC: 0x141A9C400,
         0x144390D7D: 0x144525B70,
         0x141995355: 0x144365BA0,
         0x1419954E5: 0x144365BA0,
@@ -173,6 +180,7 @@ def verify(exe: Path) -> None:
     }
     jumps = {
         0x1444912F0: 0x15A170F40,
+        0x141A9C120: 0x151AF7570,
         0x15A11E653: 0x144450B80,
         0x1454E8A90: 0x1454E8A88,
         0x1454E8A88: 0x14557E7E0,
@@ -363,6 +371,15 @@ def verify(exe: Path) -> None:
           "Second event old vector free IAT")
     check([((r * 30) >> 32) for r in (0, 1 << 31, (1 << 32) - 1)] == [0, 15, 29],
           "Three-variant weighted-selection example")
+    # 几何叶函数整个实际范围无调用和内存写入；不替调用者推断足球含义。
+    geometry = {a: ins for a, ins in instructions.items() if 0x141A8F6F0 <= a < 0x141A8F766}
+    check(geometry.get(0x141A8F765) == "ret", "Geometry leaf complete")
+    for address, ins in geometry.items():
+        mnemonic, _, operands = ins.partition(" ")
+        destination = operands.split(",", 1)[0]
+        check(mnemonic != "call", f"Geometry leaf call {address:x}")
+        check("[" not in destination or mnemonic in {"cmp", "test", "ucomiss"},
+              f"Geometry leaf memory store {address:x}")
     motion_ranges = ((0x144415F90, 0x144416190), (0x144416228, 0x14441626C),
                      (0x1444162EE, 0x144416336), (0x144416640, 0x144416689))
     check(not any(ins.startswith("call ") for address, ins in instructions.items()
@@ -601,6 +618,17 @@ def verify(exe: Path) -> None:
         0x1443EBA10: "mov DWORD PTR [r15+0x1030],eax",
         0x1443EBA60: "mov DWORD PTR [r15+0xd24],esi",
         0x1443EBA67: "mov DWORD PTR [r15+0x1030],esi",
+        0x1444A3581: "jne 0x1444a35cf",
+        0x1444A36DC: "je 0x1444a3727",
+        0x1444A372A: "je 0x1444a37c8",
+        0x1444A389B: "je 0x1444a3d4f",
+        0x144519C53: "je 0x144519e92",
+        0x1444A3DA2: "jae 0x1444a3f1b",
+        0x1444A3DBA: "jg 0x1444a3dcd",
+        0x1444A3DCF: "jne 0x1444a3df3",
+        0x1444A3E24: "je 0x1444a3e37",
+        0x1444A415A: "je 0x1444a4183",
+        0x151AF75C0: "mov QWORD PTR [rsi+0xe348],rdi",
         0x141B3E6BC: "jle 0x141b3ebfb",
         0x1445191DA: "je 0x144519313",
         0x1445191FA: "jg 0x1445193a4",
