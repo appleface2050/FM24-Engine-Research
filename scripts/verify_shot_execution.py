@@ -94,6 +94,10 @@ def verify(exe: Path) -> None:
 
     check(struct.unpack_from("<Q", data, offset(0x145608078 + 0x28))[0]
           == 0x140269570, "FIXTURE_RESULT +28 getter binding")
+    check(struct.unpack_from("<f", data, offset(0x145A1D53C))[0] == 30.0,
+          "Team geometry comparison constant")
+    check(struct.unpack_from("<f", data, offset(0x145A1D4EC))[0] == 5.0,
+          "Team geometry distance offset")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
