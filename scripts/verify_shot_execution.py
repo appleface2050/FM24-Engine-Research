@@ -57,6 +57,7 @@ EVIDENCE = (
     "20261028_goal_team_context_initialization_static.txt",
     "20261028_goal_team_context_geometry_static.txt",
     "20261028_goal_team_context_score_classification_static.txt",
+    "20261028_goal_team_context_position_rng_static.txt",
 )
 
 
@@ -140,6 +141,7 @@ def verify(exe: Path) -> None:
         0x14456D033: 0x14456E6E0,
         0x14456D0DF: 0x14456E910,
         0x14456E205: 0x141ABED80,
+        0x14456D7A8: 0x141AD1B20,
         0x141A9E036: 0x141ABCA90,
         0x141A9E057: 0x141B41670,
         0x141A9E10E: 0x1443941A0,
@@ -265,6 +267,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x141AD1B20: 0x151B9B610,
         0x14456E6E0: 0x15A3C1610,
         0x141A9F498: 0x141AA1AD0,
         0x144398966: 0x144398103,
