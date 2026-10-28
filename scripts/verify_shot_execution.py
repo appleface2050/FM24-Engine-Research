@@ -76,6 +76,7 @@ EVIDENCE = (
     "20261028_goal_physics_header_handoff_static.txt",
     "20261028_goal_environment_override_static.txt",
     "20261028_goal_environment_constructor_static.txt",
+    "20261028_goal_environment_match_update_static.txt",
 )
 
 
@@ -138,6 +139,13 @@ def verify(exe: Path) -> None:
     density = max(density, float_bits(0x3F733333))
     check(struct.pack("<f", density).hex() == "19cc9c3f",
           "Environment constructor coefficient arithmetic")
+
+    check(struct.unpack_from("<f", data, offset(0x145A1D5A8))[0]
+          == float_bits(0x3E9C0EBF), "Environment input scale")
+    updated_density = f32(f32(f32(1.0 * a4a0) * a498)
+                          / f32(f32(f32(20) + a490) * a49c))
+    check(struct.pack("<f", updated_density).hex() == "771f9a3f",
+          "Environment match update comparison")
 
     radius = f32(0.1112)
     area = f32(f32(f32(math.pi) * radius) * radius)
@@ -266,6 +274,9 @@ def verify(exe: Path) -> None:
         0x1443EE0FC: 0x145300FC0,
         0x141AC7AB4: 0x141B6A7F0,
         0x151CD1605: 0x144566220,
+        0x151AECCD9: 0x141B6AEF0,
+        0x141B6B1ED: 0x144566220,
+        0x151AECD13: 0x1443E8310,
         0x144566287: 0x14557EA00,
         0x1443EE057: 0x145300B10,
         0x1453023FC: 0x1445671F0,
