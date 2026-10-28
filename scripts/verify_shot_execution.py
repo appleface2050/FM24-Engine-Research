@@ -85,6 +85,7 @@ EVIDENCE = (
     "20261028_goal_crossing_time_handoff_static.txt",
     "20261028_goal_time_after_crossing_static.txt",
     "20261028_goal_angle_metadata_origin_static.txt",
+    "20261028_goal_direction_table_witness_static.txt",
 )
 
 
@@ -381,6 +382,47 @@ def verify(exe: Path) -> None:
     dx = int(f32(f32(0 - f32(0)) * f32(10)))
     dy = int(f32(f32(f32(52.5) - initialized_positions[2][0]) * f32(10)))
     check((dx, dy) == (0, -14), "Frozen direction-table index")
+
+    # 正侧参考点限定为(0,52.5)时，重建三个方向表格点及角差。
+    angle_constants = {
+        0x145A1D408: 0x40EA3D71, 0x145A1D504: 0x41200000,
+        0x1455A9880: 0x3DCCCCCD, 0x14584C5D4: 0x2EDBE6FF,
+        0x145A1350C: 0xBE4902DE, 0x145A13510: 0x3F7B50B1,
+        0x145A13514: 0x4016CBE4, 0x145870800: 0x3F490FDB,
+    }
+    for address, bits in angle_constants.items():
+        check(struct.unpack_from("<I", data, offset(address))[0] == bits,
+              f"Direction table constant {address:x}")
+    goal_x = (f32(0), f32(-width), f32(f32(-width) + float_bits(0x40EA3D71)))
+    grid = [(int(f32(x * f32(10))), dy) for x in goal_x]
+    check(grid == [(0, -14), (-36, -14), (36, -14)], "Goal direction grid")
+
+    def table_direction(x_index, y_index):
+        """按初始化器和方向生成器重建所需的有限格点。"""
+        x = f32(f32(x_index) * float_bits(0x3DCCCCCD))
+        y = f32(f32(y_index) * float_bits(0x3DCCCCCD))
+        if x == 0:
+            return 180 if y < 0 else 0
+        magnitude = f32(abs(x) + float_bits(0x2EDBE6FF))
+        ratio = f32(f32(magnitude - abs(y)) / f32(magnitude + abs(y)))
+        polynomial = f32(f32(f32(float_bits(0xBE4902DE) * ratio) * ratio)
+                         + float_bits(0x3F7B50B1))
+        polynomial = f32(polynomial * ratio)
+        theta = f32(float_bits(0x4016CBE4) - polynomial) if y < 0 else f32(
+            polynomial + float_bits(0x3F490FDB))
+        if x < 0:
+            theta = f32(-theta)
+        degrees = f32(f32(theta * f32(180)) / f32(math.pi))
+        rounded = math.floor(f32(degrees + f32(0.5))) if degrees >= 0 else math.ceil(
+            f32(degrees - f32(0.5)))
+        return rounded % 360
+
+    angles = [table_direction(x, y) for x, y in grid]
+    differences = [min(abs(value), 360 - abs(value)) for value in angles]
+    check(angles == [180, 249, 111] and differences == [180, 111, 111],
+          "Constructed direction values and zero-metadata angle differences")
+    check(differences[2] >= 91 and differences[0] >= 91 and differences[1] > 90,
+          "Zero-metadata branch reaches candidate time")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
