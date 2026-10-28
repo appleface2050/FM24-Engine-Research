@@ -170,6 +170,30 @@ def verify(exe: Path) -> None:
                              ("56cd5742", "f013523f")],
           "Nonzero drag trajectory example")
 
+    # 使用已定位的球构造参数；环境系数仍是人为指定的1。
+    elapsed, y, z, vy, vz = 0.0, f32(51), f32(1 + radius), f32(12), f32(0)
+    initialized_positions = []
+    while elapsed < total:
+        step = min(limit, f32(total - elapsed))
+        speed = f32(math.sqrt(f32(f32(vy * vy) + f32(vz * vz))))
+        check(8 < speed < 21, "Initialized-parameter interpolation branch")
+        t = f32(f32(speed - f32(8)) / f32(f32(21) - f32(8)))
+        smooth = f32(f32(t * t) * f32(f32(3) - f32(t + t)))
+        coefficient = f32(f32(f32(f32(0.24) - f32(0.41)) * smooth) + f32(0.41))
+        magnitude = f32(f32(f32(f32(1) * f32(area * 0.5)) * coefficient) * speed)
+        ay = f32(f32(f32(magnitude * -vy) / f32(0.43)) + f32(0))
+        az = f32(f32(f32(magnitude * -vz) / f32(0.43)) + gravity)
+        h2 = f32(step * step)
+        y = f32(y + f32(f32(step * vy) + f32(f32(h2 * ay) * f32(0.5))))
+        z = f32(z + f32(f32(step * vz) + f32(f32(h2 * az) * f32(0.5))))
+        vy, vz = f32(vy + f32(step * ay)), f32(vz + f32(step * az))
+        elapsed = f32(elapsed + step)
+        initialized_positions.append((struct.pack("<f", y).hex(), struct.pack("<f", z).hex()))
+    check(initialized_positions == [("68f74f42", "c7e0893f"),
+                                    ("d3dd5342", "99c4793f"),
+                                    ("a3b35742", "1fca4e3f")],
+          "Initialized-parameter trajectory example")
+
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
     check(event_table + displacement == 0x1443FF215, "Event subtype 0x71 target")
