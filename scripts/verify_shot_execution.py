@@ -46,6 +46,7 @@ EVIDENCE = (
     "20261028_goal_post_timeline_player_swap_static.txt",
     "20261028_goal_record_fixture_timing_static.txt",
     "20261028_goal_record_nonempty_registry_static.txt",
+    "20261028_goal_nonempty_collection_static.txt",
 )
 
 
