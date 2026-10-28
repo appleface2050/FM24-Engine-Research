@@ -72,6 +72,7 @@ EVIDENCE = (
     "20261028_goal_contact_broadphase_static.txt",
     "20261028_goal_frame_child_bounds_static.txt",
     "20261028_goal_gravity_force_static.txt",
+    "20261028_goal_physics_parameter_init_static.txt",
 )
 
 
@@ -111,13 +112,22 @@ def verify(exe: Path) -> None:
           "Team geometry distance offset")
     for address, value in ((0x14558DD60, 0.25), (0x145A1D4F0, 6.0),
                            (0x145A1D50C, 12.0),
-                           (0x145C40604, 10000000000.0)):
+                           (0x145C40604, 10000000000.0),
+                           (0x145A1D41C, 0.1111999973654747),
+                           (0x145C405E4, 3.1415927410125732),
+                           (0x1455829FC, 0.5)):
         check(struct.unpack_from("<f", data, offset(address))[0] == value,
               f"Geometry constant {address:x}")
 
     def f32(value):
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
         return struct.unpack("<f", struct.pack("<f", value))[0]
+
+    radius = f32(0.1112)
+    area = f32(f32(f32(math.pi) * radius) * radius)
+    check(struct.pack("<f", area).hex() == "371e1f3d"
+          and struct.pack("<f", f32(area * 0.5)).hex() == "371e9f3c",
+          "Ball parameter initialization arithmetic")
 
     elapsed, total, limit = 0.0, f32(0.25), f32(1 / 12)
     fractions, positions, heights, y = [], [], [], f32(51.0)
@@ -223,6 +233,8 @@ def verify(exe: Path) -> None:
         0x14530BE7C: 0x14530BEB0,
         0x14530208E: 0x145305970,
         0x14530209B: 0x1453056E0,
+        0x1443E86CE: 0x1453009F0,
+        0x1443E86E1: 0x145302F10,
         0x14456D033: 0x14456E6E0,
         0x14456D0DF: 0x14456E910,
         0x14456E205: 0x141ABED80,
