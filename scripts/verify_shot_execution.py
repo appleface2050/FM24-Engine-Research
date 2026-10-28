@@ -54,6 +54,7 @@ EVIDENCE = (
     "20261028_goal_event_ring_growth_static.txt",
     "20261028_goal_post_event_mode1_return_static.txt",
     "20261028_goal_outer_team_update_entry_static.txt",
+    "20261028_goal_team_context_initialization_static.txt",
 )
 
 
@@ -134,6 +135,8 @@ def verify(exe: Path) -> None:
         0x151AF760D: 0x141B77990,
         0x151AF76DB: 0x1443941A0,
         0x141B7889C: 0x14456CFA0,
+        0x14456D033: 0x14456E6E0,
+        0x14456D0DF: 0x14456E910,
         0x141A9E036: 0x141ABCA90,
         0x141A9E057: 0x141B41670,
         0x141A9E10E: 0x1443941A0,
@@ -259,6 +262,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x14456E6E0: 0x15A3C1610,
         0x141A9F498: 0x141AA1AD0,
         0x144398966: 0x144398103,
         0x144401F10: 0x15A05ADE0,
