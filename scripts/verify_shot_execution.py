@@ -81,6 +81,7 @@ EVIDENCE = (
     "20261028_goal_environment_player_shared_input_static.txt",
     "20261028_goal_constructed_quad_static.txt",
     "20261028_goal_constructed_quad_intersection_static.txt",
+    "20261028_goal_quad_scan_selection_static.txt",
 )
 
 
@@ -314,6 +315,13 @@ def verify(exe: Path) -> None:
     start = [f32(0), first[0], f32(first[1] - radius)]
     end = [f32(0), second[0], f32(second[1] - radius)]
     reference = dot3(vertices[0], normal)
+    # 三条记录时，G+3*0x50-0x1c是最后记录位置的y分量。
+    check(initialized_positions[2][0] > 0, "Positive goal side selected")
+    first_start = [f32(0), f32(51), f32(f32(1) + radius)]
+    first_end = [f32(0), first[0], f32(first[1] - radius)]
+    first_a = f32(dot3(first_start, normal) - reference)
+    first_b = f32(dot3(first_end, normal) - reference)
+    check(first_a < 0 and first_b < 0, "First segment leaves crossing state clear")
     side_start = f32(dot3(start, normal) - reference)
     side_end = f32(dot3(end, normal) - reference)
     check(side_start < 0 <= side_end, "Goal forward-side crossing")
