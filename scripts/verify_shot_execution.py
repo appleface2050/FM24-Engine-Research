@@ -50,6 +50,7 @@ EVIDENCE = (
     "20261028_goal_payload_latest_matching_static.txt",
     "20261028_goal_post_record_event20f9_static.txt",
     "20261028_goal_event20f9_history_entry_static.txt",
+    "20261028_goal_event20f9_history_rule_static.txt",
 )
 
 
