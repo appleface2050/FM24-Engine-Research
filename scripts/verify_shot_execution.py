@@ -82,6 +82,7 @@ EVIDENCE = (
     "20261028_goal_constructed_quad_static.txt",
     "20261028_goal_constructed_quad_intersection_static.txt",
     "20261028_goal_quad_scan_selection_static.txt",
+    "20261028_goal_crossing_time_handoff_static.txt",
 )
 
 
@@ -342,6 +343,25 @@ def verify(exe: Path) -> None:
     check([struct.pack("<f", value).hex() for value in hit]
           == ["00000000", "de715242", "52a6663f"], "Goal intersection bits")
     check(side_end > -1, "Goal crossing replaces initial side value")
+
+    # 成功段时刻使用原始物理位置与已保存交点的投影和三维段长。
+    raw_start = [f32(0), first[0], first[1]]
+    raw_end = [f32(0), second[0], second[1]]
+    distance = dot3(vector_sub(raw_end, hit), normal)
+    segment = vector_sub(raw_end, raw_start)
+    segment_length = f32(math.sqrt(dot3(segment, segment)))
+    check(distance > 0 and segment_length > 0, "Crossing time interpolation branch")
+    factor = f32(f32(1) - f32(distance / segment_length))
+    previous_fraction, current_fraction = f32(1 / 3), f32(2 / 3)
+    subtime = f32(f32(f32(current_fraction - previous_fraction) * factor)
+                  + previous_fraction)
+    check(struct.unpack_from("<f", data, offset(0x14565294C))[0] == f32(0.95),
+          "Crossing time cap")
+    subtime = min(f32(0.95), subtime)
+    actual_time = f32(f32(110) + subtime)
+    check(struct.pack("<f", subtime).hex() == "08340c3f"
+          and struct.pack("<f", actual_time).hex() == "6818dd42"
+          and int(actual_time) == 110, "Crossing time example")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
