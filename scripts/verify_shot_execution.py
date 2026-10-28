@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import math
 import re
 import struct
 from pathlib import Path
@@ -138,6 +139,26 @@ def verify(exe: Path) -> None:
           "Worked trajectory crosses plane in second substep")
     check(heights == ["faa48b3f", "d2277d3f", "9999513f"],
           "Gravity trajectory substep example")
+
+    # 固定非零阻力算例；逐次执行原指令对应的 float32 算术。
+    elapsed, y, z, vy, vz = 0.0, f32(51), f32(1.125), f32(12), f32(0)
+    drag_positions = []
+    while elapsed < total:
+        step = min(limit, f32(total - elapsed))
+        speed = f32(math.sqrt(f32(f32(vy * vy) + f32(vz * vz))))
+        magnitude = f32(f32(f32(f32(1) * f32(0.01)) * f32(0.5)) * speed)
+        ay = f32(f32(f32(magnitude * -vy) / f32(0.45)) + f32(0))
+        az = f32(f32(f32(magnitude * -vz) / f32(0.45)) + gravity)
+        h2 = f32(step * step)
+        y = f32(y + f32(f32(step * vy) + f32(f32(h2 * ay) * f32(0.5))))
+        z = f32(z + f32(f32(step * vz) + f32(f32(h2 * az) * f32(0.5))))
+        vy, vz = f32(vy + f32(step * ay)), f32(vz + f32(step * az))
+        elapsed = f32(elapsed + step)
+        drag_positions.append((struct.pack("<f", y).hex(), struct.pack("<f", z).hex()))
+    check(drag_positions == [("50fa4f42", "faa48b3f"),
+                             ("5ce95342", "61407d3f"),
+                             ("56cd5742", "f013523f")],
+          "Nonzero drag trajectory example")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
