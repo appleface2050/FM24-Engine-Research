@@ -80,6 +80,7 @@ EVIDENCE = (
     "20261028_goal_environment_full_entry_static.txt",
     "20261028_goal_environment_player_shared_input_static.txt",
     "20261028_goal_constructed_quad_static.txt",
+    "20261028_goal_constructed_quad_intersection_static.txt",
 )
 
 
@@ -291,6 +292,49 @@ def verify(exe: Path) -> None:
     check(first[0] < center_plane < second[0] and 0 < intersection_z < height,
           "Frozen path crosses constructed goal center plane")
 
+    # 对冻结的第二段按门线交点分支的float32次序计算，不执行原生代码。
+    def vector_sub(a, b):
+        """逐分量执行单精度减法。"""
+        return [f32(x - y) for x, y in zip(a, b)]
+
+    def dot3(a, b):
+        """模拟x乘积、y乘积相加，再加z乘积的顺序。"""
+        return f32(f32(f32(a[0] * b[0]) + f32(a[1] * b[1]))
+                   + f32(a[2] * b[2]))
+
+    e0 = vector_sub(vertices[0], vertices[1])
+    e1 = vector_sub(vertices[0], vertices[2])
+    cross = [f32(f32(e0[1] * e1[2]) - f32(e0[2] * e1[1])),
+             f32(f32(e0[2] * e1[0]) - f32(e0[0] * e1[2])),
+             f32(f32(e0[0] * e1[1]) - f32(e0[1] * e1[0]))]
+    epsilon = struct.unpack_from("<f", data, offset(0x145C40600))[0]
+    check(epsilon == float_bits(0x348637BE), "Goal normal epsilon")
+    length = f32(math.sqrt(f32(dot3(cross, cross) + epsilon)))
+    normal = [f32(value / length) for value in cross]
+    start = [f32(0), first[0], f32(first[1] - radius)]
+    end = [f32(0), second[0], f32(second[1] - radius)]
+    reference = dot3(vertices[0], normal)
+    side_start = f32(dot3(start, normal) - reference)
+    side_end = f32(dot3(end, normal) - reference)
+    check(side_start < 0 <= side_end, "Goal forward-side crossing")
+    fraction = f32(f32(-side_start) / f32(side_end - side_start))
+    hit = [f32(start[i] + f32(fraction * f32(end[i] - start[i])))
+           for i in range(3)]
+    edge0 = vector_sub(vertices[1], vertices[0])
+    edge1 = vector_sub(vertices[2], vertices[0])
+    delta = vector_sub(hit, vertices[0])
+    d00, d01, d11 = dot3(edge0, edge0), dot3(edge0, edge1), dot3(edge1, edge1)
+    d20, d21 = dot3(edge0, delta), dot3(edge1, delta)
+    denominator = f32(f32(d00 * d11) - f32(d01 * d01))
+    weight1 = f32(f32(f32(d11 * d20) - f32(d01 * d21)) / denominator)
+    weight2 = f32(f32(f32(d21 * d00) - f32(d20 * d01)) / denominator)
+    weight0 = f32(f32(f32(1) - weight1) - weight2)
+    check(weight0 >= 0 and weight1 >= 0 and f32(weight0 + weight1) <= 1,
+          "Goal first triangle accepts frozen intersection")
+    check([struct.pack("<f", value).hex() for value in hit]
+          == ["00000000", "de715242", "52a6663f"], "Goal intersection bits")
+    check(side_end > -1, "Goal crossing replaces initial side value")
+
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
     check(event_table + displacement == 0x1443FF215, "Event subtype 0x71 target")
@@ -350,6 +394,8 @@ def verify(exe: Path) -> None:
         0x151AECCD9: 0x141B6AEF0,
         0x151AECCD1: 0x141B6ADA0,
         0x1443AFE19: 0x1443B3FC0,
+        0x1453008F1: 0x144580C50,
+        0x144580CB4: 0x145305640,
         0x1434F42C0: 0x141A92E20,
         0x141B6B1ED: 0x144566220,
         0x151AECD13: 0x1443E8310,
@@ -497,6 +543,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x145305640: 0x15C605DC0,
         0x141A92E20: 0x151AECCB0,
         0x141B6ADA0: 0x151CD8810,
         0x141B6A7F0: 0x151CD1180,
