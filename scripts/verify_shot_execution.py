@@ -64,6 +64,7 @@ EVIDENCE = (
     "20261028_goal_position_zero_flags_static.txt",
     "20261028_goal_team_zero_state_branch_static.txt",
     "20261028_goal_crossing_geometry_gate_static.txt",
+    "20261028_goal_record_index_alignment_static.txt",
 )
 
 
