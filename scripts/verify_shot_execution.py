@@ -55,6 +55,7 @@ EVIDENCE = (
     "20261028_goal_post_event_mode1_return_static.txt",
     "20261028_goal_outer_team_update_entry_static.txt",
     "20261028_goal_team_context_initialization_static.txt",
+    "20261028_goal_team_context_geometry_static.txt",
 )
 
 
