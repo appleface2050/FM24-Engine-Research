@@ -63,6 +63,7 @@ EVIDENCE = (
     "20261028_goal_team_update_context_consumer_static.txt",
     "20261028_goal_position_zero_flags_static.txt",
     "20261028_goal_team_zero_state_branch_static.txt",
+    "20261028_goal_crossing_geometry_gate_static.txt",
 )
 
 
@@ -98,6 +99,10 @@ def verify(exe: Path) -> None:
           "Team geometry comparison constant")
     check(struct.unpack_from("<f", data, offset(0x145A1D4EC))[0] == 5.0,
           "Team geometry distance offset")
+    for address, value in ((0x14558DD60, 0.25), (0x145A1D4F0, 6.0),
+                           (0x145A1D50C, 12.0)):
+        check(struct.unpack_from("<f", data, offset(address))[0] == value,
+              f"Crossing prefilter constant {address:x}")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
@@ -150,6 +155,8 @@ def verify(exe: Path) -> None:
         0x141B78EFD: 0x1444C3410,
         0x1444C351D: 0x1443AA3A0,
         0x1443AA4B2: 0x1444D38F0,
+        0x1443EC342: 0x1443F4B80,
+        0x1443EB101: 0x145300830,
         0x14456D033: 0x14456E6E0,
         0x14456D0DF: 0x14456E910,
         0x14456E205: 0x141ABED80,
