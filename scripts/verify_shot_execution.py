@@ -75,6 +75,7 @@ EVIDENCE = (
     "20261028_goal_physics_parameter_init_static.txt",
     "20261028_goal_physics_header_handoff_static.txt",
     "20261028_goal_environment_override_static.txt",
+    "20261028_goal_environment_constructor_static.txt",
 )
 
 
@@ -124,6 +125,19 @@ def verify(exe: Path) -> None:
     def f32(value):
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
         return struct.unpack("<f", struct.pack("<f", value))[0]
+
+    # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
+    def float_bits(value):
+        """解码原指令的 float32 常量位模式。"""
+        return struct.unpack("<f", struct.pack("<I", value))[0]
+
+    a490, a498, a49c, a4a0 = map(float_bits, (
+        0x43889333, 0x3CED46C0, 0x41050807, 0x47C5E680))
+    density = f32(f32(f32(1.0 * a4a0) * a498)
+                  / f32(f32(f32(15) + a490) * a49c))
+    density = max(density, float_bits(0x3F733333))
+    check(struct.pack("<f", density).hex() == "19cc9c3f",
+          "Environment constructor coefficient arithmetic")
 
     radius = f32(0.1112)
     area = f32(f32(f32(math.pi) * radius) * radius)
@@ -250,6 +264,9 @@ def verify(exe: Path) -> None:
         0x1443EC342: 0x1443F4B80,
         0x1443EB101: 0x145300830,
         0x1443EE0FC: 0x145300FC0,
+        0x141AC7AB4: 0x141B6A7F0,
+        0x151CD1605: 0x144566220,
+        0x144566287: 0x14557EA00,
         0x1443EE057: 0x145300B10,
         0x1453023FC: 0x1445671F0,
         0x145302240: 0x144568E00,
@@ -393,6 +410,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x141B6A7F0: 0x151CD1180,
         0x1453899F0: 0x15C6B2AA0,
         0x14456DD90: 0x15A3B60D0,
         0x141AD1B20: 0x151B9B610,
