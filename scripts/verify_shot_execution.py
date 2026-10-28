@@ -43,6 +43,7 @@ EVIDENCE = (
     "20261027_goal_event2000_history_static.txt",
     "20261027_goal_event_vector_append_static.txt",
     "20261028_goal_post_event_timeline_static.txt",
+    "20261028_goal_post_timeline_player_swap_static.txt",
 )
 
 
@@ -110,6 +111,7 @@ def verify(exe: Path) -> None:
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
     calls = {
+        0x141A9E036: 0x141ABCA90,
         0x141A9CE12: 0x144401F10,
         0x141A9CE5E: 0x144401F10,
         0x15A05AF88: 0x145306350,
@@ -751,6 +753,10 @@ def verify(exe: Path) -> None:
         0x144398F7B: "ja 0x144399177",
         0x1443991C8: "jne 0x144397f8d",
         0x144397FCD: "jne 0x144397fe7",
+        0x141A9C574: "jb 0x141a9c5a1",
+        0x141A9C587: "jne 0x141a9c5c3",
+        0x141A9DD13: "mov QWORD PTR [r15+0xd240],rcx",
+        0x141A9DD1A: "mov QWORD PTR [r15+0xe360],r9",
         0x141B716E2: "setne al",
         0x141B716FE: "jne 0x141b71712",
         0x141B7171B: "ja 0x141b711b0",
