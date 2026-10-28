@@ -77,6 +77,7 @@ EVIDENCE = (
     "20261028_goal_environment_override_static.txt",
     "20261028_goal_environment_constructor_static.txt",
     "20261028_goal_environment_match_update_static.txt",
+    "20261028_goal_environment_full_entry_static.txt",
 )
 
 
@@ -275,6 +276,8 @@ def verify(exe: Path) -> None:
         0x141AC7AB4: 0x141B6A7F0,
         0x151CD1605: 0x144566220,
         0x151AECCD9: 0x141B6AEF0,
+        0x151AECCD1: 0x141B6ADA0,
+        0x1434F42C0: 0x141A92E20,
         0x141B6B1ED: 0x144566220,
         0x151AECD13: 0x1443E8310,
         0x144566287: 0x14557EA00,
@@ -421,6 +424,8 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x141A92E20: 0x151AECCB0,
+        0x141B6ADA0: 0x151CD8810,
         0x141B6A7F0: 0x151CD1180,
         0x1453899F0: 0x15C6B2AA0,
         0x14456DD90: 0x15A3B60D0,
