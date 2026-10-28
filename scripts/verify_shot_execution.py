@@ -68,6 +68,7 @@ EVIDENCE = (
     "20261028_goal_initial_record_value_static.txt",
     "20261028_goal_physics_no_contact_record_static.txt",
     "20261028_goal_origin_and_substep_static.txt",
+    "20261028_goal_contact_broadphase_static.txt",
 )
 
 
@@ -104,9 +105,10 @@ def verify(exe: Path) -> None:
     check(struct.unpack_from("<f", data, offset(0x145A1D4EC))[0] == 5.0,
           "Team geometry distance offset")
     for address, value in ((0x14558DD60, 0.25), (0x145A1D4F0, 6.0),
-                           (0x145A1D50C, 12.0)):
+                           (0x145A1D50C, 12.0),
+                           (0x145C40604, 10000000000.0)):
         check(struct.unpack_from("<f", data, offset(address))[0] == value,
-              f"Crossing prefilter constant {address:x}")
+              f"Geometry constant {address:x}")
 
     def f32(value):
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
@@ -181,6 +183,12 @@ def verify(exe: Path) -> None:
         0x1443EB101: 0x145300830,
         0x1443EE0FC: 0x145300FC0,
         0x1453023FC: 0x1445671F0,
+        0x145302240: 0x144568E00,
+        0x145302258: 0x144568E00,
+        0x145302274: 0x144568E00,
+        0x145302289: 0x144568E00,
+        0x1445672FD: 0x14530BD90,
+        0x14530BE7C: 0x14530BEB0,
         0x14456D033: 0x14456E6E0,
         0x14456D0DF: 0x14456E910,
         0x14456E205: 0x141ABED80,
