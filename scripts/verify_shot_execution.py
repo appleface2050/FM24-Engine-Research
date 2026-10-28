@@ -45,6 +45,7 @@ EVIDENCE = (
     "20261028_goal_post_event_timeline_static.txt",
     "20261028_goal_post_timeline_player_swap_static.txt",
     "20261028_goal_record_fixture_timing_static.txt",
+    "20261028_goal_record_nonempty_registry_static.txt",
 )
 
 
@@ -115,6 +116,8 @@ def verify(exe: Path) -> None:
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
     calls = {
+        0x141B5E536: 0x1419FFF30,
+        0x141A012A2: 0x141A012C0,
         0x141A9E036: 0x141ABCA90,
         0x141A9CE12: 0x144401F10,
         0x141A9CE5E: 0x144401F10,
