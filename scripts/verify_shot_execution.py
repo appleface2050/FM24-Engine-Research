@@ -62,6 +62,7 @@ EVIDENCE = (
     "20261028_goal_team_context_roster_scan_static.txt",
     "20261028_goal_team_update_context_consumer_static.txt",
     "20261028_goal_position_zero_flags_static.txt",
+    "20261028_goal_team_zero_state_branch_static.txt",
 )
 
 
