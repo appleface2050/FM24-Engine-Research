@@ -67,6 +67,7 @@ EVIDENCE = (
     "20261028_goal_record_index_alignment_static.txt",
     "20261028_goal_initial_record_value_static.txt",
     "20261028_goal_physics_no_contact_record_static.txt",
+    "20261028_goal_origin_and_substep_static.txt",
 )
 
 
@@ -106,6 +107,18 @@ def verify(exe: Path) -> None:
                            (0x145A1D50C, 12.0)):
         check(struct.unpack_from("<f", data, offset(address))[0] == value,
               f"Crossing prefilter constant {address:x}")
+
+    def f32(value):
+        """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
+        return struct.unpack("<f", struct.pack("<f", value))[0]
+
+    elapsed, total, limit = 0.0, f32(0.25), f32(1 / 12)
+    fractions = []
+    while elapsed < total:
+        elapsed = f32(elapsed + min(limit, f32(total - elapsed)))
+        fractions.append(struct.pack("<f", f32(elapsed / total)).hex())
+    check(fractions == ["abaaaa3e", "abaa2a3f", "0000803f"],
+          "Default-parameter substep example")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
