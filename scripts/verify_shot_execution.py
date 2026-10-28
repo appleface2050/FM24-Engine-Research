@@ -48,6 +48,7 @@ EVIDENCE = (
     "20261028_goal_record_nonempty_registry_static.txt",
     "20261028_goal_nonempty_collection_static.txt",
     "20261028_goal_payload_latest_matching_static.txt",
+    "20261028_goal_post_record_event20f9_static.txt",
 )
 
 
@@ -121,6 +122,8 @@ def verify(exe: Path) -> None:
         0x141B5E536: 0x1419FFF30,
         0x141A012A2: 0x141A012C0,
         0x141A9E036: 0x141ABCA90,
+        0x141A9E057: 0x141B41670,
+        0x141A9E10E: 0x1443941A0,
         0x141A9CE12: 0x144401F10,
         0x141A9CE5E: 0x144401F10,
         0x15A05AF88: 0x145306350,
