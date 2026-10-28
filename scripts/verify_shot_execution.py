@@ -74,6 +74,7 @@ EVIDENCE = (
     "20261028_goal_gravity_force_static.txt",
     "20261028_goal_physics_parameter_init_static.txt",
     "20261028_goal_physics_header_handoff_static.txt",
+    "20261028_goal_environment_override_static.txt",
 )
 
 
