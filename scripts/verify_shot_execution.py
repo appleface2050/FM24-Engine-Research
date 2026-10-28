@@ -44,6 +44,7 @@ EVIDENCE = (
     "20261027_goal_event_vector_append_static.txt",
     "20261028_goal_post_event_timeline_static.txt",
     "20261028_goal_post_timeline_player_swap_static.txt",
+    "20261028_goal_record_fixture_timing_static.txt",
 )
 
 
@@ -92,6 +93,9 @@ def verify(exe: Path) -> None:
     for kind, target in ((0, 0x145306622), (1, 0x14530664F)):
         displacement = struct.unpack_from("<i", data, offset(timeline_table + kind * 4))[0]
         check(timeline_table + displacement == target, f"Timeline kind {kind}")
+
+    check(struct.unpack_from("<Q", data, offset(0x145608078 + 0x30))[0]
+          == 0x140269580, "FIXTURE_RESULT +30 getter binding")
 
     lines = 0
     instructions = {}
