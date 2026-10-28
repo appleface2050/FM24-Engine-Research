@@ -52,6 +52,7 @@ EVIDENCE = (
     "20261028_goal_event20f9_history_entry_static.txt",
     "20261028_goal_event20f9_history_rule_static.txt",
     "20261028_goal_event_ring_growth_static.txt",
+    "20261028_goal_post_event_mode1_return_static.txt",
 )
 
 
@@ -253,6 +254,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x141A9F498: 0x141AA1AD0,
         0x144398966: 0x144398103,
         0x144401F10: 0x15A05ADE0,
         0x141B85C90: 0x151D5DB40,
