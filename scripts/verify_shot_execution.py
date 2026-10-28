@@ -79,6 +79,7 @@ EVIDENCE = (
     "20261028_goal_environment_match_update_static.txt",
     "20261028_goal_environment_full_entry_static.txt",
     "20261028_goal_environment_player_shared_input_static.txt",
+    "20261028_goal_constructed_quad_static.txt",
 )
 
 
@@ -240,6 +241,55 @@ def verify(exe: Path) -> None:
               "Frozen plane crossed in second substep")
         check(all(zz - radius > 0 for _, zz in initialized_positions),
               "Frozen trajectory stays above ground")
+
+    # 根据1443e8310的float32近似旋转构造正侧门口，而非假设轴对齐。
+    geometry_constants = {
+        0x145C405F8: 0x3C8EFA35, 0x1455A7BEC: 0x43340000,
+        0x145830658: 0xC0490FDB, 0x1457ED450: 0x40C90FDB,
+        0x1456D56D4: 0x40490FDB, 0x145831614: 0x3FC90FDB,
+        0x14583065C: 0xC0C90FDB, 0x145A0A9FC: 0x3FA2F983,
+        0x145A0AA00: 0x3ECF817B, 0x145A0AA04: 0x3E666666,
+        0x145A1D404: 0x406A3D71, 0x145A1D410: 0x401C28F6,
+        0x1456D56F8: 0x00000000,
+    }
+    for address, bits in geometry_constants.items():
+        check(struct.unpack_from("<I", data, offset(address))[0] == bits,
+              f"Goal geometry constant {address:x}")
+    check(struct.unpack_from("<4I", data, offset(0x1457ED810))
+          == (0x3F800000, 0x3F800000, 0x3F800000, 0),
+          "Goal geometry vector constant")
+    angle = f32(float_bits(0x43340000) * float_bits(0x3C8EFA35))
+    shifted = f32(angle + float_bits(0x3FC90FDB))
+    if shifted > float_bits(0x40490FDB):
+        shifted = f32(shifted + float_bits(0xC0C90FDB))
+
+    def approximate_sine(x):
+        """复现此构造路径使用的逐次 float32 近似三角运算。"""
+        base = f32(f32(x * float_bits(0x3FA2F983))
+                   - f32(f32(x * float_bits(0x3ECF817B)) * abs(x)))
+        return f32(f32(f32(f32(abs(base) * base) - base)
+                       * float_bits(0x3E666666)) + base)
+
+    sine, cosine = approximate_sine(angle), approximate_sine(shifted)
+    width, height = float_bits(0x406A3D71), float_bits(0x401C28F6)
+    vertices = []
+    for x, z in ((-width, 0), (width, 0), (width, height), (-width, height)):
+        rotated_x = f32(f32(x * cosine) - f32(-radius * sine))
+        rotated_y = f32(f32(f32(x * sine) + f32(-radius * cosine)) + f32(52.5))
+        vertices.append((rotated_x, rotated_y, z))
+    check([[struct.pack("<f", value).hex() for value in vertex] for vertex in vertices]
+          == [["733d6a40", "df715242", "00000000"],
+              ["733d6ac0", "de715242", "00000000"],
+              ["733d6ac0", "de715242", "f6281c40"],
+              ["733d6a40", "df715242", "f6281c40"]],
+          "Constructed positive-side goal vertices")
+    center_plane = (vertices[0][1] + vertices[1][1]) / 2
+    first, second = initialized_positions[:2]
+    intersection_z = (first[1] - radius
+                      + (center_plane - first[0]) / (second[0] - first[0])
+                      * (second[1] - first[1]))
+    check(first[0] < center_plane < second[0] and 0 < intersection_z < height,
+          "Frozen path crosses constructed goal center plane")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
