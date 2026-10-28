@@ -69,6 +69,7 @@ EVIDENCE = (
     "20261028_goal_physics_no_contact_record_static.txt",
     "20261028_goal_origin_and_substep_static.txt",
     "20261028_goal_contact_broadphase_static.txt",
+    "20261028_goal_frame_child_bounds_static.txt",
 )
 
 
@@ -100,6 +101,8 @@ def verify(exe: Path) -> None:
 
     check(struct.unpack_from("<Q", data, offset(0x145608078 + 0x28))[0]
           == 0x140269570, "FIXTURE_RESULT +28 getter binding")
+    check(struct.unpack_from("<Q", data, offset(0x145D2FCF8 + 8))[0]
+          == 0x1453899F0, "Frame child transform slot")
     check(struct.unpack_from("<f", data, offset(0x145A1D53C))[0] == 30.0,
           "Team geometry comparison constant")
     check(struct.unpack_from("<f", data, offset(0x145A1D4EC))[0] == 5.0,
@@ -320,6 +323,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x1453899F0: 0x15C6B2AA0,
         0x14456DD90: 0x15A3B60D0,
         0x141AD1B20: 0x151B9B610,
         0x14456E6E0: 0x15A3C1610,
