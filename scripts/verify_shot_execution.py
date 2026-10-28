@@ -42,6 +42,7 @@ EVIDENCE = (
     "20261027_goal_event2000_timing_static.txt",
     "20261027_goal_event2000_history_static.txt",
     "20261027_goal_event_vector_append_static.txt",
+    "20261028_goal_post_event_timeline_static.txt",
 )
 
 
@@ -86,6 +87,11 @@ def verify(exe: Path) -> None:
     displacement = struct.unpack_from("<i", data, offset(final_table + (0x2000 - 0x1F42) * 4))[0]
     check(final_table + displacement == 0x144398103, "Event 0x2000 final dispatch")
 
+    timeline_table = 0x145306EC4
+    for kind, target in ((0, 0x145306622), (1, 0x14530664F)):
+        displacement = struct.unpack_from("<i", data, offset(timeline_table + kind * 4))[0]
+        check(timeline_table + displacement == target, f"Timeline kind {kind}")
+
     lines = 0
     instructions = {}
     for filename in EVIDENCE:
@@ -104,6 +110,10 @@ def verify(exe: Path) -> None:
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
     calls = {
+        0x141A9CE12: 0x144401F10,
+        0x141A9CE5E: 0x144401F10,
+        0x15A05AF88: 0x145306350,
+        0x145306386: 0x141AA3070,
         0x14439D7E3: 0x14557E740,
         0x144394274: 0x1443944F0,
         0x1443944D4: 0x144395230,
@@ -215,6 +225,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x144401F10: 0x15A05ADE0,
         0x141B85C90: 0x151D5DB40,
         0x1444912F0: 0x15A170F40,
         0x141A9C120: 0x151AF7570,
