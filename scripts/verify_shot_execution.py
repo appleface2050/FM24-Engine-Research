@@ -53,6 +53,7 @@ EVIDENCE = (
     "20261028_goal_event20f9_history_rule_static.txt",
     "20261028_goal_event_ring_growth_static.txt",
     "20261028_goal_post_event_mode1_return_static.txt",
+    "20261028_goal_outer_team_update_entry_static.txt",
 )
 
 
@@ -129,6 +130,10 @@ def verify(exe: Path) -> None:
     calls = {
         0x141B5E536: 0x1419FFF30,
         0x141A012A2: 0x141A012C0,
+        0x151AF75E8: 0x141B78760,
+        0x151AF760D: 0x141B77990,
+        0x151AF76DB: 0x1443941A0,
+        0x141B7889C: 0x14456CFA0,
         0x141A9E036: 0x141ABCA90,
         0x141A9E057: 0x141B41670,
         0x141A9E10E: 0x1443941A0,
