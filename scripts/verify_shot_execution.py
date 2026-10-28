@@ -86,6 +86,7 @@ EVIDENCE = (
     "20261028_goal_time_after_crossing_static.txt",
     "20261028_goal_angle_metadata_origin_static.txt",
     "20261028_goal_direction_table_witness_static.txt",
+    "20261028_goal_reference_geometry_copy_static.txt",
 )
 
 
@@ -484,6 +485,7 @@ def verify(exe: Path) -> None:
         0x151AECCD1: 0x141B6ADA0,
         0x1443AFE19: 0x1443B3FC0,
         0x159EADF2A: 0x14438DB90,
+        0x141ACFF02: 0x141B6C1C0,
         0x1453008F1: 0x144580C50,
         0x144580CB4: 0x145305640,
         0x1434F42C0: 0x141A92E20,
