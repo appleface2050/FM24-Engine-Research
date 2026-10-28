@@ -65,6 +65,7 @@ EVIDENCE = (
     "20261028_goal_team_zero_state_branch_static.txt",
     "20261028_goal_crossing_geometry_gate_static.txt",
     "20261028_goal_record_index_alignment_static.txt",
+    "20261028_goal_initial_record_value_static.txt",
 )
 
 
@@ -158,6 +159,7 @@ def verify(exe: Path) -> None:
         0x1443AA4B2: 0x1444D38F0,
         0x1443EC342: 0x1443F4B80,
         0x1443EB101: 0x145300830,
+        0x1443EE0FC: 0x145300FC0,
         0x14456D033: 0x14456E6E0,
         0x14456D0DF: 0x14456E910,
         0x14456E205: 0x141ABED80,
