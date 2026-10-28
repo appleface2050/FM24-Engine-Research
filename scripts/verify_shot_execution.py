@@ -87,6 +87,7 @@ EVIDENCE = (
     "20261028_goal_angle_metadata_origin_static.txt",
     "20261028_goal_direction_table_witness_static.txt",
     "20261028_goal_reference_geometry_copy_static.txt",
+    "20261028_goal_metadata_record_write_static.txt",
 )
 
 
@@ -373,6 +374,10 @@ def verify(exe: Path) -> None:
     check(all(value >= 91 for value in angular_differences)
           and initialized_positions[2][0] > f32(f32(52.5) + radius),
           "Crossing continuation to candidate time under fixed table inputs")
+
+    # 三次顺序追加仅触及G+10+n*50到G+54+n*50及G+0计数。
+    for index in (0, 1, 2):
+        check(0x54 + index * 0x50 < 0x334, "Record writes preserve metadata")
 
     # 新组+32e的8字节清零覆盖组+334的16位角度元数据。
     cleared_group = bytearray([0xff] * 0x336)
