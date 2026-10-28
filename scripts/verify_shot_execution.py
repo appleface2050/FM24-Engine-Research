@@ -73,6 +73,7 @@ EVIDENCE = (
     "20261028_goal_frame_child_bounds_static.txt",
     "20261028_goal_gravity_force_static.txt",
     "20261028_goal_physics_parameter_init_static.txt",
+    "20261028_goal_physics_header_handoff_static.txt",
 )
 
 
@@ -248,6 +249,7 @@ def verify(exe: Path) -> None:
         0x1443EC342: 0x1443F4B80,
         0x1443EB101: 0x145300830,
         0x1443EE0FC: 0x145300FC0,
+        0x1443EE057: 0x145300B10,
         0x1453023FC: 0x1445671F0,
         0x145302240: 0x144568E00,
         0x145302258: 0x144568E00,
