@@ -88,6 +88,10 @@ def verify(exe: Path) -> None:
     classifier_table = 0x144394524
     displacement = struct.unpack_from("<i", data, offset(classifier_table + 2 * 4))[0]
     check(classifier_table + displacement == 0x14439451F, "Event 0x2000 classification")
+    displacement = struct.unpack_from(
+        "<i", data, offset(classifier_table + (0x20F9 - 0x1FFE) * 4)
+    )[0]
+    check(classifier_table + displacement == 0x144394520, "Event 0x20f9 classification")
 
     final_table = 0x144399384
     displacement = struct.unpack_from("<i", data, offset(final_table + (0x2000 - 0x1F42) * 4))[0]
