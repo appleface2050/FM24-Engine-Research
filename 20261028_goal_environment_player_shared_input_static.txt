@@ -1,0 +1,56 @@
+# Shared match input affects ball environment and player internal work-rate state.
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443afc40 <.sdata+0x43aec40>:
+   1443afc40:	56                                              	push   rsi
+   1443afc41:	57                                              	push   rdi
+   1443afc42:	53                                              	push   rbx
+   1443afc43:	48 83 ec 20                                     	sub    rsp,0x20
+   1443afc47:	48 89 ce                                        	mov    rsi,rcx
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443afe11 <.sdata+0x43aee11>:
+   1443afe11:	48 89 f1                                        	mov    rcx,rsi
+   1443afe14:	b2 2c                                           	mov    dl,0x2c
+   1443afe16:	49 89 f8                                        	mov    r8,rdi
+   1443afe19:	e8 a2 41 00 00                                  	call   0x1443b3fc0
+   1443afe1e:	89 86 68 15 00 00                               	mov    DWORD PTR [rsi+0x1568],eax
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443b02ab <.sdata+0x43af2ab>:
+   1443b02ab:	48 8b 86 c8 01 00 00                            	mov    rax,QWORD PTR [rsi+0x1c8]
+   1443b02b2:	48 8b 88 68 ce 00 00                            	mov    rcx,QWORD PTR [rax+0xce68]
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443b03dc <.sdata+0x43af3dc>:
+   1443b03dc:	80 b8 ba 09 00 00 1f                            	cmp    BYTE PTR [rax+0x9ba],0x1f
+   1443b03e3:	7c 26                                           	jl     0x1443b040b
+   1443b03e5:	8b 8e 68 15 00 00                               	mov    ecx,DWORD PTR [rsi+0x1568]
+   1443b03eb:	8d 0c c9                                        	lea    ecx,[rcx+rcx*8]
+   1443b03ee:	48 63 c9                                        	movsxd rcx,ecx
+   1443b03f1:	48 69 c9 67 66 66 66                            	imul   rcx,rcx,0x66666667
+   1443b03f8:	48 89 ca                                        	mov    rdx,rcx
+   1443b03fb:	48 c1 ea 3f                                     	shr    rdx,0x3f
+   1443b03ff:	48 c1 f9 22                                     	sar    rcx,0x22
+   1443b0403:	01 d1                                           	add    ecx,edx
+   1443b0405:	89 8e 68 15 00 00                               	mov    DWORD PTR [rsi+0x1568],ecx

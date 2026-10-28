@@ -78,6 +78,7 @@ EVIDENCE = (
     "20261028_goal_environment_constructor_static.txt",
     "20261028_goal_environment_match_update_static.txt",
     "20261028_goal_environment_full_entry_static.txt",
+    "20261028_goal_environment_player_shared_input_static.txt",
 )
 
 
@@ -147,6 +148,13 @@ def verify(exe: Path) -> None:
                           / f32(f32(f32(20) + a490) * a49c))
     check(struct.pack("<f", updated_density).hex() == "771f9a3f",
           "Environment match update comparison")
+
+    for temperature_like, expected in ((30, "f309953f"), (31, "818c943f")):
+        value = f32(f32(f32(1.0 * a4a0) * a498)
+                    / f32(f32(f32(temperature_like) + a490) * a49c))
+        check(struct.pack("<f", value).hex() == expected,
+              "Shared match input coefficient comparison")
+    check((100 * 9) // 10 == 90, "Work-rate internal threshold example")
 
     radius = f32(0.1112)
     area = f32(f32(f32(math.pi) * radius) * radius)
@@ -277,6 +285,7 @@ def verify(exe: Path) -> None:
         0x151CD1605: 0x144566220,
         0x151AECCD9: 0x141B6AEF0,
         0x151AECCD1: 0x141B6ADA0,
+        0x1443AFE19: 0x1443B3FC0,
         0x1434F42C0: 0x141A92E20,
         0x141B6B1ED: 0x144566220,
         0x151AECD13: 0x1443E8310,
