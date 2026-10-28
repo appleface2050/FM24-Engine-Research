@@ -56,6 +56,7 @@ EVIDENCE = (
     "20261028_goal_outer_team_update_entry_static.txt",
     "20261028_goal_team_context_initialization_static.txt",
     "20261028_goal_team_context_geometry_static.txt",
+    "20261028_goal_team_context_score_classification_static.txt",
 )
 
 
@@ -138,6 +139,7 @@ def verify(exe: Path) -> None:
         0x141B7889C: 0x14456CFA0,
         0x14456D033: 0x14456E6E0,
         0x14456D0DF: 0x14456E910,
+        0x14456E205: 0x141ABED80,
         0x141A9E036: 0x141ABCA90,
         0x141A9E057: 0x141B41670,
         0x141A9E10E: 0x1443941A0,
