@@ -113,12 +113,18 @@ def verify(exe: Path) -> None:
         return struct.unpack("<f", struct.pack("<f", value))[0]
 
     elapsed, total, limit = 0.0, f32(0.25), f32(1 / 12)
-    fractions = []
+    fractions, positions, y = [], [], f32(51.0)
     while elapsed < total:
-        elapsed = f32(elapsed + min(limit, f32(total - elapsed)))
+        step = min(limit, f32(total - elapsed))
+        elapsed = f32(elapsed + step)
         fractions.append(struct.pack("<f", f32(elapsed / total)).hex())
+        y = f32(y + f32(f32(12.0) * step))
+        positions.append(y)
     check(fractions == ["abaaaa3e", "abaa2a3f", "0000803f"],
           "Default-parameter substep example")
+    check(positions == [52.0, 53.0, 54.0]
+          and positions[0] < 52.625 < positions[1],
+          "Worked trajectory crosses plane in second substep")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
