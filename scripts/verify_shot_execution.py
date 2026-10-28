@@ -70,6 +70,7 @@ EVIDENCE = (
     "20261028_goal_origin_and_substep_static.txt",
     "20261028_goal_contact_broadphase_static.txt",
     "20261028_goal_frame_child_bounds_static.txt",
+    "20261028_goal_gravity_force_static.txt",
 )
 
 
@@ -118,18 +119,25 @@ def verify(exe: Path) -> None:
         return struct.unpack("<f", struct.pack("<f", value))[0]
 
     elapsed, total, limit = 0.0, f32(0.25), f32(1 / 12)
-    fractions, positions, y = [], [], f32(51.0)
+    fractions, positions, heights, y = [], [], [], f32(51.0)
+    z, vz, gravity = f32(1.125), f32(0), f32(-9.8)
     while elapsed < total:
         step = min(limit, f32(total - elapsed))
         elapsed = f32(elapsed + step)
         fractions.append(struct.pack("<f", f32(elapsed / total)).hex())
         y = f32(y + f32(f32(12.0) * step))
         positions.append(y)
+        gravity_displacement = f32(f32(f32(step * step) * gravity) * 0.5)
+        z = f32(z + f32(f32(step * vz) + gravity_displacement))
+        vz = f32(vz + f32(step * gravity))
+        heights.append(struct.pack("<f", z).hex())
     check(fractions == ["abaaaa3e", "abaa2a3f", "0000803f"],
           "Default-parameter substep example")
     check(positions == [52.0, 53.0, 54.0]
           and positions[0] < 52.625 < positions[1],
           "Worked trajectory crosses plane in second substep")
+    check(heights == ["faa48b3f", "d2277d3f", "9999513f"],
+          "Gravity trajectory substep example")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
@@ -192,6 +200,8 @@ def verify(exe: Path) -> None:
         0x145302289: 0x144568E00,
         0x1445672FD: 0x14530BD90,
         0x14530BE7C: 0x14530BEB0,
+        0x14530208E: 0x145305970,
+        0x14530209B: 0x1453056E0,
         0x14456D033: 0x14456E6E0,
         0x14456D0DF: 0x14456E910,
         0x14456E205: 0x141ABED80,
