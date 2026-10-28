@@ -83,6 +83,7 @@ EVIDENCE = (
     "20261028_goal_constructed_quad_intersection_static.txt",
     "20261028_goal_quad_scan_selection_static.txt",
     "20261028_goal_crossing_time_handoff_static.txt",
+    "20261028_goal_time_after_crossing_static.txt",
 )
 
 
@@ -362,6 +363,13 @@ def verify(exe: Path) -> None:
     check(struct.pack("<f", subtime).hex() == "08340c3f"
           and struct.pack("<f", actual_time).hex() == "6818dd42"
           and int(actual_time) == 110, "Crossing time example")
+
+    # 三次表读取为0，与轨迹组元数据180的最小环绕差均为180。
+    angular_differences = [min(abs(180 - value), 360 - abs(180 - value))
+                           for value in (0, 0, 0)]
+    check(all(value >= 91 for value in angular_differences)
+          and initialized_positions[2][0] > f32(f32(52.5) + radius),
+          "Crossing continuation to candidate time under fixed table inputs")
 
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
