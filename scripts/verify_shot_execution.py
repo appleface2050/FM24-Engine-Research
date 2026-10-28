@@ -84,6 +84,7 @@ EVIDENCE = (
     "20261028_goal_quad_scan_selection_static.txt",
     "20261028_goal_crossing_time_handoff_static.txt",
     "20261028_goal_time_after_crossing_static.txt",
+    "20261028_goal_angle_metadata_origin_static.txt",
 )
 
 
@@ -371,6 +372,16 @@ def verify(exe: Path) -> None:
           and initialized_positions[2][0] > f32(f32(52.5) + radius),
           "Crossing continuation to candidate time under fixed table inputs")
 
+    # 新组+32e的8字节清零覆盖组+334的16位角度元数据。
+    cleared_group = bytearray([0xff] * 0x336)
+    cleared_group[0x32e:0x336] = bytes(8)
+    check(struct.unpack_from("<h", cleared_group, 0x334)[0] == 0,
+          "New trajectory group angle metadata")
+    # 假设参考点(0,52.5)，最后物理位置向该点的量化位移。
+    dx = int(f32(f32(0 - f32(0)) * f32(10)))
+    dy = int(f32(f32(f32(52.5) - initialized_positions[2][0]) * f32(10)))
+    check((dx, dy) == (0, -14), "Frozen direction-table index")
+
     event_table = 0x1443FF240
     displacement = struct.unpack_from("<i", data, offset(event_table + (0x71 - 0x30) * 4))[0]
     check(event_table + displacement == 0x1443FF215, "Event subtype 0x71 target")
@@ -430,6 +441,7 @@ def verify(exe: Path) -> None:
         0x151AECCD9: 0x141B6AEF0,
         0x151AECCD1: 0x141B6ADA0,
         0x1443AFE19: 0x1443B3FC0,
+        0x159EADF2A: 0x14438DB90,
         0x1453008F1: 0x144580C50,
         0x144580CB4: 0x145305640,
         0x1434F42C0: 0x141A92E20,
