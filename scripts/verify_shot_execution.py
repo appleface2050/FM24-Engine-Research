@@ -244,6 +244,30 @@ def verify(exe: Path) -> None:
     check(20 * draws[3] >> 32 == 1, "Finishing sample")
     check(10 * draws[4] >> 32 == 0, "Solver angle sample")
 
+    # 零角度试算器多项式，以及中心目标/选定记录的条件性方向算例。
+    for address, bits in ((0x145831614, 0x3FC90FDB),
+                          (0x145A0A9FC, 0x3FA2F983),
+                          (0x145A13508, 0xBECF817B),
+                          (0x145A0AA04, 0x3E666666)):
+        check(struct.unpack_from("<I", data, offset(address))[0] == bits,
+              f"Shot direction polynomial constant {address:x}")
+    bits_float = lambda bits: struct.unpack("<f", struct.pack("<I", bits))[0]
+    angle = bits_float(0x3FC90FDB)
+    factor = f32(f32(angle * bits_float(0x3FA2F983))
+                 + f32(f32(bits_float(0xBECF817B) * angle) * abs(angle)))
+    factor = f32(factor + f32(f32(f32(abs(factor) * factor) - factor)
+                              * bits_float(0x3E666666)))
+    check(struct.pack("<f", f32(35 * factor)).hex() == "ffff0b42",
+          "Zero angle solver speed factor")
+    # t=(0,1)，选中的有限记录q=(0,2)：镜像方向为(0,1)。
+    qx, qy = f32(0), f32(2)
+    qlength = f32(math.sqrt(f32(f32(qx * qx) + f32(qy * qy))))
+    ux, uy = f32(qx / qlength), f32(qy / qlength)
+    vx = f32(f32(35 * factor) * f32(-ux))
+    vy = f32(f32(35 * factor) * uy)
+    check(vx == 0.0 and struct.pack("<f", vy).hex() == "ffff0b42",
+          "Shot reflection conditional output")
+
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
         """解码原指令的 float32 常量位模式。"""
