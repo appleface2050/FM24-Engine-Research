@@ -658,6 +658,22 @@ def verify(exe: Path) -> None:
           == ["00000000", "de715242", "0fc3833f"],
           "Shot first segment intersection bits")
 
+    # 首条记录成功时，扫描偏移为0；前一记录被设为当前记录。
+    current_fraction = f32(1 / 3)
+    previous_fraction = current_fraction
+    previous_point = [f32(0), high_y, high_z]
+    current_point = [f32(0), high_y, high_z]
+    zero_segment = vector_sub(current_point, previous_point)
+    check(dot3(zero_segment, zero_segment) == 0,
+          "First goal record uses zero interpolation segment")
+    interpolation = f32(0)
+    first_subtime = f32(f32(f32(current_fraction - previous_fraction)
+                            * interpolation) + previous_fraction)
+    first_time = f32(f32(110) + min(f32(0.95), first_subtime))
+    check(struct.pack("<f", first_subtime).hex() == "abaaaa3e"
+          and struct.pack("<f", first_time).hex() == "abaadc42",
+          "First goal record fallback time")
+
     start = [f32(0), first[0], f32(first[1] - radius)]
     end = [f32(0), second[0], f32(second[1] - radius)]
     reference = dot3(vertices[0], normal)
