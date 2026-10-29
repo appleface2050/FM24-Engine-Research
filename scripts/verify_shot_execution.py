@@ -105,6 +105,7 @@ EVIDENCE = (
     "20261029_goal_shot_origin_submission_argument_static.txt",
     "20261029_goal_shot_direction_lookup_static.txt",
     "20261029_goal_shot_target_field_origin_static.txt",
+    "20261029_goal_shot_target_center_rng_static.txt",
 )
 
 
@@ -495,6 +496,28 @@ def verify(exe: Path) -> None:
         rounded = math.floor(f32(degrees + f32(0.5))) if degrees >= 0 else math.ceil(
             f32(degrees - f32(0.5)))
         return rounded % 360
+
+    for address, value in ((0x145A1D4DC, 3.0), (0x145A1D570, 100.0)):
+        check(struct.unpack_from("<f", data, offset(address))[0] == value,
+              f"Shot target range constant {address:x}")
+
+    # 中路目标：两侧参考角相同，冻结 PRNG 状态使对称整数区间选到0。
+    side_angles = (table_direction(36, 15), table_direction(-36, 15))
+    check(side_angles == (67, 293), "Shot target side direction angles")
+    side_differences = [min(a, 360 - a) for a in side_angles]
+    check(side_differences == [67, 67], "Shot target symmetric angles")
+    check(abs(side_differences[0] - side_differences[1])
+          < max(side_differences) // 2, "Shot target symmetric random branch")
+    half_width = f32(float_bits(0x406A3D71)
+                     - f32(float_bits(0x3DE3BCD3) * f32(3.0)))
+    bound = int(f32(half_width * f32(100)))
+    check(bound == 332, "Shot target quantized half width")
+    state = 0xE9803E5CF5592829
+    output = ((state >> 45) ^ (state >> 27)) & 0xFFFFFFFF
+    rotation = state >> 59
+    output = ((output >> rotation) | (output << ((-rotation) & 31))) & 0xFFFFFFFF
+    check(output == 0x80043CF9 and ((2 * bound * output) >> 32) - bound == 0,
+          "Shot target center from frozen PRNG state")
 
     angles = [table_direction(x, y) for x, y in grid]
     differences = [min(abs(value), 360 - abs(value)) for value in angles]
