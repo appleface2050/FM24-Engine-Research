@@ -208,6 +208,24 @@ def verify(exe: Path) -> None:
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
         return struct.unpack("<f", struct.pack("<f", value))[0]
 
+    # 固定随机见证：目标居中、两轴旋转为零、射门抽样为1。
+    state = 0x9610158181B549B1
+    expected = (0x802C3081, 0x93E7D808, 0xC417FFD1, 0x17C2A8CB, 0x12215DAE)
+    draws = []
+    for value in expected:
+        x = ((state >> 45) ^ (state >> 27)) & 0xFFFFFFFF
+        rotation = state >> 59
+        result = ((x >> rotation) | (x << ((-rotation) & 31))) & 0xFFFFFFFF
+        check(result == value, "Shot zero-spin witness PRNG output")
+        draws.append(result)
+        state = (state * 0x5851F42D4C957F2D + 1) & 0xFFFFFFFFFFFFFFFF
+    check(state == 0x1E9DD04DA2048F0A, "Shot zero-spin witness final state")
+    check((664 * draws[0] >> 32) - 332 == 0, "Centered target")
+    check((6 * draws[1] >> 32) - 3 == 0, "Vertical spin input")
+    check(-2 + (3 * draws[2] >> 32) == 0, "Lateral spin input")
+    check(20 * draws[3] >> 32 == 1, "Finishing sample")
+    check(10 * draws[4] >> 32 == 0, "Solver angle sample")
+
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
         """解码原指令的 float32 常量位模式。"""
