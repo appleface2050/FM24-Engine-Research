@@ -89,6 +89,7 @@ EVIDENCE = (
     "20261028_goal_reference_geometry_copy_static.txt",
     "20261028_goal_metadata_record_write_static.txt",
     "20261029_goal_shape_extent_initializer_static.txt",
+    "20261029_goal_frame_position_source_static.txt",
 )
 
 
@@ -169,6 +170,11 @@ def verify(exe: Path) -> None:
     check(struct.unpack_from("<Q", data, offset(0x145D4BE58))[0] == 0x1418FDF30,
           "Shape extent initializer pointer")
     check(f32(f32(0.06) * f32(1)) == f32(0.06), "Shape extent example")
+
+    check(struct.unpack_from("<f", data, offset(0x145A1D418))[0]
+          == float_bits(0x3CA3D70A), "Frame position offset constant")
+    frame_y = f32(f32(f32(105) * f32(0.5)) - float_bits(0x3CA3D70A))
+    check(struct.pack("<f", frame_y).hex() == "85eb5142", "Frame position example")
 
     radius = f32(0.1112)
     area = f32(f32(f32(math.pi) * radius) * radius)
@@ -496,6 +502,9 @@ def verify(exe: Path) -> None:
         0x1443AFE19: 0x1443B3FC0,
         0x159EADF2A: 0x14438DB90,
         0x141ACFF02: 0x141B6C1C0,
+        0x141B6B384: 0x141B6B810,
+        0x141B6BAE8: 0x144569870,
+        0x141B6BB16: 0x144569870,
         0x1453008F1: 0x144580C50,
         0x144580CB4: 0x145305640,
         0x1434F42C0: 0x141A92E20,
