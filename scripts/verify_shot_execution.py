@@ -130,6 +130,7 @@ EVIDENCE = (
     "20261029_goal_shot_scoring_intermediate_helpers_static.txt",
     "20261029_goal_shot_action_before_state_update_static.txt",
     "20261029_goal_shot_match_flag_clear_static.txt",
+    "20261029_goal_shot_reference_dispatch_compatibility_static.txt",
 )
 
 

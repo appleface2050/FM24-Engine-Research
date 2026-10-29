@@ -1,0 +1,102 @@
+Original PE bounded instruction windows; no program execution.
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443c46ca <.sdata+0x43c36ca>:
+   1443c46ca:	48 8b 88 88 e3 00 00 	mov    rcx,QWORD PTR [rax+0xe388]
+   1443c46d1:	4c 39 e1             	cmp    rcx,r12
+   1443c46d4:	74 3d                	je     0x1443c4713
+   1443c46d6:	48 85 c9             	test   rcx,rcx
+   1443c46d9:	74 14                	je     0x1443c46ef
+   1443c46db:	0f b6 99 ee 01 00 00 	movzx  ebx,BYTE PTR [rcx+0x1ee]
+   1443c46e2:	48 89 ca             	mov    rdx,rcx
+   1443c46e5:	41 3a 9c 24 ee 01 00 	cmp    bl,BYTE PTR [r12+0x1ee]
+   1443c46ec:	00
+   1443c46ed:	74 1d                	je     0x1443c470c
+   1443c46ef:	48 8b 90 90 e3 00 00 	mov    rdx,QWORD PTR [rax+0xe390]
+   1443c46f6:	48 85 d2             	test   rdx,rdx
+   1443c46f9:	74 18                	je     0x1443c4713
+   1443c46fb:	0f b6 9a ee 01 00 00 	movzx  ebx,BYTE PTR [rdx+0x1ee]
+   1443c4702:	41 3a 9c 24 ee 01 00 	cmp    bl,BYTE PTR [r12+0x1ee]
+   1443c4709:	00
+   1443c470a:	75 07                	jne    0x1443c4713
+   1443c470c:	48 89 90 98 e3 00 00 	mov    QWORD PTR [rax+0xe398],rdx
+   1443c4713:	48 89 88 90 e3 00 00 	mov    QWORD PTR [rax+0xe390],rcx
+   1443c471a:	4c 89 a0 88 e3 00 00 	mov    QWORD PTR [rax+0xe388],r12
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b41670 <.sdata+0x1b40670>:
+   141b41670:	56                   	push   rsi
+   141b41671:	57                   	push   rdi
+   141b41672:	48 8b b9 c8 01 00 00 	mov    rdi,QWORD PTR [rcx+0x1c8]
+   141b41679:	48 8b 87 88 e3 00 00 	mov    rax,QWORD PTR [rdi+0xe388]
+   141b41680:	48 39 c8             	cmp    rax,rcx
+   141b41683:	74 12                	je     0x141b41697
+   141b41685:	48 39 89 b0 13 00 00 	cmp    QWORD PTR [rcx+0x13b0],rcx
+   141b4168c:	75 09                	jne    0x141b41697
+   141b4168e:	48 39 8f 50 e3 00 00 	cmp    QWORD PTR [rdi+0xe350],rcx
+   141b41695:	74 0e                	je     0x141b416a5
+   141b41697:	48 39 c8             	cmp    rax,rcx
+   141b4169a:	75 67                	jne    0x141b41703
+   141b4169c:	4c 8b 87 b8 d2 00 00 	mov    r8,QWORD PTR [rdi+0xd2b8]
+   141b416a3:	eb 2a                	jmp    0x141b416cf
+   141b416a5:	44 8b 89 60 01 00 00 	mov    r9d,DWORD PTR [rcx+0x160]
+   141b416ac:	4c 8b 87 b8 d2 00 00 	mov    r8,QWORD PTR [rdi+0xd2b8]
+   141b416b3:	45 3b 88 18 0d 00 00 	cmp    r9d,DWORD PTR [r8+0xd18]
+   141b416ba:	7f 13                	jg     0x141b416cf
+   141b416bc:	8b b1 70 01 00 00    	mov    esi,DWORD PTR [rcx+0x170]
+   141b416c2:	3b b7 e8 09 00 00    	cmp    esi,DWORD PTR [rdi+0x9e8]
+   141b416c8:	7e 05                	jle    0x141b416cf
+   141b416ca:	48 39 c8             	cmp    rax,rcx
+   141b416cd:	75 34                	jne    0x141b41703
+   141b416cf:	41 8b 80 00 0e 00 00 	mov    eax,DWORD PTR [r8+0xe00]
+   141b416d6:	49 b8 00 00 00 00 00 	movabs r8,0x38b70000000000
+   141b416dd:	b7 38 00
+   141b416e0:	48 83 f8 35          	cmp    rax,0x35
+   141b416e4:	77 22                	ja     0x141b41708
+   141b416e6:	49 0f a3 c0          	bt     r8,rax
+   141b416ea:	73 1c                	jae    0x141b41708
+   141b416ec:	44 8b 8f e8 09 00 00 	mov    r9d,DWORD PTR [rdi+0x9e8]
+   141b416f3:	8b 81 70 01 00 00    	mov    eax,DWORD PTR [rcx+0x170]
+   141b416f9:	44 29 c8             	sub    eax,r9d
+   141b416fc:	7e 1a                	jle    0x141b41718
+   141b416fe:	83 f8 03             	cmp    eax,0x3
+   141b41701:	7e 15                	jle    0x141b41718
+   141b41703:	31 c0                	xor    eax,eax
+   141b41705:	5f                   	pop    rdi
+   141b41706:	5e                   	pop    rsi
+   141b41707:	c3                   	ret
+   141b41708:	44 8b 8f e8 09 00 00 	mov    r9d,DWORD PTR [rdi+0x9e8]
+   141b4170f:	44 39 89 70 01 00 00 	cmp    DWORD PTR [rcx+0x170],r9d
+   141b41716:	7f eb                	jg     0x141b41703
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000144452e50 <.sdata+0x4451e50>:
+   144452e50:	49 8b 04 24          	mov    rax,QWORD PTR [r12]
+   144452e54:	f6 80 a5 0a 00 00 01 	test   BYTE PTR [rax+0xaa5],0x1
+   144452e5b:	75 2f                	jne    0x144452e8c
+   144452e5d:	4c 89 f1             	mov    rcx,r14
+   144452e60:	31 d2                	xor    edx,edx
+   144452e62:	e8 09 e8 6e fd       	call   0x141b41670
+   144452e67:	84 c0                	test   al,al
+   144452e69:	74 21                	je     0x144452e8c
+   144452e6b:	41 81 be 40 0e 00 00 	cmp    DWORD PTR [r14+0xe40],0x81
+   144452e72:	81 00 00 00
+   144452e76:	74 14                	je     0x144452e8c
+   144452e78:	49 8b 86 c8 01 00 00 	mov    rax,QWORD PTR [r14+0x1c8]
+   144452e7f:	4c 39 b0 88 e3 00 00 	cmp    QWORD PTR [rax+0xe388],r14
+   144452e86:	0f 84 fc 05 00 00    	je     0x144453488
