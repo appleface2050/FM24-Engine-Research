@@ -113,6 +113,7 @@ EVIDENCE = (
     "20261029_goal_shot_solver_selection_static.txt",
     "20261029_goal_shot_solver_spin_incompatibility_static.txt",
     "20261029_goal_shot_trial_ground_branch_static.txt",
+    "20261029_goal_shot_trial_contact_response_static.txt",
 )
 
 
@@ -282,6 +283,15 @@ def verify(exe: Path) -> None:
     fraction = f32(f32(0.1112) / dz)
     check(dz < 0 and fraction < 0, "Trial ground witness branch")
     check(max(fraction, 0.0) == 0.0, "Trial ground intersection clamp")
+
+    # 条件性地面接触算例：切向变化和旋转的量级。
+    remaining, gravity, mass, mu, radius, inertia = map(f32, (0.1, 10, 1, 0.1, 0.1, 1))
+    normal_impulse = f32(f32(remaining * gravity) * mass)
+    tangential_impulse = f32(-f32(normal_impulse * mu))
+    vy = f32(f32(10) + tangential_impulse)
+    wx = f32(f32(radius * tangential_impulse) / inertia)
+    check(0 < vy < 10 and wx < 0, "Ground response changes speed and spin")
+    check(f32(vy + f32(radius * wx)) > 0, "Ground example avoids reversal")
 
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
