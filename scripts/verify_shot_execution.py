@@ -123,6 +123,7 @@ EVIDENCE = (
     "20261029_goal_context_perturbation_initialization_static.txt",
     "20261029_goal_shot_candidate_priority_flag_static.txt",
     "20261029_goal_shot_candidate_post_creation_static.txt",
+    "20261029_goal_shot_candidate_first_multiplier_static.txt",
 )
 
 
@@ -156,6 +157,8 @@ def verify(exe: Path) -> None:
           == 0x140269570, "FIXTURE_RESULT +28 getter binding")
     check(struct.unpack_from("<Q", data, offset(0x145D2FCF8 + 8))[0]
           == 0x1453899F0, "Frame child transform slot")
+    check(struct.unpack_from("<f", data, offset(0x145A1D4B0))[0] == 1.0,
+          "Shot candidate first multiplier")
     check(struct.unpack_from("<f", data, offset(0x145A1D53C))[0] == 30.0,
           "Team geometry comparison constant")
     check(struct.unpack_from("<f", data, offset(0x145A1D4EC))[0] == 5.0,
