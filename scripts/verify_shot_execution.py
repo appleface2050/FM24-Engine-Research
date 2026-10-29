@@ -107,6 +107,7 @@ EVIDENCE = (
     "20261029_goal_shot_target_field_origin_static.txt",
     "20261029_goal_shot_target_center_rng_static.txt",
     "20261029_goal_shot_target_post_generation_static.txt",
+    "20261029_goal_shot_direction_helper_preservation_static.txt",
 )
 
 
