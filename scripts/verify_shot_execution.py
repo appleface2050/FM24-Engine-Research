@@ -128,6 +128,7 @@ EVIDENCE = (
     "20261029_goal_shot_scoring_state_writes_static.txt",
     "20261029_goal_shot_scoring_update_order_static.txt",
     "20261029_goal_shot_scoring_intermediate_helpers_static.txt",
+    "20261029_goal_shot_action_before_state_update_static.txt",
 )
 
 
