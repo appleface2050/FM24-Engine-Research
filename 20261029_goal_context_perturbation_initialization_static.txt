@@ -18,12 +18,12 @@ Disassembly of section .sdata:
    141a8fc3e:	48 8d 6c 24 40       	lea    rbp,[rsp+0x40]
    141a8fc43:	0f 29 75 f0          	movaps XMMWORD PTR [rbp-0x10],xmm6
    141a8fc47:	48 c7 45 e8 fe ff ff 	mov    QWORD PTR [rbp-0x18],0xfffffffffffffffe
-   141a8fc4e:	ff 
+   141a8fc4e:	ff
    141a8fc4f:	48 89 ce             	mov    rsi,rcx
    141a8fc52:	0f 57 f6             	xorps  xmm6,xmm6
    141a8fc55:	0f 29 71 10          	movaps XMMWORD PTR [rcx+0x10],xmm6
    141a8fc59:	48 bb 00 00 00 00 ff 	movabs rbx,0xffffffff00000000
-   141a8fc60:	ff ff ff 
+   141a8fc60:	ff ff ff
    141a8fc63:	48 89 59 20          	mov    QWORD PTR [rcx+0x20],rbx
 
 
@@ -40,7 +40,7 @@ Disassembly of section .sdata:
    141a909f6:	31 d2                	xor    edx,edx
    141a909f8:	e8 43 dd ae 03       	call   0x14557e740
    141a909fd:	48 b8 64 00 00 00 64 	movabs rax,0x6400000064
-   141a90a04:	00 00 00 
+   141a90a04:	00 00 00
    141a90a07:	48 89 86 54 e5 00 00 	mov    QWORD PTR [rsi+0xe554],rax
    141a90a0e:	89 be 5c e5 00 00    	mov    DWORD PTR [rsi+0xe55c],edi
    141a90a14:	89 be 60 e5 00 00    	mov    DWORD PTR [rsi+0xe560],edi
@@ -55,3 +55,85 @@ Disassembly of section .sdata:
 
 000000014557e740 <.sdata+0x557d740>:
    14557e740:	ff 25 da 23 7d 00    	jmp    QWORD PTR [rip+0x7d23da]        # 0x145d50b20
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141a909cf <.sdata+0x1a8f9cf>:
+   141a909cf:	4c 8d be e0 e3 00 00 	lea    r15,[rsi+0xe3e0]
+   141a909d6:	0f 29 b6 e0 e3 00 00 	movaps XMMWORD PTR [rsi+0xe3e0],xmm6
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141a90b4c <.sdata+0x1a8fb4c>:
+   141a90b4c:	c6 86 90 e2 00 00 11 	mov    BYTE PTR [rsi+0xe290],0x11
+   141a90b53:	e8 d8 22 fe ff       	call   0x141a72e30
+   141a90b58:	48 89 86 c0 d2 00 00 	mov    QWORD PTR [rsi+0xd2c0],rax
+   141a90b5f:	4c 89 f9             	mov    rcx,r15
+   141a90b62:	4c 89 f2             	mov    rdx,r14
+   141a90b65:	e8 96 76 94 02       	call   0x1443d8200
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443d8348 <.sdata+0x43d7348>:
+   1443d8348:	0f b6 02             	movzx  eax,BYTE PTR [rdx]
+   1443d834b:	3c 17                	cmp    al,0x17
+   1443d834d:	76 41                	jbe    0x1443d8390
+   1443d834f:	44 0f b6 52 01       	movzx  r10d,BYTE PTR [rdx+0x1]
+   1443d8354:	41 b8 5f 00 00 00    	mov    r8d,0x5f
+   1443d835a:	3c 18                	cmp    al,0x18
+   1443d835c:	75 05                	jne    0x1443d8363
+   1443d835e:	45 84 d2             	test   r10b,r10b
+   1443d8361:	74 71                	je     0x1443d83d4
+   1443d8363:	34 18                	xor    al,0x18
+   1443d8365:	41 80 f2 01          	xor    r10b,0x1
+   1443d8369:	41 08 c2             	or     r10b,al
+   1443d836c:	41 0f 94 c2          	sete   r10b
+   1443d8370:	0f b6 42 02          	movzx  eax,BYTE PTR [rdx+0x2]
+   1443d8374:	75 04                	jne    0x1443d837a
+   1443d8376:	3c 02                	cmp    al,0x2
+   1443d8378:	72 5a                	jb     0x1443d83d4
+   1443d837a:	3c 02                	cmp    al,0x2
+   1443d837c:	0f 94 c0             	sete   al
+   1443d837f:	41 20 c2             	and    r10b,al
+   1443d8382:	41 80 fa 01          	cmp    r10b,0x1
+   1443d8386:	75 46                	jne    0x1443d83ce
+   1443d8388:	80 7a 03 02          	cmp    BYTE PTR [rdx+0x3],0x2
+   1443d838c:	72 46                	jb     0x1443d83d4
+   1443d838e:	eb 3e                	jmp    0x1443d83ce
+   1443d8390:	44 0f b6 52 01       	movzx  r10d,BYTE PTR [rdx+0x1]
+   1443d8395:	41 b8 5f 00 00 00    	mov    r8d,0x5f
+   1443d839b:	75 06                	jne    0x1443d83a3
+   1443d839d:	41 80 fa 07          	cmp    r10b,0x7
+   1443d83a1:	77 31                	ja     0x1443d83d4
+   1443d83a3:	34 17                	xor    al,0x17
+   1443d83a5:	41 80 f2 07          	xor    r10b,0x7
+   1443d83a9:	41 08 c2             	or     r10b,al
+   1443d83ac:	41 0f 94 c2          	sete   r10b
+   1443d83b0:	0f b6 42 02          	movzx  eax,BYTE PTR [rdx+0x2]
+   1443d83b4:	75 04                	jne    0x1443d83ba
+   1443d83b6:	3c 01                	cmp    al,0x1
+   1443d83b8:	77 1a                	ja     0x1443d83d4
+   1443d83ba:	3c 01                	cmp    al,0x1
+   1443d83bc:	0f 94 c0             	sete   al
+   1443d83bf:	41 20 c2             	and    r10b,al
+   1443d83c2:	41 80 fa 01          	cmp    r10b,0x1
+   1443d83c6:	75 06                	jne    0x1443d83ce
+   1443d83c8:	80 7a 03 03          	cmp    BYTE PTR [rdx+0x3],0x3
+   1443d83cc:	77 06                	ja     0x1443d83d4
+   1443d83ce:	41 b8 64 00 00 00    	mov    r8d,0x64
+   1443d83d4:	44 89 81 68 01 00 00 	mov    DWORD PTR [rcx+0x168],r8d
+   1443d83db:	48 b8 64 00 00 00 64 	movabs rax,0x6400000064
+   1443d83e2:	00 00 00
+   1443d83e5:	48 89 81 6c 01 00 00 	mov    QWORD PTR [rcx+0x16c],rax
