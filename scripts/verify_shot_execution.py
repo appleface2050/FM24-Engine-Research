@@ -621,6 +621,43 @@ def verify(exe: Path) -> None:
     check(epsilon == float_bits(0x348637BE), "Goal normal epsilon")
     length = f32(math.sqrt(f32(dot3(cross, cross) + epsilon)))
     normal = [f32(value / length) for value in cross]
+    # 将求解器的受限35速输出接到已恢复的高速度阻力与首段门口几何。
+    shot_speed = f32(34.999996185302734)
+    high_coefficient = f32(0.24)
+    step = f32(1 / 12)
+    high_magnitude = f32(f32(f32(density * f32(area * 0.5))
+                             * high_coefficient) * shot_speed)
+    high_ay = f32(f32(high_magnitude * -shot_speed) / f32(0.43))
+    high_y = f32(f32(51) + f32(f32(step * shot_speed)
+                     + f32(f32(f32(step * step) * high_ay) * f32(0.5))))
+    high_z = f32(f32(f32(1) + radius)
+                 + f32(f32(f32(step * step) * gravity) * f32(0.5)))
+    check(shot_speed > 21 and high_z > radius, "Shot first substep inputs")
+    high_start = [f32(0), f32(51), f32(f32(1) + radius)]
+    high_end = [f32(0), high_y, f32(high_z - radius)]
+    high_ref = dot3(vertices[0], normal)
+    high_a = f32(dot3(high_start, normal) - high_ref)
+    high_b = f32(dot3(high_end, normal) - high_ref)
+    check(high_a < 0 <= high_b, "Shot first segment crosses goal plane")
+    high_fraction = f32(f32(-high_a) / f32(high_b - high_a))
+    high_hit = [f32(high_start[i] + f32(high_fraction * f32(high_end[i] - high_start[i])))
+                for i in range(3)]
+    high_edge0 = vector_sub(vertices[1], vertices[0])
+    high_edge1 = vector_sub(vertices[2], vertices[0])
+    high_delta = vector_sub(high_hit, vertices[0])
+    h00, h01, h11 = (dot3(high_edge0, high_edge0), dot3(high_edge0, high_edge1),
+                     dot3(high_edge1, high_edge1))
+    h20, h21 = dot3(high_edge0, high_delta), dot3(high_edge1, high_delta)
+    hden = f32(f32(h00 * h11) - f32(h01 * h01))
+    hw1 = f32(f32(f32(h11 * h20) - f32(h01 * h21)) / hden)
+    hw2 = f32(f32(f32(h21 * h00) - f32(h20 * h01)) / hden)
+    hw0 = f32(f32(f32(1) - hw1) - hw2)
+    check(hw0 >= 0 and hw1 >= 0 and f32(hw0 + hw1) <= 1,
+          "Shot first segment enters goal triangle")
+    check([struct.pack("<f", value).hex() for value in high_hit]
+          == ["00000000", "de715242", "0fc3833f"],
+          "Shot first segment intersection bits")
+
     start = [f32(0), first[0], f32(first[1] - radius)]
     end = [f32(0), second[0], f32(second[1] - radius)]
     reference = dot3(vertices[0], normal)
