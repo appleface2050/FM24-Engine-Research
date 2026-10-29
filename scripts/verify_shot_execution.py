@@ -268,6 +268,13 @@ def verify(exe: Path) -> None:
     check(vx == 0.0 and struct.pack("<f", vy).hex() == "ffff0b42",
           "Shot reflection conditional output")
 
+    # 试算记录扫描使用严格大于，等于目标距离不会被选中。
+    target_distance_squared = f32(f32(1.5 * 1.5))
+    records = ((0.0, 0.0), (0.0, 1.5), (0.0, 2.0))
+    chosen = next((x, y) for x, y in records
+                  if f32(f32(x * x) + f32(y * y)) > target_distance_squared)
+    check(chosen == (0.0, 2.0), "Shot trial first strictly beyond target")
+
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
         """解码原指令的 float32 常量位模式。"""
