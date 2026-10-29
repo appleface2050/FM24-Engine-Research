@@ -298,6 +298,27 @@ def verify(exe: Path) -> None:
         check(struct.unpack_from("<fff", material_bytes, index * 12)
               == (0.5, 2.5, 0.5), f"Constructed material entry {index}")
 
+    # 构造器后续调用在 E+d0=2 时重写六项；不是上面的暂存表。
+    updated = bytearray(material_bytes)
+    struct.pack_into("<Q", updated, 0, 0x402000003F333333)
+    struct.pack_into("<I", updated, 8, 0x3F000000)
+    struct.pack_into("<III", updated, 12, 0x3F19999A, 0x40000000, 0x3F000000)
+    updated[24:40] = data[offset(0x145C4BF50):offset(0x145C4BF50) + 16]
+    struct.pack_into("<Q", updated, 40, 0x3F4CCCCD40400000)
+    struct.pack_into("<Q", updated, 48, 0x3FC000003F000000)
+    struct.pack_into("<I", updated, 56, 0x3E99999A)
+    struct.pack_into("<Q", updated, 60, 0x402000003F000000)
+    struct.pack_into("<I", updated, 68, 0x3F000000)
+    expected_bits = ((0x3F333333, 0x40200000, 0x3F000000),
+                     (0x3F19999A, 0x40000000, 0x3F000000),
+                     (0x3F000000, 0x40000000, 0x3F000000),
+                     (0x3DCCCCCD, 0x40400000, 0x3F4CCCCD),
+                     (0x3F000000, 0x3FC00000, 0x3E99999A),
+                     (0x3F000000, 0x40200000, 0x3F000000))
+    for index, expected in enumerate(expected_bits):
+        check(struct.unpack_from("<III", updated, index * 12) == expected,
+              f"Updated material entry {index}")
+
     # 条件性地面接触算例：切向变化和旋转的量级。
     remaining, gravity, mass, mu, radius, inertia = map(f32, (0.1, 10, 1, 0.1, 0.1, 1))
     normal_impulse = f32(f32(remaining * gravity) * mass)
