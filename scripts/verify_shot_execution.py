@@ -121,6 +121,7 @@ EVIDENCE = (
     "20261029_goal_shot_trial_constraint_clear_static.txt",
     "20261029_goal_shot_zero_perturbation_static.txt",
     "20261029_goal_context_perturbation_initialization_static.txt",
+    "20261029_goal_shot_candidate_priority_flag_static.txt",
 )
 
 
