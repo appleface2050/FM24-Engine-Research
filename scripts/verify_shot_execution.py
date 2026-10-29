@@ -328,6 +328,21 @@ def verify(exe: Path) -> None:
     check(0 < vy < 10 and wx < 0, "Ground response changes speed and spin")
     check(f32(vy + f32(radius * wx)) > 0, "Ground example avoids reversal")
 
+    # 将已定位的球参数及索引0材料用于限定地面响应，保持原生float32步骤。
+    radius, mass, h, gravity, coefficient = map(f32, (0.1112, 0.43, 1 / 12, -9.8, 0.5))
+    inertia = f32(f32(radius * radius) * f32(2 / 3))
+    speed = struct.unpack("<f", bytes.fromhex("ffff0b42"))[0]
+    impulse = f32(f32(-f32(h * gravity)) * mass)
+    impulse_y = f32(-f32(impulse * coefficient))
+    after_y = f32(speed + impulse_y)
+    after_wx = f32(f32(radius * impulse_y) / inertia)
+    check(struct.pack("<f", after_y).hex() == "334c0b42",
+          "Constructed-parameter ground tangential speed")
+    check(struct.pack("<f", after_wx).hex() == "309517c0",
+          "Constructed-parameter ground generated spin")
+    check(f32(after_y + f32(radius * after_wx)) > 0,
+          "Constructed-parameter ground no reversal")
+
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
         """解码原指令的 float32 常量位模式。"""
