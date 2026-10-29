@@ -112,6 +112,7 @@ EVIDENCE = (
     "20261029_goal_shot_solver_input_static.txt",
     "20261029_goal_shot_solver_selection_static.txt",
     "20261029_goal_shot_solver_spin_incompatibility_static.txt",
+    "20261029_goal_shot_trial_ground_branch_static.txt",
 )
 
 
@@ -274,6 +275,13 @@ def verify(exe: Path) -> None:
     chosen = next((x, y) for x, y in records
                   if f32(f32(x * x) + f32(y * y)) > target_distance_squared)
     check(chosen == (0.0, 2.0), "Shot trial first strictly beyond target")
+
+    # 指定零高度和向下加速度时，试算分支将负的平面相交比例截到0。
+    step = f32(1 / 12)
+    dz = f32(f32(f32(f32(step * step) * f32(-9.8)) * f32(0.5)))
+    fraction = f32(f32(0.1112) / dz)
+    check(dz < 0 and fraction < 0, "Trial ground witness branch")
+    check(max(fraction, 0.0) == 0.0, "Trial ground intersection clamp")
 
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
