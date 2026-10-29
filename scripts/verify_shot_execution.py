@@ -102,6 +102,7 @@ EVIDENCE = (
     "20261029_goal_fixture_competition_callback_static.txt",
     "20261029_goal_league_stage_fixture_callback_static.txt",
     "20261029_goal_shot_origin_boundary_compatibility_static.txt",
+    "20261029_goal_shot_origin_submission_argument_static.txt",
 )
 
 
@@ -179,6 +180,9 @@ def verify(exe: Path) -> None:
                            (0x145A1D410, 2.440000057220459)):
         check(struct.unpack_from("<f", data, offset(address))[0] == value,
               f"Shot origin geometry threshold {address:x}")
+
+    check(struct.unpack_from("<f", data, offset(0x145A1D504))[0] == 10.0,
+          "Shot target lookup coordinate scale")
 
     def f32(value):
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
