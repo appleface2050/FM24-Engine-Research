@@ -364,6 +364,37 @@ def verify(exe: Path) -> None:
     check(contact[2] == last[2] and contact[:2] == last[:2],
           "Zero-duration contact replaces same-time position record")
 
+    # 对称地面试算：三个子步、两次重复接触与记录筛选。
+    trial_y, trial_v, trial_w, elapsed = f32(0), speed, f32(0), f32(0)
+    duration, max_step = f32(0.25), f32(1 / 12)
+    trial_records = [f32(0)]
+    for _ in range(3):
+        trial_h = min(max_step, f32(duration - elapsed))
+        j = f32(f32(-f32(trial_h * gravity)) * mass)
+        if trial_w != 0:
+            spin_length = f32(math.sqrt(f32(trial_w * trial_w)))
+            spin_damping = min(f32(f32(2.5) * j), spin_length)
+            trial_w = f32(trial_w - f32(spin_damping * f32(trial_w / spin_length)))
+        friction = f32(-f32(j * coefficient))
+        trial_v = f32(trial_v + friction)
+        trial_w = f32(trial_w + f32(f32(radius * friction) / inertia))
+        check(f32(trial_v + f32(radius * trial_w)) > 0,
+              "Trial contact avoids tangential reversal")
+        check(trial_v > 21, "Trial remains in high-speed drag branch")
+        scale = f32(f32(f32(density * area) * f32(0.24)) * trial_v)
+        acceleration = f32(f32(scale * f32(-trial_v)) / mass)
+        delta = f32(f32(trial_h * trial_v)
+                    + f32(f32(f32(trial_h * trial_h) * acceleration) * f32(0.5)))
+        trial_y = f32(trial_y + delta)
+        trial_v = f32(trial_v + f32(trial_h * acceleration))
+        elapsed = f32(elapsed + trial_h)
+        trial_records.append(trial_y)
+    check(trial_records == [0.0, 2.846113443374634, 5.570520401000977,
+                            8.182209014892578], "Three trial positions")
+    check(elapsed == duration, "Trial completes time interval")
+    check(next(y for y in trial_records if f32(y * y) > f32(1.5 * 1.5))
+          == trial_records[1], "First beyond-target record")
+
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
         """解码原指令的 float32 常量位模式。"""
