@@ -208,6 +208,24 @@ def verify(exe: Path) -> None:
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
         return struct.unpack("<f", struct.pack("<f", value))[0]
 
+    # 验证角度取整的调用确实指向 PE 中的 CRT floorf 导入槽。
+    thunk = offset(0x14557EA20)
+    check(data[thunk:thunk + 2] == b"\xff\x25", "floorf thunk opcode")
+    check(0x14557EA26 + struct.unpack_from("<i", data, thunk + 2)[0]
+          == 0x145D50F40, "floorf import slot")
+    descriptor = offset(0x15CF4A2A8)
+    lookup, _, _, module, iat = struct.unpack_from("<IIIII", data, descriptor)
+    check(iat == 0x5D50EB0, "math import table")
+    check(data[offset(0x140000000 + module):offset(0x140000000 + module) + 31] ==
+          b"api-ms-win-crt-math-l1-1-0.dll\0", "math import module")
+    item = lookup + ((0x5D50F40 - iat) // 8) * 8
+    name = struct.unpack_from("<Q", data, offset(0x140000000 + item))[0]
+    check(data[offset(0x140000000 + name + 2):offset(0x140000000 + name + 2) + 7]
+          == b"floorf\0",
+          "floorf import name")
+    check(math.floor(f32(f32(1.5 * f32(0.2)) + 0.5)) == 0,
+          "Zero angle witness distance correction")
+
     # 固定随机见证：目标居中、两轴旋转为零、射门抽样为1。
     state = 0x9610158181B549B1
     expected = (0x802C3081, 0x93E7D808, 0xC417FFD1, 0x17C2A8CB, 0x12215DAE)
