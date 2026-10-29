@@ -88,6 +88,7 @@ EVIDENCE = (
     "20261028_goal_direction_table_witness_static.txt",
     "20261028_goal_reference_geometry_copy_static.txt",
     "20261028_goal_metadata_record_write_static.txt",
+    "20261029_goal_shape_extent_initializer_static.txt",
 )
 
 
@@ -164,6 +165,10 @@ def verify(exe: Path) -> None:
         check(struct.pack("<f", value).hex() == expected,
               "Shared match input coefficient comparison")
     check((100 * 9) // 10 == 90, "Work-rate internal threshold example")
+
+    check(struct.unpack_from("<Q", data, offset(0x145D4BE58))[0] == 0x1418FDF30,
+          "Shape extent initializer pointer")
+    check(f32(f32(0.06) * f32(1)) == f32(0.06), "Shape extent example")
 
     radius = f32(0.1112)
     area = f32(f32(f32(math.pi) * radius) * radius)
@@ -640,6 +645,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x1418FDF30: 0x150DF5F90,
         0x145305640: 0x15C605DC0,
         0x141A92E20: 0x151AECCB0,
         0x141B6ADA0: 0x151CD8810,
