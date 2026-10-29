@@ -95,6 +95,7 @@ EVIDENCE = (
     "20261029_goal_dimension_reference_source_static.txt",
     "20261029_goal_fixture_dimension_pointer_copy_static.txt",
     "20261029_goal_fixture_clone_pointer_return_static.txt",
+    "20261029_goal_pitch_clone_builder_intervening_calls_static.txt",
 )
 
 
