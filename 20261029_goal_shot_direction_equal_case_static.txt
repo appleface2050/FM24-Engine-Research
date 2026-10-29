@@ -1,0 +1,186 @@
+Original PE bounded instruction windows; no program execution.
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b51c90 <.sdata+0x1b50c90>:
+   141b51c90:	56                   	push   rsi
+   141b51c91:	48 83 ec 30          	sub    rsp,0x30
+   141b51c95:	f6 81 a9 11 00 00 01 	test   BYTE PTR [rcx+0x11a9],0x1
+   141b51c9c:	75 09                	jne    0x141b51ca7
+   141b51c9e:	80 b9 b4 0d 00 00 00 	cmp    BYTE PTR [rcx+0xdb4],0x0
+   141b51ca5:	74 14                	je     0x141b51cbb
+   141b51ca7:	b0 01                	mov    al,0x1
+   141b51ca9:	4d 85 c0             	test   r8,r8
+   141b51cac:	0f 84 53 01 00 00    	je     0x141b51e05
+   141b51cb2:	41 c6 00 00          	mov    BYTE PTR [r8],0x0
+   141b51cb6:	e9 4a 01 00 00       	jmp    0x141b51e05
+   141b51cbb:	44 0f b7 89 a8 01 00 	movzx  r9d,WORD PTR [rcx+0x1a8]
+   141b51cc2:	00
+   141b51cc3:	0f 28 02             	movaps xmm0,XMMWORD PTR [rdx]
+   141b51cc6:	0f 5c 81 80 01 00 00 	subps  xmm0,XMMWORD PTR [rcx+0x180]
+   141b51ccd:	f3 0f 10 0d 2f b8 ec 	movss  xmm1,DWORD PTR [rip+0x3ecb82f]        # 0x145a1d504
+   141b51cd4:	03
+   141b51cd5:	0f c6 c9 00          	shufps xmm1,xmm1,0x0
+   141b51cd9:	0f 59 c8             	mulps  xmm1,xmm0
+   141b51cdc:	f3 0f 2c f1          	cvttss2si esi,xmm1
+   141b51ce0:	f3 0f 16 c1          	movshdup xmm0,xmm1
+   141b51ce4:	f3 44 0f 2c d0       	cvttss2si r10d,xmm0
+   141b51ce9:	89 f2                	mov    edx,esi
+   141b51ceb:	f7 da                	neg    edx
+   141b51ced:	0f 48 d6             	cmovs  edx,esi
+   141b51cf0:	45 89 d3             	mov    r11d,r10d
+   141b51cf3:	41 f7 db             	neg    r11d
+   141b51cf6:	45 0f 48 da          	cmovs  r11d,r10d
+   141b51cfa:	81 fa 95 00 00 00    	cmp    edx,0x95
+   141b51d00:	77 0e                	ja     0x141b51d10
+   141b51d02:	41 81 fb c8 00 00 00 	cmp    r11d,0xc8
+   141b51d09:	72 39                	jb     0x141b51d44
+   141b51d0b:	0f 1f 44 00 00       	nop    DWORD PTR [rax+rax*1+0x0]
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b51d44 <.sdata+0x1b50d44>:
+   141b51d44:	81 c6 96 00 00 00    	add    esi,0x96
+   141b51d4a:	48 63 c6             	movsxd rax,esi
+   141b51d4d:	48 69 c0 20 03 00 00 	imul   rax,rax,0x320
+   141b51d54:	48 03 05 d5 82 8e 04 	add    rax,QWORD PTR [rip+0x48e82d5]        # 0x14643a030
+   141b51d5b:	49 63 d2             	movsxd rdx,r10d
+   141b51d5e:	44 0f b7 94 50 90 01 	movzx  r10d,WORD PTR [rax+rdx*2+0x190]
+   141b51d65:	00 00
+   141b51d67:	44 89 ca             	mov    edx,r9d
+   141b51d6a:	44 29 d2             	sub    edx,r10d
+   141b51d6d:	0f bf c2             	movsx  eax,dx
+   141b51d70:	3d b4 00 00 00       	cmp    eax,0xb4
+   141b51d75:	7c 3e                	jl     0x141b51db5
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b51db5 <.sdata+0x1b50db5>:
+   141b51db5:	3d 4b ff ff ff       	cmp    eax,0xffffff4b
+   141b51dba:	7f 3a                	jg     0x141b51df6
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b51df6 <.sdata+0x1b50df6>:
+   141b51df6:	66 89 54 24 2e       	mov    WORD PTR [rsp+0x2e],dx
+   141b51dfb:	48 8d 54 24 2e       	lea    rdx,[rsp+0x2e]
+   141b51e00:	e8 0b 00 00 00       	call   0x141b51e10
+   141b51e05:	90                   	nop
+   141b51e06:	48 83 c4 30          	add    rsp,0x30
+   141b51e0a:	5e                   	pop    rsi
+   141b51e0b:	c3                   	ret
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b51e10 <.sdata+0x1b50e10>:
+   141b51e10:	56                   	push   rsi
+   141b51e11:	57                   	push   rdi
+   141b51e12:	44 8b 89 14 16 00 00 	mov    r9d,DWORD PTR [rcx+0x1614]
+   141b51e19:	8b b9 18 16 00 00    	mov    edi,DWORD PTR [rcx+0x1618]
+   141b51e1f:	89 f8                	mov    eax,edi
+   141b51e21:	44 29 c8             	sub    eax,r9d
+   141b51e24:	89 c6                	mov    esi,eax
+   141b51e26:	f7 de                	neg    esi
+   141b51e28:	0f 48 f0             	cmovs  esi,eax
+   141b51e2b:	d1 ee                	shr    esi,1
+   141b51e2d:	44 8b 91 2c 16 00 00 	mov    r10d,DWORD PTR [rcx+0x162c]
+   141b51e34:	45 8d 5c 32 f6       	lea    r11d,[r10+rsi*1-0xa]
+   141b51e39:	0f bf 12             	movsx  edx,WORD PTR [rdx]
+   141b51e3c:	44 39 cf             	cmp    edi,r9d
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b51e41 <.sdata+0x1b50e41>:
+   141b51e41:	44 39 cf             	cmp    edi,r9d
+   141b51e44:	7f 37                	jg     0x141b51e7d
+   141b51e46:	41 39 d3             	cmp    r11d,edx
+   141b51e49:	7e 32                	jle    0x141b51e7d
+   141b51e4b:	66 85 d2             	test   dx,dx
+   141b51e4e:	0f 88 a0 00 00 00    	js     0x141b51ef4
+   141b51e54:	41 8d 42 e2          	lea    eax,[r10-0x1e]
+   141b51e58:	39 d0                	cmp    eax,edx
+   141b51e5a:	0f 8f 87 00 00 00    	jg     0x141b51ee7
+   141b51e60:	49 63 c2             	movsxd rax,r10d
+   141b51e63:	48 69 c0 56 55 55 55 	imul   rax,rax,0x55555556
+   141b51e6a:	48 89 c6             	mov    rsi,rax
+   141b51e6d:	48 c1 ee 20          	shr    rsi,0x20
+   141b51e71:	48 c1 e8 3f          	shr    rax,0x3f
+   141b51e75:	8d 44 06 0a          	lea    eax,[rsi+rax*1+0xa]
+   141b51e79:	39 d0                	cmp    eax,edx
+   141b51e7b:	7f 6a                	jg     0x141b51ee7
+   141b51e7d:	66 85 d2             	test   dx,dx
+   141b51e80:	74 60                	je     0x141b51ee2
+   141b51e82:	66 85 d2             	test   dx,dx
+   141b51e85:	78 6d                	js     0x141b51ef4
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b51e87 <.sdata+0x1b50e87>:
+   141b51e87:	4d 85 c0             	test   r8,r8
+   141b51e8a:	74 11                	je     0x141b51e9d
+   141b51e8c:	41 c6 00 00          	mov    BYTE PTR [r8],0x0
+   141b51e90:	44 8b 89 14 16 00 00 	mov    r9d,DWORD PTR [rcx+0x1614]
+   141b51e97:	8b b9 18 16 00 00    	mov    edi,DWORD PTR [rcx+0x1618]
+   141b51e9d:	44 39 cf             	cmp    edi,r9d
+   141b51ea0:	eb 6b                	jmp    0x141b51f0d
+   141b51ea2:	66 85 d2             	test   dx,dx
+   141b51ea5:	7f 9a                	jg     0x141b51e41
+   141b51ea7:	44 89 d8             	mov    eax,r11d
+   141b51eaa:	f7 d8                	neg    eax
+   141b51eac:	39                 	cmp    edx,eax
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b51ee2 <.sdata+0x1b50ee2>:
+   141b51ee2:	44 39 cf             	cmp    edi,r9d
+   141b51ee5:	7d 2b                	jge    0x141b51f12
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b51f0d <.sdata+0x1b50f0d>:
+   141b51f0d:	0f 9d c0             	setge  al
+   141b51f10:	eb 11                	jmp    0x141b51f23
+   141b51f12:	0f 8e 6f ff ff ff    	jle    0x141b51e87
+   141b51f18:	b0 01                	mov    al,0x1
+   141b51f1a:	4d 85 c0             	test   r8,r8
+   141b51f1d:	74 04                	je     0x141b51f23
+   141b51f1f:	41 c6 00 00          	mov    BYTE PTR [r8],0x0
+   141b51f23:	5f                   	pop    rdi
+   141b51f24:	5e                   	pop    rsi
+   141b51f25:	c3                   	ret

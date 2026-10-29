@@ -132,6 +132,7 @@ EVIDENCE = (
     "20261029_goal_shot_match_flag_clear_static.txt",
     "20261029_goal_shot_reference_dispatch_compatibility_static.txt",
     "20261029_goal_shot_candidate_context_init_static.txt",
+    "20261029_goal_shot_direction_equal_case_static.txt",
 )
 
 
@@ -811,6 +812,8 @@ def verify(exe: Path) -> None:
           "Shot prefilter leaves central longitudinal zone")
     check(-12 <= f32(0) <= 12, "Shot prefilter lateral endpoint")
     check(0xCF30 == 255 * 0xD0, "Candidate context initial capacity")
+    check((0x810 & 0x04C0) == 0 and ((0x810 >> 8) & 1) == 0,
+          "Prepared player flag selects direction calculation")
     check((0x700 & 0xFDFF00FF) == 0 and (0x500 & 0xFDFF00FF) == 0,
           "Shot preparation can clear earlier match flag examples")
     check(((0x500 >> 8) & 3) == 1 and ((0x700 >> 8) & 3) == 3,
