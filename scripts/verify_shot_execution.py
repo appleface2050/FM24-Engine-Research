@@ -94,6 +94,7 @@ EVIDENCE = (
     "20261029_goal_dimension_initialization_static.txt",
     "20261029_goal_dimension_reference_source_static.txt",
     "20261029_goal_fixture_dimension_pointer_copy_static.txt",
+    "20261029_goal_fixture_clone_pointer_return_static.txt",
 )
 
 
@@ -154,6 +155,12 @@ def verify(exe: Path) -> None:
 
     check(struct.unpack_from("<Q", data, offset(0x145608078 + 0x110))[0]
           == 0x141E435F0, "FIXTURE_RESULT clone slot")
+
+    for slot, target in ((0x10, 0x140269550), (0x18, 0x140269560),
+                         (0x28, 0x140269570), (0x30, 0x140269580),
+                         (0x58, 0x141E446C0), (0x90, 0x140269610)):
+        check(struct.unpack_from("<Q", data, offset(0x145608078 + slot))[0]
+              == target, f"FIXTURE_RESULT copy callback {slot:x}")
 
     def f32(value):
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
