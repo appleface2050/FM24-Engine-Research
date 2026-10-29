@@ -98,6 +98,7 @@ EVIDENCE = (
     "20261029_goal_pitch_clone_builder_intervening_calls_static.txt",
     "20261029_goal_builder_team_early_return_static.txt",
     "20261029_goal_full_selection_service_state_static.txt",
+    "20261029_goal_pitch_data_helper_branch_static.txt",
 )
 
 
