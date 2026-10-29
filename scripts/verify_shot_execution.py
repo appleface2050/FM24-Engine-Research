@@ -115,6 +115,7 @@ EVIDENCE = (
     "20261029_goal_shot_trial_ground_branch_static.txt",
     "20261029_goal_shot_trial_contact_response_static.txt",
     "20261029_goal_shot_ground_normal_initializer_static.txt",
+    "20261029_goal_shot_ground_material_init_static.txt",
 )
 
 
@@ -284,6 +285,17 @@ def verify(exe: Path) -> None:
     fraction = f32(f32(0.1112) / dz)
     check(dz < 0 and fraction < 0, "Trial ground witness branch")
     check(max(fraction, 0.0) == 0.0, "Trial ground intersection clamp")
+
+    # 环境构造器的六个材料项，由指令立即数和只读向量组装。
+    material_bytes = (struct.pack("<Q", 0x402000003F000000)
+                      + data[offset(0x145A1A420):offset(0x145A1A420) + 16]
+                      + data[offset(0x145A1A430):offset(0x145A1A430) + 16]
+                      + data[offset(0x145A1A440):offset(0x145A1A440) + 16]
+                      + data[offset(0x145A1A420):offset(0x145A1A420) + 16])
+    check(len(material_bytes) == 72, "Constructed material table size")
+    for index in range(6):
+        check(struct.unpack_from("<fff", material_bytes, index * 12)
+              == (0.5, 2.5, 0.5), f"Constructed material entry {index}")
 
     # 条件性地面接触算例：切向变化和旋转的量级。
     remaining, gravity, mass, mu, radius, inertia = map(f32, (0.1, 10, 1, 0.1, 0.1, 1))
