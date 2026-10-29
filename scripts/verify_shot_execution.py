@@ -799,6 +799,16 @@ def verify(exe: Path) -> None:
           == [("d3705742", "c7e0893f"), ("58726242", "7af2793f"),
               ("cc0c6d42", "76a74f3f")], "Shot high-speed trajectory records")
     check(all(zz > radius for _, zz in high_records), "Shot records above ground")
+    # 同一三步末速度进入已恢复的二维门线预筛选。
+    prefilter_sy = f32(abs(f32(f32(0.25) * hvy)))
+    prefilter_lo = f32(f32(6) - f32(52.5))
+    prefilter_hi = f32(f32(52.5) - f32(6))
+    y_ends = (f32(f32(51) - prefilter_sy), f32(f32(51) + prefilter_sy))
+    check(not all(prefilter_lo <= y <= prefilter_hi for y in y_ends),
+          "Shot prefilter leaves central longitudinal zone")
+    check(-12 <= f32(0) <= 12, "Shot prefilter lateral endpoint")
+    check(((0x500 >> 8) & 3) == 1 and ((0x700 >> 8) & 3) == 3,
+          "Prior match flag examples conflict with prefilter gate")
     high_dy = int(f32(f32(f32(52.5) - high_records[-1][0]) * f32(10)))
     high_grid = [(int(f32(x * f32(10))), high_dy) for x in goal_x]
     check(high_grid == [(0, -67), (-36, -67), (36, -67)], "Shot direction grid")
