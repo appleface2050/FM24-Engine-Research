@@ -114,6 +114,7 @@ EVIDENCE = (
     "20261029_goal_shot_solver_spin_incompatibility_static.txt",
     "20261029_goal_shot_trial_ground_branch_static.txt",
     "20261029_goal_shot_trial_contact_response_static.txt",
+    "20261029_goal_shot_ground_normal_initializer_static.txt",
 )
 
 
@@ -319,6 +320,9 @@ def verify(exe: Path) -> None:
         check(struct.pack("<f", value).hex() == expected,
               "Shared match input coefficient comparison")
     check((100 * 9) // 10 == 90, "Work-rate internal threshold example")
+
+    check(struct.unpack_from("<Q", data, offset(0x145D4BE30))[0] == 0x1418F88D0,
+          "Ground normal initializer pointer")
 
     check(struct.unpack_from("<Q", data, offset(0x145D4BE58))[0] == 0x1418FDF30,
           "Shape extent initializer pointer")
