@@ -131,6 +131,7 @@ EVIDENCE = (
     "20261029_goal_shot_action_before_state_update_static.txt",
     "20261029_goal_shot_match_flag_clear_static.txt",
     "20261029_goal_shot_reference_dispatch_compatibility_static.txt",
+    "20261029_goal_shot_candidate_context_init_static.txt",
 )
 
 
@@ -809,6 +810,7 @@ def verify(exe: Path) -> None:
     check(not all(prefilter_lo <= y <= prefilter_hi for y in y_ends),
           "Shot prefilter leaves central longitudinal zone")
     check(-12 <= f32(0) <= 12, "Shot prefilter lateral endpoint")
+    check(0xCF30 == 255 * 0xD0, "Candidate context initial capacity")
     check((0x700 & 0xFDFF00FF) == 0 and (0x500 & 0xFDFF00FF) == 0,
           "Shot preparation can clear earlier match flag examples")
     check(((0x500 >> 8) & 3) == 1 and ((0x700 >> 8) & 3) == 3,
