@@ -118,6 +118,7 @@ EVIDENCE = (
     "20261029_goal_shot_ground_material_init_static.txt",
     "20261029_goal_shot_ground_first_shape_binding_static.txt",
     "20261029_goal_shot_trial_post_contact_step_static.txt",
+    "20261029_goal_shot_trial_constraint_clear_static.txt",
 )
 
 
@@ -355,6 +356,13 @@ def verify(exe: Path) -> None:
           "Trial post-contact horizontal threshold")
     check(f32(dy / f32(math.sqrt(f32(dy * dy)))) == 1.0,
           "Trial selected direction normalization")
+
+    # 相同归一化时间的零时长接触会复写记录，水平坐标保持。
+    time = f32(h / f32(0.25))
+    last = (f32(0), dy, time)
+    contact = (last[0], last[1], f32(f32(h + 0.0) / f32(0.25)))
+    check(contact[2] == last[2] and contact[:2] == last[:2],
+          "Zero-duration contact replaces same-time position record")
 
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
