@@ -117,6 +117,7 @@ EVIDENCE = (
     "20261029_goal_shot_ground_normal_initializer_static.txt",
     "20261029_goal_shot_ground_material_init_static.txt",
     "20261029_goal_shot_ground_first_shape_binding_static.txt",
+    "20261029_goal_shot_trial_post_contact_step_static.txt",
 )
 
 
@@ -342,6 +343,18 @@ def verify(exe: Path) -> None:
           "Constructed-parameter ground generated spin")
     check(f32(after_y + f32(radius * after_wx)) > 0,
           "Constructed-parameter ground no reversal")
+
+    # 限定接触后下一步：速度超高阈值，旋转力只在Z方向。
+    density = struct.unpack("<f", bytes.fromhex("19cc9c3f"))[0]
+    pi = struct.unpack("<f", struct.pack("<I", 0x40490FDB))[0]
+    area = f32(f32(f32(pi * radius) * radius) * f32(0.5))
+    drag_scale = f32(f32(f32(density * area) * f32(0.24)) * after_y)
+    acceleration_y = f32(f32(drag_scale * f32(-after_y)) / mass)
+    dy = f32(f32(h * after_y) + f32(f32(f32(h * h) * acceleration_y) * f32(0.5)))
+    check(struct.pack("<f", dy).hex() == "b9263640" and dy > 1.5,
+          "Trial post-contact horizontal threshold")
+    check(f32(dy / f32(math.sqrt(f32(dy * dy)))) == 1.0,
+          "Trial selected direction normalization")
 
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
