@@ -90,6 +90,7 @@ EVIDENCE = (
     "20261028_goal_metadata_record_write_static.txt",
     "20261029_goal_shape_extent_initializer_static.txt",
     "20261029_goal_frame_position_source_static.txt",
+    "20261029_goal_field_dimension_sentinel_static.txt",
 )
 
 
@@ -175,6 +176,12 @@ def verify(exe: Path) -> None:
           == float_bits(0x3CA3D70A), "Frame position offset constant")
     frame_y = f32(f32(f32(105) * f32(0.5)) - float_bits(0x3CA3D70A))
     check(struct.pack("<f", frame_y).hex() == "85eb5142", "Frame position example")
+
+    # 场地对象的四个尺寸槽在构造时均为float32 -1。
+    check(struct.unpack_from("<4I", data, offset(0x14565D780))
+          == (0xBF800000,) * 4, "Match dimension initial vector")
+    check(f32(f32(-1) * f32(0.5)) != f32(-1),
+          "Constructor sentinel is not a half-length relation")
 
     radius = f32(0.1112)
     area = f32(f32(f32(math.pi) * radius) * radius)
