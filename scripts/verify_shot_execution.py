@@ -119,6 +119,7 @@ EVIDENCE = (
     "20261029_goal_shot_ground_first_shape_binding_static.txt",
     "20261029_goal_shot_trial_post_contact_step_static.txt",
     "20261029_goal_shot_trial_constraint_clear_static.txt",
+    "20261029_goal_shot_zero_perturbation_static.txt",
 )
 
 
@@ -394,6 +395,14 @@ def verify(exe: Path) -> None:
     check(elapsed == duration, "Trial completes time interval")
     check(next(y for y in trial_records if f32(y * y) > f32(1.5 * 1.5))
           == trial_records[1], "First beyond-target record")
+
+    # K=0 时，修正幅度在普通有限值下不会进入正数扰动分支。
+    for control in (-100, 0, 100):
+        amplitude = f32(f32(f32(0) * f32(0.01)) * f32(40))
+        threshold = f32(f32(control) * f32(0.2))
+        if amplitude > threshold:
+            amplitude = f32(amplitude + f32(f32(threshold - amplitude) * f32(0.75)))
+        check(amplitude <= 0.0, "Zero parameter avoids positive perturbation")
 
     # 环境构造器：第二参数0、第三参数15，expf(0)=1；按原生float32次序。
     def float_bits(value):
