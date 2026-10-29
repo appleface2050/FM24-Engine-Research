@@ -1,0 +1,87 @@
+Original PE bounded instruction windows; no program execution.
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001444a91a9 <.sdata+0x44a81a9>:
+   1444a91a9:	48 8b 8e 78 e2 00 00 	mov    rcx,QWORD PTR [rsi+0xe278]
+   1444a91b0:	48 85 c9             	test   rcx,rcx
+   1444a91b3:	74 99                	je     0x1444a914e
+   1444a91b5:	48 8b 96 70 e2 00 00 	mov    rdx,QWORD PTR [rsi+0xe270]
+   1444a91bc:	48 89 96 b0 e2 00 00 	mov    QWORD PTR [rsi+0xe2b0],rdx
+   1444a91c3:	0f b6 96 90 e2 00 00 	movzx  edx,BYTE PTR [rsi+0xe290]
+   1444a91ca:	88 96 d0 e2 00 00    	mov    BYTE PTR [rsi+0xe2d0],dl
+   1444a91d0:	83 c0 28             	add    eax,0x28
+   1444a91d3:	89 86 c8 e2 00 00    	mov    DWORD PTR [rsi+0xe2c8],eax
+   1444a91d9:	48 8b 44 24 28       	mov    rax,QWORD PTR [rsp+0x28]
+   1444a91de:	0f 28 00             	movaps xmm0,XMMWORD PTR [rax]
+   1444a91e1:	0f 29 86 a0 e2 00 00 	movaps XMMWORD PTR [rsi+0xe2a0],xmm0
+   1444a91e8:	c7 86 8c e2 00 00 00 	mov    DWORD PTR [rsi+0xe28c],0x0
+   1444a91ef:	00 00 00
+   1444a91f2:	31 d2                	xor    edx,edx
+   1444a91f4:	e8 c7 3b 03 00       	call   0x1444dcdc0
+   1444a91f9:	48 89 f1             	mov    rcx,rsi
+   1444a91fc:	e8 af 92 60 fd       	call   0x141ab24b0
+   1444a9201:	89 86 14 0a 00 00    	mov    DWORD PTR [rsi+0xa14],eax
+   1444a9207:	c6 86 60 ce 00 00 00 	mov    BYTE PTR [rsi+0xce60],0x0
+   1444a920e:	48 89 f1             	mov    rcx,rsi
+   1444a9211:	e8 aa f3 61 fd       	call   0x141ac85c0
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141ab24b0 <.sdata+0x1ab14b0>:
+   141ab24b0:	56                   	push   rsi
+   141ab24b1:	48 83 ec 20          	sub    rsp,0x20
+   141ab24b5:	48 89 ce             	mov    rsi,rcx
+   141ab24b8:	48 83 b9 78 e3 00 00 	cmp    QWORD PTR [rcx+0xe378],0x0
+   141ab24bf:	00
+   141ab24c0:	74 11                	je     0x141ab24d3
+   141ab24c2:	b8 01 00 00 00       	mov    eax,0x1
+   141ab24c7:	03 86 e8 09 00 00    	add    eax,DWORD PTR [rsi+0x9e8]
+   141ab24cd:	48 83 c4 20          	add    rsp,0x20
+   141ab24d1:	5e                   	pop    rsi
+   141ab24d2:	c3                   	ret
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001444dcdc0 <.sdata+0x44dbdc0>:
+   1444dcdc0:	56                   	push   rsi
+   1444dcdc1:	57                   	push   rdi
+   1444dcdc2:	53                   	push   rbx
+   1444dcdc3:	48 81 ec 40 06 00 00 	sub    rsp,0x640
+   1444dcdca:	48 89 ce             	mov    rsi,rcx
+   1444dcdcd:	8b 05 89 06 54 01    	mov    eax,DWORD PTR [rip+0x1540689]        # 0x145a1d45c
+   1444dcdd3:	89 81 3c 0e 00 00    	mov    DWORD PTR [rcx+0xe3c],eax
+   1444dcdd9:	89 81 38 0e 00 00    	mov    DWORD PTR [rcx+0xe38],eax
+   1444dcddf:	48 8b 81 c8 01 00 00 	mov    rax,QWORD PTR [rcx+0x1c8]
+   1444dcde6:	f6 80 a5 0a 00 00 02 	test   BYTE PTR [rax+0xaa5],0x2
+   1444dcded:	0f b6 80 bb e3 00 00 	movzx  eax,BYTE PTR [rax+0xe3bb]
+   1444dcdf4:	75 1a                	jne    0x1444dce10
+   1444dcdf6:	89 d3                	mov    ebx,edx
+   1444dcdf8:	48 8d 96 80 01 00 00 	lea    rdx,[rsi+0x180]
+   1444dcdff:	48 89 f1             	mov    rcx,rsi
+   1444dce02:	41 b0 01             	mov    r8b,0x1
+   1444dce05:	84 c0                	test   al,al
+   1444dce07:	74 1f                	je     0x1444dce28
+   1444dce09:	e8 e2 a2 f1 ff       	call   0x1443f70f0
+   1444dce0e:	eb 20                	jmp    0x1444dce30
+   1444dce10:	84 c0                	test   al,al
+   1444dce12:	74 44                	je     0x1444dce58
+   1444dce14:	48 8d 96 80 01 00 00 	lea    rdx,[rsi+0x180]
+   1444dce1b:	48 89 f1             	mov    rcx,rsi
+   1444dce1e:	41 b0 01             	mov    r8b,0x1
+   1444dce21:	e8 ca a2 f1 ff       	call   0x1443f70f0
+   1444dce26:	eb 3f                	jmp    0x1444dce67
+   1444dce28:	41 b1 01             	mov    r9b,0x1
+   1444dce2b:	e8 90 b5 67 fd       	call   0x141b583c0
