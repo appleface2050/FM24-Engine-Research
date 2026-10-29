@@ -99,6 +99,7 @@ EVIDENCE = (
     "20261029_goal_builder_team_early_return_static.txt",
     "20261029_goal_full_selection_service_state_static.txt",
     "20261029_goal_pitch_data_helper_branch_static.txt",
+    "20261029_goal_fixture_competition_callback_static.txt",
 )
 
 
@@ -165,6 +166,9 @@ def verify(exe: Path) -> None:
                          (0x58, 0x141E446C0), (0x90, 0x140269610)):
         check(struct.unpack_from("<Q", data, offset(0x145608078 + slot))[0]
               == target, f"FIXTURE_RESULT copy callback {slot:x}")
+
+    check(struct.unpack_from("<Q", data, offset(0x145A20E08 + 0xD0))[0]
+          == 0x141DF8D10, "ACTUAL_COMP fixture preparation callback")
 
     def f32(value):
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
