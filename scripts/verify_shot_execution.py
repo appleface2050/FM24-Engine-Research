@@ -116,6 +116,7 @@ EVIDENCE = (
     "20261029_goal_shot_trial_contact_response_static.txt",
     "20261029_goal_shot_ground_normal_initializer_static.txt",
     "20261029_goal_shot_ground_material_init_static.txt",
+    "20261029_goal_shot_ground_first_shape_binding_static.txt",
 )
 
 
@@ -332,6 +333,10 @@ def verify(exe: Path) -> None:
         check(struct.pack("<f", value).hex() == expected,
               "Shared match input coefficient comparison")
     check((100 * 9) // 10 == 90, "Work-rate internal threshold example")
+
+    check(struct.unpack_from("<Q", data, offset(0x145D2FBD8 + 8))[0]
+          == 0x145388B10, "Ground shape virtual transform target")
+    check(data[offset(0x145388B10)] == 0xC3, "Ground shape transform is RET")
 
     check(struct.unpack_from("<Q", data, offset(0x145D4BE30))[0] == 0x1418F88D0,
           "Ground normal initializer pointer")
