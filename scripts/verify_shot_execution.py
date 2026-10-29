@@ -111,6 +111,7 @@ EVIDENCE = (
     "20261029_goal_shot_finishing_and_direction_static.txt",
     "20261029_goal_shot_solver_input_static.txt",
     "20261029_goal_shot_solver_selection_static.txt",
+    "20261029_goal_shot_solver_spin_incompatibility_static.txt",
 )
 
 
