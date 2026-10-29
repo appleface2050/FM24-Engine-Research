@@ -779,6 +779,34 @@ def verify(exe: Path) -> None:
             f32(degrees - f32(0.5)))
         return rounded % 360
 
+    # 相同35速在限定无接触下推进三步；方向表消费末条而非交点。
+    hy, hz, hvy, hvz = f32(51), f32(f32(1) + radius), shot_speed, f32(0)
+    high_records = []
+    for _ in range(3):
+        hs = f32(math.sqrt(f32(f32(hvy * hvy) + f32(hvz * hvz))))
+        check(hs > 21, "Shot high-speed drag branch")
+        hm = f32(f32(f32(density * f32(area * 0.5)) * f32(0.24)) * hs)
+        hay = f32(f32(f32(hm * -hvy) / f32(0.43)) + f32(0))
+        haz = f32(f32(f32(hm * -hvz) / f32(0.43)) + gravity)
+        h2 = f32(step * step)
+        hy = f32(hy + f32(f32(step * hvy) + f32(f32(h2 * hay) * f32(0.5))))
+        hz = f32(hz + f32(f32(step * hvz) + f32(f32(h2 * haz) * f32(0.5))))
+        hvy = f32(hvy + f32(step * hay))
+        hvz = f32(hvz + f32(step * haz))
+        high_records.append((hy, hz))
+    check([(struct.pack("<f", yy).hex(), struct.pack("<f", zz).hex())
+           for yy, zz in high_records]
+          == [("d3705742", "c7e0893f"), ("58726242", "7af2793f"),
+              ("cc0c6d42", "76a74f3f")], "Shot high-speed trajectory records")
+    check(all(zz > radius for _, zz in high_records), "Shot records above ground")
+    high_dy = int(f32(f32(f32(52.5) - high_records[-1][0]) * f32(10)))
+    high_grid = [(int(f32(x * f32(10))), high_dy) for x in goal_x]
+    check(high_grid == [(0, -67), (-36, -67), (36, -67)], "Shot direction grid")
+    high_angles = [table_direction(x, y) for x, y in high_grid]
+    check(high_angles == [180, 208, 152], "Shot direction angles")
+    high_differences = [min(a, 360 - a) for a in high_angles]
+    check(high_differences == [180, 152, 152], "Shot zero-metadata angle gates")
+
     for address, value in ((0x145A1D4DC, 3.0), (0x145A1D570, 100.0)):
         check(struct.unpack_from("<f", data, offset(address))[0] == value,
               f"Shot target range constant {address:x}")
