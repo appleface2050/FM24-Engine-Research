@@ -106,6 +106,7 @@ EVIDENCE = (
     "20261029_goal_shot_direction_lookup_static.txt",
     "20261029_goal_shot_target_field_origin_static.txt",
     "20261029_goal_shot_target_center_rng_static.txt",
+    "20261029_goal_shot_target_post_generation_static.txt",
 )
 
 
@@ -192,6 +193,11 @@ def verify(exe: Path) -> None:
 
     check(struct.unpack_from("<f", data, offset(0x145A1D500))[0] == 9.0,
           "Shot target height branch threshold")
+
+    for address, value in ((0x145A1D4E4, 4.0),
+                           (0x145A1D460, 0.10000000149011612)):
+        check(struct.unpack_from("<f", data, offset(address))[0] == value,
+              f"Shot target blend threshold {address:x}")
 
     def f32(value):
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
