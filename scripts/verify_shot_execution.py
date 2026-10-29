@@ -93,6 +93,7 @@ EVIDENCE = (
     "20261029_goal_field_dimension_sentinel_static.txt",
     "20261029_goal_dimension_initialization_static.txt",
     "20261029_goal_dimension_reference_source_static.txt",
+    "20261029_goal_fixture_dimension_pointer_copy_static.txt",
 )
 
 
@@ -150,6 +151,9 @@ def verify(exe: Path) -> None:
 
     check(data[offset(0x1456848A0):offset(0x1456848A0) + 16]
           == bytes.fromhex("00000080" * 4), "Coordinate sign-bit mask")
+
+    check(struct.unpack_from("<Q", data, offset(0x145608078 + 0x110))[0]
+          == 0x141E435F0, "FIXTURE_RESULT clone slot")
 
     def f32(value):
         """将算例每一步舍入为单精度，模拟选定的标量运算顺序。"""
