@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261030_goal_shot_common_helpers_static.txt",
     "20261030_goal_selected_shot_target_static.txt",
     "20261030_goal_single_candidate_selection_static.txt",
     "20261030_goal_post_model_candidate_guards_static.txt",
@@ -1039,6 +1040,29 @@ def verify(exe: Path) -> None:
     }.items():
         check(instructions.get(address) == expected, f"Selected target source/consumer {address:x}")
 
+    # 公共方向助手只替换bit49；真实标量叶包含固定全局写，不能称其全局纯净。
+    for address, expected in {
+        0x14444C0B5: "movabs rcx,0xfffdffffffffffff",
+        0x14444C0C6: "shl rax,0x31",
+        0x14444C0CD: "mov QWORD PTR [rsi+0xe28],rax",
+        0x14444C48B: "call 0x141b4fe90",
+        0x14444C4AD: "call 0x141b4fe90",
+        0x14444C66D: "call 0x14444ed60",
+        0x15A0CB5A6: "mov rax,rdx",
+        0x15A0CB72F: "movss DWORD PTR [rax],xmm2",
+        0x14444CB5A: "mov DWORD PTR [rsi+0xe74],eax",
+        0x14444CE06: "mov DWORD PTR [rsi+0xe6c],ecx",
+        0x14444CE18: "mov DWORD PTR [rsi+0xe70],edx",
+        0x14442DD54: "call 0x14444b7b0",
+        0x14442DD5F: "call 0x14444c130",
+        0x14442DD6A: "call 0x14444c540",
+    }.items():
+        check(instructions.get(address) == expected, f"Actual common helper {address:x}")
+    start = offset(0x15A0CB61F)
+    check(data[start:start + 3] == b"\x66\x21\x15"
+          and 0x15A0CB626 + struct.unpack_from("<i", data, start + 3)[0] == 0x14C56ADFF,
+          "Native scalar leaf retained fixed WORD write")
+
     # 独立核对模型跳表快照和真正的调用者标志读写；不把本地图升级为副作用证明。
     model_paths = json.loads((ROOT / "20261030_candidate_model_paths.json").read_text())
     for table in model_paths["tables"]:
@@ -1232,7 +1256,9 @@ def verify(exe: Path) -> None:
                 or 0x1444290E0 <= address < 0x144429171
                 or 0x141B51C90 <= address < 0x141B51F26
                 or 0x14444A4E0 <= address < 0x14444B7AA
-                or 0x14442D9D0 <= address < 0x14442DD43):
+                or 0x14442D9D0 <= address < 0x14442DD43
+                or 0x14444B7B0 <= address < 0x14444CE29
+                or 0x14442DD43 <= address < 0x14442DDE7):
             continue
         match = re.fullmatch(r"call 0x([0-9a-f]+)", instruction)
         if match:
@@ -1477,6 +1503,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x14444ED60: 0x15A0CB580,
         0x1418B7140: 0x150BC22F0,
         0x141B42C8E: 0x141B42D80,
         0x1443B6160: 0x159F102E0,

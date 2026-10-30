@@ -221,3 +221,5 @@ mkdir -p /tmp/fm24-ghidra
 2026-10-20收尾侧：[只读辅助与球队处理边界](20261020_收尾只读辅助与球队处理边界.md)已整体排除141ac8d90及141abbdd0改分，并条件绑定141ac9190的fixture+d0/manager+20查询。合格球员处理已接只读比较、case2局部写及事件入列；历史拥有关系、其他有效索引调用、其余回调与之后的修订仍有明确缺口。
 
 `python scripts/inspect_shot_target_paths.py --exe <路径> --output <JSON路径>` 覆盖已选3f的两套完整目标准备及近距公共插值，记录为 `20261030_shot_target_paths.json`。条件边界已到14442dd43、第一个公共辅助调用之前；保留旧属性分流、目标高度/旋转/速度尺度变化。当前距离1.5必经X/Y插值，不能套距离9的目标保持算例；C570非零及其来源保持等条件仍需成立，完整自然进球未完成。
+
+`python scripts/inspect_shot_common_helpers.py --exe <路径> --output <JSON路径>` 检查实际3f的三个公共辅助函数、非NULL方向输出、速度叶跳板及写域、旋转截断和调用者顺序。记录 `20261030_shot_common_helpers.json` 的条件边界为14442dde0：bit0仍0，允许新增bit49、目标X改写和模式变2/4；属性读取使用更新后的P+e30。保留固定全局WORD写和自然输入/完整进球缺口。
