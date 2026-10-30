@@ -142,6 +142,7 @@ EVIDENCE = (
     "20261030_goal_cache_ball_query_static.txt",
     "20261030_goal_cache_pair_geometry_writes_static.txt",
     "20261030_goal_cache_candidate_query_writes_static.txt",
+    "20261030_goal_cache_position_query_static.txt",
 )
 
 
@@ -915,12 +916,30 @@ def verify(exe: Path) -> None:
     check(instructions.get(0x141B430A2) == "cmp rbx,0xa"
           and instructions.get(0x141B43202) == "cmp rbx,0xa",
           "Cache query append count limit")
+    for address, expected in {
+        0x141B46841: "je 0x141b46998",
+        0x141B4699F: "je 0x141b46a82",
+        0x141B46A82: "xor eax,eax",
+        0x1443EF9CC: "movd xmm6,r8d",
+        0x1443EF9D1: "cvttss2si edi,xmm6",
+    }.items():
+        check(instructions.get(address) == expected,
+              f"Position-cache query branch or input {address:x}")
     start = offset(0x14557E730)
     check(data[start:start + 2] == b"\xff\x25"
           and 0x14557E736 + struct.unpack_from("<i", data, start + 2)[0] == 0x145D50B18,
           "Cache short sort uses the recorded memmove import")
 
     calls = {
+        0x141B46BCC: 0x141B41670,
+        0x141B46C95: 0x141B41670,
+        0x141B4AA39: 0x141B46830,
+        0x141B4AA6A: 0x141B46830,
+        0x141B4AB12: 0x1443B4F80,
+        0x1443B4FC6: 0x1443B5100,
+        0x1443B5239: 0x1443EFB60,
+        0x1443B525F: 0x1443EF9B0,
+        0x1443EFA32: 0x1443EA8F0,
         0x141B43020: 0x141B40BD0,
         0x141B43180: 0x141B40BD0,
         0x141B4329C: 0x141B42D80,
