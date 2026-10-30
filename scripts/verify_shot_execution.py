@@ -146,6 +146,7 @@ EVIDENCE = (
     "20261030_goal_cache_bracketing_query_static.txt",
     "20261030_goal_cache_reset_state_gates_static.txt",
     "20261030_goal_reset_to_position_update_static.txt",
+    "20261030_goal_cache_complete_preservation_static.txt",
 )
 
 
@@ -191,6 +192,7 @@ def verify(exe: Path) -> None:
           and struct.unpack_from("<f", data, offset(0x1456B0CD8))[0] == 240.0,
           "Bracketing query fallback time offsets")
     for address, value in ((0x145A1D454, -1000.0), (0x145A1D594, 999999.0),
+                           (0x145A1D4A0, 0.25),
                            (0x145A1D4C8, 0.10000000149011612),
                            (0x145A1D4D0, 0.05000000074505806), (0x145A1D570, 100.0)):
         check(struct.unpack_from("<f", data, offset(address))[0] == value,
@@ -273,6 +275,14 @@ def verify(exe: Path) -> None:
     check(data[offset(0x140000000 + name + 2):offset(0x140000000 + name + 2) + 7]
           == b"floorf\0",
           "floorf import name")
+    thunk = offset(0x14557E9B0)
+    check(data[thunk:thunk + 2] == b"\xff\x25"
+          and 0x14557E9B6 + struct.unpack_from("<i", data, thunk + 2)[0] == 0x145D50F08,
+          "Cache ceilf import slot")
+    item = lookup + ((0x5D50F08 - iat) // 8) * 8
+    name = struct.unpack_from("<Q", data, offset(0x140000000 + item))[0]
+    check(data[offset(0x140000000 + name + 2):offset(0x140000000 + name + 2) + 6]
+          == b"ceilf\0", "Cache ceilf import name")
     check(math.floor(f32(f32(1.5 * f32(0.2)) + 0.5)) == 0,
           "Zero angle witness distance correction")
 
@@ -928,6 +938,13 @@ def verify(exe: Path) -> None:
           and instructions.get(0x141B43202) == "cmp rbx,0xa",
           "Cache query append count limit")
     for address, expected in {
+        0x1443BDC27: "xor r9d,r9d",
+        0x1443BE125: "xor r9d,r9d",
+        0x1443BE163: "xor r9d,r9d",
+        0x1443BE209: "xor r9d,r9d",
+        0x1443BE421: "xor r9d,r9d",
+        0x1443C564D: "jbe 0x1443c5689",
+        0x1443C57EA: "jbe 0x1443c5860",
         0x1443B6228: "je 0x1443b624f",
         0x1443B6500: "je 0x1443b652f",
         0x1443B63D0: "jne 0x1443b6698",
@@ -967,6 +984,14 @@ def verify(exe: Path) -> None:
           "Cache short sort uses the recorded memmove import")
 
     calls = {
+        0x1443BDC2A: 0x1443C54B0,
+        0x1443BE128: 0x1443C54B0,
+        0x1443BE166: 0x1443C54B0,
+        0x1443BE20C: 0x1443C54B0,
+        0x1443BE424: 0x1443C54B0,
+        0x1443C57E1: 0x141B40BD0,
+        0x1443BD52B: 0x14557E9B0,
+        0x1443BD566: 0x14557EA20,
         0x1443B532A: 0x141B41670,
         0x1443B535A: 0x141B41670,
         0x1443B5BBB: 0x141B41670,

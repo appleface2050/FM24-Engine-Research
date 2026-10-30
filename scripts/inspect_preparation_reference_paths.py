@@ -202,6 +202,35 @@ def inspect(exe: Path):
         raise ValueError("Position update has an unreviewed reachable call")
     if 0x1443B605B in walk([0x1443B5100], update_graph, {0x1443B600C}):
         raise ValueError("Indirect scalar store bypasses its player-field address binding")
+    judgment_sites = (0x1443BDC2A, 0x1443BE128, 0x1443BE166,
+                      0x1443BE20C, 0x1443BE424)
+    for address in judgment_sites:
+        if re.sub(r"\s+", " ", cache_rows[address - 3][1]) != "xor r9d,r9d":
+            raise ValueError(f"Cache judgment time argument differs at {address:#x}")
+    judgment_rows, judgment_graph = decode_graph(exe, 0x1443C54B0, 0x1443C5919)
+    for address, successor in ((0x1443C564D, 0x1443C5689),
+                               (0x1443C57EA, 0x1443C5860)):
+        if re.sub(r"\s+", " ", judgment_rows[address][1]) != f"jbe {successor:#x}":
+            raise ValueError(f"Zero-time judgment branch differs at {address:#x}")
+        judgment_graph[address] = [successor]
+    judgment_reached = walk([0x1443C54B0], judgment_graph)
+    judgment_calls = [
+        hex(address) for address in sorted(judgment_reached)
+        if judgment_rows[address][1].startswith("call")
+    ]
+    if judgment_calls != ["0x1443c57e1"]:
+        raise ValueError("Zero-time judgment retains an unreviewed call")
+    cache_call_targets = sorted({
+        cache_rows[address][1].split()[-1]
+        for address in walk([cache_entry], cache_graph)
+        if cache_rows[address][1].startswith("call")
+    })
+    if cache_call_targets != sorted({
+        "0x141b4a970", "0x141b40bd0", "0x141b408e0", "0x141b42f50",
+        "0x141b41670", "0x1443ee610", "0x14557e9b0", "0x14557ea20",
+        "0x1443c54b0", "0x1443f7d90",
+    }):
+        raise ValueError("Cache has a call target outside the reviewed set")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -239,6 +268,13 @@ def inspect(exe: Path):
             "all_reachable_calls": update_calls,
             "scalar_store_0x1443b605b_requires_binding_0x1443b600c": True,
             "limits": "CALLs return normally in this graph; preservation uses the separately bounded callee contracts.",
+        },
+        "cache_zero_time_judgment": {
+            "caller_sites": [hex(address) for address in judgment_sites],
+            "time_argument_bits": "0x00000000",
+            "remaining_call_sites": judgment_calls,
+            "cache_all_call_targets": cache_call_targets,
+            "limits": "Call inventory and zero-time branches only; typed write ranges and bounded callee contracts are documented separately.",
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",
