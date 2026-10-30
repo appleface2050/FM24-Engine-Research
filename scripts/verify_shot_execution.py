@@ -138,6 +138,7 @@ EVIDENCE = (
     "20261029_goal_shot_candidate_flag_conflict_static.txt",
     "20261029_goal_shot_near_candidate_initialization_static.txt",
     "20261029_goal_shot_model_empty_subject_static.txt",
+    "20261030_goal_preparation_cache_return_static.txt",
 )
 
 

@@ -27,13 +27,11 @@ def walk(starts, graph, blocked=()):
     return seen
 
 
-def inspect(exe: Path):
-    """核对既有目标身份，重新解码全部本地分支并检查写入集合是否必经。"""
-    identity = json.loads((ROOT / "20261019_fm24_target_identity.json").read_text())
-    verify_target_identity(exe.read_bytes(), identity)
+def decode_graph(exe: Path, start: int, end: int):
+    """重新解码指定函数，所有本地条件边均保留，CALL只接正常返回。"""
     output = subprocess.check_output([
         "objdump", "-d", "-Mintel", "--insn-width=16",
-        "--start-address=0x1443c1640", "--stop-address=0x1443c4eeb", str(exe),
+        f"--start-address={start:#x}", f"--stop-address={end:#x}", str(exe),
     ], text=True)
     rows = {}
     for line in output.splitlines():
@@ -62,6 +60,14 @@ def inspect(exe: Path):
     for address, targets in graph.items():
         if any(target not in rows for target in targets):
             raise ValueError(f"Uncovered successor at {address:#x}")
+    return rows, graph
+
+
+def inspect(exe: Path):
+    """核对目标身份和引用写入必经关系，定位正常路径上必须处理的子调用。"""
+    identity = json.loads((ROOT / "20261019_fm24_target_identity.json").read_text())
+    verify_target_identity(exe.read_bytes(), identity)
+    rows, graph = decode_graph(exe, 0x1443C1640, 0x1443C4EEB)
     for address in WRITES:
         instruction = re.sub(r"\s+", " ", rows[address][1])
         if instruction != "mov QWORD PTR [rax+0xe378],r12":
@@ -75,19 +81,51 @@ def inspect(exe: Path):
         for target in targets:
             reverse[target].append(address)
     before_clear = walk([CLEAR], reverse, WRITES)
-    calls = {}
+    calls, mandatory = {}, {}
     for writer in sorted(WRITES):
-        after_write = walk(graph[writer], graph, WRITES) & before_clear
+        suffix = walk(graph[writer], graph, WRITES)
+        if CLEAR not in suffix:
+            raise ValueError(f"Selected suffix is unreachable after {writer:#x}")
+        after_write = suffix & before_clear
         calls[hex(writer)] = [
             {"site": hex(address), "instruction": rows[address][1]}
             for address in sorted(after_write)
             if rows[address][1].startswith("call")
         ]
+        mandatory[hex(writer)] = [
+            call for call in calls[hex(writer)]
+            if CLEAR not in walk(graph[writer], graph, WRITES | {int(call["site"], 16)})
+        ]
+
+    cache_rows, cache_graph = decode_graph(exe, 0x1443BC460, 0x1443BE43A)
+    cache_entry, valid_write, epilogue = 0x1443BC4A2, 0x1443BE080, 0x1443BE088
+    if (epilogue not in walk([cache_entry], cache_graph)
+            or epilogue in walk([cache_entry], cache_graph, {valid_write})):
+        raise ValueError("Cache computation can bypass valid write; reopen second-call claim")
+    expected = {
+        0x1443C418E: "mov BYTE PTR [r12+0x1870],0x0",
+        0x1443C419A: "call 0x1443bc460",
+        0x1443C41A7: "cmp BYTE PTR [r12+0x1870],0x0",
+        0x1443C41B0: "jne 0x1443c41ba",
+        valid_write: "mov BYTE PTR [r13+0x1870],0x1",
+    }
+    for address, instruction in expected.items():
+        source = cache_rows if address == valid_write else rows
+        if re.sub(r"\s+", " ", source[address][1]) != instruction:
+            raise ValueError(f"Cache caller/write differs at {address:#x}")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
         "clear_reachable_avoiding_all_three_writes": False,
         "calls_after_each_write_without_crossing_another_write": calls,
+        "mandatory_calls_on_each_selected_suffix": mandatory,
+        "cache_computation": {
+            "entry_after_zero_valid_check": hex(cache_entry),
+            "valid_write": hex(valid_write), "epilogue": hex(epilogue),
+            "decoded_instructions": len(cache_rows),
+            "epilogue_reachable_avoiding_valid_write": False,
+            "caller_second_call_skipped_on_normal_return_with_same_player_storage": True,
+        },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",
             "CALL treated as normal return; callee effects and exception paths unproved.",
