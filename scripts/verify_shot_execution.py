@@ -1119,6 +1119,20 @@ def verify(exe: Path) -> None:
     }.items():
         check(instructions.get(address) == expected, f"Trial body formula/counter {address:x}")
 
+    # 原生角近似的常数位值及截断/符号写点；非零有限方向的局部转写。
+    angle = solver_modes["mode2_angle"]
+    for address, record in angle["constants"].items():
+        a = int(address, 16)
+        check(data[offset(a):offset(a)+4] == bytes.fromhex(record["bytes"]),
+              f"Mode2 angular/rotation coefficient {a:x}")
+    for address, expected in {
+        0x145304E18: "cmovbe ecx,eax", 0x145304E28: "cmova eax,ecx",
+        0x145304F01: "cmpnless xmm6,xmm3",
+        0x145304F1B: "movss DWORD PTR [r14],xmm6",
+        0x145304728: "pxor xmm0,xmm11",
+    }.items():
+        check(instructions.get(address) == expected, f"Mode2 angular residual {address:x}")
+
     # 采样端点与高度反馈，不能以标准线段插值代替原指令。
     for address, expected in {
         0x145304C42: "xorps xmm13,xmm13",

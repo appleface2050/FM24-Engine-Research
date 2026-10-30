@@ -1,4 +1,194 @@
 {
+  "mode2_angle": {
+    "evidence_type": "finite_nonzero_XY_manual_float32_formula_not_native_execution",
+    "checked_instructions": {
+      "0x145304e18": "cmovbe ecx,eax",
+      "0x145304e28": "cmova eax,ecx",
+      "0x145304e33": "mulss xmm0,xmm3",
+      "0x145304e37": "subss xmm10,xmm0",
+      "0x145304e60": "divss xmm1,xmm0",
+      "0x145304e6c": "mulss xmm7,xmm1",
+      "0x145304e70": "mulss xmm7,xmm1",
+      "0x145304e84": "mulss xmm7,xmm1",
+      "0x145304eb5": "subss xmm3,xmm1",
+      "0x145304ec2": "subss xmm4,xmm5",
+      "0x145304ed0": "subss xmm8,xmm2",
+      "0x145304f01": "cmpnless xmm6,xmm3",
+      "0x145304f1b": "movss DWORD PTR [r14],xmm6"
+    },
+    "constants": {
+      "0x145582410": {
+        "bytes": "0000803f",
+        "float": 1.0
+      },
+      "0x14584c5d4": {
+        "bytes": "ffe6db2e",
+        "float": 1.000000013351432e-10
+      },
+      "0x145a1350c": {
+        "bytes": "de0249be",
+        "float": -0.19629999995231628
+      },
+      "0x145a13510": {
+        "bytes": "b1507b3f",
+        "float": 0.9817000031471252
+      },
+      "0x145870800": {
+        "bytes": "db0f493f",
+        "float": 0.7853981852531433
+      },
+      "0x145831614": {
+        "bytes": "db0fc93f",
+        "float": 1.5707963705062866
+      },
+      "0x145830658": {
+        "bytes": "db0f49c0",
+        "float": -3.1415927410125732
+      },
+      "0x14583065c": {
+        "bytes": "db0fc9c0",
+        "float": -6.2831854820251465
+      },
+      "0x1457ed450": {
+        "bytes": "db0fc940",
+        "float": 6.2831854820251465
+      },
+      "0x1456d56d4": {
+        "bytes": "db0f4940",
+        "float": 3.1415927410125732
+      },
+      "0x145a0a9fc": {
+        "bytes": "83f9a23f",
+        "float": 1.2732394933700562
+      },
+      "0x145a0aa00": {
+        "bytes": "7b81cf3e",
+        "float": 0.40528473258018494
+      },
+      "0x145a0aa04": {
+        "bytes": "6666663e",
+        "float": 0.22499999403953552
+      }
+    },
+    "formula": "c=clamp(dot(unit(sample-origin).xy,unit(target-origin).xy),0,1); q=(sqrt(1-c*c)-c)/(sqrt(1-c*c)+abs(c)+eps); phi=((a*q*q+b)*q)+pi/4",
+    "sign": "negate phi iff dot(U,cross(target_unit,actual_unit))<0 for finite values; U=current146426b80 vector",
+    "feedback": "rotation angle=-error*current[14643c418]; actual call1418f81a0 on same U; then rotate temporary aim-origin",
+    "examples": [
+      {
+        "target_xy": [
+          1.0,
+          0.0
+        ],
+        "actual_xy": [
+          1.0,
+          0.0
+        ],
+        "residual": {
+          "dot": 1.0,
+          "clipped": 1.0,
+          "ratio": -1.0,
+          "axis_dot_cross": 0.0,
+          "error": -1.8477439880371094e-06
+        },
+        "assumed_gain": 0.949999988079071,
+        "rotation_angle": 1.7553567204231513e-06,
+        "native_sine_cosine": [
+          1.7321171981166117e-06,
+          0.9999997019767761
+        ],
+        "rotated_xy": [
+          0.9999997019767761,
+          1.7321171981166117e-06
+        ]
+      },
+      {
+        "target_xy": [
+          1.0,
+          0.0
+        ],
+        "actual_xy": [
+          0.0,
+          1.0
+        ],
+        "residual": {
+          "dot": 0.0,
+          "clipped": 0.0,
+          "ratio": 1.0,
+          "axis_dot_cross": 1.0,
+          "error": 1.5707981586456299
+        },
+        "assumed_gain": 0.949999988079071,
+        "rotation_angle": -1.4922581911087036,
+        "native_sine_cosine": [
+          -0.9969390630722046,
+          0.07769978791475296
+        ],
+        "rotated_xy": [
+          0.9969390630722046,
+          0.07769978791475296
+        ]
+      },
+      {
+        "target_xy": [
+          1.0,
+          0.0
+        ],
+        "actual_xy": [
+          0.0,
+          -1.0
+        ],
+        "residual": {
+          "dot": 0.0,
+          "clipped": 0.0,
+          "ratio": 1.0,
+          "axis_dot_cross": -1.0,
+          "error": -1.5707981586456299
+        },
+        "assumed_gain": 0.949999988079071,
+        "rotation_angle": 1.4922581911087036,
+        "native_sine_cosine": [
+          0.9969390630722046,
+          0.07769933342933655
+        ],
+        "rotated_xy": [
+          0.9969390630722046,
+          -0.07769933342933655
+        ]
+      },
+      {
+        "target_xy": [
+          1.0,
+          0.0
+        ],
+        "actual_xy": [
+          -1.0,
+          0.0
+        ],
+        "residual": {
+          "dot": -1.0,
+          "clipped": 0.0,
+          "ratio": 1.0,
+          "axis_dot_cross": 0.0,
+          "error": 1.5707981586456299
+        },
+        "assumed_gain": 0.949999988079071,
+        "rotation_angle": -1.4922581911087036,
+        "native_sine_cosine": [
+          -0.9969390630722046,
+          0.07769978791475296
+        ],
+        "rotated_xy": [
+          -0.07769978791475296,
+          0.9969390630722046
+        ]
+      }
+    ],
+    "example_conditions": "nonzero finite XY, U=(0,0,1), rotation gain=float32(.95), only range-reduced sine inputs; example actual direction also supplied as temporary aim direction",
+    "unproved": [
+      "zero-vector fallback and NaN/Inf semantics; full same-input residual/rotation/trial numeric output",
+      "natural current U/gain and initialization/retention; same formal flight and goal"
+    ]
+  },
   "mode2_sampling": {
     "evidence_type": "manual_register_dataflow_and_float32_local_transcription_not_execution",
     "checked_instructions": {

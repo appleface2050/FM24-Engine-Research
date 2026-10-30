@@ -378,6 +378,92 @@ def inspect_mode2_sampling(exe):
             'limits': 'finite local snapshots with nonzero interpolation denominators, not same natural trajectory; angle residual/final output still unproved'}
 
 
+def inspect_mode2_angle(exe, data, offset):
+    """复算非零平面方向的原生角误差近似；零向量/NaN分支仍单列。"""
+    rows, _ = decode_graph(exe, 0x1453049D0, 0x145304F89)
+    expected = {0x145304E18: 'cmovbe ecx,eax',
+                0x145304E28: 'cmova eax,ecx',
+                0x145304E33: 'mulss xmm0,xmm3',
+                0x145304E37: 'subss xmm10,xmm0',
+                0x145304E60: 'divss xmm1,xmm0',
+                0x145304E6C: 'mulss xmm7,xmm1',
+                0x145304E70: 'mulss xmm7,xmm1',
+                0x145304E84: 'mulss xmm7,xmm1',
+                0x145304EB5: 'subss xmm3,xmm1',
+                0x145304EC2: 'subss xmm4,xmm5',
+                0x145304ED0: 'subss xmm8,xmm2',
+                0x145304F01: 'cmpnless xmm6,xmm3',
+                0x145304F1B: 'movss DWORD PTR [r14],xmm6'}
+    for site, ins in expected.items():
+        if normalize(rows[site][1]) != ins:
+            raise ValueError('Mode2 angular clamp/polynomial/sign differs')
+    addresses = (0x145582410, 0x14584C5D4, 0x145A1350C, 0x145A13510, 0x145870800,
+                 0x145831614, 0x145830658, 0x14583065C, 0x1457ED450,
+                 0x1456D56D4, 0x145A0A9FC, 0x145A0AA00, 0x145A0AA04)
+    constants = {hex(a): {'bytes': data[offset(a):offset(a)+4].hex(),
+                          'float': struct.unpack_from('<f', data, offset(a))[0]} for a in addresses}
+    def c(a):
+        return constants[hex(a)]['float']
+    if c(0x145582410) != 1.:
+        raise ValueError('Angular upper-clamp constant differs from one')
+    def f(x):
+        return struct.unpack('<f', struct.pack('<f', x))[0]
+    def direction(xy):
+        length = f(math.sqrt(f(f(xy[0]*xy[0])+f(xy[1]*xy[1]))))
+        return [f(x/length) for x in xy]
+    def residual(target, actual):
+        tx,ty = direction(target)
+        ax,ay = direction(actual)
+        dot = f(f(ax*tx)+f(ay*ty))
+        clipped = min(1., max(0., dot))
+        root = f(math.sqrt(f(1.-f(clipped*clipped))))
+        ratio = f(f(root-clipped)/f(f(root+abs(clipped))+c(0x14584C5D4)))
+        poly = f(f(f(f(c(0x145A1350C)*ratio)*ratio)+c(0x145A13510))*ratio)
+        angle = f(poly+c(0x145870800))
+        cross_z = f(f(ay*tx)-f(ax*ty))
+        error = -angle if cross_z < 0 else angle
+        return {'dot': dot, 'clipped': clipped, 'ratio': ratio,
+                'axis_dot_cross': cross_z, 'error': error}
+    def sine(x):
+        # 本轮算例的theta及theta+pi/2均已在[-pi,pi]，不绕过真实输入的范围归约义务。
+        if not c(0x145830658) <= x <= c(0x1456D56D4):
+            raise ValueError('Local rotation example needs native range reduction')
+        b = f(f(x*c(0x145A0A9FC))-f(f(x*c(0x145A0AA00))*abs(x)))
+        return f(f(f(f(abs(b)*b)-b)*c(0x145A0AA04))+b)
+    examples = []
+    for actual in ([1.,0.], [0.,1.], [0.,-1.], [-1.,0.]):
+        result = residual([1.,0.], actual)
+        theta = f(f(-result['error'])*f(.95))
+        sn,cs = sine(theta),sine(f(theta+c(0x145831614)))
+        rotated = [f(f(cs*actual[0])-f(sn*actual[1])),
+                   f(f(sn*actual[0])+f(cs*actual[1]))]
+        examples.append({'target_xy': [1.,0.], 'actual_xy': actual,
+                         'residual': result, 'assumed_gain': f(.95), 'rotation_angle': theta,
+                         'native_sine_cosine': [sn,cs], 'rotated_xy': rotated})
+    if not all(e['rotated_xy'][0] > abs(e['rotated_xy'][1]) for e in examples[1:3]):
+        raise ValueError('Local signed correction does not turn toward target')
+    if examples[1]['residual']['error'] != -examples[2]['residual']['error']:
+        raise ValueError('Mirrored direction errors have inconsistent signs')
+    if examples[3]['residual']['clipped'] != 0. or examples[0]['residual']['error'] == 0.:
+        raise ValueError('Native antiparallel clamp/alignment approximation differs')
+    outer_rows, _ = decode_graph(exe, 0x145304400, 0x1453049C4)
+    for site, ins in {0x145304728: 'pxor xmm0,xmm11',
+                      0x14530472D: 'mulss xmm0,DWORD PTR [rip+0x1137ce3] # 0x14643c418',
+                      0x145304744: 'call 0x1418f81a0'}.items():
+        if normalize(outer_rows[site][1]) != ins:
+            raise ValueError('Mode2 signed angular feedback differs')
+    return {'evidence_type': 'finite_nonzero_XY_manual_float32_formula_not_native_execution',
+            'checked_instructions': {hex(a): ins for a, ins in expected.items()},
+            'constants': constants,
+            'formula': 'c=clamp(dot(unit(sample-origin).xy,unit(target-origin).xy),0,1); q=(sqrt(1-c*c)-c)/(sqrt(1-c*c)+abs(c)+eps); phi=((a*q*q+b)*q)+pi/4',
+            'sign': 'negate phi iff dot(U,cross(target_unit,actual_unit))<0 for finite values; U=current146426b80 vector',
+            'feedback': 'rotation angle=-error*current[14643c418]; actual call1418f81a0 on same U; then rotate temporary aim-origin',
+            'examples': examples,
+            'example_conditions': 'nonzero finite XY, U=(0,0,1), rotation gain=float32(.95), only range-reduced sine inputs; example actual direction also supplied as temporary aim direction',
+            'unproved': ['zero-vector fallback and NaN/Inf semantics; full same-input residual/rotation/trial numeric output',
+                         'natural current U/gain and initialization/retention; same formal flight and goal']}
+
+
 def inspect(exe):
     """复核模式分派、数值体清单和局部公式；完整试算输出仍未证明。"""
     data = exe.read_bytes()
@@ -470,7 +556,7 @@ def inspect(exe):
     constants = {hex(a): struct.unpack_from('<f', data, offset(a))[0]
                  for a in (0x145A1D4A4, 0x145A1D4B0, 0x145A1D48C, 0x145A1D4EC, 0x145A1D4C4, 0x145A1D468)}
     trials = inspect_trial_bodies(exe, data, offset)
-    return {'mode2_sampling': inspect_mode2_sampling(exe), 'residual_preservation': inspect_residual_preservation(exe), 'scratch_producer': inspect_scratch_producer(exe), 'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
+    return {'mode2_angle': inspect_mode2_angle(exe, data, offset), 'mode2_sampling': inspect_mode2_sampling(exe), 'residual_preservation': inspect_residual_preservation(exe), 'scratch_producer': inspect_scratch_producer(exe), 'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
             'conditions': ['same actual3f and updated target/scale/spin; source origin=C540, Z=1; mode input in{0,1,2,4}',
                            'M6a0>23; control B+d10 is same M; independent valid argument/output storage',
                            'finite derived distances/scalars; first thread-static initialization gate already satisfied at1443f3031; valid TLS and data reads',
@@ -488,5 +574,5 @@ if __name__ == '__main__':
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     args.output.write_text(json.dumps(inspect(args.exe), ensure_ascii=False, indent=2) + '\n')
-    print('PASS: effective-mode partitions/conditional suffixes; trial-body call inventories; outer budget cuts; actual conditional integration counters, local seed arithmetic fresh scratch source/copy cuts, prepared force write domains, residual cycle cuts and mode2 sample/height feedback.')
+    print('PASS: effective-mode partitions/conditional suffixes; trial-body call inventories; outer budget cuts; actual conditional integration counters, local seed arithmetic fresh scratch source/copy cuts, prepared force write domains, residual cycle cuts and mode2 sample/height feedback and finite nonzero angular formula.')
     print('Conditional static evidence only; complete trial outputs and shot-to-goal mechanism remain unproved.')
