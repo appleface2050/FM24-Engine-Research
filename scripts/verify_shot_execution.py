@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261030_goal_candidate_nonempty_model_static.txt",
     "20261026_shot_submission_flight_static.txt",
     "20261026_shot_dispatch_continuity_static.txt",
     "20261026_shot3f_submission_static.txt",
@@ -954,6 +955,36 @@ def verify(exe: Path) -> None:
                 if len(fields) == 3 and fields[2].strip():
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
+    # 独立核对模型跳表快照和真正的调用者标志读写；不把本地图升级为副作用证明。
+    model_paths = json.loads((ROOT / "20261030_candidate_model_paths.json").read_text())
+    for table in model_paths["tables"]:
+        address = int(table["base"], 16)
+        expected = bytes.fromhex(table["bytes"])
+        check(data[offset(address):offset(address) + len(expected)] == expected,
+              f"Nonempty model switch table {address:x}")
+        targets = [address + value for value in struct.unpack(f"<{len(expected) // 4}i", expected)]
+        check(targets == [int(value, 16) for value in table["targets"]],
+              f"Nonempty model signed switch targets {address:x}")
+    for address, expected in {
+        0x144417754: "mov QWORD PTR [rsi+0x617],0x0",
+        0x14442551B: "mov r8b,0x1",
+        0x144425528: "movss xmm0,DWORD PTR [rcx+0x2c]",
+        0x144425534: "jb 0x144425556",
+        0x144425536: "mov BYTE PTR [rsi+0x61a],0x1",
+        0x144425544: "jae 0x14442554f",
+        0x144425546: "cmp BYTE PTR [rdi+0x119b],0x0",
+        0x14442554D: "je 0x144425556",
+        0x14442554F: "mov BYTE PTR [rsi+0x619],0x1",
+        0x1444358D4: "movzx eax,BYTE PTR [r15+0x61a]",
+        0x1444358DC: "or al,BYTE PTR [r15+0x619]",
+        0x144435977: "movzx eax,BYTE PTR [r15+0x61a]",
+        0x14443597F: "or al,BYTE PTR [r15+0x619]",
+    }.items():
+        check(instructions.get(address) == expected, f"Model caller/consumer {address:x}")
+    check(struct.unpack_from("<f", data, offset(0x1456B08C4))[0] == f32(0.15)
+          and struct.unpack_from("<f", data, offset(0x1455A9800))[0] == f32(0.30),
+          "Model caller float32 thresholds")
+
     # 复用既有公共属性分类器证据，避免复制四份表或仅抽核几个编号。
     common = json.loads((ROOT / "20261020_finalize_helper_preservation_observations.json").read_text())
     classifiers = (0x14274E900, 0x14274ED20, 0x14274F140, 0x1443CB7B0)
@@ -1091,7 +1122,9 @@ def verify(exe: Path) -> None:
                 or 0x141B4FE90 <= address < 0x141B505FE
                 or 0x141B57440 <= address < 0x141B57800
                 or 0x140448F20 <= address < 0x140449019
-                or 0x144421930 <= address < 0x144421D29):
+                or 0x144421930 <= address < 0x144421D29
+                or 0x144528BB0 <= address < 0x14452BDDC
+                or 0x144386FA0 <= address < 0x1443877AD):
             continue
         match = re.fullmatch(r"call 0x([0-9a-f]+)", instruction)
         if match:
@@ -1365,6 +1398,9 @@ def verify(exe: Path) -> None:
         0x141AD3400: 0x151BB13E0,
         0x141ACB310: 0x151B72450,
     }
+    jumps.update({0x1454E9380: 0x15CBEF2F0, 0x14452AEB0: 0x15A2CB2E0,
+                  0x14452BD82: 0x14557E730})
+    calls.update({0x14442551E: 0x144528BB0, 0x144425556: 0x1454E8A88})
     calls.update(attribute_context_calls)
     for opcode, edges in ((0xE8, calls), (0xE9, jumps)):
         for address, target in edges.items():

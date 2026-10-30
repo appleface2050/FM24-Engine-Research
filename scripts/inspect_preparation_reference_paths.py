@@ -27,7 +27,7 @@ def walk(starts, graph, blocked=()):
     return seen
 
 
-def decode_graph(exe: Path, start: int, end: int, *, external_stops=()):
+def decode_graph(exe: Path, start: int, end: int, *, external_stops=(), indirect_targets=None):
     """解码本地条件边；CALL接正常返回，显式外部尾跳仅作边界节点。"""
     output = subprocess.check_output([
         "objdump", "-d", "-Mintel", "--insn-width=16",
@@ -49,7 +49,12 @@ def decode_graph(exe: Path, start: int, end: int, *, external_stops=()):
         if op.startswith("j") or op.startswith("loop"):
             target = re.fullmatch(r"0x([0-9a-f]+)", parts[1])
             if not target:
-                raise ValueError(f"Unresolved local branch at {address:#x}")
+                if op != "jmp" or address not in (indirect_targets or {}):
+                    raise ValueError(f"Unresolved local branch at {address:#x}")
+                graph[address] = list(indirect_targets[address])
+                if not graph[address]:
+                    raise ValueError(f"Empty indirect branch coverage at {address:#x}")
+                continue
             graph[address] = [int(target[1], 16)]
             if op != "jmp":
                 graph[address].append(address + size)
