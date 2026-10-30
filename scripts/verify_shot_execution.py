@@ -149,6 +149,7 @@ EVIDENCE = (
     "20261030_goal_cache_complete_preservation_static.txt",
     "20261030_goal_preparation_return_preservation_static.txt",
     "20261030_goal_candidate_context_entry_geometry_static.txt",
+    "20261030_goal_candidate_roster_query_static.txt",
 )
 
 
@@ -941,6 +942,13 @@ def verify(exe: Path) -> None:
           and instructions.get(0x141B43202) == "cmp rbx,0xa",
           "Cache query append count limit")
     for address, expected in {
+        0x141B42A6F: "cmp rbx,0xa",
+        0x141B42AFF: "cmp bl,0x20",
+        0x144408CDB: "jbe 0x144408d10",
+        0x144408D19: "cmp DWORD PTR [rdi+0xe8],0xffffffff",
+        0x144408D20: "jne 0x144408d3c",
+        0x144408D22: "cmp DWORD PTR [rdi+0x94],ebx",
+        0x144408D28: "jge 0x144408d3c",
         0x14441A50B: "movaps XMMWORD PTR [r13+0x540],xmm0",
         0x14441A73E: "movss DWORD PTR [r13+0x5c4],xmm0",
         0x14441AF4C: "jbe 0x14441af6a",
@@ -1002,6 +1010,16 @@ def verify(exe: Path) -> None:
           "Cache short sort uses the recorded memmove import")
 
     calls = {
+        0x14441A78D: 0x144408CC0,
+        0x14441AF2C: 0x141B46830,
+        0x14441A661: 0x141B42780,
+        0x14441A68B: 0x141B42780,
+        0x14441A6BC: 0x141B42780,
+        0x141B42791: 0x1454E8D80,
+        0x141B42D8D: 0x1454E8D80,
+        0x141B42904: 0x144408CC0,
+        0x141B42B4C: 0x14557E730,
+        0x144408D37: 0x144407A40,
         0x144417994: 0x1443BC460,
         0x14441799F: 0x14441A3B0,
         0x1443BDC2A: 0x1443C54B0,
@@ -1223,6 +1241,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x141B42C8E: 0x141B42D80,
         0x1443B6160: 0x159F102E0,
         0x1418FDF30: 0x150DF5F90,
         0x145305640: 0x15C605DC0,

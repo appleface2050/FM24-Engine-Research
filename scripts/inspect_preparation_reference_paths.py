@@ -250,6 +250,40 @@ def inspect(exe: Path):
         raise ValueError("Preparation return no longer crosses the clear tail")
     if 0x1443C39CB in walk([ENTRY], graph, {0x1443C181F}):
         raise ValueError("Second reference write can bypass the parameter save")
+    roster_rows, roster_graph = decode_graph(exe, 0x141B42780, 0x141B42F46)
+    for address, (instruction, successor) in {
+        0x141B42B02: ("ja 0x141b42c93", 0x141B42B08),
+        0x141B42DB0: ("jg 0x141b42e72", 0x141B42DB6),
+    }.items():
+        if re.sub(r"\s+", " ", roster_rows[address][1]) != instruction:
+            raise ValueError(f"Small roster sort bound differs at {address:#x}")
+        roster_graph[address] = [successor]
+    roster_reached = walk([0x141B42780], roster_graph)
+    roster_calls = [
+        hex(address) for address in sorted(roster_reached)
+        if roster_rows[address][1].startswith("call")
+    ]
+    if roster_calls != ["0x141b42791", "0x141b42904", "0x141b42b4c",
+                         "0x141b42d8d", "0x141b42dec"]:
+        raise ValueError("Small roster query retains another subcall")
+    context_rows, context_graph = decode_graph(exe, 0x14441A3B0, 0x14441FFE1)
+    for address, (instruction, successor) in {
+        0x14441A4DB: ("jbe 0x14441a4f8", 0x14441A4F8),
+        0x14441AF4C: ("jbe 0x14441af6a", 0x14441AF4E),
+    }.items():
+        if re.sub(r"\s+", " ", context_rows[address][1]) != instruction:
+            raise ValueError(f"Near-context producer branch differs at {address:#x}")
+        context_graph[address] = [successor]
+    context_prefix = walk([0x14441A3B0], context_graph, {0x14441AF65})
+    context_calls = [
+        hex(address) for address in sorted(context_prefix)
+        if context_rows[address][1].startswith("call")
+    ]
+    if context_calls != ["0x14441a661", "0x14441a68b", "0x14441a6bc",
+                          "0x14441a78d", "0x14441af2c"]:
+        raise ValueError("Near-context prefix retains another subcall")
+    if not any(0x14441AF65 in context_graph[address] for address in context_prefix):
+        raise ValueError("Near-context producer checkpoint is unreachable")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -306,6 +340,19 @@ def inspect(exe: Path):
             "return_can_bypass_clear_tail": False,
             "second_reference_write_requires_parameter_save": "0x1443c181f",
             "limits": "Conditioned local CFG; write-domain/identity reasoning is separate, and earlier natural preparation inputs remain unproved.",
+        },
+        "candidate_roster_queries": {
+            "entry": "0x141b42780", "output_count_bound": "0..11",
+            "remaining_calls_including_tail_sort": roster_calls,
+            "output_blocks": ["C+300..470", "C+20..190", "C+190..300"],
+            "position_query_contract": "At float32 lookahead 0, each valid A=Q+80 has A+e8!=-1 or A+94>=max(tick,0), so 144407a40 is not called.",
+            "limits": "No claim for cold position production; bounded output/sort write domains and alias conditions are established separately.",
+        },
+        "candidate_near_distance_producer": {
+            "entry": "0x14441a3b0", "checkpoint": "0x14441af65",
+            "conditions_at_branches": ["Finite P+e3c<=0", "C+5c4<3.6600000858306885"],
+            "prefix_call_sites": context_calls,
+            "limits": "Requires the separately documented ready-position/roster contracts and P flag condition; no claim for later context generation or natural reachability.",
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",
