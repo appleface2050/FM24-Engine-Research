@@ -402,6 +402,28 @@
     ],
     "limits": "Requires the separately documented ready-position/roster contracts and P flag condition; no claim for later context generation or natural reachability."
   },
+  "candidate_context_to_attribute_gate": {
+    "start": "0x14441af65",
+    "stop_before_call": "0x14441be35",
+    "conditions_at_reads": [
+      "C+578=0",
+      "P+1870=1",
+      "C+300>0"
+    ],
+    "path_scope": "Only paths that reach BE35; no claim that every path reaches it.",
+    "instructions_on_paths": 775,
+    "call_sites": [
+      "0x14441b039",
+      "0x14441ba1a",
+      "0x14441bb75",
+      "0x14441bb84",
+      "0x14441bd76",
+      "0x14441bd9b"
+    ],
+    "speed_virtual_slot": "MATCH_PLAYER 145a1a048+38 -> 141b62dc0",
+    "valid_getter_has_calls": false,
+    "limits": "Preservation uses typed callee/write bounds and storage contracts, not CFG alone. C+610 can clear; natural record readiness, type retention and later attribute-gate calls remain unresolved."
+  },
   "limits": [
     "All conditional branches allowed; natural reachability and termination unproved.",
     "CALL treated as normal return; callee effects and exception paths unproved.",

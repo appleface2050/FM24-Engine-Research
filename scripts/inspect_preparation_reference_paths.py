@@ -284,6 +284,45 @@ def inspect(exe: Path):
         raise ValueError("Near-context prefix retains another subcall")
     if not any(0x14441AF65 in context_graph[address] for address in context_prefix):
         raise ValueError("Near-context producer checkpoint is unreachable")
+    # 仅取AF65出发且正常能到BE35的路径，不把其他出口隐式排除为不可达。
+    later_graph = {address: list(targets) for address, targets in context_graph.items()}
+    for address, instruction, successor in (
+        (0x14441B164, "jbe 0x14441b919", 0x14441B919),
+        (0x14441B60B, "jne 0x14441b615", 0x14441B615),
+        (0x14441B62B, "je 0x14441b925", 0x14441B631),
+    ):
+        if re.sub(r"\s+", " ", context_rows[address][1]) != instruction:
+            raise ValueError(f"Later context condition differs at {address:#x}")
+        later_graph[address] = [successor]
+    later_reverse = {address: [] for address in later_graph}
+    for address, targets in later_graph.items():
+        for target in targets:
+            later_reverse[target].append(address)
+    later_prefix = (walk([0x14441AF65], later_graph, {0x14441BE35})
+                    & walk([0x14441BE35], later_reverse))
+    later_calls = [hex(address) for address in sorted(later_prefix)
+                   if context_rows[address][1].startswith("call")]
+    if later_calls != ["0x14441b039", "0x14441ba1a", "0x14441bb75",
+                       "0x14441bb84", "0x14441bd76", "0x14441bd9b"]:
+        raise ValueError("Later context prefix retains an unreviewed subcall")
+    for required in (0x14441B076, 0x14441BD9B):
+        if required not in later_prefix:
+            raise ValueError("Flag clearing or uncached-speed call was lost from coverage")
+    leaf_rows, leaf_graph = decode_graph(exe, 0x141B47A60, 0x141B4806A)
+    if any(row[1].startswith("call") for row in leaf_rows.values()):
+        raise ValueError("Context boolean helper now contains a subcall")
+    speed_rows, speed_graph = decode_graph(exe, 0x1443F9200, 0x1443F9320)
+    speed_calls = [hex(address) for address in sorted(walk([0x1443F9200], speed_graph))
+                   if speed_rows[address][1].startswith("call")]
+    if speed_calls != ["0x1443f9269"]:
+        raise ValueError("Speed recomputation has another unreviewed call")
+    getter_rows, getter_graph = decode_graph(exe, 0x141B62DC0, 0x141B62DEF)
+    if re.sub(r"\s+", " ", getter_rows[0x141B62DD3][1]) != "jne 0x141b62ddd":
+        raise ValueError("Player cache getter valid branch differs")
+    getter_graph[0x141B62DD3] = [0x141B62DDD]  # 同一P+1870=1。
+    if any(getter_rows[address][1].startswith("call")
+           for address in walk([0x141B62DC0], getter_graph)):
+        raise ValueError("Valid player cache getter can still recompute")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -353,6 +392,15 @@ def inspect(exe: Path):
             "conditions_at_branches": ["Finite P+e3c<=0", "C+5c4<3.6600000858306885"],
             "prefix_call_sites": context_calls,
             "limits": "Requires the separately documented ready-position/roster contracts and P flag condition; no claim for later context generation or natural reachability.",
+        },
+        "candidate_context_to_attribute_gate": {
+            "start": "0x14441af65", "stop_before_call": "0x14441be35",
+            "conditions_at_reads": ["C+578=0", "P+1870=1", "C+300>0"],
+            "path_scope": "Only paths that reach BE35; no claim that every path reaches it.",
+            "instructions_on_paths": len(later_prefix), "call_sites": later_calls,
+            "speed_virtual_slot": "MATCH_PLAYER 145a1a048+38 -> 141b62dc0",
+            "valid_getter_has_calls": False,
+            "limits": "Preservation uses typed callee/write bounds and storage contracts, not CFG alone. C+610 can clear; natural record readiness, type retention and later attribute-gate calls remain unresolved.",
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",

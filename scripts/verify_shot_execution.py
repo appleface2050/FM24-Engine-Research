@@ -150,6 +150,7 @@ EVIDENCE = (
     "20261030_goal_preparation_return_preservation_static.txt",
     "20261030_goal_candidate_context_entry_geometry_static.txt",
     "20261030_goal_candidate_roster_query_static.txt",
+    "20261030_goal_candidate_context_speed_preservation_static.txt",
 )
 
 
@@ -916,6 +917,23 @@ def verify(exe: Path) -> None:
     check(struct.unpack_from("<Q", data, offset(0x145608078 + 0x30))[0]
           == 0x140269580, "FIXTURE_RESULT +30 getter binding")
 
+    check(struct.unpack_from("<Q", data, offset(0x145A1A048 + 0x38))[0]
+          == 0x141B62DC0, "MATCH_PLAYER context speed getter slot")
+    for address, expected in ((0x145A1D4FC, 8.0), (0x145A4E8C0, 2000.0),
+                              (0x145A1D488, 0.75)):
+        check(struct.unpack_from("<f", data, offset(address))[0] == expected,
+              f"Context speed/boolean constant {address:x}")
+    # 可手算局部语义；不把Python例子称为执行原生函数。
+    db4, db1, match_e3bb, tick = 0, 0, 0, 110
+    for timestamp, expected in ((110, 1), (111, 0)):
+        cleared = (db4 == 0 and db1 == 0 and match_e3bb == 0 and timestamp > tick)
+        check((0 if cleared else 1) == expected, "C610 signed timestamp worked example")
+    speed_adjustment = f32(min(1.0, f32(f32(1000.0) / f32(2000.0))))
+    speed = f32(f32(f32(f32(40.0) / f32(20.0)) + f32(5.0))
+                - speed_adjustment)
+    speed = max(3.0, f32(speed + f32(0.25)))
+    check(speed == 6.75, "Uncached speed with bound virtual getter worked example")
+
     lines = 0
     instructions = {}
     for filename in EVIDENCE:
@@ -942,6 +960,14 @@ def verify(exe: Path) -> None:
           and instructions.get(0x141B43202) == "cmp rbx,0xa",
           "Cache query append count limit")
     for address, expected in {
+        0x14441B076: "mov BYTE PTR [r13+0x610],0x0",
+        0x14441B074: "jle 0x14441b07e",
+        0x14441BD4C: "mov QWORD PTR [rsp+0x40],0x0",
+        0x1443F9269: "call QWORD PTR [rax+0x38]",
+        0x1443F92EA: "sete BYTE PTR [rdi+0x24f]",
+        0x141B62DD3: "jne 0x141b62ddd",
+        0x141B62DDD: "mov eax,DWORD PTR [rdi+0x1c0]",
+        0x141B47ABF: "jbe 0x141b47ad9",
         0x141B42A6F: "cmp rbx,0xa",
         0x141B42AFF: "cmp bl,0x20",
         0x144408CDB: "jbe 0x144408d10",
@@ -1010,6 +1036,14 @@ def verify(exe: Path) -> None:
           "Cache short sort uses the recorded memmove import")
 
     calls = {
+        0x14441B039: 0x141B47A60,
+        0x14441BA1A: 0x141B408E0,
+        0x14441BB75: 0x14557E9B0,
+        0x14441BB84: 0x14557EA20,
+        0x14441BD76: 0x141B42F50,
+        0x14441BD9B: 0x1443F9200,
+        0x14441BE35: 0x144448FB0,
+        0x141B62DD8: 0x1443BC460,
         0x14441A78D: 0x144408CC0,
         0x14441AF2C: 0x141B46830,
         0x14441A661: 0x141B42780,
