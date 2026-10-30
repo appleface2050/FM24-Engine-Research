@@ -113,6 +113,28 @@ def inspect(exe: Path):
         source = cache_rows if address == valid_write else rows
         if re.sub(r"\s+", " ", source[address][1]) != instruction:
             raise ValueError(f"Cache caller/write differs at {address:#x}")
+
+    history_checks = {
+        0x1443BD325: "mov eax,DWORD PTR [r13+0xf10]",
+        0x1443BD32C: "lea ecx,[rax-0x49]",
+        0x1443BD32F: "cmp ecx,0x6",
+        0x1443BD332: "jb 0x1443bd34e",
+        0x1443BD334: "add eax,0xffffffb8",
+        0x1443BD337: "cmp eax,0x8",
+        0x1443BD33A: "ja 0x1443bd4a5",
+        0x1443BD38B: "call 0x1443ee610",
+    }
+    for address, instruction in history_checks.items():
+        if re.sub(r"\s+", " ", cache_rows[address][1]) != instruction:
+            raise ValueError(f"Cache history branch differs at {address:#x}")
+    without_history_load = walk([cache_entry], cache_graph, {0x1443BD325})
+    if {0x1443BD332, 0x1443BD33A} & without_history_load:
+        raise ValueError("History branches can bypass the checked field load")
+    history_90 = dict(cache_graph)
+    history_90[0x1443BD332] = [0x1443BD334]  # uint32(0x90-0x49)>=6。
+    history_90[0x1443BD33A] = [0x1443BD4A5]  # uint32(0x90-0x48)>8。
+    if 0x1443BD38B in walk([cache_entry], history_90):
+        raise ValueError("Ball query still reachable under history 0x90 branches")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -125,6 +147,8 @@ def inspect(exe: Path):
             "decoded_instructions": len(cache_rows),
             "epilogue_reachable_avoiding_valid_write": False,
             "caller_second_call_skipped_on_normal_return_with_same_player_storage": True,
+            "ball_query_call": "0x1443bd38b",
+            "ball_query_unreachable_if_history_90_at_0x1443bd325": True,
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",
