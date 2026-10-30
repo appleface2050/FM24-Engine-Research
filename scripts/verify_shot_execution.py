@@ -143,6 +143,7 @@ EVIDENCE = (
     "20261030_goal_cache_pair_geometry_writes_static.txt",
     "20261030_goal_cache_candidate_query_writes_static.txt",
     "20261030_goal_cache_position_query_static.txt",
+    "20261030_goal_cache_bracketing_query_static.txt",
 )
 
 
@@ -184,6 +185,9 @@ def verify(exe: Path) -> None:
           "Shot candidate first multiplier")
     check(struct.unpack_from("<f", data, offset(0x145A1D524))[0] == 20.0,
           "Alternate shot candidate threshold")
+    check(struct.unpack_from("<f", data, offset(0x145816548))[0] == -240.0
+          and struct.unpack_from("<f", data, offset(0x1456B0CD8))[0] == 240.0,
+          "Bracketing query fallback time offsets")
     check(struct.unpack_from("<f", data, offset(0x145A1D53C))[0] == 30.0,
           "Team geometry comparison constant")
     check(struct.unpack_from("<f", data, offset(0x145A1D4EC))[0] == 5.0,
@@ -922,6 +926,13 @@ def verify(exe: Path) -> None:
         0x141B46A82: "xor eax,eax",
         0x1443EF9CC: "movd xmm6,r8d",
         0x1443EF9D1: "cvttss2si edi,xmm6",
+        0x1443EF9D5: "lea r15d,[rdi+0x7]",
+        0x1443EF9D9: "mov r12d,0x1876",
+        0x1443EFB0B: "ucomiss xmm1,xmm6",
+        0x1443EFB0E: "jbe 0x1443efae0",
+        0x1443EFB9E: "mov r15d,0x1876",
+        0x1443EFCC7: "ucomiss xmm6,xmm1",
+        0x1443EFCCA: "jbe 0x1443efca0",
     }.items():
         check(instructions.get(address) == expected,
               f"Position-cache query branch or input {address:x}")
@@ -931,6 +942,7 @@ def verify(exe: Path) -> None:
           "Cache short sort uses the recorded memmove import")
 
     calls = {
+        0x1443EFBF8: 0x1443EA8F0,
         0x141B46BCC: 0x141B41670,
         0x141B46C95: 0x141B41670,
         0x141B4AA39: 0x141B46830,
