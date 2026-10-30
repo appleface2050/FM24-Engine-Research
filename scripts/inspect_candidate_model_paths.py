@@ -27,6 +27,11 @@ RANGES = (
     (0x1443876D0, 0x14438773D),
     (0x144387740, 0x1443877AD),
     (0x15A2CB2E0, 0x15A2CB4A7),
+    (0x1443203D0, 0x1443208D4),
+    (0x159A6CB10, 0x159A6CC75),
+    (0x1443201D0, 0x1443202A2),
+    (0x1443202B0, 0x1443203C5),
+    (0x14431FFA0, 0x144320089),
 )
 
 
@@ -58,7 +63,8 @@ def inspect(exe):
     inventories = []
     for start, end in RANGES:
         rows, graph = decode_graph(exe, start, end, indirect_targets=indirect,
-                                   external_stops=((0x14557E730,) if start == 0x14452B750 else ()))
+                                   external_stops={0x14452B750: (0x14557E730,),
+                                                   0x14431FFA0: (0x1452ED750,)}.get(start, ()))
         reached = walk([start], graph)
         decoded[start] = (rows, graph)
         inventories.append({
@@ -111,15 +117,52 @@ def inspect(exe):
     reached = walk([0x144528BB0], selected)
     if 0x144529C61 in reached:
         raise ValueError("Prediction remains reachable; reopen same-ball claim")
+    returns = {a for a in reached if rows[a][1].startswith("ret")}
+    if not returns or returns & walk([0x144528BB0], selected, {0x14452ABAE}):
+        raise ValueError("Selected normal return can bypass calculator call")
+    if returns & walk([0x144528BB0], selected, {0x144528CA4}):
+        raise ValueError("Selected normal return can bypass output publication")
     # 不把池清理视为纯函数：输出剩余真实调用，后续逐个处理。
     selected_calls = [{"site": hex(a), "instruction": rows[a][1]}
                       for a in sorted(reached) if rows[a][1].startswith("call")]
+    reverse = {a: [] for a in selected}
+    for source, targets in selected.items():
+        for target in targets:
+            reverse[target].append(source)
+    prefix = walk([0x144529C47], reverse) & walk([0x144528BB0], selected, {0x144529C47})
+    before_prediction_calls = [{"site": hex(a), "instruction": rows[a][1]}
+                               for a in sorted(prefix) if rows[a][1].startswith("call")]
+    if 0x14452A6C1 not in prefix:
+        raise ValueError("Pre-prediction cleanup was lost from the backward slice")
     # 数量界与临时堆分配的排除单列；不混入上述保守双边图。
     sort_bound = {"source": "signed positive team+3c1; two scans; at most one interval per player",
                   "max_intervals": 254, "max_half_scratch": (254 + 1) // 2,
                   "heap_scratch_threshold": 512,
                   "branch_if_bound_established": "0x14452a5bb -> 0x14452a615",
                   "limitation": "CFG inventory does not prove loop/alias bounds"}
+    sort_rows, sort_graph = decoded[0x14452B070]
+    if re.sub(r"\s+", " ", sort_rows[0x14452B138][1]) != "jle 0x14452b168":
+        raise ValueError("Top sort scratch comparison changed")
+    buffered_sort = dict(sort_graph)
+    buffered_sort[0x14452B138] = [0x14452B168]  # ceil(n/2) <= actual scratch count。
+    sort_reached = walk([0x14452B070], buffered_sort)
+    if {0x14452B14B, 0x14452B161} & sort_reached:
+        raise ValueError("Top sort recursion remains reachable under sufficient scratch")
+    merge_rows, merge_graph = decoded[0x14452B750]
+    for address, expected in {0x14452B826: "jg 0x14452b831",
+                              0x14452B834: "jle 0x14452bcf2"}.items():
+        if re.sub(r"\s+", " ", merge_rows[address][1]) != expected:
+            raise ValueError(f"Buffered merge comparison changed: {address:#x}")
+    buffered_merge = dict(merge_graph)
+    buffered_merge[0x14452B826] = [0x14452B828]  # 左段修剪后 <= ceil(n/2)。
+    buffered_merge[0x14452B834] = [0x14452BCF2]  # 右段修剪后 <= floor(n/2) <= scratch。
+    merge_reached = walk([0x14452B750], buffered_merge)
+    if {0x14452B83A, 0x14452BBD5} & merge_reached:
+        raise ValueError("Unbuffered merge/recursion remains reachable")
+    buffered_calls = [merge_rows[a][1] for a in sorted(merge_reached)
+                      if merge_rows[a][1].startswith("call")]
+    if any(re.sub(r"\s+", " ", ins) != "call 0x14557e730" for ins in buffered_calls):
+        raise ValueError("Buffered merge has a non-memmove callee")
     thunk = offset(0x14557EA00)
     if data[thunk:thunk + 2] != b"\xff\x25" or (
             0x14557EA06 + struct.unpack_from("<i", data, thunk + 2)[0] != 0x145D50F30):
@@ -135,18 +178,132 @@ def inspect(exe):
     name = struct.unpack_from("<Q", data, offset(0x140000000 + slot))[0]
     if data[offset(0x140000000 + name + 2):offset(0x140000000 + name + 2) + 5] != b"expf\0":
         raise ValueError("Calculator import is not expf")
+    # 导入名称来自原PE查找表，不能把磁盘IAT当作运行中的函数地址。
+    import_rva, _ = struct.unpack_from("<II", data, pe + 24 + 112 + 8)
+    descriptor = offset(0x140000000 + import_rva)
+    names = {}
+    while any(data[descriptor:descriptor + 20]):
+        lookup, _, _, module, iat = struct.unpack_from("<IIIII", data, descriptor)
+        begin = offset(0x140000000 + module)
+        dll = data[begin:data.index(b"\0", begin)].decode()
+        index = 0
+        while True:
+            item = struct.unpack_from("<Q", data, offset(0x140000000 + lookup + index * 8))[0]
+            if not item:
+                break
+            if not item >> 63:
+                begin = offset(0x140000000 + item) + 2
+                names[0x140000000 + iat + index * 8] = {
+                    "dll": dll, "symbol": data[begin:data.index(b"\0", begin)].decode(),
+                    "descriptor": hex(0x140000000 + import_rva),
+                    "lookup": hex(0x140000000 + lookup + index * 8),
+                    "hint_name": hex(0x140000000 + item),
+                }
+            index += 1
+        descriptor += 20
+        import_rva += 20
+    pool_imports = {}
+    for slot, symbol in {
+        0x145D4FAB8: "InterlockedPopEntrySList", 0x145D4FAC0: "InterlockedPushEntrySList",
+        0x145D4FC08: "SetEvent", 0x145D4FD18: "WaitForSingleObject",
+        0x145D50E60: "_aligned_free", 0x145D50E68: "_aligned_malloc",
+        0x145D50E90: "free",
+    }.items():
+        if names[slot]["symbol"] != symbol:
+            raise ValueError(f"Pool import changed: {slot:#x}")
+        pool_imports[hex(slot)] = names[slot]
+    # 对寄存器间接CALL检查实际IAT加载必经，不按函数名称推断接口。
+    indirect_calls = []
+    for entry, binding, site, slot, register in (
+        (0x1443203D0, 0x144320749, 0x144320774, 0x145D4FAC0, "r14"),
+        (0x1443203D0, 0x144320790, 0x1443207A6, 0x145D4FAC0, "r14"),
+        (0x1443203D0, 0x14432087E, 0x144320890, 0x145D50E90, "r15"),
+        (0x1443203D0, 0x144320877, 0x1443208B4, 0x145D50E60, "r14"),
+        (0x1443201D0, 0x1443201F0, 0x144320217, 0x145D4FAB8, "r13"),
+        (0x1443201D0, 0x1443201F0, 0x14432025D, 0x145D4FAB8, "r13"),
+        (0x1443201D0, 0x1443201F7, 0x144320249, 0x145D4FD18, "rbp"),
+        (0x1443202B0, 0x144320361, 0x14432038E, 0x145D4FAC0, "r12"),
+        (0x1443202B0, 0x144320368, 0x14432039F, 0x145D4FC08, "r13"),
+    ):
+        helper_rows, helper_graph = decoded[entry]
+        load = re.sub(r"\s+", " ", helper_rows[binding][1])
+        call = re.sub(r"\s+", " ", helper_rows[site][1])
+        if not load.startswith(f"mov {register},QWORD PTR [rip+") or not load.endswith(f"# {slot:#x}"):
+            raise ValueError(f"Indirect pool binding changed: {binding:#x}")
+        if call != f"call {register}" or site in walk([entry], helper_graph, {binding}):
+            raise ValueError(f"Indirect pool call bypasses load: {site:#x}")
+        indirect_calls.append({"site": hex(site), "binding": hex(binding),
+                               "iat": hex(slot), "symbol": names[slot]["symbol"],
+                               "load_dominates_call": True})
+    # 人工逐组恢复的写域；地址清单由完整本地图独立提取，新增写点必须重新分类。
+    domains = {}
+    for label, sites in {
+        "new_output_X": [0x144528C66, 0x144528C71, 0x144528C74, 0x144528C7C,
+                         0x144528C84, 0x144528C8C, 0x144528C94, 0x144528C9C,
+                         0x144529003, 0x144529007, 0x144529015, 0x144529026,
+                         0x144529564, 0x144529568, 0x144529A1D, 0x144529A96,
+                         0x144529C02, 0x144529C0D, 0x144529C21, 0x144529D56,
+                         0x144529D87, 0x144529D9E, 0x144529DA8, 0x144529DCC,
+                         0x14452A54A, 0x14452A565, 0x14452A58F, 0x14452A6A0,
+                         0x14452A6EC, 0x14452AAD5, 0x14452AB9B],
+        "caller_stack_output_pointer": [0x144528CA4],
+        "own_interval_array": [0x14452A2CE, 0x14452A2D1, 0x14452A349,
+                               0x14452A34D, 0x14452A4E1, 0x14452A4E3, 0x14452A538],
+        "own_merged_array": [0x14452A70A, 0x14452A70E, 0x14452A785, 0x14452A789,
+                             0x14452A7D8, 0x14452A7DC, 0x14452A833, 0x14452A839,
+                             0x14452A93B, 0x14452A941],
+        "pool_cell_metadata": [0x144529BCB, 0x14452A3CF, 0x14452A8AE,
+                               0x14452A9B5, 0x14452AB3F],
+        "excluded_allocator_initialization": [0x1445295A4, 0x14452A48B],
+    }.items():
+        for site in sites:
+            domains[site] = label
+    writes = []
+    for address, (_, instruction) in rows.items():
+        ins = re.sub(r"\s+", " ", instruction)
+        if ins.startswith("lock "):
+            ins = ins[5:]
+        first = ins.split(",", 1)[0]
+        if "[" not in first or "[rsp" in first or "[rbp" in first:
+            continue
+        op = ins.split()[0]
+        if op in {"cmp", "test", "ucomiss", "comiss", "nop", "cs", "call", "jmp"}:
+            continue
+        if address not in domains:
+            raise ValueError(f"Unclassified model external store: {address:#x} {instruction}")
+        writes.append({"site": hex(address), "instruction": instruction,
+                       "domain_manual_derivation": domains[address],
+                       "reachable_under_selected_branches": address in reached})
+    interval_writes = {a for a, label in domains.items() if label == "own_interval_array"}
+    for binding in (0x144529EF9, 0x144529F00, 0x144529F03):
+        if interval_writes & walk([0x144528BB0], selected, {binding}):
+            raise ValueError(f"Interval writes bypass empty initialization at {binding:#x}")
     thresholds = [struct.unpack_from("<f", data, offset(a))[0]
                   for a in (0x1456B08C4, 0x1455A9800)]
     return {"evidence_type": "original_PE_static_CFG_not_execution",
             "tables": tables, "functions": inventories,
             "selected_model_branches": {hex(a): hex(t) for a, t in choices.items()},
             "selected_model_calls": selected_calls,
+            "calls_before_prediction_check": before_prediction_calls,
             "prediction_call_excluded": True,
+            "calculator_call_mandatory_for_selected_normal_return": True,
+            "output_publication_mandatory_for_selected_normal_return": True,
+            "interval_empty_initializers_dominate_writes": True,
             "sort_bound_manual_derivation": sort_bound,
+            "sufficient_scratch_sort": {
+                "conditions": "actual model n<=254; scratch=ceil(n/2); top halves ceil/floor; trimming only reduces counts",
+                "top_recursive_calls_excluded": True,
+                "merge_rotation_and_recursion_excluded": True,
+                "merge_calls": buffered_calls,
+                "limits": "count/range/ownership derivation is manual; branch reachability is checked from original PE",
+            },
             "calculator_import": "api-ms-win-crt-math-l1-1-0.dll!expf",
             "caller_thresholds_f32": thresholds,
+            "pool_import_bindings": pool_imports,
+            "pool_register_call_bindings": indirect_calls,
+            "model_nonstack_stores": writes,
             "limitations": ["CALL edges assume normal return; not a side-effect proof",
-                            "pool flush and allocator calls remain explicit obligations",
+                            "pool/array write domains require documented successful-storage ownership contracts",
                             "natural simultaneous inputs, candidate selection and goal unproven"]}
 
 
@@ -158,4 +315,5 @@ if __name__ == "__main__":
     result = inspect(args.exe)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     print("PASS: four native switch tables; complete local CFGs; selected prediction exclusion; expf binding.")
-    print("Remaining calls retain normal-return and side-effect obligations; no game execution.")
+    print("PASS: model store coverage; pool imports and dominating indirect-call bindings.\n"
+          "Side-effect domains remain conditional on valid ownership/first-success storage; no game execution.")

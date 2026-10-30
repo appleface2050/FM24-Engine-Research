@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261030_goal_candidate_model_storage_static.txt",
     "20261030_goal_candidate_nonempty_model_static.txt",
     "20261026_shot_submission_flight_static.txt",
     "20261026_shot_dispatch_continuity_static.txt",
@@ -965,6 +966,19 @@ def verify(exe: Path) -> None:
         targets = [address + value for value in struct.unpack(f"<{len(expected) // 4}i", expected)]
         check(targets == [int(value, 16) for value in table["targets"]],
               f"Nonempty model signed switch targets {address:x}")
+    for slot, binding in model_paths["pool_import_bindings"].items():
+        descriptor = struct.unpack_from("<IIIII", data, offset(int(binding["descriptor"], 16)))
+        index = (int(slot, 16) - 0x140000000 - descriptor[4]) // 8
+        lookup = 0x140000000 + descriptor[0] + index * 8
+        check(lookup == int(binding["lookup"], 16), "Model pool lookup binding")
+        name = 0x140000000 + struct.unpack_from("<Q", data, offset(lookup))[0]
+        check(name == int(binding["hint_name"], 16), "Model pool name binding")
+        start = offset(name) + 2
+        check(data[start:data.index(b"\0", start)].decode() == binding["symbol"],
+              f"Model pool symbol {slot}")
+        start = offset(0x140000000 + descriptor[3])
+        check(data[start:data.index(b"\0", start)].decode() == binding["dll"],
+              f"Model pool DLL {slot}")
     for address, expected in {
         0x144417754: "mov QWORD PTR [rsi+0x617],0x0",
         0x14442551B: "mov r8b,0x1",
@@ -1124,7 +1138,9 @@ def verify(exe: Path) -> None:
                 or 0x140448F20 <= address < 0x140449019
                 or 0x144421930 <= address < 0x144421D29
                 or 0x144528BB0 <= address < 0x14452BDDC
-                or 0x144386FA0 <= address < 0x1443877AD):
+                or 0x144386FA0 <= address < 0x1443877AD
+                or 0x14431FFA0 <= address < 0x1443208D4
+                or 0x159A6CB10 <= address < 0x159A6CC75):
             continue
         match = re.fullmatch(r"call 0x([0-9a-f]+)", instruction)
         if match:
@@ -1399,7 +1415,8 @@ def verify(exe: Path) -> None:
         0x141ACB310: 0x151B72450,
     }
     jumps.update({0x1454E9380: 0x15CBEF2F0, 0x14452AEB0: 0x15A2CB2E0,
-                  0x14452BD82: 0x14557E730})
+                  0x14452BD82: 0x14557E730, 0x144320BB0: 0x159A6CB10,
+                  0x14431FFD9: 0x1452ED750})
     calls.update({0x14442551E: 0x144528BB0, 0x144425556: 0x1454E8A88})
     calls.update(attribute_context_calls)
     for opcode, edges in ((0xE8, calls), (0xE9, jumps)):
