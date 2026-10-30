@@ -141,6 +141,7 @@ EVIDENCE = (
     "20261030_goal_preparation_cache_return_static.txt",
     "20261030_goal_cache_ball_query_static.txt",
     "20261030_goal_cache_pair_geometry_writes_static.txt",
+    "20261030_goal_cache_candidate_query_writes_static.txt",
 )
 
 
@@ -906,7 +907,33 @@ def verify(exe: Path) -> None:
                 if len(fields) == 3 and fields[2].strip():
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
+    for address in (0x1443BCFB4, 0x1443BD827, 0x1443BD899,
+                    0x1443BD905, 0x1443BD98C, 0x1443BDA00,
+                    0x1443BDF38, 0x1443BE289, 0x1443BE3B6):
+        check(instructions.get(address) == "mov QWORD PTR [rsp+0x40],0x0",
+              f"Cache query optional write pointer {address:x}")
+    check(instructions.get(0x141B430A2) == "cmp rbx,0xa"
+          and instructions.get(0x141B43202) == "cmp rbx,0xa",
+          "Cache query append count limit")
+    start = offset(0x14557E730)
+    check(data[start:start + 2] == b"\xff\x25"
+          and 0x14557E736 + struct.unpack_from("<i", data, start + 2)[0] == 0x145D50B18,
+          "Cache short sort uses the recorded memmove import")
+
     calls = {
+        0x141B43020: 0x141B40BD0,
+        0x141B43180: 0x141B40BD0,
+        0x141B4329C: 0x141B42D80,
+        0x141B42DEC: 0x14557E730,
+        0x1443BCFDD: 0x141B42F50,
+        0x1443BD854: 0x141B42F50,
+        0x1443BD8BE: 0x141B42F50,
+        0x1443BD92A: 0x141B42F50,
+        0x1443BD9B8: 0x141B42F50,
+        0x1443BDA34: 0x141B42F50,
+        0x1443BDF62: 0x141B42F50,
+        0x1443BE2B3: 0x141B42F50,
+        0x1443BE3E0: 0x141B42F50,
         0x141B40C9E: 0x141B465F0,
         0x1443BD38B: 0x1443EE610,
         0x1443EE6B0: 0x1443EA8F0,

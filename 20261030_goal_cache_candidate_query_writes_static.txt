@@ -1,0 +1,632 @@
+原 PE 辅助函数及实际调用窗口；静态读取，未执行游戏。
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b42f50 <.sdata+0x1b41f50>:
+   141b42f50:	41 57                                           	push   r15
+   141b42f52:	41 56                                           	push   r14
+   141b42f54:	41 55                                           	push   r13
+   141b42f56:	41 54                                           	push   r12
+   141b42f58:	56                                              	push   rsi
+   141b42f59:	57                                              	push   rdi
+   141b42f5a:	55                                              	push   rbp
+   141b42f5b:	53                                              	push   rbx
+   141b42f5c:	48 81 ec 88 00 00 00                            	sub    rsp,0x88
+   141b42f63:	44 0f 29 4c 24 70                               	movaps XMMWORD PTR [rsp+0x70],xmm9
+   141b42f69:	44 0f 29 44 24 60                               	movaps XMMWORD PTR [rsp+0x60],xmm8
+   141b42f6f:	0f 29 7c 24 50                                  	movaps XMMWORD PTR [rsp+0x50],xmm7
+   141b42f74:	0f 29 74 24 40                                  	movaps XMMWORD PTR [rsp+0x40],xmm6
+   141b42f79:	4d 89 c4                                        	mov    r12,r8
+   141b42f7c:	48 89 d7                                        	mov    rdi,rdx
+   141b42f7f:	49 89 cf                                        	mov    r15,rcx
+   141b42f82:	f3 0f 10 05 4a a5 ed 03                         	movss  xmm0,DWORD PTR [rip+0x3eda54a]        # 0x145a1d4d4
+   141b42f8a:	41 0f 2e 00                                     	ucomiss xmm0,DWORD PTR [r8]
+   141b42f8e:	76 06                                           	jbe    0x141b42f96
+   141b42f90:	f3 41 0f 11 04 24                               	movss  DWORD PTR [r12],xmm0
+   141b42f96:	41 0f b7 44 24 1a                               	movzx  eax,WORD PTR [r12+0x1a]
+   141b42f9c:	66 85 c0                                        	test   ax,ax
+   141b42f9f:	b9 1e 00 00 00                                  	mov    ecx,0x1e
+   141b42fa4:	0f 49 c8                                        	cmovns ecx,eax
+   141b42fa7:	0f b6 07                                        	movzx  eax,BYTE PTR [rdi]
+   141b42faa:	84 c0                                           	test   al,al
+   141b42fac:	0f 85 fe 02 00 00                               	jne    0x141b432b0
+   141b42fb2:	41 f6 44 24 1c 02                               	test   BYTE PTR [r12+0x1c],0x2
+   141b42fb8:	89 4c 24 3c                                     	mov    DWORD PTR [rsp+0x3c],ecx
+   141b42fbc:	0f 85 62 01 00 00                               	jne    0x141b43124
+   141b42fc2:	49 8b 8f d0 01 00 00                            	mov    rcx,QWORD PTR [r15+0x1d0]
+   141b42fc9:	80 b9 60 03 00 00 00                            	cmp    BYTE PTR [rcx+0x360],0x0
+   141b42fd0:	0f 84 b4 02 00 00                               	je     0x141b4328a
+   141b42fd6:	48 8d 77 10                                     	lea    rsi,[rdi+0x10]
+   141b42fda:	31 db                                           	xor    ebx,ebx
+   141b42fdc:	45 31 f6                                        	xor    r14d,r14d
+   141b42fdf:	48 89 4c 24 28                                  	mov    QWORD PTR [rsp+0x28],rcx
+   141b42fe4:	eb 22                                           	jmp    0x141b43008
+   141b42fe6:	66 2e 0f 1f 84 00 00 00 00 00                   	cs nop WORD PTR [rax+rax*1+0x0]
+   141b42ff0:	48 8b 4c 24 28                                  	mov    rcx,QWORD PTR [rsp+0x28]
+   141b42ff5:	49 ff c6                                        	inc    r14
+   141b42ff8:	0f b6 81 60 03 00 00                            	movzx  eax,BYTE PTR [rcx+0x360]
+   141b42fff:	49 39 c6                                        	cmp    r14,rax
+   141b43002:	0f 83 84 02 00 00                               	jae    0x141b4328c
+   141b43008:	4e 8b ac f1 08 03 00 00                         	mov    r13,QWORD PTR [rcx+r14*8+0x308]
+   141b43010:	4d 39 fd                                        	cmp    r13,r15
+   141b43013:	74 e0                                           	je     0x141b42ff5
+   141b43015:	4c 89 f9                                        	mov    rcx,r15
+   141b43018:	48 8d 54 24 38                                  	lea    rdx,[rsp+0x38]
+   141b4301d:	4d 89 e8                                        	mov    r8,r13
+   141b43020:	e8 ab db ff ff                                  	call   0x141b40bd0
+   141b43025:	41 0f 28 85 80 01 00 00                         	movaps xmm0,XMMWORD PTR [r13+0x180]
+   141b4302d:	0f 28 c8                                        	movaps xmm1,xmm0
+   141b43030:	41 0f 5c 8f 80 01 00 00                         	subps  xmm1,XMMWORD PTR [r15+0x180]
+   141b43038:	f3 0f 10 15 c4 a4 ed 03                         	movss  xmm2,DWORD PTR [rip+0x3eda4c4]        # 0x145a1d504
+   141b43040:	0f c6 d2 00                                     	shufps xmm2,xmm2,0x0
+   141b43044:	0f 59 d1                                        	mulps  xmm2,xmm1
+   141b43047:	f3 0f 2c ea                                     	cvttss2si ebp,xmm2
+   141b4304b:	f3 0f 16 ca                                     	movshdup xmm1,xmm2
+   141b4304f:	f3 0f 2c c9                                     	cvttss2si ecx,xmm1
+   141b43053:	89 ea                                           	mov    edx,ebp
+   141b43055:	f7 da                                           	neg    edx
+   141b43057:	0f 48 d5                                        	cmovs  edx,ebp
+   141b4305a:	89 c8                                           	mov    eax,ecx
+   141b4305c:	f7 d8                                           	neg    eax
+   141b4305e:	0f 48 c1                                        	cmovs  eax,ecx
+   141b43061:	81 fa 95 00 00 00                               	cmp    edx,0x95
+   141b43067:	77 07                                           	ja     0x141b43070
+   141b43069:	3d c8 00 00 00                                  	cmp    eax,0xc8
+   141b4306e:	72 2f                                           	jb     0x141b4309f
+   141b43070:	89 e8                                           	mov    eax,ebp
+   141b43072:	c1 e8 1f                                        	shr    eax,0x1f
+   141b43075:	01 c5                                           	add    ebp,eax
+   141b43077:	d1 fd                                           	sar    ebp,1
+   141b43079:	89 c8                                           	mov    eax,ecx
+   141b4307b:	c1 e8 1f                                        	shr    eax,0x1f
+   141b4307e:	01 c1                                           	add    ecx,eax
+   141b43080:	d1 f9                                           	sar    ecx,1
+   141b43082:	89 ea                                           	mov    edx,ebp
+   141b43084:	f7 da                                           	neg    edx
+   141b43086:	0f 48 d5                                        	cmovs  edx,ebp
+   141b43089:	89 c8                                           	mov    eax,ecx
+   141b4308b:	f7 d8                                           	neg    eax
+   141b4308d:	0f 48 c1                                        	cmovs  eax,ecx
+   141b43090:	81 fa 95 00 00 00                               	cmp    edx,0x95
+   141b43096:	77 d8                                           	ja     0x141b43070
+   141b43098:	3d c7 00 00 00                                  	cmp    eax,0xc7
+   141b4309d:	77 d1                                           	ja     0x141b43070
+   141b4309f:	0f b6 1f                                        	movzx  ebx,BYTE PTR [rdi]
+   141b430a2:	48 83 fb 0a                                     	cmp    rbx,0xa
+   141b430a6:	0f 87 44 ff ff ff                               	ja     0x141b42ff0
+   141b430ac:	44 8b 44 24 38                                  	mov    r8d,DWORD PTR [rsp+0x38]
+   141b430b1:	0f 28 c8                                        	movaps xmm1,xmm0
+   141b430b4:	0f c6 c8 ff                                     	shufps xmm1,xmm0,0xff
+   141b430b8:	66 0f 7e c8                                     	movd   eax,xmm1
+   141b430bc:	f3 41 0f 10 8d 88 01 00 00                      	movss  xmm1,DWORD PTR [r13+0x188]
+   141b430c5:	f3 0f 16 d0                                     	movshdup xmm2,xmm0
+   141b430c9:	81 c5 96 00 00 00                               	add    ebp,0x96
+   141b430cf:	48 63 ed                                        	movsxd rbp,ebp
+   141b430d2:	48 69 ed 20 03 00 00                            	imul   rbp,rbp,0x320
+   141b430d9:	48 03 2d 50 6f 8f 04                            	add    rbp,QWORD PTR [rip+0x48f6f50]        # 0x14643a030
+   141b430e0:	48 63 c9                                        	movsxd rcx,ecx
+   141b430e3:	0f b7 8c 4d 90 01 00 00                         	movzx  ecx,WORD PTR [rbp+rcx*2+0x190]
+   141b430eb:	48 89 da                                        	mov    rdx,rbx
+   141b430ee:	48 c1 e2 05                                     	shl    rdx,0x5
+   141b430f2:	f3 0f 11 04 16                                  	movss  DWORD PTR [rsi+rdx*1],xmm0
+   141b430f7:	f3 0f 11 54 16 04                               	movss  DWORD PTR [rsi+rdx*1+0x4],xmm2
+   141b430fd:	f3 0f 11 4c 16 08                               	movss  DWORD PTR [rsi+rdx*1+0x8],xmm1
+   141b43103:	89 44 16 0c                                     	mov    DWORD PTR [rsi+rdx*1+0xc],eax
+   141b43107:	4c 89 6c 16 10                                  	mov    QWORD PTR [rsi+rdx*1+0x10],r13
+   141b4310c:	44 89 44 16 18                                  	mov    DWORD PTR [rsi+rdx*1+0x18],r8d
+   141b43111:	66 89 4c 16 1c                                  	mov    WORD PTR [rsi+rdx*1+0x1c],cx
+   141b43116:	c6 44 16 1e 00                                  	mov    BYTE PTR [rsi+rdx*1+0x1e],0x0
+   141b4311b:	ff c3                                           	inc    ebx
+   141b4311d:	88 1f                                           	mov    BYTE PTR [rdi],bl
+   141b4311f:	e9 cc fe ff ff                                  	jmp    0x141b42ff0
+   141b43124:	49 8b 8f d8 01 00 00                            	mov    rcx,QWORD PTR [r15+0x1d8]
+   141b4312b:	80 b9 60 03 00 00 00                            	cmp    BYTE PTR [rcx+0x360],0x0
+   141b43132:	0f 84 52 01 00 00                               	je     0x141b4328a
+   141b43138:	4c 8d 6f 10                                     	lea    r13,[rdi+0x10]
+   141b4313c:	31 db                                           	xor    ebx,ebx
+   141b4313e:	45 31 f6                                        	xor    r14d,r14d
+   141b43141:	48 89 4c 24 28                                  	mov    QWORD PTR [rsp+0x28],rcx
+   141b43146:	eb 20                                           	jmp    0x141b43168
+   141b43148:	0f 1f 84 00 00 00 00 00                         	nop    DWORD PTR [rax+rax*1+0x0]
+   141b43150:	48 8b 4c 24 28                                  	mov    rcx,QWORD PTR [rsp+0x28]
+   141b43155:	49 ff c6                                        	inc    r14
+   141b43158:	0f b6 81 60 03 00 00                            	movzx  eax,BYTE PTR [rcx+0x360]
+   141b4315f:	49 39 c6                                        	cmp    r14,rax
+   141b43162:	0f 83 24 01 00 00                               	jae    0x141b4328c
+   141b43168:	4a 8b ac f1 08 03 00 00                         	mov    rbp,QWORD PTR [rcx+r14*8+0x308]
+   141b43170:	4c 39 fd                                        	cmp    rbp,r15
+   141b43173:	74 e0                                           	je     0x141b43155
+   141b43175:	4c 89 f9                                        	mov    rcx,r15
+   141b43178:	48 8d 54 24 30                                  	lea    rdx,[rsp+0x30]
+   141b4317d:	49 89 e8                                        	mov    r8,rbp
+   141b43180:	e8 4b da ff ff                                  	call   0x141b40bd0
+   141b43185:	0f 28 85 80 01 00 00                            	movaps xmm0,XMMWORD PTR [rbp+0x180]
+   141b4318c:	0f 28 c8                                        	movaps xmm1,xmm0
+   141b4318f:	41 0f 5c 8f 80 01 00 00                         	subps  xmm1,XMMWORD PTR [r15+0x180]
+   141b43197:	f3 0f 10 15 65 a3 ed 03                         	movss  xmm2,DWORD PTR [rip+0x3eda365]        # 0x145a1d504
+   141b4319f:	0f c6 d2 00                                     	shufps xmm2,xmm2,0x0
+   141b431a3:	0f 59 d1                                        	mulps  xmm2,xmm1
+   141b431a6:	f3 0f 2c f2                                     	cvttss2si esi,xmm2
+   141b431aa:	f3 0f 16 ca                                     	movshdup xmm1,xmm2
+   141b431ae:	f3 0f 2c c9                                     	cvttss2si ecx,xmm1
+   141b431b2:	89 f2                                           	mov    edx,esi
+   141b431b4:	f7 da                                           	neg    edx
+   141b431b6:	0f 48 d6                                        	cmovs  edx,esi
+   141b431b9:	89 c8                                           	mov    eax,ecx
+   141b431bb:	f7 d8                                           	neg    eax
+   141b431bd:	0f 48 c1                                        	cmovs  eax,ecx
+   141b431c0:	81 fa 95 00 00 00                               	cmp    edx,0x95
+   141b431c6:	77 08                                           	ja     0x141b431d0
+   141b431c8:	3d c8 00 00 00                                  	cmp    eax,0xc8
+   141b431cd:	72 30                                           	jb     0x141b431ff
+   141b431cf:	90                                              	nop
+   141b431d0:	89 f0                                           	mov    eax,esi
+   141b431d2:	c1 e8 1f                                        	shr    eax,0x1f
+   141b431d5:	01 c6                                           	add    esi,eax
+   141b431d7:	d1 fe                                           	sar    esi,1
+   141b431d9:	89 c8                                           	mov    eax,ecx
+   141b431db:	c1 e8 1f                                        	shr    eax,0x1f
+   141b431de:	01 c1                                           	add    ecx,eax
+   141b431e0:	d1 f9                                           	sar    ecx,1
+   141b431e2:	89 f2                                           	mov    edx,esi
+   141b431e4:	f7 da                                           	neg    edx
+   141b431e6:	0f 48 d6                                        	cmovs  edx,esi
+   141b431e9:	89 c8                                           	mov    eax,ecx
+   141b431eb:	f7 d8                                           	neg    eax
+   141b431ed:	0f 48 c1                                        	cmovs  eax,ecx
+   141b431f0:	81 fa 95 00 00 00                               	cmp    edx,0x95
+   141b431f6:	77 d8                                           	ja     0x141b431d0
+   141b431f8:	3d c7 00 00 00                                  	cmp    eax,0xc7
+   141b431fd:	77 d1                                           	ja     0x141b431d0
+   141b431ff:	0f b6 1f                                        	movzx  ebx,BYTE PTR [rdi]
+   141b43202:	48 83 fb 0a                                     	cmp    rbx,0xa
+   141b43206:	0f 87 44 ff ff ff                               	ja     0x141b43150
+   141b4320c:	44 8b 44 24 30                                  	mov    r8d,DWORD PTR [rsp+0x30]
+   141b43211:	0f 28 c8                                        	movaps xmm1,xmm0
+   141b43214:	0f c6 c8 ff                                     	shufps xmm1,xmm0,0xff
+   141b43218:	66 0f 7e ca                                     	movd   edx,xmm1
+   141b4321c:	f3 0f 10 8d 88 01 00 00                         	movss  xmm1,DWORD PTR [rbp+0x188]
+   141b43224:	f3 0f 16 d0                                     	movshdup xmm2,xmm0
+   141b43228:	81 c6 96 00 00 00                               	add    esi,0x96
+   141b4322e:	48 63 f6                                        	movsxd rsi,esi
+   141b43231:	48 69 f6 20 03 00 00                            	imul   rsi,rsi,0x320
+   141b43238:	48 03 35 f1 6d 8f 04                            	add    rsi,QWORD PTR [rip+0x48f6df1]        # 0x14643a030
+   141b4323f:	48 63 c9                                        	movsxd rcx,ecx
+   141b43242:	0f b7 8c 4e 90 01 00 00                         	movzx  ecx,WORD PTR [rsi+rcx*2+0x190]
+   141b4324a:	48 89 d8                                        	mov    rax,rbx
+   141b4324d:	48 c1 e0 05                                     	shl    rax,0x5
+   141b43251:	f3 41 0f 11 44 05 00                            	movss  DWORD PTR [r13+rax*1+0x0],xmm0
+   141b43258:	f3 41 0f 11 54 05 04                            	movss  DWORD PTR [r13+rax*1+0x4],xmm2
+   141b4325f:	f3 41 0f 11 4c 05 08                            	movss  DWORD PTR [r13+rax*1+0x8],xmm1
+   141b43266:	41 89 54 05 0c                                  	mov    DWORD PTR [r13+rax*1+0xc],edx
+   141b4326b:	49 89 6c 05 10                                  	mov    QWORD PTR [r13+rax*1+0x10],rbp
+   141b43270:	45 89 44 05 18                                  	mov    DWORD PTR [r13+rax*1+0x18],r8d
+   141b43275:	66 41 89 4c 05 1c                               	mov    WORD PTR [r13+rax*1+0x1c],cx
+   141b4327b:	41 c6 44 05 1e 00                               	mov    BYTE PTR [r13+rax*1+0x1e],0x0
+   141b43281:	ff c3                                           	inc    ebx
+   141b43283:	88 1f                                           	mov    BYTE PTR [rdi],bl
+   141b43285:	e9 c6 fe ff ff                                  	jmp    0x141b43150
+   141b4328a:	31 db                                           	xor    ebx,ebx
+   141b4328c:	48 8d 4f 10                                     	lea    rcx,[rdi+0x10]
+   141b43290:	0f b6 c3                                        	movzx  eax,bl
+   141b43293:	48 c1 e0 05                                     	shl    rax,0x5
+   141b43297:	48 8d 54 07 10                                  	lea    rdx,[rdi+rax*1+0x10]
+   141b4329c:	e8 df fa ff ff                                  	call   0x141b42d80
+   141b432a1:	0f b6 07                                        	movzx  eax,BYTE PTR [rdi]
+   141b432a4:	84 c0                                           	test   al,al
+   141b432a6:	8b 4c 24 3c                                     	mov    ecx,DWORD PTR [rsp+0x3c]
+   141b432aa:	0f 84 21 01 00 00                               	je     0x141b433d1
+   141b432b0:	0f b6 d8                                        	movzx  ebx,al
+   141b432b3:	44 0f b7 f1                                     	movzx  r14d,cx
+   141b432b7:	b8 3c 00 00 00                                  	mov    eax,0x3c
+   141b432bc:	44 29 f0                                        	sub    eax,r14d
+   141b432bf:	0f 57 f6                                        	xorps  xmm6,xmm6
+   141b432c2:	f3 0f 2a f0                                     	cvtsi2ss xmm6,eax
+   141b432c6:	48 83 c7 2c                                     	add    rdi,0x2c
+   141b432ca:	31 ed                                           	xor    ebp,ebp
+   141b432cc:	0f 57 ff                                        	xorps  xmm7,xmm7
+   141b432cf:	f3 44 0f 10 05 60 19 b4 03                      	movss  xmm8,DWORD PTR [rip+0x3b41960]        # 0x145684c38
+   141b432d8:	f3 44 0f 10 0d 1b f7 a3 03                      	movss  xmm9,DWORD PTR [rip+0x3a3f71b]        # 0x1455829fc
+   141b432e1:	eb 1e                                           	jmp    0x141b43301
+   141b432e3:	66 2e 0f 1f 84 00 00 00 00 00                   	cs nop WORD PTR [rax+rax*1+0x0]
+   141b432ed:	0f 1f 00                                        	nop    DWORD PTR [rax]
+   141b432f0:	89 e8                                           	mov    eax,ebp
+   141b432f2:	48 83 c7 20                                     	add    rdi,0x20
+   141b432f6:	89 c5                                           	mov    ebp,eax
+   141b432f8:	48 ff cb                                        	dec    rbx
+   141b432fb:	0f 84 d2 00 00 00                               	je     0x141b433d3
+   141b43301:	f3 0f 10 4f fc                                  	movss  xmm1,DWORD PTR [rdi-0x4]
+   141b43306:	41 0f 2e 0c 24                                  	ucomiss xmm1,DWORD PTR [r12]
+   141b4330b:	0f 87 bc 00 00 00                               	ja     0x141b433cd
+   141b43311:	48 8b 47 f4                                     	mov    rax,QWORD PTR [rdi-0xc]
+   141b43315:	4c 39 f8                                        	cmp    rax,r15
+   141b43318:	74 d6                                           	je     0x141b432f0
+   141b4331a:	49 39 44 24 08                                  	cmp    QWORD PTR [r12+0x8],rax
+   141b4331f:	74 cf                                           	je     0x141b432f0
+   141b43321:	49 39 87 38 11 00 00                            	cmp    QWORD PTR [r15+0x1138],rax
+   141b43328:	75 0d                                           	jne    0x141b43337
+   141b4332a:	49 8b 44 24 10                                  	mov    rax,QWORD PTR [r12+0x10]
+   141b4332f:	48 85 c0                                        	test   rax,rax
+   141b43332:	74 03                                           	je     0x141b43337
+   141b43334:	c6 00 01                                        	mov    BYTE PTR [rax],0x1
+   141b43337:	0f bf 07                                        	movsx  eax,WORD PTR [rdi]
+   141b4333a:	41 0f bf 4c 24 18                               	movsx  ecx,WORD PTR [r12+0x18]
+   141b43340:	29 c1                                           	sub    ecx,eax
+   141b43342:	89 c8                                           	mov    eax,ecx
+   141b43344:	f7 d8                                           	neg    eax
+   141b43346:	0f 48 c1                                        	cmovs  eax,ecx
+   141b43349:	b9 68 01 00 00                                  	mov    ecx,0x168
+   141b4334e:	29 c1                                           	sub    ecx,eax
+   141b43350:	66 39 c1                                        	cmp    cx,ax
+   141b43353:	0f 4d c8                                        	cmovge ecx,eax
+   141b43356:	0f bf f1                                        	movsx  esi,cx
+   141b43359:	b0 01                                           	mov    al,0x1
+   141b4335b:	44 39 f6                                        	cmp    esi,r14d
+   141b4335e:	7e 50                                           	jle    0x141b433b0
+   141b43360:	66 83 f9 3b                                     	cmp    cx,0x3b
+   141b43364:	7f 8a                                           	jg     0x141b432f0
+   141b43366:	f3 0f 10 05 66 a1 ed 03                         	movss  xmm0,DWORD PTR [rip+0x3eda166]        # 0x145a1d4d4
+   141b4336e:	0f 2e c1                                        	ucomiss xmm0,xmm1
+   141b43371:	0f 86 79 ff ff ff                               	jbe    0x141b432f0
+   141b43377:	f3 0f 5c c1                                     	subss  xmm0,xmm1
+   141b4337b:	f3 0f 59 c6                                     	mulss  xmm0,xmm6
+   141b4337f:	f3 0f 59 05 1d a1 ed 03                         	mulss  xmm0,DWORD PTR [rip+0x3eda11d]        # 0x145a1d4a4
+   141b43387:	0f 2e c7                                        	ucomiss xmm0,xmm7
+   141b4338a:	73 0c                                           	jae    0x141b43398
+   141b4338c:	f3 41 0f 58 c0                                  	addss  xmm0,xmm8
+   141b43391:	e8 1a b6 a3 03                                  	call   0x14557e9b0
+   141b43396:	eb 0a                                           	jmp    0x141b433a2
+   141b43398:	f3 41 0f 58 c1                                  	addss  xmm0,xmm9
+   141b4339d:	e8 7e b6 a3 03                                  	call   0x14557ea20
+   141b433a2:	f3 0f 2c c0                                     	cvttss2si eax,xmm0
+   141b433a6:	98                                              	cwde
+   141b433a7:	44 01 f0                                        	add    eax,r14d
+   141b433aa:	39 f0                                           	cmp    eax,esi
+   141b433ac:	0f 9f c0                                        	setg   al
+   141b433af:	90                                              	nop
+   141b433b0:	40 00 e8                                        	add    al,bpl
+   141b433b3:	41 8b 4c 24 04                                  	mov    ecx,DWORD PTR [r12+0x4]
+   141b433b8:	85 c9                                           	test   ecx,ecx
+   141b433ba:	0f 88 32 ff ff ff                               	js     0x141b432f2
+   141b433c0:	0f be d0                                        	movsx  edx,al
+   141b433c3:	39 d1                                           	cmp    ecx,edx
+   141b433c5:	0f 8d 27 ff ff ff                               	jge    0x141b432f2
+   141b433cb:	eb 06                                           	jmp    0x141b433d3
+   141b433cd:	89 e8                                           	mov    eax,ebp
+   141b433cf:	eb 02                                           	jmp    0x141b433d3
+   141b433d1:	31 c0                                           	xor    eax,eax
+   141b433d3:	0f 28 74 24 40                                  	movaps xmm6,XMMWORD PTR [rsp+0x40]
+   141b433d8:	0f 28 7c 24 50                                  	movaps xmm7,XMMWORD PTR [rsp+0x50]
+   141b433dd:	44 0f 28 44 24 60                               	movaps xmm8,XMMWORD PTR [rsp+0x60]
+   141b433e3:	44 0f 28 4c 24 70                               	movaps xmm9,XMMWORD PTR [rsp+0x70]
+   141b433e9:	48 81 c4 88 00 00 00                            	add    rsp,0x88
+   141b433f0:	5b                                              	pop    rbx
+   141b433f1:	5d                                              	pop    rbp
+   141b433f2:	5f                                              	pop    rdi
+   141b433f3:	5e                                              	pop    rsi
+   141b433f4:	41 5c                                           	pop    r12
+   141b433f6:	41 5d                                           	pop    r13
+   141b433f8:	41 5e                                           	pop    r14
+   141b433fa:	41 5f                                           	pop    r15
+   141b433fc:	c3                                              	ret
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000141b42d80 <.sdata+0x1b41d80>:
+   141b42d80:	41 57                                           	push   r15
+   141b42d82:	41 56                                           	push   r14
+   141b42d84:	56                                              	push   rsi
+   141b42d85:	57                                              	push   rdi
+   141b42d86:	55                                              	push   rbp
+   141b42d87:	53                                              	push   rbx
+   141b42d88:	b8 58 10 00 00                                  	mov    eax,0x1058
+   141b42d8d:	e8 ee 5f 9a 03                                  	call   0x1454e8d80
+   141b42d92:	48 29 c4                                        	sub    rsp,rax
+   141b42d95:	0f 29 b4 24 40 10 00 00                         	movaps XMMWORD PTR [rsp+0x1040],xmm6
+   141b42d9d:	49 89 d7                                        	mov    r15,rdx
+   141b42da0:	48 89 cf                                        	mov    rdi,rcx
+   141b42da3:	48 89 d6                                        	mov    rsi,rdx
+   141b42da6:	48 29 ce                                        	sub    rsi,rcx
+   141b42da9:	48 81 fe 1f 04 00 00                            	cmp    rsi,0x41f
+   141b42db0:	0f 8f bc 00 00 00                               	jg     0x141b42e72
+   141b42db6:	4c 39 ff                                        	cmp    rdi,r15
+   141b42db9:	0f 84 64 01 00 00                               	je     0x141b42f23
+   141b42dbf:	48 8d 5f 20                                     	lea    rbx,[rdi+0x20]
+   141b42dc3:	4c 39 fb                                        	cmp    rbx,r15
+   141b42dc6:	0f 84 57 01 00 00                               	je     0x141b42f23
+   141b42dcc:	48 89 de                                        	mov    rsi,rbx
+   141b42dcf:	eb 49                                           	jmp    0x141b42e1a
+   141b42dd1:	66 2e 0f 1f 84 00 00 00 00 00                   	cs nop WORD PTR [rax+rax*1+0x0]
+   141b42ddb:	0f 1f 44 00 00                                  	nop    DWORD PTR [rax+rax*1+0x0]
+   141b42de0:	49 89 f0                                        	mov    r8,rsi
+   141b42de3:	49 29 f8                                        	sub    r8,rdi
+   141b42de6:	48 89 d9                                        	mov    rcx,rbx
+   141b42de9:	48 89 fa                                        	mov    rdx,rdi
+   141b42dec:	e8 3f b9 a3 03                                  	call   0x14557e730
+   141b42df1:	48 89 f8                                        	mov    rax,rdi
+   141b42df4:	48 8b 4c 24 40                                  	mov    rcx,QWORD PTR [rsp+0x40]
+   141b42df9:	48 89 48 10                                     	mov    QWORD PTR [rax+0x10],rcx
+   141b42dfd:	0f 28 44 24 30                                  	movaps xmm0,XMMWORD PTR [rsp+0x30]
+   141b42e02:	0f 29 00                                        	movaps XMMWORD PTR [rax],xmm0
+   141b42e05:	f3 0f 11 70 18                                  	movss  DWORD PTR [rax+0x18],xmm6
+   141b42e0a:	89 68 1c                                        	mov    DWORD PTR [rax+0x1c],ebp
+   141b42e0d:	48 83 c6 20                                     	add    rsi,0x20
+   141b42e11:	4c 39 fe                                        	cmp    rsi,r15
+   141b42e14:	0f 84 09 01 00 00                               	je     0x141b42f23
+   141b42e1a:	48 8b 46 10                                     	mov    rax,QWORD PTR [rsi+0x10]
+   141b42e1e:	48 89 44 24 40                                  	mov    QWORD PTR [rsp+0x40],rax
+   141b42e23:	0f 28 06                                        	movaps xmm0,XMMWORD PTR [rsi]
+   141b42e26:	0f 29 44 24 30                                  	movaps XMMWORD PTR [rsp+0x30],xmm0
+   141b42e2b:	f3 0f 10 76 18                                  	movss  xmm6,DWORD PTR [rsi+0x18]
+   141b42e30:	8b 6e 1c                                        	mov    ebp,DWORD PTR [rsi+0x1c]
+   141b42e33:	f3 0f 10 47 18                                  	movss  xmm0,DWORD PTR [rdi+0x18]
+   141b42e38:	0f 2e c6                                        	ucomiss xmm0,xmm6
+   141b42e3b:	77 a3                                           	ja     0x141b42de0
+   141b42e3d:	f3 0f 10 46 f8                                  	movss  xmm0,DWORD PTR [rsi-0x8]
+   141b42e42:	0f 2e c6                                        	ucomiss xmm0,xmm6
+   141b42e45:	48 89 f1                                        	mov    rcx,rsi
+   141b42e48:	48 89 f0                                        	mov    rax,rsi
+   141b42e4b:	76 a7                                           	jbe    0x141b42df4
+   141b42e4d:	0f 1f 00                                        	nop    DWORD PTR [rax]
+   141b42e50:	48 8d 41 e0                                     	lea    rax,[rcx-0x20]
+   141b42e54:	0f 28 41 f0                                     	movaps xmm0,XMMWORD PTR [rcx-0x10]
+   141b42e58:	0f 29 41 10                                     	movaps XMMWORD PTR [rcx+0x10],xmm0
+   141b42e5c:	0f 28 41 e0                                     	movaps xmm0,XMMWORD PTR [rcx-0x20]
+   141b42e60:	0f 29 01                                        	movaps XMMWORD PTR [rcx],xmm0
+   141b42e63:	f3 0f 10 41 d8                                  	movss  xmm0,DWORD PTR [rcx-0x28]
+   141b42e68:	0f 2e c6                                        	ucomiss xmm0,xmm6
+   141b42e6b:	48 89 c1                                        	mov    rcx,rax
+   141b42e6e:	77 e0                                           	ja     0x141b42e50
+   141b42e70:	eb 82                                           	jmp    0x141b42df4
+   141b42e72:	48 c1 fe 05                                     	sar    rsi,0x5
+   141b42e76:	48 89 f0                                        	mov    rax,rsi
+   141b42e79:	48 d1 e8                                        	shr    rax,1
+   141b42e7c:	48 89 f3                                        	mov    rbx,rsi
+   141b42e7f:	48 29 c3                                        	sub    rbx,rax
+   141b42e82:	48 81 fb 80 00 00 00                            	cmp    rbx,0x80
+   141b42e89:	76 5e                                           	jbe    0x141b42ee9
+   141b42e8b:	48 8d 43 ff                                     	lea    rax,[rbx-0x1]
+   141b42e8f:	48 b9 fe ff ff ff ff ff ff 07                   	movabs rcx,0x7fffffffffffffe
+   141b42e99:	48 39 c8                                        	cmp    rax,rcx
+   141b42e9c:	77 3c                                           	ja     0x141b42eda
+   141b42e9e:	4c 8d 35 08 d7 cf 03                            	lea    r14,[rip+0x3cfd708]        # 0x1458405ad
+   141b42ea5:	66 2e 0f 1f 84 00 00 00 00 00                   	cs nop WORD PTR [rax+rax*1+0x0]
+   141b42eaf:	90                                              	nop
+   141b42eb0:	48 89 d9                                        	mov    rcx,rbx
+   141b42eb3:	48 c1 e1 05                                     	shl    rcx,0x5
+   141b42eb7:	4c 89 f2                                        	mov    rdx,r14
+   141b42eba:	e8 69 eb 9a 03                                  	call   0x1454f1a28
+   141b42ebf:	48 85 c0                                        	test   rax,rax
+   141b42ec2:	75 77                                           	jne    0x141b42f3b
+   141b42ec4:	48 89 d8                                        	mov    rax,rbx
+   141b42ec7:	48 c1 e8 3f                                     	shr    rax,0x3f
+   141b42ecb:	48 01 d8                                        	add    rax,rbx
+   141b42ece:	48 d1 f8                                        	sar    rax,1
+   141b42ed1:	48 83 fb 01                                     	cmp    rbx,0x1
+   141b42ed5:	48 89 c3                                        	mov    rbx,rax
+   141b42ed8:	7f d6                                           	jg     0x141b42eb0
+   141b42eda:	31 c0                                           	xor    eax,eax
+   141b42edc:	48 89 c1                                        	mov    rcx,rax
+   141b42edf:	e8 a4 5b 9a 03                                  	call   0x1454e8a88
+   141b42ee4:	bb 80 00 00 00                                  	mov    ebx,0x80
+   141b42ee9:	48 8d 44 24 40                                  	lea    rax,[rsp+0x40]
+   141b42eee:	48 89 44 24 30                                  	mov    QWORD PTR [rsp+0x30],rax
+   141b42ef3:	48 89 5c 24 38                                  	mov    QWORD PTR [rsp+0x38],rbx
+   141b42ef8:	48 89 5c 24 20                                  	mov    QWORD PTR [rsp+0x20],rbx
+   141b42efd:	48 89 f9                                        	mov    rcx,rdi
+   141b42f00:	4c 89 fa                                        	mov    rdx,r15
+   141b42f03:	49 89 f0                                        	mov    r8,rsi
+   141b42f06:	49 89 c1                                        	mov    r9,rax
+   141b42f09:	e8 52 27 02 00                                  	call   0x141b65660
+   141b42f0e:	48 81 7c 24 38 81 00 00 00                      	cmp    QWORD PTR [rsp+0x38],0x81
+   141b42f17:	72 0a                                           	jb     0x141b42f23
+   141b42f19:	48 8b 4c 24 30                                  	mov    rcx,QWORD PTR [rsp+0x30]
+   141b42f1e:	e8 65 5b 9a 03                                  	call   0x1454e8a88
+   141b42f23:	0f 28 b4 24 40 10 00 00                         	movaps xmm6,XMMWORD PTR [rsp+0x1040]
+   141b42f2b:	48 81 c4 58 10 00 00                            	add    rsp,0x1058
+   141b42f32:	5b                                              	pop    rbx
+   141b42f33:	5d                                              	pop    rbp
+   141b42f34:	5f                                              	pop    rdi
+   141b42f35:	5e                                              	pop    rsi
+   141b42f36:	41 5e                                           	pop    r14
+   141b42f38:	41 5f                                           	pop    r15
+   141b42f3a:	c3                                              	ret
+   141b42f3b:	48 81 fb 80 00 00 00                            	cmp    rbx,0x80
+   141b42f42:	77 aa                                           	ja     0x141b42eee
+   141b42f44:	eb 96                                           	jmp    0x141b42edc
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+000000014557e730 <.sdata+0x557d730>:
+   14557e730:	ff 25 e2 23 7d 00                               	jmp    QWORD PTR [rip+0x7d23e2]        # 0x145d50b18
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443bcfa1 <.sdata+0x43bbfa1>:
+   1443bcfa1:	f3 0f 11 44 24 30                               	movss  DWORD PTR [rsp+0x30],xmm0
+   1443bcfa7:	c7 44 24 34 ff ff ff ff                         	mov    DWORD PTR [rsp+0x34],0xffffffff
+   1443bcfaf:	48 89 4c 24 38                                  	mov    QWORD PTR [rsp+0x38],rcx
+   1443bcfb4:	48 c7 44 24 40 00 00 00 00                      	mov    QWORD PTR [rsp+0x40],0x0
+   1443bcfbd:	66 89 44 24 48                                  	mov    WORD PTR [rsp+0x48],ax
+   1443bcfc2:	66 c7 44 24 4a 2d 00                            	mov    WORD PTR [rsp+0x4a],0x2d
+   1443bcfc9:	c6 44 24 4c 02                                  	mov    BYTE PTR [rsp+0x4c],0x2
+   1443bcfce:	49 8d 95 40 0c 00 00                            	lea    rdx,[r13+0xc40]
+   1443bcfd5:	4c 8d 44 24 30                                  	lea    r8,[rsp+0x30]
+   1443bcfda:	4c 89 e9                                        	mov    rcx,r13
+   1443bcfdd:	e8 6e 5f 78 fd                                  	call   0x141b42f50
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443bd814 <.sdata+0x43bc814>:
+   1443bd814:	f3 0f 11 7c 24 30                               	movss  DWORD PTR [rsp+0x30],xmm7
+   1443bd81a:	c7 44 24 34 ff ff ff ff                         	mov    DWORD PTR [rsp+0x34],0xffffffff
+   1443bd822:	48 89 44 24 38                                  	mov    QWORD PTR [rsp+0x38],rax
+   1443bd827:	48 c7 44 24 40 00 00 00 00                      	mov    QWORD PTR [rsp+0x40],0x0
+   1443bd830:	66 44 89 4c 24 48                               	mov    WORD PTR [rsp+0x48],r9w
+   1443bd836:	66 c7 44 24 4a ff ff                            	mov    WORD PTR [rsp+0x4a],0xffff
+   1443bd83d:	c6 44 24 4c 02                                  	mov    BYTE PTR [rsp+0x4c],0x2
+   1443bd842:	49 8d 9d 40 0c 00 00                            	lea    rbx,[r13+0xc40]
+   1443bd849:	4c 8d 44 24 30                                  	lea    r8,[rsp+0x30]
+   1443bd84e:	4c 89 e9                                        	mov    rcx,r13
+   1443bd851:	48 89 da                                        	mov    rdx,rbx
+   1443bd854:	e8 f7 56 78 fd                                  	call   0x141b42f50
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443bd886 <.sdata+0x43bc886>:
+   1443bd886:	f3 0f 11 7c 24 30                               	movss  DWORD PTR [rsp+0x30],xmm7
+   1443bd88c:	c7 44 24 34 ff ff ff ff                         	mov    DWORD PTR [rsp+0x34],0xffffffff
+   1443bd894:	48 89 44 24 38                                  	mov    QWORD PTR [rsp+0x38],rax
+   1443bd899:	48 c7 44 24 40 00 00 00 00                      	mov    QWORD PTR [rsp+0x40],0x0
+   1443bd8a2:	66 89 6c 24 48                                  	mov    WORD PTR [rsp+0x48],bp
+   1443bd8a7:	66 c7 44 24 4a ff ff                            	mov    WORD PTR [rsp+0x4a],0xffff
+   1443bd8ae:	c6 44 24 4c 02                                  	mov    BYTE PTR [rsp+0x4c],0x2
+   1443bd8b3:	4c 8d 44 24 30                                  	lea    r8,[rsp+0x30]
+   1443bd8b8:	4c 89 e9                                        	mov    rcx,r13
+   1443bd8bb:	48 89 da                                        	mov    rdx,rbx
+   1443bd8be:	e8 8d 56 78 fd                                  	call   0x141b42f50
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443bd8f2 <.sdata+0x43bc8f2>:
+   1443bd8f2:	f3 0f 11 7c 24 30                               	movss  DWORD PTR [rsp+0x30],xmm7
+   1443bd8f8:	c7 44 24 34 ff ff ff ff                         	mov    DWORD PTR [rsp+0x34],0xffffffff
+   1443bd900:	48 89 44 24 38                                  	mov    QWORD PTR [rsp+0x38],rax
+   1443bd905:	48 c7 44 24 40 00 00 00 00                      	mov    QWORD PTR [rsp+0x40],0x0
+   1443bd90e:	66 89 4c 24 48                                  	mov    WORD PTR [rsp+0x48],cx
+   1443bd913:	66 c7 44 24 4a ff ff                            	mov    WORD PTR [rsp+0x4a],0xffff
+   1443bd91a:	c6 44 24 4c 02                                  	mov    BYTE PTR [rsp+0x4c],0x2
+   1443bd91f:	4c 8d 44 24 30                                  	lea    r8,[rsp+0x30]
+   1443bd924:	4c 89 e9                                        	mov    rcx,r13
+   1443bd927:	48 89 da                                        	mov    rdx,rbx
+   1443bd92a:	e8 21 56 78 fd                                  	call   0x141b42f50
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443bd96d <.sdata+0x43bc96d>:
+   1443bd96d:	f3 0f 10 05 2f fb 65 01                         	movss  xmm0,DWORD PTR [rip+0x165fb2f]        # 0x145a1d4a4
+   1443bd975:	f3 0f 59 c7                                     	mulss  xmm0,xmm7
+   1443bd979:	f3 0f 11 44 24 30                               	movss  DWORD PTR [rsp+0x30],xmm0
+   1443bd97f:	c7 44 24 34 ff ff ff ff                         	mov    DWORD PTR [rsp+0x34],0xffffffff
+   1443bd987:	48 89 44 24 38                                  	mov    QWORD PTR [rsp+0x38],rax
+   1443bd98c:	48 c7 44 24 40 00 00 00 00                      	mov    QWORD PTR [rsp+0x40],0x0
+   1443bd995:	8b 84 24 8c 00 00 00                            	mov    eax,DWORD PTR [rsp+0x8c]
+   1443bd99c:	66 89 44 24 48                                  	mov    WORD PTR [rsp+0x48],ax
+   1443bd9a1:	66 c7 44 24 4a ff ff                            	mov    WORD PTR [rsp+0x4a],0xffff
+   1443bd9a8:	c6 44 24 4c 02                                  	mov    BYTE PTR [rsp+0x4c],0x2
+   1443bd9ad:	4c 8d 44 24 30                                  	lea    r8,[rsp+0x30]
+   1443bd9b2:	4c 89 e9                                        	mov    rcx,r13
+   1443bd9b5:	48 89 da                                        	mov    rdx,rbx
+   1443bd9b8:	e8 93 55 78 fd                                  	call   0x141b42f50
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443bd9e1 <.sdata+0x43bc9e1>:
+   1443bd9e1:	f3 0f 10 05 bb fa 65 01                         	movss  xmm0,DWORD PTR [rip+0x165fabb]        # 0x145a1d4a4
+   1443bd9e9:	f3 0f 59 c7                                     	mulss  xmm0,xmm7
+   1443bd9ed:	f3 0f 11 44 24 30                               	movss  DWORD PTR [rsp+0x30],xmm0
+   1443bd9f3:	c7 44 24 34 ff ff ff ff                         	mov    DWORD PTR [rsp+0x34],0xffffffff
+   1443bd9fb:	48 89 44 24 38                                  	mov    QWORD PTR [rsp+0x38],rax
+   1443bda00:	48 c7 44 24 40 00 00 00 00                      	mov    QWORD PTR [rsp+0x40],0x0
+   1443bda09:	8b 84 24 80 00 00 00                            	mov    eax,DWORD PTR [rsp+0x80]
+   1443bda10:	66 89 44 24 48                                  	mov    WORD PTR [rsp+0x48],ax
+   1443bda15:	66 c7 44 24 4a ff ff                            	mov    WORD PTR [rsp+0x4a],0xffff
+   1443bda1c:	c6 44 24 4c 02                                  	mov    BYTE PTR [rsp+0x4c],0x2
+   1443bda21:	4c 8d 44 24 30                                  	lea    r8,[rsp+0x30]
+   1443bda26:	4c 89 e9                                        	mov    rcx,r13
+   1443bda29:	48 89 9c 24 80 00 00 00                         	mov    QWORD PTR [rsp+0x80],rbx
+   1443bda31:	48 89 da                                        	mov    rdx,rbx
+   1443bda34:	e8 17 55 78 fd                                  	call   0x141b42f50
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443bdf25 <.sdata+0x43bcf25>:
+   1443bdf25:	f3 0f 11 44 24 30                               	movss  DWORD PTR [rsp+0x30],xmm0
+   1443bdf2b:	c7 44 24 34 ff ff ff ff                         	mov    DWORD PTR [rsp+0x34],0xffffffff
+   1443bdf33:	48 89 44 24 38                                  	mov    QWORD PTR [rsp+0x38],rax
+   1443bdf38:	48 c7 44 24 40 00 00 00 00                      	mov    QWORD PTR [rsp+0x40],0x0
+   1443bdf41:	66 89 4c 24 48                                  	mov    WORD PTR [rsp+0x48],cx
+   1443bdf46:	66 c7 44 24 4a 1e 00                            	mov    WORD PTR [rsp+0x4a],0x1e
+   1443bdf4d:	c6 44 24 4c 02                                  	mov    BYTE PTR [rsp+0x4c],0x2
+   1443bdf52:	4c 8d 44 24 30                                  	lea    r8,[rsp+0x30]
+   1443bdf57:	4c 89 e9                                        	mov    rcx,r13
+   1443bdf5a:	48 8b 94 24 80 00 00 00                         	mov    rdx,QWORD PTR [rsp+0x80]
+   1443bdf62:	e8 e9 4f 78 fd                                  	call   0x141b42f50
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443be276 <.sdata+0x43bd276>:
+   1443be276:	f3 0f 11 7c 24 30                               	movss  DWORD PTR [rsp+0x30],xmm7
+   1443be27c:	c7 44 24 34 ff ff ff ff                         	mov    DWORD PTR [rsp+0x34],0xffffffff
+   1443be284:	48 89 4c 24 38                                  	mov    QWORD PTR [rsp+0x38],rcx
+   1443be289:	48 c7 44 24 40 00 00 00 00                      	mov    QWORD PTR [rsp+0x40],0x0
+   1443be292:	66 89 44 24 48                                  	mov    WORD PTR [rsp+0x48],ax
+   1443be297:	66 c7 44 24 4a ff ff                            	mov    WORD PTR [rsp+0x4a],0xffff
+   1443be29e:	c6 44 24 4c 02                                  	mov    BYTE PTR [rsp+0x4c],0x2
+   1443be2a3:	4c 8d 44 24 30                                  	lea    r8,[rsp+0x30]
+   1443be2a8:	4c 89 e9                                        	mov    rcx,r13
+   1443be2ab:	48 8b 94 24 80 00 00 00                         	mov    rdx,QWORD PTR [rsp+0x80]
+   1443be2b3:	e8 98 4c 78 fd                                  	call   0x141b42f50
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001443be3a3 <.sdata+0x43bd3a3>:
+   1443be3a3:	f3 0f 11 7c 24 30                               	movss  DWORD PTR [rsp+0x30],xmm7
+   1443be3a9:	c7 44 24 34 ff ff ff ff                         	mov    DWORD PTR [rsp+0x34],0xffffffff
+   1443be3b1:	48 89 4c 24 38                                  	mov    QWORD PTR [rsp+0x38],rcx
+   1443be3b6:	48 c7 44 24 40 00 00 00 00                      	mov    QWORD PTR [rsp+0x40],0x0
+   1443be3bf:	66 89 44 24 48                                  	mov    WORD PTR [rsp+0x48],ax
+   1443be3c4:	66 c7 44 24 4a ff ff                            	mov    WORD PTR [rsp+0x4a],0xffff
+   1443be3cb:	c6 44 24 4c 02                                  	mov    BYTE PTR [rsp+0x4c],0x2
+   1443be3d0:	4c 8d 44 24 30                                  	lea    r8,[rsp+0x30]
+   1443be3d5:	4c 89 e9                                        	mov    rcx,r13
+   1443be3d8:	48 8b 94 24 80 00 00 00                         	mov    rdx,QWORD PTR [rsp+0x80]
+   1443be3e0:	e8 6b 4b 78 fd                                  	call   0x141b42f50

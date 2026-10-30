@@ -135,6 +135,20 @@ def inspect(exe: Path):
     history_90[0x1443BD33A] = [0x1443BD4A5]  # uint32(0x90-0x48)>8。
     if 0x1443BD38B in walk([cache_entry], history_90):
         raise ValueError("Ball query still reachable under history 0x90 branches")
+    record_bindings = {
+        0x1443BD842: (0x1443BD854, 0x1443BD8BE, 0x1443BD92A,
+                       0x1443BD9B8, 0x1443BDA34),
+        0x1443BDA29: (0x1443BDF62, 0x1443BE2B3, 0x1443BE3E0),
+    }
+    for address, instruction in {
+        0x1443BD842: "lea rbx,[r13+0xc40]",
+        0x1443BDA29: "mov QWORD PTR [rsp+0x80],rbx",
+    }.items():
+        if re.sub(r"\s+", " ", cache_rows[address][1]) != instruction:
+            raise ValueError(f"Record container binding differs at {address:#x}")
+    for binding, sites in record_bindings.items():
+        if set(sites) & walk([cache_entry], cache_graph, {binding}):
+            raise ValueError(f"Record query can bypass binding at {binding:#x}")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -149,6 +163,10 @@ def inspect(exe: Path):
             "caller_second_call_skipped_on_normal_return_with_same_player_storage": True,
             "ball_query_call": "0x1443bd38b",
             "ball_query_unreachable_if_history_90_at_0x1443bd325": True,
+            "record_query_calls_require_prior_binding_points": {
+                hex(binding): [hex(site) for site in sites]
+                for binding, sites in record_bindings.items()
+            },
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",
