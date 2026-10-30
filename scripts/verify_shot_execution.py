@@ -1119,6 +1119,17 @@ def verify(exe: Path) -> None:
     }.items():
         check(instructions.get(address) == expected, f"Trial body formula/counter {address:x}")
 
+    # 采样端点与高度反馈，不能以标准线段插值代替原指令。
+    for address, expected in {
+        0x145304C42: "xorps xmm13,xmm13",
+        0x145304C64: "subss xmm13,xmm3",
+        0x145304C69: "divss xmm13,xmm2",
+        0x145304F16: "subss xmm12,xmm13",
+        0x145304F20: "movss DWORD PTR [r14+0x4],xmm12",
+        0x145304850: "addss xmm1,xmm0",
+    }.items():
+        check(instructions.get(address) == expected, f"Mode2 sample/height feedback {address:x}")
+
     # 源对象到scratch的关键绑定；身份及跨时间保持仍由报告限定。
     for address, expected in {
         0x1443E86D3: "lea rcx,[r15+0x1040]",

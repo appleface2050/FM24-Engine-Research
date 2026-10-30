@@ -270,6 +270,114 @@ def inspect_residual_preservation(exe):
                          'other force cold-initialization paths and mode0/1 full physics loop']}
 
 
+def inspect_mode2_sampling(exe):
+    """恢复有限输入下的采样/高度误差，保留原比例而非标准线段交点。"""
+    rows, graph = decode_graph(exe, 0x1453049D0, 0x145304F89)
+    expected = {
+        0x145304A2F: 'mov r15,r9', 0x145304A32: 'mov r12,r8',
+        0x145304B08: 'movaps xmm6,XMMWORD PTR [rsi+0x1a0b0]',
+        0x145304B69: 'movaps xmm0,xmm7',
+        0x145304B6C: 'shufps xmm0,xmm6,0x23',
+        0x145304B70: 'movaps xmm7,xmm6',
+        0x145304B73: 'shufps xmm7,xmm0,0x24',
+        0x145304C33: 'movaps xmm6,xmm0',
+        0x145304BF3: 'movaps xmm1,XMMWORD PTR [r12]',
+        0x145304BFB: 'subps xmm3,xmm1',
+        0x145304C0C: 'jae 0x145304c48', 0x145304C20: 'ja 0x145304c80',
+        0x145304C3C: 'jb 0x145304b30',
+        0x145304C42: 'xorps xmm13,xmm13', 0x145304C46: 'jmp 0x145304ca3',
+        0x145304C48: 'sqrtss xmm13,xmm13',
+        0x145304C4D: 'mulps xmm6,xmm6', 0x145304C54: 'addss xmm3,xmm6',
+        0x145304C58: 'sqrtss xmm3,xmm3', 0x145304C5C: 'sqrtss xmm2,xmm2',
+        0x145304C60: 'subss xmm2,xmm3', 0x145304C64: 'subss xmm13,xmm3',
+        0x145304C69: 'divss xmm13,xmm2', 0x145304C6E: 'subps xmm0,xmm7',
+        0x145304C76: 'mulps xmm13,xmm0', 0x145304C7A: 'addps xmm13,xmm7',
+        0x145304C86: 'subss xmm4,xmm3', 0x145304C8A: 'subss xmm6,xmm2',
+        0x145304C8E: 'divss xmm6,xmm4', 0x145304C99: 'mulps xmm6,xmm0',
+        0x145304C9C: 'addps xmm6,xmm7',
+        0x145304DAF: 'movss xmm12,DWORD PTR [r15+0x8]',
+        0x145304F12: 'movhlps xmm13,xmm13',
+        0x145304F16: 'subss xmm12,xmm13',
+        0x145304F20: 'movss DWORD PTR [r14+0x4],xmm12',
+    }
+    for site, ins in expected.items():
+        if normalize(rows[site][1]) != ins:
+            raise ValueError('Mode2 native sample or height-error producer differs')
+    for start in (0x145304C42, 0x145304C48, 0x145304C80):
+        reached = walk([start], graph, {0x145304CA3})
+        if any(rows[a][1].startswith('call') for a in reached):
+            raise ValueError('Sample branch has an unaccounted helper')
+        if 0x145304CA3 not in {b for a in reached for b in graph[a]}:
+            raise ValueError('Sample branch does not reach common error suffix')
+    def f(x):
+        return struct.unpack('<f', struct.pack('<f', x))[0]
+    def length2(x, y):
+        return f(math.sqrt(f(f(x*x) + f(y*y))))
+    def sample(p, target, previous, current, radius, counter):
+        dx, dy = f(target[0]-p[0]), f(target[1]-p[1])
+        bx, by = f(current[0]-p[0]), f(current[1]-p[1])
+        target_sq, current_sq = f(f(dx*dx)+f(dy*dy)), f(f(bx*bx)+f(by*by))
+        ratio = None
+        if current_sq >= target_sq:
+            a = length2(previous[0], previous[1])  # 原代码使用前一位置的绝对XY。
+            ratio = f(f(f(math.sqrt(target_sq))-a)/f(f(math.sqrt(current_sq))-a))
+            kind = 'distance'
+        elif radius > current[2]:
+            ratio = f(f(previous[2]-radius)/f(previous[2]-current[2]))
+            kind = 'ground'
+        elif counter >= 360:
+            kind = 'budget'
+        else:
+            raise ValueError('Local sample example has not exited')
+        point = [0., 0., 0.] if ratio is None else [
+            f(previous[i]+f(ratio*f(current[i]-previous[i]))) for i in range(3)]
+        return {'branch': kind, 'ratio': ratio, 'sample': point,
+                'height_error': f(target[2]-point[2])}
+    examples = []
+    for case in (
+        {'origin': [4.,0.,1.], 'target': [6.,0.,2.], 'previous': [5.,0.,1.],
+         'current': [7.,0.,3.], 'radius': .5, 'counter': 1},
+        {'origin': [0.,0.,1.], 'target': [0.,10.,1.], 'previous': [0.,1.,1.],
+         'current': [0.,2.,0.], 'radius': .5, 'counter': 1},
+        {'origin': [0.,0.,1.], 'target': [0.,1000.,2.], 'previous': [0.,1.,1.],
+         'current': [0.,2.,1.], 'radius': .5, 'counter': 360},
+    ):
+        result = sample(case['origin'], case['target'], case['previous'], case['current'],
+                        case['radius'], case['counter'])
+        examples.append({'input': case, 'output': result})
+    if [e['output']['sample'] for e in examples] != [[8.,0.,4.], [0.,1.5,.5], [0.,0.,0.]]:
+        raise ValueError('Hand-checkable native sample arithmetic differs')
+    outer_rows, _ = decode_graph(exe, 0x145304400, 0x1453049C4)
+    correction = {0x145304801: 'mov esi,DWORD PTR [rsp+0x44]',
+                  0x14530483B: 'movd xmm0,esi',
+                  0x14530483F: 'mulss xmm0,DWORD PTR [rip+0x1137bd9] # 0x14643c420',
+                  0x14530484B: 'unpckhpd xmm1,xmm15',
+                  0x145304850: 'addss xmm1,xmm0',
+                  0x145304859: 'shufps xmm15,xmm1,0x84',
+                  0x14530485E: 'movaps xmm0,xmm15',
+                  0x145304862: 'subps xmm0,XMMWORD PTR [rdi]',
+                  0x14530489F: 'shufps xmm6,xmm2,0x84',
+                  0x1453048A7: 'mulps xmm0,xmm6',
+                  0x1453048AA: 'movlps QWORD PTR [r13+0x0],xmm0',
+                  0x14530493D: 'mov DWORD PTR [rip+0x1137ad9],0x3f666666 # 0x14643c420'}
+    for site, ins in correction.items():
+        if normalize(outer_rows[site][1]) != ins:
+            raise ValueError('Mode2 height feedback producer differs')
+    feedback_example = f(f(1.5) + f(f(.5)*f(.9)))
+    return {'evidence_type': 'manual_register_dataflow_and_float32_local_transcription_not_execution',
+            'checked_instructions': {hex(a): ins for a, ins in expected.items()},
+            'height_feedback_instructions': {hex(a): ins for a, ins in correction.items()},
+            'height_feedback': 'if abs(height error) exceeds current threshold and correction budget remains: temporary aim.z += error * current[14643c420], then velocity=scale*normalize(aim-origin)',
+            'height_feedback_example': {'temporary_aim_z': 1.5, 'error': .5, 'assumed_gain': f(.9), 'new_aim_z': feedback_example, 'scope': 'local formula, not current natural coefficient/target'},
+            'exit_priority': ['distance', 'ground', 'budget'],
+            'distance_ratio': '(sqrt(target_relative_xy_sq)-length(previous_absolute_xy))/(sqrt(current_relative_xy_sq)-length(previous_absolute_xy))',
+            'ground_ratio': '(previous_z-radius)/(previous_z-current_z)',
+            'sample': 'previous+ratio*(current-previous); budget-only exit uses zero vector',
+            'height_error': 'original target.z - sample.z; actual second error float',
+            'examples': examples,
+            'limits': 'finite local snapshots with nonzero interpolation denominators, not same natural trajectory; angle residual/final output still unproved'}
+
+
 def inspect(exe):
     """复核模式分派、数值体清单和局部公式；完整试算输出仍未证明。"""
     data = exe.read_bytes()
@@ -362,7 +470,7 @@ def inspect(exe):
     constants = {hex(a): struct.unpack_from('<f', data, offset(a))[0]
                  for a in (0x145A1D4A4, 0x145A1D4B0, 0x145A1D48C, 0x145A1D4EC, 0x145A1D4C4, 0x145A1D468)}
     trials = inspect_trial_bodies(exe, data, offset)
-    return {'residual_preservation': inspect_residual_preservation(exe), 'scratch_producer': inspect_scratch_producer(exe), 'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
+    return {'mode2_sampling': inspect_mode2_sampling(exe), 'residual_preservation': inspect_residual_preservation(exe), 'scratch_producer': inspect_scratch_producer(exe), 'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
             'conditions': ['same actual3f and updated target/scale/spin; source origin=C540, Z=1; mode input in{0,1,2,4}',
                            'M6a0>23; control B+d10 is same M; independent valid argument/output storage',
                            'finite derived distances/scalars; first thread-static initialization gate already satisfied at1443f3031; valid TLS and data reads',
@@ -380,5 +488,5 @@ if __name__ == '__main__':
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     args.output.write_text(json.dumps(inspect(args.exe), ensure_ascii=False, indent=2) + '\n')
-    print('PASS: effective-mode partitions/conditional suffixes; trial-body call inventories; outer budget cuts; actual conditional integration counters, local seed arithmetic fresh scratch source/copy cuts, prepared force write domains and residual cycle cuts.')
+    print('PASS: effective-mode partitions/conditional suffixes; trial-body call inventories; outer budget cuts; actual conditional integration counters, local seed arithmetic fresh scratch source/copy cuts, prepared force write domains, residual cycle cuts and mode2 sample/height feedback.')
     print('Conditional static evidence only; complete trial outputs and shot-to-goal mechanism remain unproved.')
