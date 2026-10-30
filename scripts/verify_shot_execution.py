@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261030_goal_shot_trial_bodies_static.txt",
     "20261030_goal_shot_solver_mode_dispatch_static.txt",
     "20261030_goal_shot_common_helpers_static.txt",
     "20261030_goal_selected_shot_target_static.txt",
@@ -1092,6 +1093,30 @@ def verify(exe: Path) -> None:
     }.items():
         check(instructions.get(address) == expected, f"Solver mode/argument/output {address:x}")
 
+    # 数值体中的真实预算/有条件计数及初始弹道补偿；不将计数器等同总终止证明。
+    trials = solver_modes["trial_bodies"]
+    check(list(struct.unpack_from("<4f", data, offset(0x145D2F2E0)))
+          == trials["integration_coefficients"], "Trial integration position coefficients")
+    check(struct.unpack_from("<f", data, offset(0x145684C38))[0]
+          == trials["mode2_seed_example"]["negative_half_constant"], "Trial gravity compensation factor")
+    for address, expected in {
+        0x145304650: "mov ebp,0x4", 0x1453046D7: "dec ebp",
+        0x1453034C6: "mov r13d,0x4", 0x14530356C: "dec r13d",
+        0x145304C29: "cmp BYTE PTR [rax+0xd0],0x1",
+        0x145304C30: "sbb ebx,0xffffffff", 0x145304C36: "cmp ebx,0x168",
+        0x145303F97: "cmp BYTE PTR [rax+0xd0],0x1",
+        0x145303F9E: "sbb ebx,0xffffffff", 0x145303FA8: "cmp ebx,0x168",
+        0x14530451A: "divss xmm0,xmm1",
+        0x14530451E: "movss xmm1,DWORD PTR [rip+0x1135f92] # 0x14643a4b8",
+        0x145304526: "mulss xmm1,xmm0", 0x14530452A: "mulss xmm1,xmm0",
+        0x145304543: "addps xmm15,XMMWORD PTR [r8]",
+        0x145304A54: "lea rdi,[rsi+0x1a0b0]",
+        0x145304BDF: "movaps XMMWORD PTR [rsi+0x1a0b0],xmm0",
+        0x145304BEC: "movaps XMMWORD PTR [rsi+0x1a0c0],xmm1",
+        0x1418F81CB: "mov rax,rcx",
+    }.items():
+        check(instructions.get(address) == expected, f"Trial body formula/counter {address:x}")
+
     # 独立核对模型跳表快照和真正的调用者标志读写；不把本地图升级为副作用证明。
     model_paths = json.loads((ROOT / "20261030_candidate_model_paths.json").read_text())
     for table in model_paths["tables"]:
@@ -1288,7 +1313,9 @@ def verify(exe: Path) -> None:
                 or 0x14442D9D0 <= address < 0x14442DD43
                 or 0x14444B7B0 <= address < 0x14444CE29
                 or 0x14442DD43 <= address < 0x14442DE9B
-                or 0x1443F2EF0 <= address < 0x1443F48EF):
+                or 0x1443F2EF0 <= address < 0x1443F48EF
+                or 0x145303160 <= address < 0x1453054FE
+                or 0x1418F81A0 <= address < 0x1418F83F5):
             continue
         match = re.fullmatch(r"call 0x([0-9a-f]+)", instruction)
         if match:
