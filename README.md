@@ -223,3 +223,5 @@ mkdir -p /tmp/fm24-ghidra
 `python scripts/inspect_shot_target_paths.py --exe <路径> --output <JSON路径>` 覆盖已选3f的两套完整目标准备及近距公共插值，记录为 `20261030_shot_target_paths.json`。条件边界已到14442dd43、第一个公共辅助调用之前；保留旧属性分流、目标高度/旋转/速度尺度变化。当前距离1.5必经X/Y插值，不能套距离9的目标保持算例；C570非零及其来源保持等条件仍需成立，完整自然进球未完成。
 
 `python scripts/inspect_shot_common_helpers.py --exe <路径> --output <JSON路径>` 检查实际3f的三个公共辅助函数、非NULL方向输出、速度叶跳板及写域、旋转截断和调用者顺序。记录 `20261030_shot_common_helpers.json` 的条件边界为14442dde0：bit0仍0，允许新增bit49、目标X改写和模式变2/4；属性读取使用更新后的P+e30。保留固定全局WORD写和自然输入/完整进球缺口。
+
+`python scripts/inspect_shot_solver_modes.py --exe <路径> --output <JSON路径>` 核对实际3f求解实参与有效模式分区，记录 `20261030_shot_solver_modes.json`。在原起点Z=1、现代版本及第一TLS初始化检查已满足等条件下，模式0/1、2、4分别接三类首次试算。试算正常返回后的外层后缀无第二次试算，模式4仍可缩放速度；三套试算本体/数值输出、初始化自然来源和完整进球均未证明。
