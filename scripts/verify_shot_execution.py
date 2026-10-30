@@ -140,6 +140,7 @@ EVIDENCE = (
     "20261029_goal_shot_model_empty_subject_static.txt",
     "20261030_goal_preparation_cache_return_static.txt",
     "20261030_goal_cache_ball_query_static.txt",
+    "20261030_goal_cache_pair_geometry_writes_static.txt",
 )
 
 
@@ -906,6 +907,7 @@ def verify(exe: Path) -> None:
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
     calls = {
+        0x141B40C9E: 0x141B465F0,
         0x1443BD38B: 0x1443EE610,
         0x1443EE6B0: 0x1443EA8F0,
         0x1443BE252: 0x1443F7D90,
