@@ -144,6 +144,7 @@ EVIDENCE = (
     "20261030_goal_cache_candidate_query_writes_static.txt",
     "20261030_goal_cache_position_query_static.txt",
     "20261030_goal_cache_bracketing_query_static.txt",
+    "20261030_goal_cache_reset_state_gates_static.txt",
 )
 
 
@@ -188,6 +189,11 @@ def verify(exe: Path) -> None:
     check(struct.unpack_from("<f", data, offset(0x145816548))[0] == -240.0
           and struct.unpack_from("<f", data, offset(0x1456B0CD8))[0] == 240.0,
           "Bracketing query fallback time offsets")
+    for address, value in ((0x145A1D454, -1000.0), (0x145A1D594, 999999.0),
+                           (0x145A1D4C8, 0.10000000149011612),
+                           (0x145A1D4D0, 0.05000000074505806), (0x145A1D570, 100.0)):
+        check(struct.unpack_from("<f", data, offset(address))[0] == value,
+              f"Reset/position scalar constant {address:x}")
     check(struct.unpack_from("<f", data, offset(0x145A1D53C))[0] == 30.0,
           "Team geometry comparison constant")
     check(struct.unpack_from("<f", data, offset(0x145A1D4EC))[0] == 5.0,
@@ -921,6 +927,15 @@ def verify(exe: Path) -> None:
           and instructions.get(0x141B43202) == "cmp rbx,0xa",
           "Cache query append count limit")
     for address, expected in {
+        0x1443B6228: "je 0x1443b624f",
+        0x1443B6500: "je 0x1443b652f",
+        0x1443B63D0: "jne 0x1443b6698",
+        0x1443B600C: "lea rcx,[rsi+0x11b8]",
+        0x1443E97F7: "mov BYTE PTR [rax+0x85],0x1",
+        0x1443E991E: "mov DWORD PTR [rdi+0xd62],0x10001",
+        0x1443E992E: "mov DWORD PTR [rdi+0xd2c],ecx",
+        0x1443C39DB: "je 0x1443c3a45",
+        0x1443ECBD6: "je 0x1443ecbe8",
         0x141B46841: "je 0x141b46998",
         0x141B4699F: "je 0x141b46a82",
         0x141B46A82: "xor eax,eax",
@@ -942,6 +957,14 @@ def verify(exe: Path) -> None:
           "Cache short sort uses the recorded memmove import")
 
     calls = {
+        0x1443B5378: 0x1443B61F0,
+        0x1443B603B: 0x1443B6160,
+        0x1443B6241: 0x1443EA8F0,
+        0x1443B6521: 0x1443EA8F0,
+        0x1443B6361: 0x1443ECA50,
+        0x1443B6398: 0x1443EE610,
+        0x1443ECC33: 0x1443EA8F0,
+        0x1443C3A5A: 0x1443E9420,
         0x1443EFBF8: 0x1443EA8F0,
         0x141B46BCC: 0x141B41670,
         0x141B46C95: 0x141B41670,
@@ -1141,6 +1164,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x1443B6160: 0x159F102E0,
         0x1418FDF30: 0x150DF5F90,
         0x145305640: 0x15C605DC0,
         0x141A92E20: 0x151AECCB0,

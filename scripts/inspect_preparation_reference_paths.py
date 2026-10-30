@@ -149,6 +149,25 @@ def inspect(exe: Path):
     for binding, sites in record_bindings.items():
         if set(sites) & walk([cache_entry], cache_graph, {binding}):
             raise ValueError(f"Record query can bypass binding at {binding:#x}")
+    position_rows, position_graph = decode_graph(exe, 0x1443B61F0, 0x1443B6881)
+    position_conditions = {
+        0x1443B6228: ("je 0x1443b624f", 0x1443B624F),
+        0x1443B6500: ("je 0x1443b652f", 0x1443B652F),
+        0x1443B63D0: ("jne 0x1443b6698", 0x1443B63D6),
+    }
+    selected_position_graph = dict(position_graph)
+    for address, (instruction, successor) in position_conditions.items():
+        if re.sub(r"\s+", " ", position_rows[address][1]) != instruction:
+            raise ValueError(f"Position-state gate differs at {address:#x}")
+        selected_position_graph[address] = [successor]
+    selected_position = walk([0x1443B61F0], selected_position_graph)
+    selected_calls = [
+        {"site": hex(address), "instruction": position_rows[address][1]}
+        for address in sorted(selected_position)
+        if position_rows[address][1].startswith("call")
+    ]
+    if {int(call["site"], 16) for call in selected_calls} != {0x1443B6361, 0x1443B6398}:
+        raise ValueError("Additional position helper remains reachable under selected gates")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -167,6 +186,13 @@ def inspect(exe: Path):
                 hex(binding): [hex(site) for site in sites]
                 for binding, sites in record_bindings.items()
             },
+        },
+        "position_judgment": {
+            "entry": "0x1443b61f0",
+            "decoded_instructions": len(position_rows),
+            "conditions_at_reads": ["B+d63=0 at both loops", "P+16f8 bit0=0"],
+            "reachable_calls": selected_calls,
+            "limits": "Local branches only; callee effects, reset-to-query state retention and natural inputs remain conditional.",
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",
