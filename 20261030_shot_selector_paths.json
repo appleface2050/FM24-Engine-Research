@@ -1,0 +1,262 @@
+{
+  "evidence_type": "original_PE_conditional_CFG_not_execution",
+  "conditions": [
+    "one same live candidate, action3f, flags4, extension0; M+6a0>23",
+    "existing post-model-guard conditions; near C5c4=1.5; flags810 or1810",
+    "valid direction lookup/reference geometry and independent stack/object storage",
+    "ordinary Windows x64 ABI, scalar CRT and memcpy normal return"
+  ],
+  "tables": [
+    {
+      "site": "0x144427546",
+      "base": "0x144427c90",
+      "bytes": "c0f8ffffd4fdffffe5fdffff5ffaffffc0f8ffffc0f8ffff5ffaffff5ffafffff6fdffff",
+      "targets": [
+        "0x144427550",
+        "0x144427a64",
+        "0x144427a75",
+        "0x1444276ef",
+        "0x144427550",
+        "0x144427550",
+        "0x1444276ef",
+        "0x1444276ef",
+        "0x144427a86"
+      ]
+    },
+    {
+      "site": "0x1444275dd",
+      "base": "0x144427cb4",
+      "bytes": "2bf9ffff6afaffff60faffff0dfaffff2bf9ffff2bf9ffff0dfaffff0dfaffff65faffff",
+      "targets": [
+        "0x1444275df",
+        "0x14442771e",
+        "0x144427714",
+        "0x1444276c1",
+        "0x1444275df",
+        "0x1444275df",
+        "0x1444276c1",
+        "0x1444276c1",
+        "0x144427719"
+      ]
+    },
+    {
+      "site": "0x1444339c4",
+      "base": "0x144439894",
+      "bytes": "32a1ffff67a1ffffd8a1ffffa1a2ffffb5a3ffff",
+      "targets": [
+        "0x1444339c6",
+        "0x1444339fb",
+        "0x144433a6c",
+        "0x144433b35",
+        "0x144433c49"
+      ]
+    },
+    {
+      "site": "0x144420093",
+      "base": "0x1444201f0",
+      "bytes": "a5feffffc6ffffffeeffffffb2feffffa5feffffa5feffffb2feffffb2feffffc6ffffff",
+      "targets": [
+        "0x144420095",
+        "0x1444201b6",
+        "0x1444201de",
+        "0x1444200a2",
+        "0x144420095",
+        "0x144420095",
+        "0x1444200a2",
+        "0x1444200a2",
+        "0x1444201b6"
+      ]
+    }
+  ],
+  "math_imports": [
+    {
+      "thunk": "0x14557eb50",
+      "iat": "0x145d50f78",
+      "symbol": "logf",
+      "descriptor": "0x15cf4a2a8",
+      "lookup": "0x145d4f090",
+      "hint_name": "0x145d570d4"
+    },
+    {
+      "thunk": "0x14557ea00",
+      "iat": "0x145d50f30",
+      "symbol": "expf",
+      "descriptor": "0x15cf4a2a8",
+      "lookup": "0x145d4f048",
+      "hint_name": "0x145d57088"
+    }
+  ],
+  "first_multiplier": {
+    "returns": "1.0",
+    "calls": []
+  },
+  "second_multiplier": {
+    "calls": {
+      "0x144434dff": "call 0x141b51c90",
+      "0x144434ec7": "call 0x141b51c90",
+      "0x144434f22": "call 0x141b51c90",
+      "0x144435182": "call 0x14557eb50",
+      "0x14443518b": "call 0x14557ea00"
+    },
+    "pointer_restore_cuts": [
+      {
+        "after": "0x144434f4c",
+        "uses": [
+          "0x144439707",
+          "0x144439754"
+        ],
+        "required_restore_union": [
+          "0x14443587a"
+        ]
+      },
+      {
+        "after": "0x144434dff",
+        "uses": [
+          "0x144439711"
+        ],
+        "required_restore_union": [
+          "0x144435657",
+          "0x1444359a2"
+        ]
+      }
+    ],
+    "stores": [
+      {
+        "site": "0x1444339a5",
+        "instruction": "mov DWORD PTR [rdx],ecx"
+      },
+      {
+        "site": "0x14443472e",
+        "instruction": "mov BYTE PTR [rdi+0xcde6],0x0"
+      },
+      {
+        "site": "0x14443473b",
+        "instruction": "mov DWORD PTR [rdi+0xcde0],eax"
+      },
+      {
+        "site": "0x1444347d5",
+        "instruction": "mov BYTE PTR [rdi+0xcde6],0x1"
+      },
+      {
+        "site": "0x1444347e2",
+        "instruction": "mov DWORD PTR [rdi+0xcde0],eax"
+      },
+      {
+        "site": "0x1444347ea",
+        "instruction": "mov BYTE PTR [rdi+0xcde6],0x1"
+      },
+      {
+        "site": "0x1444347f1",
+        "instruction": "mov DWORD PTR [rdi+0xcde0],edx"
+      },
+      {
+        "site": "0x1444348b6",
+        "instruction": "mov BYTE PTR [rax+0xcde6],0x0"
+      },
+      {
+        "site": "0x1444348c3",
+        "instruction": "mov DWORD PTR [rax+0xcde0],ecx"
+      },
+      {
+        "site": "0x14443491c",
+        "instruction": "mov BYTE PTR [rax+0xcde6],0x1"
+      },
+      {
+        "site": "0x144434929",
+        "instruction": "mov DWORD PTR [rax+0xcde0],ecx"
+      },
+      {
+        "site": "0x144434cdb",
+        "instruction": "mov BYTE PTR [rax+0xcde6],0x1"
+      },
+      {
+        "site": "0x144434ce2",
+        "instruction": "mov DWORD PTR [rax+0xcde0],ebp"
+      },
+      {
+        "site": "0x144439707",
+        "instruction": "movss DWORD PTR [r12],xmm7"
+      },
+      {
+        "site": "0x144439754",
+        "instruction": "movss DWORD PTR [r12],xmm12"
+      }
+    ],
+    "direction_subtree": [
+      {
+        "entry": "0x141b51c90",
+        "calls": {
+          "0x141b51e00": "call 0x141b51e10"
+        },
+        "null_output_external_stores": []
+      },
+      {
+        "entry": "0x141b51e10",
+        "calls": {},
+        "null_output_external_stores": []
+      }
+    ],
+    "numeric_output": "not frozen or evaluated; selected scene branches retained"
+  },
+  "selector": {
+    "branches": {
+      "0x14442745c": "0x144427462",
+      "0x144427500": "0x14442755a",
+      "0x144427561": "0x144427567",
+      "0x144427575": "0x144427590",
+      "0x144427593": "0x144427697",
+      "0x14442769a": "0x144427700",
+      "0x14442770c": "0x144427712",
+      "0x144427723": "0x144427729",
+      "0x144427858": "0x14442785a",
+      "0x1444278a9": "0x1444278ab",
+      "0x14442791f": "0x14442795e",
+      "0x1444279dc": "0x1444274b6",
+      "0x1444274f5": "0x144427c48"
+    },
+    "calls": {
+      "0x14442780d": "call 0x144431760",
+      "0x144427831": "call 0x144433930",
+      "0x1444278d1": "call 0x14557ea20",
+      "0x1444278ee": "call 0x14557e9b0"
+    },
+    "stores": [
+      {
+        "site": "0x1444277d9",
+        "instruction": "mov QWORD PTR [r9+0xe3d0],rsi"
+      },
+      {
+        "site": "0x1444278f7",
+        "instruction": "mov DWORD PTR [r13+rbp*1+0x94],eax"
+      },
+      {
+        "site": "0x1444279ae",
+        "instruction": "mov DWORD PTR [r13+rbp*1+0x94],ecx"
+      },
+      {
+        "site": "0x1444279bc",
+        "instruction": "mov DWORD PTR [r13+rbp*1+0x94],0x1"
+      }
+    ],
+    "manual_dataflow": "initial index0/best-1; best stack save/restore; accept0; count remains1; loop exits",
+    "return_if_stated_callee_contracts_hold": 0,
+    "decision_cache_zero_branch_retained": true
+  },
+  "dispatch": {
+    "selected_copy": "0x14442002a: R -> C+470, length d0",
+    "generator": "0x144420076 -> 0x1444290e0",
+    "initial_action_copy": "0x14442915f: C+470 -> P+dc0, length d0",
+    "checkpoint": "0x144429171 before subsequent target preparation",
+    "fields": {
+      "P+e40": "3f",
+      "P+e44": 0,
+      "P+e28": 4,
+      "P+e3c": "same C+578=0"
+    }
+  },
+  "unproved": [
+    "natural production/retention of prior cache, zero-slot and compatibility inputs",
+    "later target/solver/perturbation, same new trajectory, defense/rules and goal"
+  ],
+  "limits": "Local CFG and transfer checks are not an automatic alias proof or game execution"
+}

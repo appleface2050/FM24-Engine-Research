@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261030_goal_single_candidate_selection_static.txt",
     "20261030_goal_post_model_candidate_guards_static.txt",
     "20261030_goal_candidate_model_storage_static.txt",
     "20261030_goal_candidate_nonempty_model_static.txt",
@@ -971,6 +972,47 @@ def verify(exe: Path) -> None:
     }.items():
         check(instructions.get(address) == expected, f"Actual post-model guard {address:x}")
 
+    # 单一候选的实际分派/复制；数值评分不被当成进球概率。
+    selector_paths = json.loads((ROOT / "20261030_shot_selector_paths.json").read_text())
+    for table in selector_paths["tables"]:
+        base = int(table["base"], 16)
+        raw = bytes.fromhex(table["bytes"])
+        check(data[offset(base):offset(base) + len(raw)] == raw, "Selector table bytes")
+        check([base + value for value in struct.unpack(f"<{len(raw) // 4}i", raw)]
+              == [int(value, 16) for value in table["targets"]], "Selector table targets")
+    for binding in selector_paths["math_imports"]:
+        thunk, slot = int(binding["thunk"], 16), int(binding["iat"], 16)
+        start = offset(thunk)
+        check(data[start:start + 2] == b"\xff\x25"
+              and thunk + 6 + struct.unpack_from("<i", data, start + 2)[0] == slot,
+              "Selector scalar thunk")
+        lookup, _, _, _, iat = struct.unpack_from("<IIIII", data, offset(int(binding["descriptor"], 16)))
+        item = 0x140000000 + lookup + slot - 0x140000000 - iat
+        check(item == int(binding["lookup"], 16), "Selector scalar lookup")
+        name = 0x140000000 + struct.unpack_from("<Q", data, offset(item))[0]
+        check(name == int(binding["hint_name"], 16), "Selector scalar name location")
+        start = offset(name) + 2
+        check(data[start:data.index(b"\0", start)].decode() == binding["symbol"], "Selector scalar symbol")
+    for address, expected in {
+        0x144427468: "mov r9d,0xffffffff",
+        0x14442772D: "mov DWORD PTR [rsp+0x2c],r9d",
+        0x14442791A: "mov r9d,DWORD PTR [rsp+0x2c]",
+        0x1444279DC: "je 0x1444274b6",
+        0x1444274C6: "mov r9d,r14d",
+        0x1444274C9: "inc r14",
+        0x144427C48: "mov eax,r9d",
+        0x14441FFFD: "mov r8b,0x14",
+        0x144420021: "mov r8d,0xd0",
+        0x14442002A: "call 0x14557e720",
+        0x144420076: "call 0x1444290e0",
+        0x144429148: "add rdx,0x470",
+        0x14442914F: "lea r13,[rcx+0xdc0]",
+        0x144429156: "mov r8d,0xd0",
+        0x14442915F: "call 0x14557e720",
+        0x14442916B: "mov DWORD PTR [rdi+0xe3c],eax",
+    }.items():
+        check(instructions.get(address) == expected, f"Single-candidate production {address:x}")
+
     # 独立核对模型跳表快照和真正的调用者标志读写；不把本地图升级为副作用证明。
     model_paths = json.loads((ROOT / "20261030_candidate_model_paths.json").read_text())
     for table in model_paths["tables"]:
@@ -1157,7 +1199,12 @@ def verify(exe: Path) -> None:
                 or 0x144528BB0 <= address < 0x14452BDDC
                 or 0x144386FA0 <= address < 0x1443877AD
                 or 0x14431FFA0 <= address < 0x1443208D4
-                or 0x159A6CB10 <= address < 0x159A6CC75):
+                or 0x159A6CB10 <= address < 0x159A6CC75
+                or 0x144427400 <= address < 0x144427C90
+                or 0x144433930 <= address < 0x144439894
+                or 0x14441FFF0 <= address < 0x1444201F0
+                or 0x1444290E0 <= address < 0x144429171
+                or 0x141B51C90 <= address < 0x141B51F26):
             continue
         match = re.fullmatch(r"call 0x([0-9a-f]+)", instruction)
         if match:
