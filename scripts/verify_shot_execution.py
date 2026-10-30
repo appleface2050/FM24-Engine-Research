@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261030_goal_selected_shot_target_static.txt",
     "20261030_goal_single_candidate_selection_static.txt",
     "20261030_goal_post_model_candidate_guards_static.txt",
     "20261030_goal_candidate_model_storage_static.txt",
@@ -1013,6 +1014,31 @@ def verify(exe: Path) -> None:
     }.items():
         check(instructions.get(address) == expected, f"Single-candidate production {address:x}")
 
+    # 真实目标分派及近距插值，不把早期独立目标算例当成最终目标。
+    target_paths = json.loads((ROOT / "20261030_shot_target_paths.json").read_text())
+    for table in target_paths["tables"]:
+        base = int(table["base"], 16)
+        raw = bytes.fromhex(table["bytes"])
+        check(data[offset(base):offset(base) + len(raw)] == raw, "Target table bytes")
+        check([base + value for value in struct.unpack(f"<{len(raw) // 4}i", raw)]
+              == [int(value, 16) for value in table["targets"]], "Target table targets")
+    for address, value in target_paths["height_parameter"]["constants"].items():
+        check(struct.unpack_from("<f", data, offset(int(address, 16)))[0] == value,
+              f"Target source/interpolation constant {address}")
+    for address, expected in {
+        0x14441A45B: "movss DWORD PTR [rdx+0x5d8],xmm0",
+        0x14441A4BB: "movss DWORD PTR [r13+0x5d8],xmm0",
+        0x14441A766: "mov QWORD PTR [r13+0x570],rcx",
+        0x144429188: "je 0x144429331",
+        0x144429331: "mov DWORD PTR [rdi+0xe40],0x0",
+        0x14442957A: "cmp DWORD PTR [r15+0x5a8],0x15",
+        0x14442958A: "call 0x14444acc0",
+        0x14442959A: "call 0x14444a4e0",
+        0x14442DA07: "movss DWORD PTR [rdi+0xdc0],xmm0",
+        0x14442DA4E: "movss DWORD PTR [rdi+0xdc4],xmm2",
+    }.items():
+        check(instructions.get(address) == expected, f"Selected target source/consumer {address:x}")
+
     # 独立核对模型跳表快照和真正的调用者标志读写；不把本地图升级为副作用证明。
     model_paths = json.loads((ROOT / "20261030_candidate_model_paths.json").read_text())
     for table in model_paths["tables"]:
@@ -1204,7 +1230,9 @@ def verify(exe: Path) -> None:
                 or 0x144433930 <= address < 0x144439894
                 or 0x14441FFF0 <= address < 0x1444201F0
                 or 0x1444290E0 <= address < 0x144429171
-                or 0x141B51C90 <= address < 0x141B51F26):
+                or 0x141B51C90 <= address < 0x141B51F26
+                or 0x14444A4E0 <= address < 0x14444B7AA
+                or 0x14442D9D0 <= address < 0x14442DD43):
             continue
         match = re.fullmatch(r"call 0x([0-9a-f]+)", instruction)
         if match:
