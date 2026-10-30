@@ -225,3 +225,6 @@ mkdir -p /tmp/fm24-ghidra
 `python scripts/inspect_shot_common_helpers.py --exe <路径> --output <JSON路径>` 检查实际3f的三个公共辅助函数、非NULL方向输出、速度叶跳板及写域、旋转截断和调用者顺序。记录 `20261030_shot_common_helpers.json` 的条件边界为14442dde0：bit0仍0，允许新增bit49、目标X改写和模式变2/4；属性读取使用更新后的P+e30。保留固定全局WORD写和自然输入/完整进球缺口。
 
 `python scripts/inspect_shot_solver_modes.py --exe <路径> --output <JSON路径>` 核对实际3f求解实参与有效模式分区，记录 `20261030_shot_solver_modes.json`。在原起点Z=1、现代版本及第一TLS初始化检查已满足等条件下，模式0/1、2、4分别接三类首次试算。试算正常返回后的外层后缀无第二次试算，模式4仍可缩放速度；三套试算本体/数值输出、初始化自然来源和完整进球均未证明。 该入口现已扩展数值体完整调用/写点清单、模式2重力补偿初值、两类外层四轮修正预算和内层有条件计数；`[Q+1a110]+d0`为0时计数不增，不能以360单独证明终止。最终误差/返回输出及参数自然初始化仍待证。
+
+
+2026-10-31参数生产续证：1443e86e1实际调用145302f10(Q=B+1040,T=[B+1038])，镜像T半径/质量/状态到Q临时区并绑定环境E，撤去必须Q=T的疑问。新建空头/旧引用为空条件下只余CRT memmove/memcpy，参数写入正常返回必经；128组记录复制有界。E构造写d0=2的源已连至Q引用，但复制检查点到当前试算的参数/E/d0保持仍未证明，不能升级360步界或完整进球。下一步追最近刷新与同一对象字段保持、实际力/采样和最终输出。 复核入口仍为`inspect_shot_solver_modes.py`（新增`scratch_producer`）及`verify_shot_execution.py`，证据见[临时参数生产指令](20261031_goal_trial_scratch_parameter_source_static.txt)。

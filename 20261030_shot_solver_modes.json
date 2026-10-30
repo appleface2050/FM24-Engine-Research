@@ -1,4 +1,74 @@
 {
+  "scratch_producer": {
+    "evidence_type": "manual_source_binding_and_original_CFG_cuts_not_execution",
+    "entry": "0x145302f10",
+    "actual_call": "0x1443e86e1",
+    "arguments": {
+      "destination_Q": "B+1040",
+      "source_T": "[B+1038]",
+      "source_environment": "[[M+ce68]+2a0] via T+18"
+    },
+    "conditions": [
+      "Q and T are valid independent aligned objects; both vector headers zero",
+      "Q+18 and Q+1a110 zero; T+18=valid nonnull E",
+      "valid record storage, ordinary CRT zero-length memmove and memcpy contracts",
+      "constructor zero stores retained to this copy; no claim of retention to current shot"
+    ],
+    "selected_edges": {
+      "0x145302f29": "0x145302f2f",
+      "0x145302f51": "0x145302f78",
+      "0x145302f8c": "0x145302fbb",
+      "0x145302fdc": "0x145302fde",
+      "0x145302fe1": "0x145302fe8",
+      "0x145302fef": "0x145302ff1",
+      "0x145303104": "0x145303106",
+      "0x145303113": "0x145303115",
+      "0x145303118": "0x14530311f"
+    },
+    "calls": {
+      "0x145302fc8": "call 0x14557e730",
+      "0x145303060": "call 0x14557e720"
+    },
+    "mandatory_source_and_output_sites": {
+      "0x145302ff4": "lea r15,[r14+0x20]",
+      "0x1453030bb": "movaps XMMWORD PTR [rsi+0x1a100],xmm0",
+      "0x1453030c7": "movaps XMMWORD PTR [rsi+0x1a0f0],xmm0",
+      "0x1453030e1": "movaps XMMWORD PTR [rsi+0x1a0e0],xmm3",
+      "0x1453030e8": "movaps XMMWORD PTR [rsi+0x1a0d0],xmm2",
+      "0x1453030ef": "movaps XMMWORD PTR [rsi+0x1a0c0],xmm1",
+      "0x1453030f6": "movaps XMMWORD PTR [rsi+0x1a0b0],xmm0",
+      "0x14530311f": "mov QWORD PTR [rsi+0x1a110],rdi"
+    },
+    "source_to_scratch": {
+      "T+20": "Q+1a0b0 position",
+      "T+30": "Q+1a0c0 velocity",
+      "T+40": "Q+1a0d0 spin",
+      "T+58": "Q+1a0e8 radius/Z-stop",
+      "T+5c": "Q+1a0ec mass divisor",
+      "T+60": "Q+1a0f0 coefficient block",
+      "T+70": "Q+1a100 coefficient block",
+      "T+18": "Q+1a110 environment reference"
+    },
+    "source_binding_sites": {
+      "0x1443e86d3": "lea rcx,[r15+0x1040]",
+      "0x1443e86da": "mov rdx,QWORD PTR [r15+0x1038]",
+      "0x1443e86e1": "call 0x145302f10",
+      "0x145300a53": "mov DWORD PTR [rdi+0x58],ebp",
+      "0x145300a56": "mov DWORD PTR [rdi+0x5c],eax",
+      "0x145300a1c": "mov QWORD PTR [rdi+0x18],rbx",
+      "0x1443e7c70": "mov QWORD PTR [rsi+0x1b150],0x0"
+    },
+    "record_count_example": {
+      "first_offset": 0,
+      "last_offset": 105664,
+      "stride": 832,
+      "count": 128
+    },
+    "unproved": [
+      "copy checkpoint and E+d0 value retention to the same actual trial",
+      "other copy branches with old references/resize; complete numerical trial outputs"
+    ]
+  },
   "trial_bodies": {
     "evidence_type": "native_body_inventory_and_local_formula_not_complete_trial_simulation",
     "functions": [
@@ -460,7 +530,7 @@
       "step": "c_next=c+1-CF, CF=(unsigned byte E+d0<1)",
       "if_byte_zero": "counter does not advance; force/integration updates are still executed, actual motion depends on inputs",
       "if_stably_nonzero": "at most360 integration steps, assuming force helpers return normally",
-      "unproved": "actual E+d0 source/retention or independent physical termination when it is zero"
+      "unproved": "E constructor writes2 and copy binds source reference; retention to current shot or independent physical termination when zero remains unproved"
     },
     "mode2_seed_example": {
       "origin": [
@@ -486,7 +556,7 @@
       "scope": "float32 transcription of initial seed only; not native execution, final velocity or a goal"
     },
     "remaining": [
-      "actual physical parameter and scratch initialization; complete residual output/force semantics",
+      "scratch copy checkpoint retention to current shot; complete residual output/force semantics",
       "TLS initialization, helper normal return and numerical validity in same natural state",
       "trial termination/output, perturbation, same new flight, defense/rules and goal"
     ]

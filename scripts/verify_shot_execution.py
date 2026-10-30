@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261031_goal_trial_scratch_parameter_source_static.txt",
     "20261030_goal_shot_trial_bodies_static.txt",
     "20261030_goal_shot_solver_mode_dispatch_static.txt",
     "20261030_goal_shot_common_helpers_static.txt",
@@ -1117,6 +1118,17 @@ def verify(exe: Path) -> None:
     }.items():
         check(instructions.get(address) == expected, f"Trial body formula/counter {address:x}")
 
+    # 源对象到scratch的关键绑定；身份及跨时间保持仍由报告限定。
+    for address, expected in {
+        0x1443E86D3: "lea rcx,[r15+0x1040]",
+        0x1443E86DA: "mov rdx,QWORD PTR [r15+0x1038]",
+        0x1443E86E1: "call 0x145302f10",
+        0x1453030E1: "movaps XMMWORD PTR [rsi+0x1a0e0],xmm3",
+        0x14530311F: "mov QWORD PTR [rsi+0x1a110],rdi",
+        0x1443E7C70: "mov QWORD PTR [rsi+0x1b150],0x0",
+    }.items():
+        check(instructions.get(address) == expected, f"Scratch source binding {address:x}")
+
     # 独立核对模型跳表快照和真正的调用者标志读写；不把本地图升级为副作用证明。
     model_paths = json.loads((ROOT / "20261030_candidate_model_paths.json").read_text())
     for table in model_paths["tables"]:
@@ -1315,6 +1327,9 @@ def verify(exe: Path) -> None:
                 or 0x14442DD43 <= address < 0x14442DE9B
                 or 0x1443F2EF0 <= address < 0x1443F48EF
                 or 0x145303160 <= address < 0x1453054FE
+                or 0x145302F10 <= address < 0x145303154
+                or 0x1453009F0 <= address < 0x145300B03
+                or 0x1443E8310 <= address < 0x1443E86E6
                 or 0x1418F81A0 <= address < 0x1418F83F5):
             continue
         match = re.fullmatch(r"call 0x([0-9a-f]+)", instruction)

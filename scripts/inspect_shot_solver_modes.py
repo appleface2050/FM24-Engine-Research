@@ -3,6 +3,7 @@
 import argparse
 import json
 import math
+import re
 import struct
 from pathlib import Path
 
@@ -106,15 +107,102 @@ def inspect_trial_bodies(exe, data, offset):
             'integration_counter': {'step': 'c_next=c+1-CF, CF=(unsigned byte E+d0<1)',
                                     'if_byte_zero': 'counter does not advance; force/integration updates are still executed, actual motion depends on inputs',
                                     'if_stably_nonzero': 'at most360 integration steps, assuming force helpers return normally',
-                                    'unproved': 'actual E+d0 source/retention or independent physical termination when it is zero'},
+                                    'unproved': 'E constructor writes2 and copy binds source reference; retention to current shot or independent physical termination when zero remains unproved'},
             'mode2_seed_example': {'origin': [0., 0., 1.], 'target': [0., 2., 1.], 'scale': 20.,
                                    'assumed_gravity_scalar': f(-9.8), 'tau': tau,
                                    'negative_half_constant': negative_half, 'compensated_target_z': aim_z,
                                    'initial_velocity_after_compensation': velocity,
                                    'scope': 'float32 transcription of initial seed only; not native execution, final velocity or a goal'},
-            'remaining': ['actual physical parameter and scratch initialization; complete residual output/force semantics',
+            'remaining': ['scratch copy checkpoint retention to current shot; complete residual output/force semantics',
                           'TLS initialization, helper normal return and numerical validity in same natural state',
                           'trial termination/output, perturbation, same new flight, defense/rules and goal']}
+
+
+def inspect_scratch_producer(exe):
+    """复核新建轨迹的限定复制路径；不假定初始化值保持到当前射门。"""
+    rows, full = decode_graph(exe, 0x145302F10, 0x145303154,
+                              external_stops={0x141B6C7E0})
+    # 人工由原指令推导的条件：独立Q/T，空向量，旧引用为空，源E非空。
+    choices = {0x145302F29: 0x145302F2F, 0x145302F51: 0x145302F78,
+               0x145302F8C: 0x145302FBB, 0x145302FDC: 0x145302FDE,
+               0x145302FE1: 0x145302FE8, 0x145302FEF: 0x145302FF1,
+               0x145303104: 0x145303106, 0x145303113: 0x145303115,
+               0x145303118: 0x14530311F}
+    graph = dict(full)
+    for site, target in choices.items():
+        if target not in full[site]:
+            raise ValueError('Fresh scratch condition does not select a native edge')
+        graph[site] = [target]
+    reached = walk([0x145302F10], graph)
+    calls = {a: normalize(rows[a][1]) for a in reached if rows[a][1].startswith('call')}
+    if calls != {0x145302FC8: 'call 0x14557e730', 0x145303060: 'call 0x14557e720'}:
+        raise ValueError('Fresh scratch copy retains allocation/release or another call')
+    if {a for a in reached if rows[a][1].startswith('ret')} != {0x145303136}:
+        raise ValueError('Fresh scratch copy has another return')
+    required = {0x145302FF4: 'lea r15,[r14+0x20]',
+                0x1453030BB: 'movaps XMMWORD PTR [rsi+0x1a100],xmm0',
+                0x1453030C7: 'movaps XMMWORD PTR [rsi+0x1a0f0],xmm0',
+                0x1453030E1: 'movaps XMMWORD PTR [rsi+0x1a0e0],xmm3',
+                0x1453030E8: 'movaps XMMWORD PTR [rsi+0x1a0d0],xmm2',
+                0x1453030EF: 'movaps XMMWORD PTR [rsi+0x1a0c0],xmm1',
+                0x1453030F6: 'movaps XMMWORD PTR [rsi+0x1a0b0],xmm0',
+                0x14530311F: 'mov QWORD PTR [rsi+0x1a110],rdi'}
+    for site, ins in required.items():
+        if normalize(rows[site][1]) != ins or 0x145303136 in walk([0x145302F10], graph, {site}):
+            raise ValueError('A scratch source/output can bypass the selected producer')
+    for site, ins in {0x145302F20: 'mov r14,rdx', 0x145302F23: 'mov rsi,rcx',
+                      0x145303044: 'xor ebx,ebx', 0x14530305A: 'mov r8d,0x320',
+                      0x14530308B: 'add rbx,0x340', 0x145303092: 'cmp rbx,0x1a000',
+                      0x1453030FD: 'mov rdi,QWORD PTR [r14+0x18]'}.items():
+        if normalize(rows[site][1]) != ins:
+            raise ValueError('Copy bases, record loop or environment source differs')
+    # 从已导出的原PE指令绑定调用点与参数初始化；逐字节另由主验证器复核。
+    raw = (ROOT / '20261031_goal_trial_scratch_parameter_source_static.txt').read_text()
+    exported = {}
+    for line in raw.splitlines():
+        match = re.match(r'^\s*([0-9a-f]+):\s*(?:[0-9a-f]{2} )*[0-9a-f]{2}\s+(.+)$', line)
+        if match:
+            exported[int(match[1], 16)] = normalize(match[2])
+    binding = {0x1443E86D3: 'lea rcx,[r15+0x1040]',
+               0x1443E86DA: 'mov rdx,QWORD PTR [r15+0x1038]',
+               0x1443E86E1: 'call 0x145302f10',
+               0x145300A53: 'mov DWORD PTR [rdi+0x58],ebp',
+               0x145300A56: 'mov DWORD PTR [rdi+0x5c],eax',
+               0x145300A1C: 'mov QWORD PTR [rdi+0x18],rbx',
+               0x1443E7C70: 'mov QWORD PTR [rsi+0x1b150],0x0'}
+    for site, ins in binding.items():
+        if exported.get(site) != ins:
+            raise ValueError('Exported scratch source binding differs')
+    zero_bytes = set()
+    for site, relative in zip(range(0x1443E78EF, 0x1443E793C, 11), range(0x1034, 0x106c, 8)):
+        if exported.get(site) != f'mov QWORD PTR [rsi+{relative:#x}],0x0':
+            raise ValueError('Constructor header-zero store differs')
+        zero_bytes.update(range(relative, relative + 8))
+    if not set(range(0x1040, 0x1060)) <= zero_bytes:
+        raise ValueError('Overlapping constructor stores do not clear Q header/environment')
+    # 固定长度循环的整数算例，而非执行原生memcpy。
+    offsets = list(range(0, 0x1a000, 0x340))
+    assert len(offsets) == 128 and offsets[-1] + 0x340 == 0x1a000
+    return {'evidence_type': 'manual_source_binding_and_original_CFG_cuts_not_execution',
+            'entry': '0x145302f10', 'actual_call': '0x1443e86e1',
+            'arguments': {'destination_Q': 'B+1040', 'source_T': '[B+1038]',
+                          'source_environment': '[[M+ce68]+2a0] via T+18'},
+            'conditions': ['Q and T are valid independent aligned objects; both vector headers zero',
+                           'Q+18 and Q+1a110 zero; T+18=valid nonnull E',
+                           'valid record storage, ordinary CRT zero-length memmove and memcpy contracts',
+                           'constructor zero stores retained to this copy; no claim of retention to current shot'],
+            'selected_edges': {hex(a): hex(t) for a, t in choices.items()},
+            'calls': {hex(a): ins for a, ins in sorted(calls.items())},
+            'mandatory_source_and_output_sites': {hex(a): ins for a, ins in required.items()},
+            'source_to_scratch': {'T+20': 'Q+1a0b0 position', 'T+30': 'Q+1a0c0 velocity',
+                                  'T+40': 'Q+1a0d0 spin', 'T+58': 'Q+1a0e8 radius/Z-stop',
+                                  'T+5c': 'Q+1a0ec mass divisor', 'T+60': 'Q+1a0f0 coefficient block',
+                                  'T+70': 'Q+1a100 coefficient block', 'T+18': 'Q+1a110 environment reference'},
+            'source_binding_sites': {hex(a): ins for a, ins in binding.items()},
+            'record_count_example': {'first_offset': offsets[0], 'last_offset': offsets[-1],
+                                     'stride': 0x340, 'count': len(offsets)},
+            'unproved': ['copy checkpoint and E+d0 value retention to the same actual trial',
+                         'other copy branches with old references/resize; complete numerical trial outputs']}
 
 
 def inspect(exe):
@@ -209,7 +297,7 @@ def inspect(exe):
     constants = {hex(a): struct.unpack_from('<f', data, offset(a))[0]
                  for a in (0x145A1D4A4, 0x145A1D4B0, 0x145A1D48C, 0x145A1D4EC, 0x145A1D4C4, 0x145A1D468)}
     trials = inspect_trial_bodies(exe, data, offset)
-    return {'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
+    return {'scratch_producer': inspect_scratch_producer(exe), 'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
             'conditions': ['same actual3f and updated target/scale/spin; source origin=C540, Z=1; mode input in{0,1,2,4}',
                            'M6a0>23; control B+d10 is same M; independent valid argument/output storage',
                            'finite derived distances/scalars; first thread-static initialization gate already satisfied at1443f3031; valid TLS and data reads',
@@ -227,5 +315,5 @@ if __name__ == '__main__':
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     args.output.write_text(json.dumps(inspect(args.exe), ensure_ascii=False, indent=2) + '\n')
-    print('PASS: effective-mode partitions/conditional suffixes; trial-body call inventories; outer budget cuts; actual conditional integration counters and local seed arithmetic.')
+    print('PASS: effective-mode partitions/conditional suffixes; trial-body call inventories; outer budget cuts; actual conditional integration counters, local seed arithmetic and fresh scratch source/copy cuts.')
     print('Conditional static evidence only; complete trial outputs and shot-to-goal mechanism remain unproved.')
