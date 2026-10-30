@@ -298,6 +298,35 @@
     ],
     "limits": "Local branches only; callee effects, reset-to-query state retention and natural inputs remain conditional."
   },
+  "reset_to_first_cache": {
+    "start": "0x1443c3a5f",
+    "stop_before_call": "0x1443c419a",
+    "conditions_at_reads": [
+      "M+e3bb=0",
+      "M+e388=P",
+      "signed P+26c>-101"
+    ],
+    "remaining_call_sites": [
+      "0x1443c3ecd"
+    ],
+    "limits": "Local condition selection; producer reachability and memory/alias validity remain conditional."
+  },
+  "position_update": {
+    "entry": "0x1443b5100",
+    "decoded_instructions": 998,
+    "all_reachable_calls": {
+      "0x1443b5239": "call   0x1443efb60",
+      "0x1443b525f": "call   0x1443ef9b0",
+      "0x1443b532a": "call   0x141b41670",
+      "0x1443b535a": "call   0x141b41670",
+      "0x1443b5378": "call   0x1443b61f0",
+      "0x1443b5bbb": "call   0x141b41670",
+      "0x1443b5c77": "call   0x141b40bd0",
+      "0x1443b603b": "call   0x1443b6160"
+    },
+    "scalar_store_0x1443b605b_requires_binding_0x1443b600c": true,
+    "limits": "CALLs return normally in this graph; preservation uses the separately bounded callee contracts."
+  },
   "limits": [
     "All conditional branches allowed; natural reachability and termination unproved.",
     "CALL treated as normal return; callee effects and exception paths unproved.",

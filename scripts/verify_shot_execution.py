@@ -145,6 +145,7 @@ EVIDENCE = (
     "20261030_goal_cache_position_query_static.txt",
     "20261030_goal_cache_bracketing_query_static.txt",
     "20261030_goal_cache_reset_state_gates_static.txt",
+    "20261030_goal_reset_to_position_update_static.txt",
 )
 
 
@@ -936,6 +937,15 @@ def verify(exe: Path) -> None:
         0x1443E992E: "mov DWORD PTR [rdi+0xd2c],ecx",
         0x1443C39DB: "je 0x1443c3a45",
         0x1443ECBD6: "je 0x1443ecbe8",
+        0x1443C3A7A: "je 0x1443c3b9b",
+        0x1443C3C05: "je 0x1443c3d69",
+        0x1443C3D85: "je 0x1443c3ec8",
+        0x1443C4095: "jg 0x1443c418e",
+        0x1443B51F4: "jle 0x1443b529c",
+        0x1443B52A7: "movss DWORD PTR [rsi+0x11b8],xmm0",
+        0x1443B52B5: "mov DWORD PTR [rsi+0x11c0],ecx",
+        0x1443B52C6: "movss DWORD PTR [rsi+0x11bc],xmm0",
+        0x1443B52CE: "jmp 0x1443b60c2",
         0x141B46841: "je 0x141b46998",
         0x141B4699F: "je 0x141b46a82",
         0x141B46A82: "xor eax,eax",
@@ -957,6 +967,10 @@ def verify(exe: Path) -> None:
           "Cache short sort uses the recorded memmove import")
 
     calls = {
+        0x1443B532A: 0x141B41670,
+        0x1443B535A: 0x141B41670,
+        0x1443B5BBB: 0x141B41670,
+        0x1443B5C77: 0x141B40BD0,
         0x1443B5378: 0x1443B61F0,
         0x1443B603B: 0x1443B6160,
         0x1443B6241: 0x1443EA8F0,

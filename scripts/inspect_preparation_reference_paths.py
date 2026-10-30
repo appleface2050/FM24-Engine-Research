@@ -168,6 +168,40 @@ def inspect(exe: Path):
     ]
     if {int(call["site"], 16) for call in selected_calls} != {0x1443B6361, 0x1443B6398}:
         raise ValueError("Additional position helper remains reachable under selected gates")
+    reset_suffix_graph = dict(graph)
+    for address, (instruction, successor) in {
+        0x1443C3A7A: ("je 0x1443c3b9b", 0x1443C3B9B),
+        0x1443C3C05: ("je 0x1443c3d69", 0x1443C3D69),
+        0x1443C3D85: ("je 0x1443c3ec8", 0x1443C3EC8),
+        0x1443C4095: ("jg 0x1443c418e", 0x1443C418E),
+    }.items():
+        if re.sub(r"\s+", " ", rows[address][1]) != instruction:
+            raise ValueError(f"Reset suffix gate differs at {address:#x}")
+        reset_suffix_graph[address] = [successor]
+    reset_suffix = walk([0x1443C3A5F], reset_suffix_graph, {0x1443C419A})
+    reset_suffix_calls = [
+        hex(address) for address in sorted(reset_suffix)
+        if rows[address][1].startswith("call")
+    ]
+    if reset_suffix_calls != ["0x1443c3ecd"]:
+        raise ValueError("Unexpected reset-to-cache call under selected conditions")
+    if not any(0x1443C419A in reset_suffix_graph[address] for address in reset_suffix):
+        raise ValueError("Selected reset suffix no longer reaches the first cache call")
+
+    update_rows, update_graph = decode_graph(exe, 0x1443B5100, 0x1443B6156)
+    update_reached = walk([0x1443B5100], update_graph)
+    update_calls = {
+        hex(address): update_rows[address][1]
+        for address in sorted(update_reached)
+        if update_rows[address][1].startswith("call")
+    }
+    if set(update_calls) != {
+        "0x1443b5239", "0x1443b525f", "0x1443b532a", "0x1443b535a",
+        "0x1443b5378", "0x1443b5bbb", "0x1443b5c77", "0x1443b603b",
+    }:
+        raise ValueError("Position update has an unreviewed reachable call")
+    if 0x1443B605B in walk([0x1443B5100], update_graph, {0x1443B600C}):
+        raise ValueError("Indirect scalar store bypasses its player-field address binding")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -193,6 +227,18 @@ def inspect(exe: Path):
             "conditions_at_reads": ["B+d63=0 at both loops", "P+16f8 bit0=0"],
             "reachable_calls": selected_calls,
             "limits": "Local branches only; callee effects, reset-to-query state retention and natural inputs remain conditional.",
+        },
+        "reset_to_first_cache": {
+            "start": "0x1443c3a5f", "stop_before_call": "0x1443c419a",
+            "conditions_at_reads": ["M+e3bb=0", "M+e388=P", "signed P+26c>-101"],
+            "remaining_call_sites": reset_suffix_calls,
+            "limits": "Local condition selection; producer reachability and memory/alias validity remain conditional.",
+        },
+        "position_update": {
+            "entry": "0x1443b5100", "decoded_instructions": len(update_rows),
+            "all_reachable_calls": update_calls,
+            "scalar_store_0x1443b605b_requires_binding_0x1443b600c": True,
+            "limits": "CALLs return normally in this graph; preservation uses the separately bounded callee contracts.",
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",
