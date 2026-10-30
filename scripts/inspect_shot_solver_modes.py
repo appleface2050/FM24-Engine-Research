@@ -205,6 +205,71 @@ def inspect_scratch_producer(exe):
                          'other copy branches with old references/resize; complete numerical trial outputs']}
 
 
+def inspect_residual_preservation(exe):
+    """复核单次误差积分内部的参数保持与条件终止，不证明自然入口。"""
+    def acyclic(graph, start, original_reached=None):
+        reached = walk([start], graph) if original_reached is None else original_reached
+        incoming = {a: 0 for a in reached}
+        for a in reached:
+            for b in graph[a]:
+                incoming[b] += 1
+        ready = [a for a in reached if incoming[a] == 0]
+        count = 0
+        while ready:
+            a = ready.pop()
+            count += 1
+            for b in graph[a]:
+                incoming[b] -= 1
+                if incoming[b] == 0:
+                    ready.append(b)
+        return count == len(reached)
+
+    helpers = []
+    for entry, end, fixed, expected in (
+        (0x145305970, 0x145305A48, {}, {0x145305A3B}),
+        (0x1453056E0, 0x145305969,
+         {0x1453057E4: 0x1453057EA, 0x145305813: 0x145305819}, {0x1453058E0}),
+    ):
+        rows, graph = decode_graph(exe, entry, end)
+        graph = dict(graph)
+        for site, target in fixed.items():
+            if target not in graph[site]:
+                raise ValueError('Prepared force TLS edge differs')
+            graph[site] = [target]
+        reached = walk([entry], graph)
+        writes = stores(rows, reached)
+        if any(rows[a][1].startswith('call') for a in reached) or not acyclic(graph, entry):
+            raise ValueError('Prepared force helper has another call/cycle')
+        if {int(w['site'], 16) for w in writes} != expected:
+            raise ValueError('Prepared force helper writes beyond accumulator')
+        helpers.append({'entry': hex(entry), 'prepared_TLS_edges': {hex(a): hex(b) for a, b in fixed.items()},
+                        'calls': [], 'acyclic': True, 'writes': writes})
+    residuals = []
+    for entry, end, counter in ((0x1453049D0, 0x145304F89, 0x145304C30),
+                                (0x145303E60, 0x1453043FF, 0x145303F9E)):
+        rows, graph = decode_graph(exe, entry, end)
+        reached = walk([entry], graph)
+        writes = stores(rows, reached)
+        for row in writes:
+            dest = row['instruction'].split(',', 1)[0]
+            if not re.search(r'\[(?:rsi\+0x1a0(?:b0|b8|c0|c8|d0|d8)|r14(?:\+0x4)?)\]$', dest):
+                raise ValueError('Residual writes outside three scratch vectors/error output')
+        cut = dict(graph)
+        cut[counter] = []
+        if not acyclic(cut, entry, reached):
+            raise ValueError('Residual contains a cycle bypassing the integration counter')
+        residuals.append({'entry': hex(entry), 'writes': writes,
+                          'cycle_cut': hex(counter), 'acyclic_after_counter_cut': True})
+    return {'evidence_type': 'manual_argument_alias_binding_plus_original_CFG_write_and_cycle_checks',
+            'helpers': helpers, 'residuals': residuals,
+            'conditions': ['valid independent Q/E, error outputs and stack force buffers; no external concurrent writes',
+                           'spin force two TLS guards already satisfied; valid TLS/read storage and ordinary nontrapping FP execution',
+                           'E=[Q+1a110] has nonzero byte+d0 at residual entry'],
+            'conclusion': 'within one residual, Q radius/mass/environment reference and E+d0 are preserved; force bodies return; at most360 integrations then finite local suffix',
+            'unproved': ['same natural entry and prepared TLS, residual numerical accuracy/final trial output',
+                         'other force cold-initialization paths and mode0/1 full physics loop']}
+
+
 def inspect(exe):
     """复核模式分派、数值体清单和局部公式；完整试算输出仍未证明。"""
     data = exe.read_bytes()
@@ -297,7 +362,7 @@ def inspect(exe):
     constants = {hex(a): struct.unpack_from('<f', data, offset(a))[0]
                  for a in (0x145A1D4A4, 0x145A1D4B0, 0x145A1D48C, 0x145A1D4EC, 0x145A1D4C4, 0x145A1D468)}
     trials = inspect_trial_bodies(exe, data, offset)
-    return {'scratch_producer': inspect_scratch_producer(exe), 'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
+    return {'residual_preservation': inspect_residual_preservation(exe), 'scratch_producer': inspect_scratch_producer(exe), 'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
             'conditions': ['same actual3f and updated target/scale/spin; source origin=C540, Z=1; mode input in{0,1,2,4}',
                            'M6a0>23; control B+d10 is same M; independent valid argument/output storage',
                            'finite derived distances/scalars; first thread-static initialization gate already satisfied at1443f3031; valid TLS and data reads',
@@ -315,5 +380,5 @@ if __name__ == '__main__':
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     args.output.write_text(json.dumps(inspect(args.exe), ensure_ascii=False, indent=2) + '\n')
-    print('PASS: effective-mode partitions/conditional suffixes; trial-body call inventories; outer budget cuts; actual conditional integration counters, local seed arithmetic and fresh scratch source/copy cuts.')
+    print('PASS: effective-mode partitions/conditional suffixes; trial-body call inventories; outer budget cuts; actual conditional integration counters, local seed arithmetic fresh scratch source/copy cuts, prepared force write domains and residual cycle cuts.')
     print('Conditional static evidence only; complete trial outputs and shot-to-goal mechanism remain unproved.')

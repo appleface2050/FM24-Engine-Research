@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261031_goal_trial_force_helpers_static.txt",
     "20261031_goal_trial_scratch_parameter_source_static.txt",
     "20261030_goal_shot_trial_bodies_static.txt",
     "20261030_goal_shot_solver_mode_dispatch_static.txt",
@@ -1328,6 +1329,7 @@ def verify(exe: Path) -> None:
                 or 0x1443F2EF0 <= address < 0x1443F48EF
                 or 0x145303160 <= address < 0x1453054FE
                 or 0x145302F10 <= address < 0x145303154
+                or 0x1453056E0 <= address < 0x145305A48
                 or 0x1453009F0 <= address < 0x145300B03
                 or 0x1443E8310 <= address < 0x1443E86E6
                 or 0x1418F81A0 <= address < 0x1418F83F5):

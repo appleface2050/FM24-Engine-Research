@@ -1,0 +1,221 @@
+FM24 original PE; complete force-helper bodies. Static analysis only; TLS alternatives retained.
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+00000001453056e0 <.sdata+0x53046e0>:
+   1453056e0:	56                                              	push   rsi
+   1453056e1:	57                                              	push   rdi
+   1453056e2:	53                                              	push   rbx
+   1453056e3:	48 83 ec 60                                     	sub    rsp,0x60
+   1453056e7:	44 0f 29 4c 24 50                               	movaps XMMWORD PTR [rsp+0x50],xmm9
+   1453056ed:	44 0f 29 44 24 40                               	movaps XMMWORD PTR [rsp+0x40],xmm8
+   1453056f3:	0f 29 7c 24 30                                  	movaps XMMWORD PTR [rsp+0x30],xmm7
+   1453056f8:	0f 29 74 24 20                                  	movaps XMMWORD PTR [rsp+0x20],xmm6
+   1453056fd:	4c 89 c6                                        	mov    rsi,r8
+   145305700:	89 d3                                           	mov    ebx,edx
+   145305702:	48 89 cf                                        	mov    rdi,rcx
+   145305705:	f3 0f 10 71 10                                  	movss  xmm6,DWORD PTR [rcx+0x10]
+   14530570a:	f3 0f 10 05 be f4 05 01                         	movss  xmm0,DWORD PTR [rip+0x105f4be]        # 0x146364bd0
+   145305712:	0f 2e f0                                        	ucomiss xmm6,xmm0
+   145305715:	75 26                                           	jne    0x14530573d
+   145305717:	7a 24                                           	jp     0x14530573d
+   145305719:	f3 0f 10 4f 14                                  	movss  xmm1,DWORD PTR [rdi+0x14]
+   14530571e:	0f 2e 0d af f4 05 01                            	ucomiss xmm1,DWORD PTR [rip+0x105f4af]        # 0x146364bd4
+   145305725:	75 16                                           	jne    0x14530573d
+   145305727:	7a 14                                           	jp     0x14530573d
+   145305729:	f3 0f 10 4f 18                                  	movss  xmm1,DWORD PTR [rdi+0x18]
+   14530572e:	0f 2e 0d a3 f4 05 01                            	ucomiss xmm1,DWORD PTR [rip+0x105f4a3]        # 0x146364bd8
+   145305735:	75 06                                           	jne    0x14530573d
+   145305737:	0f 8b a6 01 00 00                               	jnp    0x1453058e3
+   14530573d:	f3 0f 10 4f 20                                  	movss  xmm1,DWORD PTR [rdi+0x20]
+   145305742:	0f 2e c8                                        	ucomiss xmm1,xmm0
+   145305745:	75 26                                           	jne    0x14530576d
+   145305747:	7a 24                                           	jp     0x14530576d
+   145305749:	f3 0f 10 47 24                                  	movss  xmm0,DWORD PTR [rdi+0x24]
+   14530574e:	0f 2e 05 7f f4 05 01                            	ucomiss xmm0,DWORD PTR [rip+0x105f47f]        # 0x146364bd4
+   145305755:	75 16                                           	jne    0x14530576d
+   145305757:	7a 14                                           	jp     0x14530576d
+   145305759:	f3 0f 10 47 28                                  	movss  xmm0,DWORD PTR [rdi+0x28]
+   14530575e:	0f 2e 05 73 f4 05 01                            	ucomiss xmm0,DWORD PTR [rip+0x105f473]        # 0x146364bd8
+   145305765:	75 06                                           	jne    0x14530576d
+   145305767:	0f 8b 76 01 00 00                               	jnp    0x1453058e3
+   14530576d:	f3 0f 10 47 14                                  	movss  xmm0,DWORD PTR [rdi+0x14]
+   145305772:	f3 0f 10 4f 18                                  	movss  xmm1,DWORD PTR [rdi+0x18]
+   145305777:	f3 0f 59 c9                                     	mulss  xmm1,xmm1
+   14530577b:	f3 0f 59 c0                                     	mulss  xmm0,xmm0
+   14530577f:	f3 0f 59 f6                                     	mulss  xmm6,xmm6
+   145305783:	f3 0f 58 f0                                     	addss  xmm6,xmm0
+   145305787:	f3 0f 58 f1                                     	addss  xmm6,xmm1
+   14530578b:	0f 57 ff                                        	xorps  xmm7,xmm7
+   14530578e:	f3 0f 51 fe                                     	sqrtss xmm7,xmm6
+   145305792:	0f 57 c0                                        	xorps  xmm0,xmm0
+   145305795:	0f 2e f8                                        	ucomiss xmm7,xmm0
+   145305798:	75 06                                           	jne    0x1453057a0
+   14530579a:	0f 8b 43 01 00 00                               	jnp    0x1453058e3
+   1453057a0:	0f 28 47 20                                     	movaps xmm0,XMMWORD PTR [rdi+0x20]
+   1453057a4:	0f 59 c0                                        	mulps  xmm0,xmm0
+   1453057a7:	f3 0f 16 c8                                     	movshdup xmm1,xmm0
+   1453057ab:	f3 0f 58 c8                                     	addss  xmm1,xmm0
+   1453057af:	0f 12 c0                                        	movhlps xmm0,xmm0
+   1453057b2:	f3 0f 58 c1                                     	addss  xmm0,xmm1
+   1453057b6:	45 0f 57 c9                                     	xorps  xmm9,xmm9
+   1453057ba:	f3 44 0f 51 c8                                  	sqrtss xmm9,xmm0
+   1453057bf:	f3 44 0f 59 4f 38                               	mulss  xmm9,DWORD PTR [rdi+0x38]
+   1453057c5:	8b 05 61 6c 13 01                               	mov    eax,DWORD PTR [rip+0x1136c61]        # 0x14643c42c
+   1453057cb:	8b 0d ef 96 08 01                               	mov    ecx,DWORD PTR [rip+0x10896ef]        # 0x14638eec0
+   1453057d1:	65 48 8b 14 25 58 00 00 00                      	mov    rdx,QWORD PTR gs:0x58
+   1453057da:	48 8b 0c ca                                     	mov    rcx,QWORD PTR [rdx+rcx*8]
+   1453057de:	3b 81 38 00 00 00                               	cmp    eax,DWORD PTR [rcx+0x38]
+   1453057e4:	0f 8f 17 01 00 00                               	jg     0x145305901
+   1453057ea:	66 44 0f 6e c3                                  	movd   xmm8,ebx
+   1453057ef:	f3 44 0f 5e cf                                  	divss  xmm9,xmm7
+   1453057f4:	8b 05 3a 6c 13 01                               	mov    eax,DWORD PTR [rip+0x1136c3a]        # 0x14643c434
+   1453057fa:	8b 0d c0 96 08 01                               	mov    ecx,DWORD PTR [rip+0x10896c0]        # 0x14638eec0
+   145305800:	65 48 8b 14 25 58 00 00 00                      	mov    rdx,QWORD PTR gs:0x58
+   145305809:	48 8b 0c ca                                     	mov    rcx,QWORD PTR [rdx+rcx*8]
+   14530580d:	3b 81 38 00 00 00                               	cmp    eax,DWORD PTR [rcx+0x38]
+   145305813:	0f 8f 1c 01 00 00                               	jg     0x145305935
+   145305819:	f3 44 0f 59 0d 0e 6c 13 01                      	mulss  xmm9,DWORD PTR [rip+0x1136c0e]        # 0x14643c430
+   145305822:	f3 44 0f 58 0d fd 6b 13 01                      	addss  xmm9,DWORD PTR [rip+0x1136bfd]        # 0x14643c428
+   14530582b:	0f 28 47 10                                     	movaps xmm0,XMMWORD PTR [rdi+0x10]
+   14530582f:	0f 28 c8                                        	movaps xmm1,xmm0
+   145305832:	0f 59 c8                                        	mulps  xmm1,xmm0
+   145305835:	f3 0f 16 d1                                     	movshdup xmm2,xmm1
+   145305839:	f3 0f 58 d1                                     	addss  xmm2,xmm1
+   14530583d:	0f 12 c9                                        	movhlps xmm1,xmm1
+   145305840:	f3 0f 58 ca                                     	addss  xmm1,xmm2
+   145305844:	0f 57 d2                                        	xorps  xmm2,xmm2
+   145305847:	f3 0f 51 d1                                     	sqrtss xmm2,xmm1
+   14530584b:	f3 0f 10 4f 18                                  	movss  xmm1,DWORD PTR [rdi+0x18]
+   145305850:	f3 0f 5e ca                                     	divss  xmm1,xmm2
+   145305854:	f3 0f 16 d8                                     	movshdup xmm3,xmm0
+   145305858:	f3 0f 5e da                                     	divss  xmm3,xmm2
+   14530585c:	f3 0f 5e c2                                     	divss  xmm0,xmm2
+   145305860:	0f 28 57 20                                     	movaps xmm2,XMMWORD PTR [rdi+0x20]
+   145305864:	0f 28 e2                                        	movaps xmm4,xmm2
+   145305867:	0f 59 e2                                        	mulps  xmm4,xmm2
+   14530586a:	f3 0f 16 ec                                     	movshdup xmm5,xmm4
+   14530586e:	f3 0f 58 ec                                     	addss  xmm5,xmm4
+   145305872:	0f 12 e4                                        	movhlps xmm4,xmm4
+   145305875:	f3 0f 58 e5                                     	addss  xmm4,xmm5
+   145305879:	f3 0f 51 e4                                     	sqrtss xmm4,xmm4
+   14530587d:	f3 0f 10 6f 28                                  	movss  xmm5,DWORD PTR [rdi+0x28]
+   145305882:	f3 0f 5e ec                                     	divss  xmm5,xmm4
+   145305886:	f3 0f 16 fa                                     	movshdup xmm7,xmm2
+   14530588a:	f3 0f 5e fc                                     	divss  xmm7,xmm4
+   14530588e:	f3 0f 5e d4                                     	divss  xmm2,xmm4
+   145305892:	0f 28 e1                                        	movaps xmm4,xmm1
+   145305895:	f3 0f 59 ca                                     	mulss  xmm1,xmm2
+   145305899:	f3 0f 59 d3                                     	mulss  xmm2,xmm3
+   14530589d:	f3 0f 59 dd                                     	mulss  xmm3,xmm5
+   1453058a1:	f3 0f 59 e7                                     	mulss  xmm4,xmm7
+   1453058a5:	f3 0f 5c e3                                     	subss  xmm4,xmm3
+   1453058a9:	f3 0f 59 e8                                     	mulss  xmm5,xmm0
+   1453058ad:	f3 0f 5c e9                                     	subss  xmm5,xmm1
+   1453058b1:	0f 14 e5                                        	unpcklps xmm4,xmm5
+   1453058b4:	f3 0f 59 f8                                     	mulss  xmm7,xmm0
+   1453058b8:	f3 0f 5c d7                                     	subss  xmm2,xmm7
+   1453058bc:	0f 16 e2                                        	movlhps xmm4,xmm2
+   1453058bf:	f3 44 0f 59 47 34                               	mulss  xmm8,DWORD PTR [rdi+0x34]
+   1453058c5:	f3 41 0f 59 f0                                  	mulss  xmm6,xmm8
+   1453058ca:	f3 41 0f 59 f1                                  	mulss  xmm6,xmm9
+   1453058cf:	0f 57 c0                                        	xorps  xmm0,xmm0
+   1453058d2:	f3 0f 10 c6                                     	movss  xmm0,xmm6
+   1453058d6:	0f c6 f0 40                                     	shufps xmm6,xmm0,0x40
+   1453058da:	0f 59 f4                                        	mulps  xmm6,xmm4
+   1453058dd:	0f 58 36                                        	addps  xmm6,XMMWORD PTR [rsi]
+   1453058e0:	0f 29 36                                        	movaps XMMWORD PTR [rsi],xmm6
+   1453058e3:	0f 28 74 24 20                                  	movaps xmm6,XMMWORD PTR [rsp+0x20]
+   1453058e8:	0f 28 7c 24 30                                  	movaps xmm7,XMMWORD PTR [rsp+0x30]
+   1453058ed:	44 0f 28 44 24 40                               	movaps xmm8,XMMWORD PTR [rsp+0x40]
+   1453058f3:	44 0f 28 4c 24 50                               	movaps xmm9,XMMWORD PTR [rsp+0x50]
+   1453058f9:	48 83 c4 60                                     	add    rsp,0x60
+   1453058fd:	5b                                              	pop    rbx
+   1453058fe:	5f                                              	pop    rdi
+   1453058ff:	5e                                              	pop    rsi
+   145305900:	c3                                              	ret
+   145305901:	48 8d 0d 24 6b 13 01                            	lea    rcx,[rip+0x1136b24]        # 0x14643c42c
+   145305908:	e8 97 32 1e 00                                  	call   0x1454e8ba4
+   14530590d:	83 3d 18 6b 13 01 ff                            	cmp    DWORD PTR [rip+0x1136b18],0xffffffff        # 0x14643c42c
+   145305914:	0f 85 d0 fe ff ff                               	jne    0x1453057ea
+   14530591a:	c7 05 04 6b 13 01 8f c2 f5 3d                   	mov    DWORD PTR [rip+0x1136b04],0x3df5c28f        # 0x14643c428
+   145305924:	48 8d 0d 01 6b 13 01                            	lea    rcx,[rip+0x1136b01]        # 0x14643c42c
+   14530592b:	e8 0c 33 1e 00                                  	call   0x1454e8c3c
+   145305930:	e9 b5 fe ff ff                                  	jmp    0x1453057ea
+   145305935:	48 8d 0d f8 6a 13 01                            	lea    rcx,[rip+0x1136af8]        # 0x14643c434
+   14530593c:	e8 63 32 1e 00                                  	call   0x1454e8ba4
+   145305941:	83 3d ec 6a 13 01 ff                            	cmp    DWORD PTR [rip+0x1136aec],0xffffffff        # 0x14643c434
+   145305948:	0f 85 cb fe ff ff                               	jne    0x145305819
+   14530594e:	c7 05 d8 6a 13 01 b8 1e 45 3f                   	mov    DWORD PTR [rip+0x1136ad8],0x3f451eb8        # 0x14643c430
+   145305958:	48 8d 0d d5 6a 13 01                            	lea    rcx,[rip+0x1136ad5]        # 0x14643c434
+   14530595f:	e8 d8 32 1e 00                                  	call   0x1454e8c3c
+   145305964:	e9 b0 fe ff ff                                  	jmp    0x145305819
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000145305970 <.sdata+0x5304970>:
+   145305970:	48 83 ec 18                                     	sub    rsp,0x18
+   145305974:	0f 29 34 24                                     	movaps XMMWORD PTR [rsp],xmm6
+   145305978:	0f 28 41 10                                     	movaps xmm0,XMMWORD PTR [rcx+0x10]
+   14530597c:	0f 28 c8                                        	movaps xmm1,xmm0
+   14530597f:	0f 59 c8                                        	mulps  xmm1,xmm0
+   145305982:	f3 0f 16 d1                                     	movshdup xmm2,xmm1
+   145305986:	f3 0f 58 d1                                     	addss  xmm2,xmm1
+   14530598a:	0f 12 c9                                        	movhlps xmm1,xmm1
+   14530598d:	f3 0f 58 ca                                     	addss  xmm1,xmm2
+   145305991:	f3 0f 51 c9                                     	sqrtss xmm1,xmm1
+   145305995:	f3 0f 10 51 44                                  	movss  xmm2,DWORD PTR [rcx+0x44]
+   14530599a:	0f 2e d1                                        	ucomiss xmm2,xmm1
+   14530599d:	73 4c                                           	jae    0x1453059eb
+   14530599f:	f3 0f 10 59 48                                  	movss  xmm3,DWORD PTR [rcx+0x48]
+   1453059a4:	0f 2e cb                                        	ucomiss xmm1,xmm3
+   1453059a7:	73 49                                           	jae    0x1453059f2
+   1453059a9:	f3 0f 5c da                                     	subss  xmm3,xmm2
+   1453059ad:	0f 28 e1                                        	movaps xmm4,xmm1
+   1453059b0:	f3 0f 5c e2                                     	subss  xmm4,xmm2
+   1453059b4:	f3 0f 5e e3                                     	divss  xmm4,xmm3
+   1453059b8:	0f 28 d4                                        	movaps xmm2,xmm4
+   1453059bb:	f3 0f 58 d4                                     	addss  xmm2,xmm4
+   1453059bf:	f3 0f 10 1d e1 e1 35 00                         	movss  xmm3,DWORD PTR [rip+0x35e1e1]        # 0x145663ba8
+   1453059c7:	f3 0f 5c da                                     	subss  xmm3,xmm2
+   1453059cb:	f3 0f 59 e4                                     	mulss  xmm4,xmm4
+   1453059cf:	f3 0f 59 e3                                     	mulss  xmm4,xmm3
+   1453059d3:	f3 0f 10 51 4c                                  	movss  xmm2,DWORD PTR [rcx+0x4c]
+   1453059d8:	f3 0f 10 59 50                                  	movss  xmm3,DWORD PTR [rcx+0x50]
+   1453059dd:	f3 0f 5c d3                                     	subss  xmm2,xmm3
+   1453059e1:	f3 0f 59 d4                                     	mulss  xmm2,xmm4
+   1453059e5:	f3 0f 58 d3                                     	addss  xmm2,xmm3
+   1453059e9:	eb 0c                                           	jmp    0x1453059f7
+   1453059eb:	f3 0f 10 51 50                                  	movss  xmm2,DWORD PTR [rcx+0x50]
+   1453059f0:	eb 05                                           	jmp    0x1453059f7
+   1453059f2:	f3 0f 10 51 4c                                  	movss  xmm2,DWORD PTR [rcx+0x4c]
+   1453059f7:	f3 0f 16 d8                                     	movshdup xmm3,xmm0
+   1453059fb:	0f 28 e0                                        	movaps xmm4,xmm0
+   1453059fe:	66 0f 15 e0                                     	unpckhpd xmm4,xmm0
+   145305a02:	66 0f 6e ea                                     	movd   xmm5,edx
+   145305a06:	0f 28 35 93 ee 37 00                            	movaps xmm6,XMMWORD PTR [rip+0x37ee93]        # 0x1456848a0
+   145305a0d:	0f 57 e6                                        	xorps  xmm4,xmm6
+   145305a10:	0f 57 de                                        	xorps  xmm3,xmm6
+   145305a13:	0f 57 c6                                        	xorps  xmm0,xmm6
+   145305a16:	0f 14 c3                                        	unpcklps xmm0,xmm3
+   145305a19:	0f 16 c4                                        	movlhps xmm0,xmm4
+   145305a1c:	f3 0f 59 69 34                                  	mulss  xmm5,DWORD PTR [rcx+0x34]
+   145305a21:	f3 0f 59 ea                                     	mulss  xmm5,xmm2
+   145305a25:	f3 0f 59 e9                                     	mulss  xmm5,xmm1
+   145305a29:	0f 57 c9                                        	xorps  xmm1,xmm1
+   145305a2c:	f3 0f 10 cd                                     	movss  xmm1,xmm5
+   145305a30:	0f c6 e9 40                                     	shufps xmm5,xmm1,0x40
+   145305a34:	0f 59 e8                                        	mulps  xmm5,xmm0
+   145305a37:	41 0f 58 28                                     	addps  xmm5,XMMWORD PTR [r8]
+   145305a3b:	41 0f 29 28                                     	movaps XMMWORD PTR [r8],xmm5
+   145305a3f:	0f 28 34 24                                     	movaps xmm6,XMMWORD PTR [rsp]
+   145305a43:	48 83 c4 18                                     	add    rsp,0x18
+   145305a47:	c3                                              	ret

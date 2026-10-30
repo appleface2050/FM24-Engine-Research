@@ -1,4 +1,166 @@
 {
+  "residual_preservation": {
+    "evidence_type": "manual_argument_alias_binding_plus_original_CFG_write_and_cycle_checks",
+    "helpers": [
+      {
+        "entry": "0x145305970",
+        "prepared_TLS_edges": {},
+        "calls": [],
+        "acyclic": true,
+        "writes": [
+          {
+            "site": "0x145305a3b",
+            "instruction": "movaps XMMWORD PTR [r8],xmm5"
+          }
+        ]
+      },
+      {
+        "entry": "0x1453056e0",
+        "prepared_TLS_edges": {
+          "0x1453057e4": "0x1453057ea",
+          "0x145305813": "0x145305819"
+        },
+        "calls": [],
+        "acyclic": true,
+        "writes": [
+          {
+            "site": "0x1453058e0",
+            "instruction": "movaps XMMWORD PTR [rsi],xmm6"
+          }
+        ]
+      }
+    ],
+    "residuals": [
+      {
+        "entry": "0x1453049d0",
+        "writes": [
+          {
+            "site": "0x145304a5e",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0d0],xmm7"
+          },
+          {
+            "site": "0x145304a65",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0c0],xmm7"
+          },
+          {
+            "site": "0x145304a6c",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0b0],xmm7"
+          },
+          {
+            "site": "0x145304a77",
+            "instruction": "mov DWORD PTR [rsi+0x1a0b8],edx"
+          },
+          {
+            "site": "0x145304a80",
+            "instruction": "mov QWORD PTR [rsi+0x1a0b0],rdx"
+          },
+          {
+            "site": "0x145304a8a",
+            "instruction": "mov DWORD PTR [rsi+0x1a0d8],edx"
+          },
+          {
+            "site": "0x145304a93",
+            "instruction": "mov QWORD PTR [rsi+0x1a0d0],rcx"
+          },
+          {
+            "site": "0x145304a9d",
+            "instruction": "mov DWORD PTR [rsi+0x1a0c8],ecx"
+          },
+          {
+            "site": "0x145304aa6",
+            "instruction": "mov QWORD PTR [rsi+0x1a0c0],rax"
+          },
+          {
+            "site": "0x145304bdf",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0b0],xmm0"
+          },
+          {
+            "site": "0x145304bec",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0c0],xmm1"
+          },
+          {
+            "site": "0x145304f1b",
+            "instruction": "movss DWORD PTR [r14],xmm6"
+          },
+          {
+            "site": "0x145304f20",
+            "instruction": "movss DWORD PTR [r14+0x4],xmm12"
+          }
+        ],
+        "cycle_cut": "0x145304c30",
+        "acyclic_after_counter_cut": true
+      },
+      {
+        "entry": "0x145303e60",
+        "writes": [
+          {
+            "site": "0x145303eeb",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0d0],xmm6"
+          },
+          {
+            "site": "0x145303ef2",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0c0],xmm6"
+          },
+          {
+            "site": "0x145303ef9",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0b0],xmm6"
+          },
+          {
+            "site": "0x145303f04",
+            "instruction": "mov DWORD PTR [rsi+0x1a0b8],edx"
+          },
+          {
+            "site": "0x145303f0d",
+            "instruction": "mov QWORD PTR [rsi+0x1a0b0],rdx"
+          },
+          {
+            "site": "0x145303f17",
+            "instruction": "mov DWORD PTR [rsi+0x1a0d8],edx"
+          },
+          {
+            "site": "0x145303f20",
+            "instruction": "mov QWORD PTR [rsi+0x1a0d0],rcx"
+          },
+          {
+            "site": "0x145303f2a",
+            "instruction": "mov DWORD PTR [rsi+0x1a0c8],ecx"
+          },
+          {
+            "site": "0x145303f33",
+            "instruction": "mov QWORD PTR [rsi+0x1a0c0],rax"
+          },
+          {
+            "site": "0x145304065",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0b0],xmm0"
+          },
+          {
+            "site": "0x145304072",
+            "instruction": "movaps XMMWORD PTR [rsi+0x1a0c0],xmm1"
+          },
+          {
+            "site": "0x145304394",
+            "instruction": "movss DWORD PTR [r14],xmm2"
+          },
+          {
+            "site": "0x145304399",
+            "instruction": "movss DWORD PTR [r14+0x4],xmm0"
+          }
+        ],
+        "cycle_cut": "0x145303f9e",
+        "acyclic_after_counter_cut": true
+      }
+    ],
+    "conditions": [
+      "valid independent Q/E, error outputs and stack force buffers; no external concurrent writes",
+      "spin force two TLS guards already satisfied; valid TLS/read storage and ordinary nontrapping FP execution",
+      "E=[Q+1a110] has nonzero byte+d0 at residual entry"
+    ],
+    "conclusion": "within one residual, Q radius/mass/environment reference and E+d0 are preserved; force bodies return; at most360 integrations then finite local suffix",
+    "unproved": [
+      "same natural entry and prepared TLS, residual numerical accuracy/final trial output",
+      "other force cold-initialization paths and mode0/1 full physics loop"
+    ]
+  },
   "scratch_producer": {
     "evidence_type": "manual_source_binding_and_original_CFG_cuts_not_execution",
     "entry": "0x145302f10",
