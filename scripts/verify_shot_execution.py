@@ -152,6 +152,8 @@ EVIDENCE = (
     "20261030_goal_candidate_roster_query_static.txt",
     "20261030_goal_candidate_context_speed_preservation_static.txt",
     "20261030_goal_candidate_attribute_gate_static.txt",
+    "20261030_goal_candidate_context_return_static.txt",
+    "20261030_goal_context_return_to_near_candidate_static.txt",
 )
 
 
@@ -957,12 +959,17 @@ def verify(exe: Path) -> None:
     classifiers = (0x14274E900, 0x14274ED20, 0x14274F140, 0x1443CB7B0)
     for row in common["native_assertions"]:
         address = int(row["va"], 16)
-        if (0x1419C9CE0 <= address < 0x1419C9CFF
+        if (0x141ABED80 <= address < 0x141ABEF14
+                or 0x1419C9CE0 <= address < 0x1419C9CFF
                 or any(start <= address < start + 0x1E for start in classifiers)):
             expected = bytes.fromhex(row["hex"])
             check(data[offset(address):offset(address) + len(expected)] == expected,
                   f"Shared attribute classifier code {address:x}")
     for row in common["data_assertions"]:
+        if int(row["va"], 16) == 0x141ABEF14:
+            expected = bytes.fromhex(row["hex"])
+            check(data[offset(0x141ABEF14):offset(0x141ABEF14) + len(expected)] == expected,
+                  "Shared time-cache complete nine-entry state table")
         if "complete 256-entry signed-relative classifier table" not in row.get("label", ""):
             continue
         address, expected = int(row["va"], 16), bytes.fromhex(row["hex"])
@@ -982,6 +989,14 @@ def verify(exe: Path) -> None:
           and instructions.get(0x141B43202) == "cmp rbx,0xa",
           "Cache query append count limit")
     for address, expected in {
+        0x14441EF12: "or BYTE PTR [r14+0x11a9],0x10",
+        0x14441D7A4: "je 0x14441d80a",
+        0x14441EF1A: "test BYTE PTR [r14+0x11a9],0x40",
+        0x1444179C4: "test eax,0x4000",
+        0x1444179CB: "test eax,0x780",
+        0x144417AD5: "and eax,DWORD PTR [rcx+0xaa4]",
+        0x144421950: "xor eax,eax",
+        0x144421D23: "je 0x144423e01",
         0x1443B91A2: "jne 0x1443b9254",
         0x1443B988A: "mov WORD PTR [r14+0x1485],0x101",
         0x1443B9ABB: "mov WORD PTR [r14+0x1485],0x100",
@@ -1070,7 +1085,13 @@ def verify(exe: Path) -> None:
     for address, instruction in instructions.items():
         if not (0x144448FB0 <= address < 0x14444931E
                 or 0x1443B9140 <= address < 0x1443BB231
-                or 0x1443B3FC0 <= address < 0x1443B48F8):
+                or 0x1443B3FC0 <= address < 0x1443B48F8
+                or 0x144417950 <= address < 0x14441FFE1
+                or 0x141B410C0 <= address < 0x141B4166C
+                or 0x141B4FE90 <= address < 0x141B505FE
+                or 0x141B57440 <= address < 0x141B57800
+                or 0x140448F20 <= address < 0x140449019
+                or 0x144421930 <= address < 0x144421D29):
             continue
         match = re.fullmatch(r"call 0x([0-9a-f]+)", instruction)
         if match:
@@ -1315,6 +1336,7 @@ def verify(exe: Path) -> None:
         0x1443982A3: 0x14557E730,
     }
     jumps = {
+        0x1418B7140: 0x150BC22F0,
         0x141B42C8E: 0x141B42D80,
         0x1443B6160: 0x159F102E0,
         0x1418FDF30: 0x150DF5F90,

@@ -27,8 +27,8 @@ def walk(starts, graph, blocked=()):
     return seen
 
 
-def decode_graph(exe: Path, start: int, end: int):
-    """重新解码指定函数，所有本地条件边均保留，CALL只接正常返回。"""
+def decode_graph(exe: Path, start: int, end: int, *, external_stops=()):
+    """解码本地条件边；CALL接正常返回，显式外部尾跳仅作边界节点。"""
     output = subprocess.check_output([
         "objdump", "-d", "-Mintel", "--insn-width=16",
         f"--start-address={start:#x}", f"--stop-address={end:#x}", str(exe),
@@ -57,9 +57,13 @@ def decode_graph(exe: Path, start: int, end: int):
             graph[address] = []
         else:
             graph[address] = [address + size]  # CALL只按正常返回处理。
-    for address, targets in graph.items():
-        if any(target not in rows for target in targets):
-            raise ValueError(f"Uncovered successor at {address:#x}")
+    outside = {target for targets in graph.values() for target in targets if target not in rows}
+    if outside - set(external_stops):
+        raise ValueError(f"Uncovered successors: {sorted(hex(address) for address in outside)}")
+    # 明确列出的外部边只作边界节点，不伪装为已分析的原生指令。
+    for address in outside:
+        rows[address] = (0, "external_boundary")
+        graph[address] = []
     return rows, graph
 
 
@@ -394,6 +398,133 @@ def inspect(exe: Path):
         if any(leaf[address][1].startswith("call")
                for address in walk([start], leaf_edges)):
             raise ValueError(f"State helper {start:#x} contains another subcall")
+    complete_context = {address: list(targets) for address, targets in later_graph.items()}
+    for address, instruction, successor in (
+        (0x14441D7A4, "je 0x14441d80a", 0x14441D80A),
+        (0x14441BEF8, "jne 0x14441bf07", 0x14441BEFA),
+    ):
+        if re.sub(r"\s+", " ", context_rows[address][1]) != instruction:
+            raise ValueError("Late context flag gate differs")
+        complete_context[address] = [successor]
+    late_context = walk([0x14441BE3A], complete_context)
+    context_returns = {address for address, row in context_rows.items()
+                       if row[1].startswith("ret")}
+    if context_returns != {0x14441F49C}:
+        raise ValueError("Context normal-return boundary differs")
+    if context_returns & walk([0x14441AF65], complete_context, {0x14441BE35}):
+        raise ValueError("Context can return while bypassing the attribute gate")
+    if 0x14441D7A4 in walk([0x14441EF12], complete_context):
+        raise ValueError("Action-flag update can precede the ball-push exclusion")
+    late_targets = sorted({context_rows[address][1].split()[1]
+                           for address in late_context
+                           if context_rows[address][1].startswith("call")})
+    if late_targets != sorted([
+        "0x1418b7140", "0x141b40bd0", "0x141b40fe0", "0x141b41670",
+        "0x141b41ab0", "0x141b42f50", "0x141b45b90", "0x141b45f00",
+        "0x141b460a0", "0x141b461a0", "0x141b4fe90", "0x141b57440",
+        "0x1443b9140", "0x1443bc460", "0x1443f9200", "0x1443f9710",
+        "0x1443fd280", "0x14557e9b0", "0x14557ea20",
+    ]):
+        raise ValueError("Late context has an unreviewed subcall")
+    context_keys = sorted(context_rows)
+    for address in late_context:
+        if context_rows[address][1] != "call   0x1443fd280":
+            continue
+        prior = context_keys[context_keys.index(address) - 1]
+        if context_rows[prior][1] != "xor    r9d,r9d":
+            raise ValueError("Late angle query can write a non-null optional output")
+        if address in walk([0x14441BE3A], complete_context, {prior}):
+            raise ValueError("Late angle query can bypass its null-output binding")
+    record_nulls = {
+        0x14441E71B: (0x14441E6EE,), 0x14441E783: (0x14441E74B,),
+        0x14441E877: (0x14441E80F, 0x14441E84E),
+        0x14441E8DD: (0x14441E7B5, 0x14441E8A9, 0x14441E974),
+        0x14441E946: (0x14441E920,), 0x14441E9FD: (0x14441E9D8,),
+        0x14441F9EC: (0x14441F345, 0x14441F7D5, 0x14441F9C7),
+    }
+    for call, bindings in record_nulls.items():
+        expected = ("mov QWORD PTR [rsp+0x90],0x0"
+                    if call in (0x14441E783, 0x14441E8DD)
+                    else "mov QWORD PTR [rsp+0x40],0x0")
+        for binding in bindings:
+            # E8dd有第三个R8=&stackC0入口，不能误称所有分支都传stack80。
+            actual_expected = ("mov QWORD PTR [rsp+0xd0],0x0"
+                               if binding == 0x14441E7B5 else expected)
+            if re.sub(r"\s+", " ", context_rows[binding][1]) != actual_expected:
+                raise ValueError("Late record query optional write binding differs")
+        if call in walk([0x14441BE3A], complete_context, bindings):
+            raise ValueError("Late record query can bypass every null-output write")
+        if call in walk([0x14441BE3A], complete_context, {0x14441E710, 0x14441E7EB}):
+            raise ValueError("Late record query can bypass the existing-list pointer load")
+    for call, binding in ((0x14441C8B1, 0x14441C8A6),
+                          (0x14441C8D3, 0x14441C8C5),
+                          (0x14441CC02, 0x14441CBF7),
+                          (0x14441CC61, 0x14441CC56)):
+        if not re.fullmatch(r"lea\s+rdx,\[rsp\+0x(?:30|80)\]", context_rows[binding][1]):
+            raise ValueError("Late pair-distance output is not a stack slot")
+        if call in walk([0x14441BE3A], complete_context, {binding}):
+            raise ValueError("Late pair-distance output binding can be bypassed")
+    flag_pointers = {0x14441C021, 0x14441C076, 0x14441C08D}
+    for binding in flag_pointers:
+        if context_rows[binding][1] != "lea    rsi,[r13+0x5ff]":
+            raise ValueError("Late byte-store pointer differs")
+    for store in (0x14441C048, 0x14441C505, 0x14441C635,
+                  0x14441C757, 0x14441CE0F):
+        if store in walk([0x14441BE3A], complete_context, flag_pointers):
+            raise ValueError("Late indirect byte store bypasses context-byte binding")
+    if (context_rows[0x14441C75A][1] != "mov    QWORD PTR [rsp+0x78],rsi"
+            or context_rows[0x14441D6EF][1] != "mov    rbp,QWORD PTR [rsp+0x78]"
+            or context_rows[0x14441D80A][1] != "lea    rbp,[r13+0x60d]"):
+        raise ValueError("Late restored byte-store pointer differs")
+    for store, bindings in ((0x14441D780, {0x14441C75A, 0x14441D6EF}),
+                            (0x14441D811, {0x14441D80A})):
+        for binding in bindings:
+            if store in walk([0x14441BE3A], complete_context, {binding}):
+                raise ValueError("Late RBP byte store can bypass its pointer producer")
+    caller_rows, caller_graph = decode_graph(
+        exe, 0x144417950, 0x14441A3A7,
+        external_stops=(0x14441FFF0, 0x144420220))
+    caller_conditions = (
+        (0x1444179C9, "jne 0x144417a24", 0x1444179CB),
+        (0x1444179D0, "je 0x144417a7e", 0x144417A7E),
+        (0x144417A83, "je 0x144417aa7", 0x144417AA7),
+        (0x144417ADB, "jne 0x144417d6b", 0x144417D6B),
+        (0x144417D76, "jne 0x144417e6a", 0x144417D7C),
+        (0x144417DEF, "jne 0x144417e7a", 0x144417DF5),
+        (0x144417E1A, "je 0x144417e8a", 0x144417E8A),
+        (0x144417EC3, "jne 0x144417ee8", 0x144417EC5),
+        (0x144417EE2, "je 0x1444187ec", 0x1444187EC),
+        (0x1444187F3, "je 0x14441a27f", 0x14441A27F),
+        (0x14441A28C, "jne 0x14441a2db", 0x14441A28E),
+    )
+    for address, instruction, successor in caller_conditions:
+        if re.sub(r"\s+", " ", caller_rows[address][1]) != instruction:
+            raise ValueError("Context-return caller condition differs")
+        caller_graph[address] = [successor]
+    caller_suffix = walk([0x1444179A4], caller_graph, {0x14441A29F})
+    caller_calls = [hex(address) for address in sorted(caller_suffix)
+                    if caller_rows[address][1].startswith("call")]
+    if caller_calls != ["0x14441a285", "0x14441a294"]:
+        raise ValueError("Unexpected helper before the actual near-candidate call")
+    if any(caller_rows[address][1].startswith("ret")
+           or caller_rows[address][1] == "external_boundary" for address in caller_suffix):
+        raise ValueError("Caller can exit before the near-candidate call")
+    guard_rows, guard_graph = decode_graph(exe, 0x144421930, 0x144421BB0)
+    if re.sub(r"\s+", " ", guard_rows[0x144421954][1]) != "je 0x144421ba3":
+        raise ValueError("First candidate guard zero-result branch differs")
+    guard_graph[0x144421954] = [0x144421BA3]  # 已证141b46830返回0。
+    guard_path = walk([0x144421930], guard_graph)
+    if [address for address in guard_path if guard_rows[address][1].startswith("call")] != [0x144421949]:
+        raise ValueError("First candidate guard has another actual call")
+    alternate_rows, alternate_graph = decode_graph(
+        exe, 0x144421BB0, 0x144421D29,
+        external_stops=(0x144423E01, 0x144421D29))
+    if re.sub(r"\s+", " ", alternate_rows[0x144421D23][1]) != "je 0x144423e01":
+        raise ValueError("Alternate candidate flag branch differs")
+    alternate_graph[0x144421D23] = [0x144423E01]  # 动作标志两种值的bit0均0。
+    if any(alternate_rows[address][1].startswith("call")
+           for address in walk([0x144421BB0], alternate_graph)):
+        raise ValueError("Alternate-candidate early prefix contains an actual call")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -484,6 +615,23 @@ def inspect(exe: Path):
             "scalar_outputs_bound_to_stack_and_optional_angle_writes_null": True,
             "cold_normal_return_can_bypass_all_valid_writes": False,
             "limits": "Preservation additionally needs P1870=1, bounded pair-cache/geometry storage, valid player/team objects and the reviewed public attribute-reader contract. Boolean output semantics do not establish natural shot choice or goal probability.",
+        },
+        "candidate_context_normal_return": {
+            "return": "0x14441f49c", "late_call_targets": late_targets,
+            "late_instructions": len(late_context),
+            "normal_return_can_bypass_attribute_gate": False,
+            "action_flag_or_0x1000_can_precede_ball_gate": False,
+            "late_record_optional_outputs_null": True,
+            "action_flag_outputs": ["0x810", "0x1810"],
+            "limits": "Write-domain contracts permit RNG, owned byte-vector growth and caches. No natural input or RNG-output witness is established by this graph.",
+        },
+        "context_return_to_near_candidate": {
+            "entry": "0x1444179a4", "candidate_call": "0x14441a29f",
+            "conditions": ["P11a8=810 or 1810", "Maa4 bit10000=1", "First guard AL=0"],
+            "actual_prefix_calls": caller_calls,
+            "first_guard_actual_call": "0x144421949 -> 141b46830; P16f8 bit0=0",
+            "alternate_prefix_has_calls": False,
+            "limits": "Requires valid caller/context storage. Candidate creation is documented using prior native evidence; model computation, selection and natural goal remain open.",
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",
