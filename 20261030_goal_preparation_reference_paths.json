@@ -424,6 +424,46 @@
     "valid_getter_has_calls": false,
     "limits": "Preservation uses typed callee/write bounds and storage contracts, not CFG alone. C+610 can clear; natural record readiness, type retention and later attribute-gate calls remain unresolved."
   },
+  "candidate_attribute_gate": {
+    "site": "0x14441be35",
+    "return": "0x14441be3a",
+    "gate_calls": {
+      "0x144448ff2": "call   0x1443b3fc0",
+      "0x144449005": "call   0x1443b3fc0",
+      "0x144449018": "call   0x1443b3fc0",
+      "0x14444902c": "call   0x1443b3fc0",
+      "0x14444903f": "call   0x1443b3fc0",
+      "0x144449053": "call   0x1443b3fc0",
+      "0x144449066": "call   0x1443b3fc0",
+      "0x14444907a": "call   0x1443b3fc0",
+      "0x144449128": "call   0x1443b9140"
+    },
+    "state_query": "0x1443b9140..0x1443bb231",
+    "condition_at_read": "P+16f8 bit0=0",
+    "remaining_targets": [
+      "0x141a9b4a0",
+      "0x141b40bd0",
+      "0x141b41670",
+      "0x141b419b0",
+      "0x141b41ab0",
+      "0x141b45fe0",
+      "0x141b460a0",
+      "0x141b461a0",
+      "0x141b462a0",
+      "0x141b47470",
+      "0x141b47820",
+      "0x141b57800",
+      "0x1443bc460",
+      "0x1443f7c80",
+      "0x1443f7d90",
+      "0x1443fd280"
+    ],
+    "motion_query_site_0x1443b932a_reachable": false,
+    "cache_calls_bound_to_same_P": true,
+    "scalar_outputs_bound_to_stack_and_optional_angle_writes_null": true,
+    "cold_normal_return_can_bypass_all_valid_writes": false,
+    "limits": "Preservation additionally needs P1870=1, bounded pair-cache/geometry storage, valid player/team objects and the reviewed public attribute-reader contract. Boolean output semantics do not establish natural shot choice or goal probability."
+  },
   "limits": [
     "All conditional branches allowed; natural reachability and termination unproved.",
     "CALL treated as normal return; callee effects and exception paths unproved.",

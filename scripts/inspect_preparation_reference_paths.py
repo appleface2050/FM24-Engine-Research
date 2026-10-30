@@ -323,6 +323,77 @@ def inspect(exe: Path):
     if any(getter_rows[address][1].startswith("call")
            for address in walk([0x141B62DC0], getter_graph)):
         raise ValueError("Valid player cache getter can still recompute")
+    gate_rows, gate_graph = decode_graph(exe, 0x144448FB0, 0x14444931E)
+    gate_calls = {address: row[1] for address, row in gate_rows.items()
+                  if row[1].startswith("call")}
+    if (sum(value == "call   0x1443b3fc0" for value in gate_calls.values()) != 8
+            or gate_calls.get(0x144449128) != "call   0x1443b9140"
+            or len(gate_calls) != 9):
+        raise ValueError("Attribute gate subcall boundary differs")
+    state_rows, state_graph = decode_graph(exe, 0x1443B9140, 0x1443BB231)
+    if re.sub(r"\s+", " ", state_rows[0x1443B91A2][1]) != "jne 0x1443b9254":
+        raise ValueError("State query flag branch differs")
+    state_graph[0x1443B91A2] = [0x1443B91A8]  # 同一P+16f8 bit0=0。
+    state_reached = walk([0x1443B9140], state_graph)
+    if 0x1443B932A in state_reached:
+        raise ValueError("State query still reaches motion-producing helper")
+    state_targets = sorted({state_rows[address][1].split()[1]
+                            for address in state_reached
+                            if state_rows[address][1].startswith("call")})
+    if state_targets != sorted([
+        "0x141a9b4a0", "0x141b40bd0", "0x141b41670", "0x141b419b0",
+        "0x141b41ab0", "0x141b45fe0", "0x141b460a0", "0x141b461a0",
+        "0x141b462a0", "0x141b47470", "0x141b47820", "0x141b57800",
+        "0x1443bc460", "0x1443f7c80", "0x1443f7d90", "0x1443fd280",
+    ]):
+        raise ValueError("State query has an unreviewed target")
+    state_keys = sorted(state_rows)
+    for address in state_reached:
+        if state_rows[address][1] != "call   0x1443bc460":
+            continue
+        index = state_keys.index(address)
+        binding = [item for item in state_keys[max(0, index - 3):index]
+                   if state_rows[item][1] == "mov    rcx,r14"]
+        if not binding or address in walk([0x1443B9140], state_graph, binding):
+            raise ValueError(f"State query cache call lacks same-P binding at {address:#x}")
+    for call, binding in ((0x1443BA3B6, 0x1443BA3AE),
+                          (0x1443BA3ED, 0x1443BA3E5),
+                          (0x1443BA6BA, 0x1443BA6B2),
+                          (0x1443B9B89, 0x1443B9B7E),
+                          (0x1443BA7D3, 0x1443BA7CB)):
+        if state_rows[binding][1] != "lea    rdx,[rsp+0x30]":
+            raise ValueError("State query scalar output is no longer a stack slot")
+        if call in walk([0x1443B9140], state_graph, {binding}):
+            raise ValueError("State query scalar output binding can be bypassed")
+    for call, binding in ((0x1443BAD6E, 0x1443BAD6B),
+                          (0x1443BB0D0, 0x1443BB0CD),
+                          (0x1443BB209, 0x1443BB206)):
+        if state_rows[binding][1] != "xor    r9d,r9d":
+            raise ValueError("Angle helper optional write pointer is no longer null")
+        if call in walk([0x1443B9140], state_graph, {binding}):
+            raise ValueError("Angle helper null-output binding can be bypassed")
+    # 不要求入口命中缓存；检查未命中时正常返回必须经过有效位写点之一。
+    cold_graph = {address: list(targets) for address, targets in state_graph.items()}
+    if re.sub(r"\s+", " ", state_rows[0x1443B9188][1]) != "je 0x1443b919a":
+        raise ValueError("State query cold-entry branch differs")
+    cold_graph[0x1443B9188] = [0x1443B919A]
+    avoiding_valid_writes = walk([0x1443B9140], cold_graph,
+                                {0x1443B988A, 0x1443B9ABB, 0x1443BB224})
+    if any(state_rows[address][1].startswith("ret") for address in avoiding_valid_writes):
+        raise ValueError("Cold state query can return without setting its valid flag")
+    state_leaves = (
+        (0x141B47820, 0x141B4792C), (0x141B47470, 0x141B4756A),
+        (0x141B460A0, 0x141B46115), (0x141B45FE0, 0x141B4603B),
+        (0x141B462A0, 0x141B46315), (0x141B461A0, 0x141B46215),
+        (0x141B57800, 0x141B57846), (0x141B419B0, 0x141B41AA1),
+        (0x141B41AB0, 0x141B41B25), (0x1443F7C80, 0x1443F7D8B),
+        (0x141A9B4A0, 0x141A9B584), (0x1443FD280, 0x1443FD36A),
+    )
+    for start, end in state_leaves:
+        leaf, leaf_edges = decode_graph(exe, start, end)
+        if any(leaf[address][1].startswith("call")
+               for address in walk([start], leaf_edges)):
+            raise ValueError(f"State helper {start:#x} contains another subcall")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -401,6 +472,18 @@ def inspect(exe: Path):
             "speed_virtual_slot": "MATCH_PLAYER 145a1a048+38 -> 141b62dc0",
             "valid_getter_has_calls": False,
             "limits": "Preservation uses typed callee/write bounds and storage contracts, not CFG alone. C+610 can clear; natural record readiness, type retention and later attribute-gate calls remain unresolved.",
+        },
+        "candidate_attribute_gate": {
+            "site": "0x14441be35", "return": "0x14441be3a",
+            "gate_calls": {hex(address): value for address, value in gate_calls.items()},
+            "state_query": "0x1443b9140..0x1443bb231",
+            "condition_at_read": "P+16f8 bit0=0",
+            "remaining_targets": state_targets,
+            "motion_query_site_0x1443b932a_reachable": False,
+            "cache_calls_bound_to_same_P": True,
+            "scalar_outputs_bound_to_stack_and_optional_angle_writes_null": True,
+            "cold_normal_return_can_bypass_all_valid_writes": False,
+            "limits": "Preservation additionally needs P1870=1, bounded pair-cache/geometry storage, valid player/team objects and the reviewed public attribute-reader contract. Boolean output semantics do not establish natural shot choice or goal probability.",
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",

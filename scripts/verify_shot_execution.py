@@ -151,6 +151,7 @@ EVIDENCE = (
     "20261030_goal_candidate_context_entry_geometry_static.txt",
     "20261030_goal_candidate_roster_query_static.txt",
     "20261030_goal_candidate_context_speed_preservation_static.txt",
+    "20261030_goal_candidate_attribute_gate_static.txt",
 )
 
 
@@ -951,6 +952,27 @@ def verify(exe: Path) -> None:
                 if len(fields) == 3 and fields[2].strip():
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
+    # 复用既有公共属性分类器证据，避免复制四份表或仅抽核几个编号。
+    common = json.loads((ROOT / "20261020_finalize_helper_preservation_observations.json").read_text())
+    classifiers = (0x14274E900, 0x14274ED20, 0x14274F140, 0x1443CB7B0)
+    for row in common["native_assertions"]:
+        address = int(row["va"], 16)
+        if (0x1419C9CE0 <= address < 0x1419C9CFF
+                or any(start <= address < start + 0x1E for start in classifiers)):
+            expected = bytes.fromhex(row["hex"])
+            check(data[offset(address):offset(address) + len(expected)] == expected,
+                  f"Shared attribute classifier code {address:x}")
+    for row in common["data_assertions"]:
+        if "complete 256-entry signed-relative classifier table" not in row.get("label", ""):
+            continue
+        address, expected = int(row["va"], 16), bytes.fromhex(row["hex"])
+        check(data[offset(address):offset(address) + len(expected)] == expected,
+              f"Shared complete attribute classifier table {address:x}")
+        check(len(expected) == 1024, "Shared attribute classifier table length")
+        targets = {address + value for value in struct.unpack("<256i", expected)}
+        check(targets <= {address - 5, address - 3},
+              f"Shared attribute classifier boolean-only targets {address:x}")
+
     for address in (0x1443BCFB4, 0x1443BD827, 0x1443BD899,
                     0x1443BD905, 0x1443BD98C, 0x1443BDA00,
                     0x1443BDF38, 0x1443BE289, 0x1443BE3B6):
@@ -960,6 +982,15 @@ def verify(exe: Path) -> None:
           and instructions.get(0x141B43202) == "cmp rbx,0xa",
           "Cache query append count limit")
     for address, expected in {
+        0x1443B91A2: "jne 0x1443b9254",
+        0x1443B988A: "mov WORD PTR [r14+0x1485],0x101",
+        0x1443B9ABB: "mov WORD PTR [r14+0x1485],0x100",
+        0x1443BB224: "mov BYTE PTR [r14+0x1486],0x1",
+        0x144448FD1: "mov BYTE PTR [rax],0x0",
+        0x144448FD4: "mov BYTE PTR [r8],0x0",
+        0x1444490DA: "setg BYTE PTR [r15]",
+        0x1444491AE: "mov BYTE PTR [rbp+0x0],al",
+        0x14444930A: "mov BYTE PTR [rax],0x1",
         0x14441B076: "mov BYTE PTR [r13+0x610],0x0",
         0x14441B074: "jle 0x14441b07e",
         0x14441BD4C: "mov QWORD PTR [rsp+0x40],0x0",
@@ -1035,6 +1066,15 @@ def verify(exe: Path) -> None:
           and 0x14557E736 + struct.unpack_from("<i", data, start + 2)[0] == 0x145D50B18,
           "Cache short sort uses the recorded memmove import")
 
+    attribute_context_calls = {}
+    for address, instruction in instructions.items():
+        if not (0x144448FB0 <= address < 0x14444931E
+                or 0x1443B9140 <= address < 0x1443BB231
+                or 0x1443B3FC0 <= address < 0x1443B48F8):
+            continue
+        match = re.fullmatch(r"call 0x([0-9a-f]+)", instruction)
+        if match:
+            attribute_context_calls[address] = int(match[1], 16)
     calls = {
         0x14441B039: 0x141B47A60,
         0x14441BA1A: 0x141B408E0,
@@ -1303,6 +1343,7 @@ def verify(exe: Path) -> None:
         0x141AD3400: 0x151BB13E0,
         0x141ACB310: 0x151B72450,
     }
+    calls.update(attribute_context_calls)
     for opcode, edges in ((0xE8, calls), (0xE9, jumps)):
         for address, target in edges.items():
             start = offset(address)
