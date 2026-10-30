@@ -1,0 +1,197 @@
+原PE候选入口的必先上下文调用、距离字段生产及近距修正门槛；有界静态窗口，不代表完整上下文生成器已分析。
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+0000000144417950 <.sdata+0x4416950>:
+   144417950:	41 57                                           	push   r15
+   144417952:	41 56                                           	push   r14
+   144417954:	41 55                                           	push   r13
+   144417956:	41 54                                           	push   r12
+   144417958:	56                                              	push   rsi
+   144417959:	57                                              	push   rdi
+   14441795a:	55                                              	push   rbp
+   14441795b:	53                                              	push   rbx
+   14441795c:	48 81 ec 68 01 00 00                            	sub    rsp,0x168
+   144417963:	44 0f 29 94 24 50 01 00 00                      	movaps XMMWORD PTR [rsp+0x150],xmm10
+   14441796c:	44 0f 29 8c 24 40 01 00 00                      	movaps XMMWORD PTR [rsp+0x140],xmm9
+   144417975:	44 0f 29 84 24 30 01 00 00                      	movaps XMMWORD PTR [rsp+0x130],xmm8
+   14441797e:	0f 29 bc 24 20 01 00 00                         	movaps XMMWORD PTR [rsp+0x120],xmm7
+   144417986:	0f 29 b4 24 10 01 00 00                         	movaps XMMWORD PTR [rsp+0x110],xmm6
+   14441798e:	49 89 d4                                        	mov    r12,rdx
+   144417991:	48 89 cf                                        	mov    rdi,rcx
+   144417994:	e8 c7 4a fa ff                                  	call   0x1443bc460
+   144417999:	48 89 f9                                        	mov    rcx,rdi
+   14441799c:	4c 89 e2                                        	mov    rdx,r12
+   14441799f:	e8 0c 2a 00 00                                  	call   0x14441a3b0
+
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+000000014441a4c4 <.sdata+0x44194c4>:
+   14441a4c4:	4d 8d a6 c8 01 00 00                            	lea    r12,[r14+0x1c8]
+   14441a4cb:	f3 41 0f 10 86 3c 0e 00 00                      	movss  xmm0,DWORD PTR [r14+0xe3c]
+   14441a4d4:	0f 2e 05 81 2f 60 01                            	ucomiss xmm0,DWORD PTR [rip+0x1602f81]        # 0x145a1d45c
+   14441a4db:	76 1b                                           	jbe    0x14441a4f8
+   14441a4dd:	f3 41 0f 11 85 ec 04 00 00                      	movss  DWORD PTR [r13+0x4ec],xmm0
+   14441a4e6:	f3 41 0f 11 85 78 05 00 00                      	movss  DWORD PTR [r13+0x578],xmm0
+   14441a4ef:	49 8d 86 d0 0d 00 00                            	lea    rax,[r14+0xdd0]
+   14441a4f6:	eb 10                                           	jmp    0x14441a508
+   14441a4f8:	49 8b 0c 24                                     	mov    rcx,QWORD PTR [r12]
+   14441a4fc:	b8 00 0d 00 00                                  	mov    eax,0xd00
+   14441a501:	48 03 81 b8 d2 00 00                            	add    rax,QWORD PTR [rcx+0xd2b8]
+   14441a508:	0f 28 00                                        	movaps xmm0,XMMWORD PTR [rax]
+   14441a50b:	41 0f 29 85 40 05 00 00                         	movaps XMMWORD PTR [r13+0x540],xmm0
+   14441a513:	49 8b 04 24                                     	mov    rax,QWORD PTR [r12]
+   14441a517:	0f b6 88 a0 06 00 00                            	movzx  ecx,BYTE PTR [rax+0x6a0]
+   14441a51e:	80 f9 17                                        	cmp    cl,0x17
+   14441a521:	77 3d                                           	ja     0x14441a560
+   14441a523:	0f b6 90 a1 06 00 00                            	movzx  edx,BYTE PTR [rax+0x6a1]
+   14441a52a:	75 05                                           	jne    0x14441a531
+   14441a52c:	80 fa 07                                        	cmp    dl,0x7
+   14441a52f:	77 2f                                           	ja     0x14441a560
+   14441a531:	80 f1 17                                        	xor    cl,0x17
+   14441a534:	80 f2 07                                        	xor    dl,0x7
+   14441a537:	08 ca                                           	or     dl,cl
+   14441a539:	0f 94 c1                                        	sete   cl
+   14441a53c:	0f b6 90 a2 06 00 00                            	movzx  edx,BYTE PTR [rax+0x6a2]
+   14441a543:	75 05                                           	jne    0x14441a54a
+   14441a545:	80 fa 01                                        	cmp    dl,0x1
+   14441a548:	77 16                                           	ja     0x14441a560
+   14441a54a:	80 fa 01                                        	cmp    dl,0x1
+   14441a54d:	0f 94 c2                                        	sete   dl
+   14441a550:	20 d1                                           	and    cl,dl
+   14441a552:	80 f9 01                                        	cmp    cl,0x1
+   14441a555:	75 2b                                           	jne    0x14441a582
+   14441a557:	80 b8 a3 06 00 00 02                            	cmp    BYTE PTR [rax+0x6a3],0x2
+   14441a55e:	72 22                                           	jb     0x14441a582
+   14441a560:	f3 41 0f 10 85 48 05 00 00                      	movss  xmm0,DWORD PTR [r13+0x548]
+   14441a569:	f3 41 0f 10 4e 6c                               	movss  xmm1,DWORD PTR [r14+0x6c]
+   14441a56f:	f3 0f 59 0d 11 2f 60 01                         	mulss  xmm1,DWORD PTR [rip+0x1602f11]        # 0x145a1d488
+   14441a577:	0f 2e c1                                        	ucomiss xmm0,xmm1
+   14441a57a:	41 0f 97 86 b4 0d 00 00                         	seta   BYTE PTR [r14+0xdb4]
+   14441a582:	4d 8d bd 40 05 00 00                            	lea    r15,[r13+0x540]
+   14441a589:	f6 80 a6 0a 00 00 01                            	test   BYTE PTR [rax+0xaa6],0x1
+   14441a590:	4c 89 64 24 68                                  	mov    QWORD PTR [rsp+0x68],r12
+   14441a595:	75 0a                                           	jne    0x14441a5a1
+   14441a597:	41 80 be ec 01 00 00 01                         	cmp    BYTE PTR [r14+0x1ec],0x1
+   14441a59f:	eb 10                                           	jmp    0x14441a5b1
+   14441a5a1:	4c 39 b0 30 d2 00 00                            	cmp    QWORD PTR [rax+0xd230],r14
+   14441a5a8:	0f 94 c1                                        	sete   cl
+   14441a5ab:	38 88 e0 e1 00 00                               	cmp    BYTE PTR [rax+0xe1e0],cl
+   14441a5b1:	0f 94 c1                                        	sete   cl
+   14441a5b4:	48 8b 80 68 ce 00 00                            	mov    rax,QWORD PTR [rax+0xce68]
+   14441a5bb:	48 8d 90 b0 01 00 00                            	lea    rdx,[rax+0x1b0]
+   14441a5c2:	48 05 10 02 00 00                               	add    rax,0x210
+   14441a5c8:	84 c9                                           	test   cl,cl
+   14441a5ca:	48 0f 45 c2                                     	cmovne rax,rdx
+   14441a5ce:	41 0f 28 85 40 05 00 00                         	movaps xmm0,XMMWORD PTR [r13+0x540]
+   14441a5d6:	f3 41 0f 10 8d 44 05 00 00                      	movss  xmm1,DWORD PTR [r13+0x544]
+   14441a5df:	0f 16 c8                                        	movlhps xmm1,xmm0
+   14441a5e2:	0f c6 c8 e2                                     	shufps xmm1,xmm0,0xe2
+   14441a5e6:	f3 0f 10 00                                     	movss  xmm0,DWORD PTR [rax]
+   14441a5ea:	f3 0f 10 50 04                                  	movss  xmm2,DWORD PTR [rax+0x4]
+   14441a5ef:	0f 14 c2                                        	unpcklps xmm0,xmm2
+   14441a5f2:	0f 5c c8                                        	subps  xmm1,xmm0
+   14441a5f5:	0f 59 c9                                        	mulps  xmm1,xmm1
+   14441a5f8:	f3 0f 16 c1                                     	movshdup xmm0,xmm1
+   14441a5fc:	f3 0f 58 c1                                     	addss  xmm0,xmm1
+   14441a600:	f3 44 0f 51 d0                                  	sqrtss xmm10,xmm0
+   14441a605:	f3 45 0f 11 95 c8 05 00 00                      	movss  DWORD PTR [r13+0x5c8],xmm10
+
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+000000014441a6c1 <.sdata+0x44196c1>:
+   14441a6c1:	49 8b 86 c8 01 00 00                            	mov    rax,QWORD PTR [r14+0x1c8]
+   14441a6c8:	f6 80 a6 0a 00 00 01                            	test   BYTE PTR [rax+0xaa6],0x1
+   14441a6cf:	75 0a                                           	jne    0x14441a6db
+   14441a6d1:	41 80 be ec 01 00 00 01                         	cmp    BYTE PTR [r14+0x1ec],0x1
+   14441a6d9:	eb 10                                           	jmp    0x14441a6eb
+   14441a6db:	4c 39 b0 30 d2 00 00                            	cmp    QWORD PTR [rax+0xd230],r14
+   14441a6e2:	0f 94 c1                                        	sete   cl
+   14441a6e5:	38 88 e0 e1 00 00                               	cmp    BYTE PTR [rax+0xe1e0],cl
+   14441a6eb:	0f 94 c1                                        	sete   cl
+   14441a6ee:	48 8b 80 68 ce 00 00                            	mov    rax,QWORD PTR [rax+0xce68]
+   14441a6f5:	48 8d 90 b0 01 00 00                            	lea    rdx,[rax+0x1b0]
+   14441a6fc:	48 05 10 02 00 00                               	add    rax,0x210
+   14441a702:	84 c9                                           	test   cl,cl
+   14441a704:	48 0f 44 c2                                     	cmove  rax,rdx
+   14441a708:	41 0f 28 85 40 05 00 00                         	movaps xmm0,XMMWORD PTR [r13+0x540]
+   14441a710:	f3 41 0f 10 8d 44 05 00 00                      	movss  xmm1,DWORD PTR [r13+0x544]
+   14441a719:	0f 16 c8                                        	movlhps xmm1,xmm0
+   14441a71c:	0f c6 c8 e2                                     	shufps xmm1,xmm0,0xe2
+   14441a720:	f3 0f 10 00                                     	movss  xmm0,DWORD PTR [rax]
+   14441a724:	f3 0f 10 50 04                                  	movss  xmm2,DWORD PTR [rax+0x4]
+   14441a729:	0f 14 c2                                        	unpcklps xmm0,xmm2
+   14441a72c:	0f 5c c8                                        	subps  xmm1,xmm0
+   14441a72f:	0f 59 c9                                        	mulps  xmm1,xmm1
+   14441a732:	f3 0f 16 c1                                     	movshdup xmm0,xmm1
+   14441a736:	f3 0f 58 c1                                     	addss  xmm0,xmm1
+   14441a73a:	f3 0f 51 c0                                     	sqrtss xmm0,xmm0
+   14441a73e:	f3 41 0f 11 85 c4 05 00 00                      	movss  DWORD PTR [r13+0x5c4],xmm0
+
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+000000014441af31 <.sdata+0x4419f31>:
+   14441af31:	41 88 85 0f 06 00 00                            	mov    BYTE PTR [r13+0x60f],al
+   14441af38:	f3 41 0f 10 85 c4 05 00 00                      	movss  xmm0,DWORD PTR [r13+0x5c4]
+   14441af41:	f3 0f 10 0d bb 24 60 01                         	movss  xmm1,DWORD PTR [rip+0x16024bb]        # 0x145a1d404
+   14441af49:	0f 2e c8                                        	ucomiss xmm1,xmm0
+   14441af4c:	76 1c                                           	jbe    0x14441af6a
+   14441af4e:	66 41 c7 85 de 05 00 00 00 00                   	mov    WORD PTR [r13+0x5de],0x0
+   14441af58:	8b 05 e2 d7 00 02                               	mov    eax,DWORD PTR [rip+0x200d7e2]        # 0x146428740
+   14441af5e:	41 89 85 d4 05 00 00                            	mov    DWORD PTR [r13+0x5d4],eax
+   14441af65:	e9 c7 00 00 00                                  	jmp    0x14441b031
+
+
+
+/mnt/c/Program Files (x86)/Steam/steamapps/common/Football Manager 2024/fm.exe:     file format pei-x86-64
+
+
+Disassembly of section .sdata:
+
+000000014441d799 <.sdata+0x441c799>:
+   14441d799:	41 f7 86 a8 11 00 00 01 00 01 00                	test   DWORD PTR [r14+0x11a8],0x10001
+   14441d7a4:	74 64                                           	je     0x14441d80a
+   14441d7a6:	f3 41 0f 10 85 48 05 00 00                      	movss  xmm0,DWORD PTR [r13+0x548]
+   14441d7af:	49 8d ad 0d 06 00 00                            	lea    rbp,[r13+0x60d]
+   14441d7b6:	0f 2e 05 e3 fc 5f 01                            	ucomiss xmm0,DWORD PTR [rip+0x15ffce3]        # 0x145a1d4a0
+   14441d7bd:	77 52                                           	ja     0x14441d811
+   14441d7bf:	80 7d 00 00                                     	cmp    BYTE PTR [rbp+0x0],0x0
+   14441d7c3:	75 50                                           	jne    0x14441d815
+   14441d7c5:	45 39 fc                                        	cmp    r12d,r15d
+   14441d7c8:	75 4b                                           	jne    0x14441d815
+   14441d7ca:	4c 89 d6                                        	mov    rsi,r10
+   14441d7cd:	48 8b 98 b8 d2 00 00                            	mov    rbx,QWORD PTR [rax+0xd2b8]
+   14441d7d4:	41 8d 7c 24 ff                                  	lea    edi,[r12-0x1]
+   14441d7d9:	8b 83 2c 0d 00 00                               	mov    eax,DWORD PTR [rbx+0xd2c]
+   14441d7df:	39 f8                                           	cmp    eax,edi
+   14441d7e1:	0f 8d bb 01 00 00                               	jge    0x14441d9a2
+   14441d7e7:	48 8b 8b 38 10 00 00                            	mov    rcx,QWORD PTR [rbx+0x1038]
+   14441d7ee:	80 b9 85 00 00 00 00                            	cmp    BYTE PTR [rcx+0x85],0x0
+   14441d7f5:	0f 85 a7 01 00 00                               	jne    0x14441d9a2
+   14441d7fb:	48 89 d9                                        	mov    rcx,rbx
+   14441d7fe:	ba 01 00 00 00                                  	mov    edx,0x1
+   14441d803:	e8 e8 d0 fc ff                                  	call   0x1443ea8f0
+   14441d808:	eb cf                                           	jmp    0x14441d7d9
+
+
+原PE门槛常量：
+   145a1d404:	71 3d 6a 40

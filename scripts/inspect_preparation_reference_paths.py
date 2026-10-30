@@ -231,6 +231,25 @@ def inspect(exe: Path):
         "0x1443c54b0", "0x1443f7d90",
     }):
         raise ValueError("Cache has a call target outside the reviewed set")
+    return_graph = dict(graph)
+    for address, (instruction, successor) in {
+        0x1443C41B0: ("jne 0x1443c41ba", 0x1443C41BA),
+        0x1443C421F: ("je 0x1443c437a", 0x1443C4225),
+        0x1443C42F8: ("jne 0x1443c4599", 0x1443C4599),
+        0x1443C45DB: ("jne 0x1443c46ca", 0x1443C46CA),
+        0x1443C46D4: ("je 0x1443c4713", 0x1443C4713),
+    }.items():
+        if re.sub(r"\s+", " ", rows[address][1]) != instruction:
+            raise ValueError(f"Preparation return gate differs at {address:#x}")
+        return_graph[address] = [successor]
+    return_reached = walk([0x1443C419F], return_graph)
+    if any(rows[address][1].startswith("call") for address in return_reached):
+        raise ValueError("Preparation return suffix still has a reachable call")
+    if (0x1443C47FE not in return_reached
+            or 0x1443C47FE in walk([0x1443C419F], return_graph, {0x1443C47A5})):
+        raise ValueError("Preparation return no longer crosses the clear tail")
+    if 0x1443C39CB in walk([ENTRY], graph, {0x1443C181F}):
+        raise ValueError("Second reference write can bypass the parameter save")
     return {
         "entry": hex(ENTRY), "clear_tail": hex(CLEAR),
         "decoded_instructions": len(rows),
@@ -275,6 +294,18 @@ def inspect(exe: Path):
             "remaining_call_sites": judgment_calls,
             "cache_all_call_targets": cache_call_targets,
             "limits": "Call inventory and zero-time branches only; typed write ranges and bounded callee contracts are documented separately.",
+        },
+        "post_cache_preparation_return": {
+            "entry": "0x1443c419f", "return": "0x1443c47fe",
+            "conditions": [
+                "P+1870=1", "M+e388=P with coherent player/team references",
+                "M+aa4 bit0x10000=1 until clear tail",
+                "Valid ring storage; if M+e2e0>7 then M+e328<=7",
+            ],
+            "reachable_instructions": len(return_reached), "reachable_calls": [],
+            "return_can_bypass_clear_tail": False,
+            "second_reference_write_requires_parameter_save": "0x1443c181f",
+            "limits": "Conditioned local CFG; write-domain/identity reasoning is separate, and earlier natural preparation inputs remain unproved.",
         },
         "limits": [
             "All conditional branches allowed; natural reachability and termination unproved.",

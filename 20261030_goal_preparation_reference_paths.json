@@ -353,6 +353,21 @@
     ],
     "limits": "Call inventory and zero-time branches only; typed write ranges and bounded callee contracts are documented separately."
   },
+  "post_cache_preparation_return": {
+    "entry": "0x1443c419f",
+    "return": "0x1443c47fe",
+    "conditions": [
+      "P+1870=1",
+      "M+e388=P with coherent player/team references",
+      "M+aa4 bit0x10000=1 until clear tail",
+      "Valid ring storage; if M+e2e0>7 then M+e328<=7"
+    ],
+    "reachable_instructions": 180,
+    "reachable_calls": [],
+    "return_can_bypass_clear_tail": false,
+    "second_reference_write_requires_parameter_save": "0x1443c181f",
+    "limits": "Conditioned local CFG; write-domain/identity reasoning is separate, and earlier natural preparation inputs remain unproved."
+  },
   "limits": [
     "All conditional branches allowed; natural reachability and termination unproved.",
     "CALL treated as normal return; callee effects and exception paths unproved.",

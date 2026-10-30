@@ -147,6 +147,8 @@ EVIDENCE = (
     "20261030_goal_cache_reset_state_gates_static.txt",
     "20261030_goal_reset_to_position_update_static.txt",
     "20261030_goal_cache_complete_preservation_static.txt",
+    "20261030_goal_preparation_return_preservation_static.txt",
+    "20261030_goal_candidate_context_entry_geometry_static.txt",
 )
 
 
@@ -193,6 +195,7 @@ def verify(exe: Path) -> None:
           "Bracketing query fallback time offsets")
     for address, value in ((0x145A1D454, -1000.0), (0x145A1D594, 999999.0),
                            (0x145A1D4A0, 0.25),
+                           (0x145A1D404, 3.6600000858306885),
                            (0x145A1D4C8, 0.10000000149011612),
                            (0x145A1D4D0, 0.05000000074505806), (0x145A1D570, 100.0)):
         check(struct.unpack_from("<f", data, offset(address))[0] == value,
@@ -938,6 +941,21 @@ def verify(exe: Path) -> None:
           and instructions.get(0x141B43202) == "cmp rbx,0xa",
           "Cache query append count limit")
     for address, expected in {
+        0x14441A50B: "movaps XMMWORD PTR [r13+0x540],xmm0",
+        0x14441A73E: "movss DWORD PTR [r13+0x5c4],xmm0",
+        0x14441AF4C: "jbe 0x14441af6a",
+        0x14441AF5E: "mov DWORD PTR [r13+0x5d4],eax",
+        0x14441D799: "test DWORD PTR [r14+0x11a8],0x10001",
+        0x14441D7A4: "je 0x14441d80a",
+        0x1443C41B0: "jne 0x1443c41ba",
+        0x1443C420B: "cmp QWORD PTR [r15+0x1d0],rcx",
+        0x1443C4218: "cmp r15,QWORD PTR [rax+0xe388]",
+        0x1443C42F8: "jne 0x1443c4599",
+        0x1443C45DB: "jne 0x1443c46ca",
+        0x1443C46D4: "je 0x1443c4713",
+        0x1443C4599: "mov DWORD PTR [r12+0x11a8],esi",
+        0x1443C471A: "mov QWORD PTR [rax+0xe388],r12",
+        0x1443C181F: "mov DWORD PTR [rsp+0x5c],esi",
         0x1443BDC27: "xor r9d,r9d",
         0x1443BE125: "xor r9d,r9d",
         0x1443BE163: "xor r9d,r9d",
@@ -984,6 +1002,8 @@ def verify(exe: Path) -> None:
           "Cache short sort uses the recorded memmove import")
 
     calls = {
+        0x144417994: 0x1443BC460,
+        0x14441799F: 0x14441A3B0,
         0x1443BDC2A: 0x1443C54B0,
         0x1443BE128: 0x1443C54B0,
         0x1443BE166: 0x1443C54B0,
