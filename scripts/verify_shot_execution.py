@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261031_goal_trial_tolerance_initializer_static.txt",
     "20261031_goal_trial_force_helpers_static.txt",
     "20261031_goal_trial_scratch_parameter_source_static.txt",
     "20261030_goal_shot_trial_bodies_static.txt",
@@ -1118,6 +1119,19 @@ def verify(exe: Path) -> None:
         0x1418F81CB: "mov rax,rcx",
     }.items():
         check(instructions.get(address) == expected, f"Trial body formula/counter {address:x}")
+
+    # 容差槽的局部零生产与静态指针；不证明它们保持到自然试算。
+    tolerance = solver_modes["tolerance_initializer"]
+    pointer = int(tolerance["pointer_slot"], 16)
+    check(data[offset(pointer):offset(pointer)+8] == bytes.fromhex(tolerance["pointer_bytes"]),
+          "Tolerance initializer pointer")
+    check(struct.unpack_from("<Q", data, offset(pointer))[0] == 0x145305500,
+          "Tolerance initializer target")
+    for address, expected in {
+        0x14530556A: "mov DWORD PTR [rip+0x1136e84],0x0 # 0x14643c3f8",
+        0x145305574: "mov DWORD PTR [rip+0x1136e7e],0x0 # 0x14643c3fc",
+    }.items():
+        check(instructions.get(address) == expected, f"Tolerance zero producer {address:x}")
 
     # 原生角近似的常数位值及截断/符号写点；非零有限方向的局部转写。
     angle = solver_modes["mode2_angle"]

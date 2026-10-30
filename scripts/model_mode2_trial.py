@@ -185,10 +185,13 @@ def examples():
                                                ('gravity_drag', 0., 0., 0.),
                                                ('gravity_drag_spin', 0., 2., 1.),
                                                ('translated_origin', 51., 0., 0.),
-                                               ('limited_speed_ground_exit', 0., 0., 0.)]:
+                                               ('limited_speed_ground_exit', 0., 0., 0.),
+                                               ('zero_tolerance_straight', 0., 0., 0.)]:
         p = dict(parameters)
-        if name == 'straight_no_force':
+        if name in {'straight_no_force', 'zero_tolerance_straight'}:
             p.update(density=0., gravity=[0., 0., 0.])
+        if name == 'zero_tolerance_straight':
+            p.update(angle_threshold=0., height_threshold=0.)
         distance, scale = (20., 5.) if name == 'limited_speed_ground_exit' else (2., 20.)
         inputs = {'origin': [0., offset, 1.], 'target': [0., add(offset, distance), 1.],
                   'scale': scale, 'horizontal_spin': horizontal, 'vertical_spin': vertical, 'parameters': p}
@@ -196,9 +199,12 @@ def examples():
     first = records[0]['result']
     if len(first['queries']) != 1 or first['returned_launch_velocity'] != [0.,20.,0.] or first['returned_launch_spin'] != [0.,-0.,0.]:
         raise ValueError('Constant straight-flight worked example differs')
-    last = records[-1]['result']
+    last = next(r['result'] for r in records if r['name'] == 'limited_speed_ground_exit')
     if len(last['queries']) != 5 or last['within_input_tolerances']:
         raise ValueError('Limited-speed budget example unexpectedly reports convergence')
+    zero = records[-1]['result']
+    if len(zero['queries']) != 5 or zero['within_input_tolerances']:
+        raise ValueError('Zero-tolerance approximation residual should exhaust correction budget')
     # 对照之前独立保存的角误差局部转写，避免组合时颠倒叉积方向。
     for case in proof['mode2_angle']['examples']:
         actual, target = case['actual_xy']+[0.], case['target_xy']+[0.]

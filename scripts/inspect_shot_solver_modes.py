@@ -464,6 +464,32 @@ def inspect_mode2_angle(exe, data, offset):
                          'natural current U/gain and initialization/retention; same formal flight and goal']}
 
 
+def inspect_tolerance_initializer(exe, data, offset):
+    """定位两个容差槽的清零生产，不将静态入口视作已执行或保持。"""
+    entry, end = 0x145305500, 0x14530557F
+    rows, graph = decode_graph(exe, entry, end)
+    reached = walk([entry], graph)
+    if len(stores(rows, reached)) != 12 or any(rows[a][1].startswith(('call', 'j')) for a in reached):
+        raise ValueError('Tolerance initializer has another write/call/branch')
+    expected = {0x14530556A: 'mov DWORD PTR [rip+0x1136e84],0x0 # 0x14643c3f8',
+                0x145305574: 'mov DWORD PTR [rip+0x1136e7e],0x0 # 0x14643c3fc'}
+    for site, ins in expected.items():
+        if normalize(rows[site][1]) != ins:
+            raise ValueError('Tolerance zero producer differs')
+    raw = data[offset(0x145D4CD28):offset(0x145D4CD28)+8]
+    if struct.unpack('<Q', raw)[0] != entry:
+        raise ValueError('Static initializer pointer differs')
+    return {'evidence_type': 'original_PE_local_producer_not_runtime_lifetime',
+            'entry': hex(entry), 'end': hex(end),
+            'pointer_slot': '0x145d4cd28', 'pointer_bytes': raw.hex(),
+            'writes': stores(rows, reached),
+            'height_tolerance': {'slot': '0x14643c3f8', 'producer': '0x14530556a', 'value': 0.,
+                                  'mode2_load': '0x14530463e'},
+            'angle_tolerance': {'slot': '0x14643c3fc', 'producer': '0x145305574', 'value': 0.,
+                                 'mode2_load': '0x145304647'},
+            'unproved': 'initializer execution/order and absence of later writes/aliases before the same actual query; zero is a produced value, not an unconditional current tolerance'}
+
+
 def inspect(exe):
     """复核模式分派、数值体清单和局部公式；完整试算输出仍未证明。"""
     data = exe.read_bytes()
@@ -556,7 +582,7 @@ def inspect(exe):
     constants = {hex(a): struct.unpack_from('<f', data, offset(a))[0]
                  for a in (0x145A1D4A4, 0x145A1D4B0, 0x145A1D48C, 0x145A1D4EC, 0x145A1D4C4, 0x145A1D468)}
     trials = inspect_trial_bodies(exe, data, offset)
-    return {'mode2_angle': inspect_mode2_angle(exe, data, offset), 'mode2_sampling': inspect_mode2_sampling(exe), 'residual_preservation': inspect_residual_preservation(exe), 'scratch_producer': inspect_scratch_producer(exe), 'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
+    return {'tolerance_initializer': inspect_tolerance_initializer(exe, data, offset), 'mode2_angle': inspect_mode2_angle(exe, data, offset), 'mode2_sampling': inspect_mode2_sampling(exe), 'residual_preservation': inspect_residual_preservation(exe), 'scratch_producer': inspect_scratch_producer(exe), 'trial_bodies': trials, 'scalar_constants': constants, 'evidence_type': 'original_PE_mode_partition_CFG_not_execution', 'tables': tables,
             'conditions': ['same actual3f and updated target/scale/spin; source origin=C540, Z=1; mode input in{0,1,2,4}',
                            'M6a0>23; control B+d10 is same M; independent valid argument/output storage',
                            'finite derived distances/scalars; first thread-static initialization gate already satisfied at1443f3031; valid TLS and data reads',
