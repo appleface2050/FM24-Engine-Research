@@ -133,6 +133,11 @@ EVIDENCE = (
     "20261029_goal_shot_reference_dispatch_compatibility_static.txt",
     "20261029_goal_shot_candidate_context_init_static.txt",
     "20261029_goal_shot_direction_equal_case_static.txt",
+    "20261029_goal_shot_post_candidate_short_returns_static.txt",
+    "20261029_goal_shot_post_candidate_first_return_static.txt",
+    "20261029_goal_shot_candidate_flag_conflict_static.txt",
+    "20261029_goal_shot_near_candidate_initialization_static.txt",
+    "20261029_goal_shot_model_empty_subject_static.txt",
 )
 
 
@@ -172,6 +177,8 @@ def verify(exe: Path) -> None:
           == 0x1444339FB, "Shot candidate scoring switch")
     check(struct.unpack_from("<f", data, offset(0x145A1D4B0))[0] == 1.0,
           "Shot candidate first multiplier")
+    check(struct.unpack_from("<f", data, offset(0x145A1D524))[0] == 20.0,
+          "Alternate shot candidate threshold")
     check(struct.unpack_from("<f", data, offset(0x145A1D53C))[0] == 30.0,
           "Team geometry comparison constant")
     check(struct.unpack_from("<f", data, offset(0x145A1D4EC))[0] == 5.0,
