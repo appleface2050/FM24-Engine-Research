@@ -1,0 +1,142 @@
+{
+  "evidence_type": "original_PE_conditional_CFG_not_execution",
+  "conditions": [
+    "same P/M/C and valid independent storage; existing model normal-return contract",
+    "P+11a8 is 0x810 or 0x1810; M+e3bb=0; M+aa4 bit0x10000=1",
+    "C+610 may be zero or nonzero; no restriction on first guard scalar x",
+    "global146428740=0 at actual local-record initialization; signed P+1640>=0 at helper threshold",
+    "P+16f8 bit0=0; M+6a0>23; P+db1=0; finite C+548>float32(0.1112*2)"
+  ],
+  "functions": [
+    {
+      "entry": "0x1444256c0",
+      "branches": {
+        "0x1444256e5": "0x144425918",
+        "0x1444259dc": "0x1444259de",
+        "0x1444259e5": "0x144425a04"
+      },
+      "calls": [
+        {
+          "site": "0x1444257ba",
+          "instruction": "call   0x145325220"
+        },
+        {
+          "site": "0x14442597f",
+          "instruction": "call   0x14557e9b0"
+        },
+        {
+          "site": "0x144425993",
+          "instruction": "call   0x14557ea20"
+        }
+      ],
+      "normal_returns": [
+        "0x144425a14"
+      ],
+      "limits": "CALLs assume normal return; pointer/value derivations documented separately"
+    },
+    {
+      "entry": "0x144425db0",
+      "branches": {
+        "0x144425dce": "0x144425e2a",
+        "0x144425e44": "0x144425e6a",
+        "0x144425e6c": "0x144425e6e",
+        "0x144425e75": "0x144425e77",
+        "0x144425e92": "0x144425e94"
+      },
+      "calls": [],
+      "normal_returns": [
+        "0x144426603"
+      ],
+      "limits": "CALLs assume normal return; pointer/value derivations documented separately"
+    },
+    {
+      "entry": "0x144426bf0",
+      "branches": {
+        "0x144426bfd": "0x144426fea"
+      },
+      "calls": [],
+      "normal_returns": [
+        "0x144426fed"
+      ],
+      "limits": "CALLs assume normal return; pointer/value derivations documented separately"
+    },
+    {
+      "entry": "0x144427000",
+      "branches": {
+        "0x144427017": "0x1444273e5"
+      },
+      "calls": [],
+      "normal_returns": [
+        "0x1444273f5"
+      ],
+      "limits": "CALLs assume normal return; pointer/value derivations documented separately"
+    },
+    {
+      "entry": "0x145325220",
+      "branches": {
+        "0x1453254c7": "0x1453254ff"
+      },
+      "calls": [],
+      "normal_returns": [
+        "0x145325560"
+      ],
+      "limits": "CALLs assume normal return; pointer/value derivations documented separately"
+    }
+  ],
+  "selected_nonstack_stores": [
+    {
+      "site": "0x144425e2a",
+      "instruction": "mov BYTE PTR [rsi+0x5fa],bpl",
+      "object_binding_manual_derivation": "C+5fa"
+    },
+    {
+      "site": "0x145325340",
+      "instruction": "mov BYTE PTR [rax+0xcde6],0x0",
+      "object_binding_manual_derivation": "M+cde6"
+    },
+    {
+      "site": "0x14532534d",
+      "instruction": "mov DWORD PTR [rax+0xcde0],ecx",
+      "object_binding_manual_derivation": "M+cde0"
+    },
+    {
+      "site": "0x1453253fa",
+      "instruction": "mov BYTE PTR [rax+0xcde6],0x1",
+      "object_binding_manual_derivation": "M+cde6"
+    },
+    {
+      "site": "0x145325407",
+      "instruction": "mov DWORD PTR [rax+0xcde0],ecx",
+      "object_binding_manual_derivation": "M+cde0"
+    },
+    {
+      "site": "0x145325414",
+      "instruction": "mov BYTE PTR [rax+0xcde6],0x1",
+      "object_binding_manual_derivation": "M+cde6"
+    },
+    {
+      "site": "0x14532541b",
+      "instruction": "mov DWORD PTR [rax+0xcde0],ebp",
+      "object_binding_manual_derivation": "M+cde0"
+    }
+  ],
+  "local_record_initialization": {
+    "store": "0x14442573c",
+    "offset": "stack20+1c",
+    "source": "global146428740; value zero remains a stated condition"
+  },
+  "kept_branches": [
+    "C+610 zero/nonzero",
+    "all first-guard scalar x branches",
+    "helper cache hit/miss"
+  ],
+  "output_boundary": "before actual selector CALL at 0x14441a2d6",
+  "allowed_writes_manual_derivation": [
+    "M+cde0/cde6 in local-record helper",
+    "C+5fa=0 in second guard"
+  ],
+  "unproved": [
+    "natural production/retention of added cache bound and global zero",
+    "M+6a0 source; selector scoring/selection and full shot-to-goal"
+  ]
+}

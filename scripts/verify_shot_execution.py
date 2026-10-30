@@ -12,6 +12,7 @@ from verify_goal_lifecycle import verify_target_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = (
+    "20261030_goal_post_model_candidate_guards_static.txt",
     "20261030_goal_candidate_model_storage_static.txt",
     "20261030_goal_candidate_nonempty_model_static.txt",
     "20261026_shot_submission_flight_static.txt",
@@ -956,6 +957,20 @@ def verify(exe: Path) -> None:
                 if len(fields) == 3 and fields[2].strip():
                     instructions[address] = re.sub(r"\s+", " ", fields[2].strip())
 
+    # 真正本地record的门槛常量；全局零槽与内部缓存下界仍是报告列明条件。
+    check(struct.unpack_from("<f", data, offset(0x145A1D504))[0] == 10.0,
+          "Local-record Decisions divisor")
+    check(struct.unpack_from("<f", data, offset(0x145A1D514))[0] == 15.0,
+          "Local-record Decisions threshold base")
+    for address, expected in {
+        0x1444257BA: "call 0x145325220",
+        0x144425E2A: "mov BYTE PTR [rsi+0x5fa],bpl",
+        0x1453254C7: "jbe 0x1453254ff",
+        0x144426BFD: "je 0x144426fea",
+        0x144427017: "je 0x1444273e5",
+    }.items():
+        check(instructions.get(address) == expected, f"Actual post-model guard {address:x}")
+
     # 独立核对模型跳表快照和真正的调用者标志读写；不把本地图升级为副作用证明。
     model_paths = json.loads((ROOT / "20261030_candidate_model_paths.json").read_text())
     for table in model_paths["tables"]:
@@ -1137,6 +1152,8 @@ def verify(exe: Path) -> None:
                 or 0x141B57440 <= address < 0x141B57800
                 or 0x140448F20 <= address < 0x140449019
                 or 0x144421930 <= address < 0x144421D29
+                or 0x1444256C0 <= address < 0x1444273F6
+                or 0x145325220 <= address < 0x145325E4B
                 or 0x144528BB0 <= address < 0x14452BDDC
                 or 0x144386FA0 <= address < 0x1443877AD
                 or 0x14431FFA0 <= address < 0x1443208D4
