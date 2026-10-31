@@ -1120,6 +1120,19 @@ def verify(exe: Path) -> None:
     }.items():
         check(instructions.get(address) == expected, f"Trial body formula/counter {address:x}")
 
+    # 正幅度扰动后缀的保存/恢复及预算，区别于bit0=1旁路。
+    for address, expected in {
+        0x14444D88D: "movaps XMMWORD PTR [rsp+0x80],xmm1",
+        0x14444D95F: "mov BYTE PTR [rsp+0x2d],cl",
+        0x14444DB2D: "xor r13d,r13d",
+        0x14444E4A3: "mov ebp,0xa", 0x14444E4AD: "mov ebp,0x1f4",
+        0x14444E553: "cmp r10b,0x2", 0x14444E575: "mov r13d,edi",
+        0x14444E67B: "or BYTE PTR [rsi+0xe2f],0x2",
+        0x14444E6A4: "mov DWORD PTR [rax+0x8],ecx",
+        0x14444E6AF: "mov QWORD PTR [rax],rcx",
+    }.items():
+        check(instructions.get(address) == expected, f"Positive perturbation suffix {address:x}")
+
     # 容差槽的局部零生产与静态指针；不证明它们保持到自然试算。
     tolerance = solver_modes["tolerance_initializer"]
     pointer = int(tolerance["pointer_slot"], 16)

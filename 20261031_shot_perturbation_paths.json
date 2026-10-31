@@ -1,0 +1,180 @@
+{
+  "evidence_type": "original_PE_post_positive_amplitude_CFG_and_manual_register_bindings_not_execution",
+  "frontier": "0x14444d886",
+  "normal_return": "0x14444e71d",
+  "conditions": [
+    "same P/M and independent valid stack/storage; positive finite amplitude and enabled ball setting already passed",
+    "P+db1=0; saved Aflags bit0=0; no external concurrent writes; ordinary nontrapping FP execution",
+    "valid lookup table at[14643a030] for the computed signed-word indexes; derived addresses valid"
+  ],
+  "prefix_unproved": "full entry-to-positive-frontier business/cache/math effects and exact amplitude from same natural inputs",
+  "calls": [],
+  "writes": [
+    {
+      "site": "0x14444dcae",
+      "instruction": "mov QWORD PTR [rdx+0xe3d0],rbp"
+    },
+    {
+      "site": "0x14444dd6e",
+      "instruction": "mov QWORD PTR [rdx+0xe3d0],rbx"
+    },
+    {
+      "site": "0x14444ddbc",
+      "instruction": "mov QWORD PTR [rdx+0xe3d0],rbx"
+    },
+    {
+      "site": "0x14444de06",
+      "instruction": "mov QWORD PTR [rdx+0xe3d0],rbx"
+    },
+    {
+      "site": "0x14444de54",
+      "instruction": "mov QWORD PTR [rdx+0xe3d0],rbx"
+    },
+    {
+      "site": "0x14444dea5",
+      "instruction": "mov QWORD PTR [rdx+0xe3d0],rbx"
+    },
+    {
+      "site": "0x14444e288",
+      "instruction": "mov QWORD PTR [rdx+0xe3d0],rbp"
+    },
+    {
+      "site": "0x14444e67b",
+      "instruction": "or BYTE PTR [rsi+0xe2f],0x2"
+    },
+    {
+      "site": "0x14444e682",
+      "instruction": "movlps QWORD PTR [rsi+0xdf0],xmm9"
+    },
+    {
+      "site": "0x14444e68e",
+      "instruction": "movss DWORD PTR [rsi+0xdf8],xmm9"
+    },
+    {
+      "site": "0x14444e697",
+      "instruction": "mov BYTE PTR [rsi+0xe80],cl"
+    },
+    {
+      "site": "0x14444e6a4",
+      "instruction": "mov DWORD PTR [rax+0x8],ecx"
+    },
+    {
+      "site": "0x14444e6af",
+      "instruction": "mov QWORD PTR [rax],rcx"
+    }
+  ],
+  "mandatory_sites": [
+    "0x14444d88d",
+    "0x14444d95f",
+    "0x14444db2d",
+    "0x14444e618",
+    "0x14444e682",
+    "0x14444e68e",
+    "0x14444e697",
+    "0x14444e6a4",
+    "0x14444e6af"
+  ],
+  "loop_back_edges": {
+    "0x14444dfe6": "0x14444dfc0",
+    "0x14444dfee": "0x14444dfc0",
+    "0x14444e076": "0x14444e050",
+    "0x14444e07e": "0x14444e050",
+    "0x14444e55a": "0x14444e4d0",
+    "0x14444e578": "0x14444dbb0"
+  },
+  "cycles_after_back_edge_cuts": false,
+  "manual_loop_bounds": {
+    "outer_index": "starts0, increments1 only on retry, cap10 or500; at most501 candidate rounds",
+    "sign_trials": "R10 starts0 per round and permits0,1,2: at most3",
+    "coordinate_halving": "two integer coordinate loops; each at most24 signed truncating halvings",
+    "rng": "at most7 inline draws per candidate round; no fixed random seed assumption"
+  },
+  "halving_examples": [
+    {
+      "input": [
+        -2147483648,
+        -2147483648
+      ],
+      "output": [
+        -128,
+        -128
+      ],
+      "steps": 24
+    },
+    {
+      "input": [
+        2147483647,
+        2147483647
+      ],
+      "output": [
+        127,
+        127
+      ],
+      "steps": 24
+    },
+    {
+      "input": [
+        149,
+        199
+      ],
+      "output": [
+        149,
+        199
+      ],
+      "steps": 0
+    },
+    {
+      "input": [
+        150,
+        200
+      ],
+      "output": [
+        75,
+        100
+      ],
+      "steps": 1
+    }
+  ],
+  "tail_worked_example": {
+    "input_velocity": [
+      0.0,
+      20.0,
+      0.0
+    ],
+    "given_delta": [
+      5.0,
+      0.0,
+      0.0
+    ],
+    "saved_spin": [
+      2.0,
+      0.0,
+      1.0
+    ],
+    "saved_mode": 2,
+    "input_flags": 4,
+    "output_velocity": [
+      5.0,
+      20.0,
+      0.0
+    ],
+    "output_spin": [
+      2.0,
+      0.0,
+      1.0
+    ],
+    "output_mode": 2,
+    "output_flags": 144115188075855876,
+    "scope": "hand-checkable final-write arithmetic only; delta is not proven to be generated/accepted by the native random loop"
+  },
+  "outputs": {
+    "velocity": "incoming solver velocity plus accepted/revised perturbation vector, float32 additions",
+    "spin": "restore exact saved P+e00/e04/e08; not regenerated from perturbed velocity",
+    "mode_byte": "restore saved P+e80",
+    "large_delta_marker": "if norm(delta)>float32(0.20000000298023224)*norm(incoming velocity), OR bit57; this comparison is not a magnitude clamp"
+  },
+  "remaining": [
+    "exact amplitude and randomized delta, table source/retention and complete numerical validity",
+    "same natural solver output through whole caller, formal flight, defense/rules and effective goal"
+  ]
+}
