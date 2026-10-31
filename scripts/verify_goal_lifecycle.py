@@ -997,6 +997,11 @@ def verify_original(exe):
         "20261025_middle_typed_query_observations.json",
         "20261025_empty_association_reuse_observations.json",
         "20261025_context_candidate_inputs_observations.json",
+        "20261025_client_reference_lifecycle_observations.json",
+        "20261025_server_candidate_inputs_observations.json",
+        "20261025_server_registration_fixup_observations.json",
+        "20261025_team_parent_production_observations.json",
+        "20261026_full_type_default_observations.json",
     )]
     for evidence in evidences:
         if image_base != int(evidence["image_base"], 16):
@@ -1754,6 +1759,121 @@ def verify_original(exe):
             raise AssertionError("Database wire reader relocated entry differs")
     print("Context ID membership table passed: selected getter/boolean branches remain conditional on actual object inputs; ordinary CLUB type alone does not imply early return.", flush=True)
 
+    lifecycle = json.loads((ROOT / "20261025_client_reference_lifecycle_observations.json").read_text())
+    transfer = lifecycle["archive_entry_transfer"]
+    site = int(transfer["site"], 16)
+    raw = mapped_bytes(site, 5)
+    if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+        raise AssertionError("Core database archive selector entry differs; reopen mode/source binding")
+    slot = lifecycle["club_fixup_slot"]
+    if struct.unpack("<Q", mapped_bytes(int(slot["va"], 16), 8))[0] != int(slot["target"], 16):
+        raise AssertionError("Ordinary CLUB reference-pass virtual slot differs")
+    print("Actual database lifecycle call/slot evidence passed: client/full mode and reset remain separate object lifetimes; no whole-loader preservation proved.", flush=True)
+
+    server_inputs = json.loads((ROOT / "20261025_server_candidate_inputs_observations.json").read_text())
+    for transfer in server_inputs["wire_transfers"]:
+        site = int(transfer["site"], 16)
+        raw = mapped_bytes(site, 5)
+        if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+            raise AssertionError("Server wire-reader relocated entry differs")
+    slot = server_inputs["finance_slot"]
+    if struct.unpack("<Q", mapped_bytes(int(slot["va"], 16), 8))[0] != int(slot["target"], 16):
+        raise AssertionError("Server simplified finance virtual slot differs")
+    if ((struct.unpack("<I", mapped_bytes(0x148E30318, 4))[0] + 0x7DB9B77) & 0xFFFFFFFF) != 4:
+        raise AssertionError("Server NATION string-item wire length differs")
+    if ((struct.unpack("<I", mapped_bytes(0x157D538EC, 4))[0] - 0x48240C88) & 0xFFFFFFFF) != 1:
+        raise AssertionError("Server NATION R78 version wire length differs")
+    if struct.unpack("<I", mapped_bytes(0x1517098AC, 4))[0] ^ 0x48242C83 != 8:
+        raise AssertionError("Server NATION R78 destination byte offset differs")
+    if ((struct.unpack("<I", mapped_bytes(0x14CB78DF0, 4))[0] - 0xF4C0001) & 0xFFFFFFFF) != 0:
+        raise AssertionError("Server NATION R78 success status differs")
+    print("Server wire-schema evidence passed: finance0=45 bytes, NATION relocated readers and original constants; runtime retention remains unproved.", flush=True)
+
+    registration = json.loads((ROOT / "20261025_server_registration_fixup_observations.json").read_text())
+    for binding in registration["bindings"]:
+        slot = int(binding["slot"], 16)
+        if struct.unpack("<Q", mapped_bytes(slot, 8))[0] != int(binding["target"], 16):
+            raise AssertionError("Server registration/fixup type binding differs")
+    for body in registration["complete_bodies"]:
+        start, end = int(body["start"], 16), int(body["end_exclusive"], 16)
+        cursor = start
+        rows = sorted((row for row in registration["native_assertions"]
+                       if start <= int(row["va"], 16) < end), key=lambda row: int(row["va"], 16))
+        for row in rows:
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("Server registration/fixup body coverage has a gap")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != end:
+            raise AssertionError("Server registration/fixup body coverage is incomplete")
+    transfer = registration["vector_entry"]
+    site = int(transfer["site"], 16)
+    raw = mapped_bytes(site, 5)
+    if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+        raise AssertionError("NATION registration vector entry differs")
+    for site, target in ((0x14245CDBD, 0x14245CF13), (0x1537471AD, 0x15374730B)):
+        raw = mapped_bytes(site, 6)
+        if raw[:2] != b"\x0f\x87" or site + 6 + struct.unpack_from("<i", raw, 2)[0] != target:
+            raise AssertionError("Existing-capacity vector store branch differs")
+    cast = registration["dynamic_cast"]
+    thunk, iat = int(cast["thunk"], 16), int(cast["iat"], 16)
+    raw = mapped_bytes(thunk, 6)
+    if raw[:2] != b"\xff\x25" or thunk + 6 + struct.unpack_from("<i", raw, 2)[0] != iat:
+        raise AssertionError("Dynamic cast import thunk differs")
+    descriptor = int(cast["import_descriptor"], 16)
+    original, _, _, name, first = struct.unpack("<5I", mapped_bytes(descriptor, 20))
+    if mapped_bytes(image_base + name, len(cast["dll"]) + 1) != cast["dll"].encode() + b"\x00":
+        raise AssertionError("Dynamic cast runtime DLL binding differs")
+    position = (iat - image_base - first) // 8
+    for index_in_table in range(position):
+        if struct.unpack("<Q", mapped_bytes(image_base + original + index_in_table * 8, 8))[0] == 0:
+            raise AssertionError("Dynamic cast lookup crossed the import-table terminator")
+    lookup = struct.unpack("<Q", mapped_bytes(image_base + original + position * 8, 8))[0]
+    symbol = cast["symbol"].encode() + b"\x00"
+    if mapped_bytes(image_base + lookup + 2, len(symbol)) != symbol:
+        raise AssertionError("Dynamic cast import symbol differs")
+    print("Typed registration and server CLUB fixup evidence passed: bounded slot stores, actual runtime import and complete helper bodies; uninterrupted load/match adoption remains unproved.", flush=True)
+
+    team_parent = json.loads((ROOT / "20261025_team_parent_production_observations.json").read_text())
+    for binding in team_parent["bindings"]:
+        if struct.unpack("<Q", mapped_bytes(int(binding["slot"], 16), 8))[0] != int(binding["target"], 16):
+            raise AssertionError("TEAM/NATIONAL_TEAM reader or registration binding differs")
+    transfer = team_parent["member_entry"]
+    site = int(transfer["site"], 16)
+    raw = mapped_bytes(site, 5)
+    if raw[0] != 0xE9 or site + 5 + struct.unpack_from("<i", raw, 1)[0] != int(transfer["target"], 16):
+        raise AssertionError("TEAM member loader relocated entry differs")
+    table = team_parent["factory_table"]
+    base = int(table["base"], 16)
+    target = base + struct.unpack("<i", mapped_bytes(int(table["entry"], 16), 4))[0]
+    if target != int(table["target"], 16):
+        raise AssertionError("TEAM_BASE factory case24 differs")
+    for body in team_parent["complete_bodies"]:
+        cursor, end = int(body["start"], 16), int(body["end_exclusive"], 16)
+        for row in sorted((row for row in team_parent["native_assertions"]
+                           if cursor <= int(row["va"], 16) < end), key=lambda row: int(row["va"], 16)):
+            if int(row["va"], 16) != cursor:
+                raise AssertionError("TEAM parent producer has an uncovered instruction")
+            cursor += len(bytes.fromhex(row["hex"]))
+        if cursor != end:
+            raise AssertionError("TEAM parent producer body is incomplete")
+    raw = mapped_bytes(0x1423E08AD, 6)
+    if raw[:2] != b"\x0f\x87" or 0x1423E08AD + 6 + struct.unpack_from("<i", raw, 2)[0] != 0x1423E0A03:
+        raise AssertionError("TEAM primary-slot capacity branch differs")
+    print("TEAM parent source/producer evidence passed: selected reader, constructor and registration; preservation through intervening loader calls remains unproved.", flush=True)
+
+    default_flag = json.loads((ROOT / "20261026_full_type_default_observations.json").read_text())
+    writer = default_flag["writer"]
+    site = int(writer["site"], 16)
+    raw = mapped_bytes(site, 9)
+    if (raw[:3] != b"\x66\xc7\x05"
+            or site + 9 + struct.unpack_from("<i", raw, 3)[0] != int(writer["target"], 16)
+            or struct.unpack_from("<H", raw, 7)[0] != int(writer["word_value"], 16)):
+        raise AssertionError("TEAM full-type default store differs")
+    carrier = int(default_flag["function_pointer_carrier"], 16)
+    if struct.unpack("<Q", mapped_bytes(carrier, 8))[0] != int(writer["function"], 16):
+        raise AssertionError("TEAM flag default producer pointer carrier differs")
+    print("TEAM full-type local default store passed: byte1 at selected write; execution/order and later flag retention are unproved.", flush=True)
+
     connections = [connection for item in index["mechanisms"]
                    for connection in item.get("connections", [])]
     for connection in connections:
@@ -1767,11 +1887,14 @@ def verify_original(exe):
     print(f"Direct-call displacement checks passed: {len(connections)}. Object-flow semantics remain conditional.", flush=True)
 
 
-def verify_candidate_database(source):
+def verify_candidate_database(source, mode="client"):
     """复核本机数据库候选记录；不把解析一致升级为运行时对象采用。"""
-    from inspect_client_club_candidate import read_candidate
+    if mode == "server":
+        from inspect_server_club_candidate import read_candidate
+    else:
+        from inspect_client_club_candidate import read_candidate
 
-    expected = json.loads((ROOT / "20261025_client_club_candidate_214eb.json").read_text())
+    expected = json.loads((ROOT / f"20261025_{mode}_club_candidate_214eb.json").read_text())
     actual = read_candidate(source, expected["serialized_identity_fields"]["C+c"])
 
     def portable(value):
@@ -1785,13 +1908,25 @@ def verify_candidate_database(source):
 
     if portable(actual) != portable(expected):
         raise AssertionError("Database candidate differs; do not reuse its selected input contract")
-    print("Database candidate parse matches the frozen observation: CLUB row4321 C+c=214ebh; nation slot80 candidate R+c=135. No runtime identity, mapping phase or score closure proved.", flush=True)
+    if mode == "server":
+        from inspect_server_club_candidate import read_team_slot
+
+        expected_team = json.loads((ROOT / "20261025_server_team_4533.json").read_text())
+        team = read_team_slot(source, expected_team["record_index"])
+        if portable(team) != portable(expected_team):
+            raise AssertionError("Server TEAM candidate differs; reopen the parent-reference input")
+        if (actual["base_reference_values"]["C+18"] != [team["record_index"]]
+                or team["serialized_parent_value_T30"] != actual["serialized_identity_fields"]["C+8"]):
+            raise AssertionError("Server CLUB/TEAM reciprocal slot references differ")
+        print("Server reciprocal source references passed: CLUB4321 -> TEAM4533 -> CLUB4321. Runtime parent retention is separate.", flush=True)
+    print(f"{mode} database candidate parse matches the frozen observation: CLUB row4321 C+c=214ebh; nation slot80 candidate R+c=135. No runtime identity, mapping phase or score closure proved.", flush=True)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", type=Path, help="可选：核对完整目标身份、字节和关键调用目标；不会执行游戏")
     parser.add_argument("--client-db", type=Path, help="可选：复核2430 client_db中的候选输入；不会加载游戏")
+    parser.add_argument("--server-db", type=Path, help="可选：复核2430 server_db的普通CLUB候选与NATION槽；不会加载游戏")
     args = parser.parse_args()
     verify_index()
     examples()
@@ -1799,4 +1934,6 @@ if __name__ == "__main__":
         verify_original(args.exe)
     if args.client_db:
         verify_candidate_database(args.client_db)
+    if args.server_db:
+        verify_candidate_database(args.server_db, "server")
     print("Coverage: local frozen branches only; final valid-goal/score lifecycle remains open.", flush=True)
